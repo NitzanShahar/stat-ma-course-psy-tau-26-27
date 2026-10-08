@@ -7,7 +7,9 @@ site/site.json -> "published" reach the site; everything else stays private.
 
 Usage:
   python3 site/build.py --slides <path to slides folder>
-  python3 site/build.py --slides <path> --preview-weeks 1,2   # local check, writes to _preview/ (not committed)
+  python3 site/build.py --slides <path> --full                 # the whole course as it will look, into _preview/ (local, not committed)
+  python3 site/build.py --slides <path> --publish-week 3        # add all of week 3's items to "published", then build the public site
+  python3 site/build.py --slides <path> --preview-weeks 1,2     # only some weeks, into _preview/
 """
 import argparse
 import datetime as dt
@@ -83,7 +85,8 @@ def href(path):
 
 
 class Site:
-    def __init__(self, slides, out, preview_weeks=None):
+    def __init__(self, slides, out, preview_weeks=None, full=False, today=None):
+        self.today = today or dt.date.today()
         self.slides = slides
         self.out = out
         self.cfg = json.loads(CONFIG.read_text(encoding='utf-8'))
@@ -92,22 +95,30 @@ class Site:
         self.weeks = [w for w in self.data['weeks'] if w.get('lecture')]
         self.units = {u['id']: u for u in self.data['units']}
         pub = set(self.cfg.get('published', []))
-        if preview_weeks:
+        if preview_weeks or full:
             for w in self.weeks:
-                if w['n'] in preview_weeks:
+                if full or w['n'] in preview_weeks:
                     pub |= {it['code'] for it in w.get('items', [])}
             pub |= {g.get('code') for g in self.data.get('general', []) if g.get('code')}
         self.published = pub
+        # A local preview links straight to the files in the slides folder instead of copying them (fast, no duplicates).
+        self.local = bool(preview_weeks or full)
+        self.win_slides = self.cfg.get('slides', '').replace('\\', '/').rstrip('/')
         self.copied = set()
         self.warnings = []
 
     # ---------- files ----------
+    def local_url(self, rel):
+        return 'file:///' + quote(f'{self.win_slides}/{rel}'.replace(os.sep, '/'), safe='/:')
+
     def copy_file(self, src_rel, dest_dir):
         """Copy a file from the slides folder (relative path) into out/dest_dir. Returns the site href."""
         src = self.slides / src_rel
         if not src.is_file():
             self.warnings.append(f'missing file: {src_rel}')
             return None
+        if self.local:
+            return self.local_url(src_rel)
         dest = self.out / dest_dir / src.name
         if dest not in self.copied:
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -122,9 +133,9 @@ class Site:
     def copy_deck(self, code):
         deck = self.deck_for(code)
         dest = self.out / 'decks'
-        dest.mkdir(parents=True, exist_ok=True)
         text = deck.read_text(encoding='utf-8')
-        if deck not in self.copied:
+        if not self.local and deck not in self.copied:
+            dest.mkdir(parents=True, exist_ok=True)
             shutil.copy2(deck, dest / deck.name)
             files = deck.with_name(deck.stem + '_files')
             if files.is_dir():
@@ -144,7 +155,8 @@ class Site:
         def grab(pat):
             m = re.search(pat, text, re.S)
             return html.unescape(re.sub(r'<[^>]+>', '', m.group(1))).strip() if m else ''
-        return href(f'decks/{deck.name}'), grab(r'<h1 class="title"[^>]*>(.*?)</h1>'), grab(r'<p class="subtitle"[^>]*>(.*?)</p>')
+        link = self.local_url(f'כלים/צפייה/{deck.name}') if self.local else href(f'decks/{deck.name}')
+        return link, grab(r'<h1 class="title"[^>]*>(.*?)</h1>'), grab(r'<p class="subtitle"[^>]*>(.*?)</p>')
 
     # ---------- items ----------
     def kind(self, it):
@@ -204,7 +216,7 @@ class Site:
         subhtml = f'<span class="ms">{esc(sub)}{extra}</span>' if (sub or extra) else ''
         if extra.startswith(' · ') and not sub:
             subhtml = f'<span class="ms">{extra[3:]}</span>'
-        target = '' if link and link.startswith('decks/') else ' target="_blank" rel="noopener"'
+        target = '' if link and ('decks/' in link or '%D7%A6%D7%A4%D7%99%D7%99%D7%94' in link) else ' target="_blank" rel="noopener"'
         if link and not more:
             return f'<a class="mat" href="{link}"{target}>{ic}<span><span class="mt">{title}</span>{subhtml}</span></a>'
         t = f'<a class="mt" href="{link}"{target}>{title}</a>' if link else f'<span class="mt">{title}</span>'
@@ -257,7 +269,7 @@ class Site:
             if not code or code not in self.published or not g.get('link'):
                 continue
             h = self.copy_file(g['link'], 'files/' + code)
-            if code == 'G0':  # the staff page is an html page with its own images next to it
+            if code == 'G0' and not self.local:  # the staff page is an html page with its own images next to it
                 src_dir = (self.slides / g['link']).parent
                 for p in src_dir.iterdir():
                     if p.is_file() and p.name != Path(g['link']).name:
@@ -429,7 +441,9 @@ class Site:
                 shutil.copy2(p, out / 'assets' / 'img' / p.name)
         opened = self.open_weeks()
         open_ns = [w['n'] for w in opened]
-        cur = open_ns[-1] if open_ns else None
+        # "This week": the latest open week whose lecture is at most 6 days away; before that, the first open week.
+        soon = [w['n'] for w in opened if d(w['lecture']) <= self.today + dt.timedelta(days=6)]
+        cur = soon[-1] if soon else (open_ns[0] if open_ns else None)
         course = self.data['course']['title']
         for w in opened:
             body = self.menu(w['n'], cur, open_ns) + self.week_article(w, open_ns)
@@ -451,13 +465,26 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--slides', help='path to the slides folder (read-only)')
     ap.add_argument('--preview-weeks', help='comma-separated week numbers to publish in full, into _preview/ (not committed)')
+    ap.add_argument('--full', action='store_true', help='the whole course, every week, into _preview/ (not committed)')
+    ap.add_argument('--publish-week', type=int, action='append', help='add every item of this week to "published" in site.json')
+    ap.add_argument('--today', help='pretend today is YYYY-MM-DD (to see the site as it will look on that day)')
     a = ap.parse_args()
     slides = Path(a.slides or os.environ.get('SLIDES_DIR') or json.loads(CONFIG.read_text(encoding='utf-8')).get('slides', ''))
     if not (slides / 'משאבים' / 'מבנה הקורס.json').is_file():
         sys.exit(f'slides folder not found: {slides}')
+    if a.publish_week:
+        cfg = json.loads(CONFIG.read_text(encoding='utf-8'))
+        data = json.loads((slides / 'משאבים' / 'מבנה הקורס.json').read_text(encoding='utf-8'))
+        pub = list(cfg.get('published', []))
+        for w in data['weeks']:
+            if w['n'] in a.publish_week:
+                pub += [it['code'] for it in w.get('items', []) if it.get('code') not in pub and it.get('code') != 'TO.DO']
+        cfg['published'] = pub
+        CONFIG.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        print('published now:', ', '.join(pub))
     pw = [int(x) for x in a.preview_weeks.split(',')] if a.preview_weeks else None
-    out = REPO / '_preview' if pw else REPO
-    Site(slides, out, pw).build()
+    out = REPO / '_preview' if (pw or a.full) else REPO
+    Site(slides, out, pw, a.full, d(a.today) if a.today else None).build()
 
 
 if __name__ == '__main__':
