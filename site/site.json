@@ -1,0 +1,36 @@
+{
+  "_הסבר": "הגדרות אתר הסטודנטים. published = רשימת הקודים שמותר לפרסם; כל השאר פרטי. weeks = תמונה לראש השבוע (image, caption) ודיוקן לעיגול בתפריט ולקריאה (medal), מתוך site/img. thumbs = תמונה קטנה ליד פריט. titles/subtitles = עקיפת כותרת או תת-כותרת של פריט באתר בלבד. more_public = תוויות של קישורים נוספים (more) שמותר לפרסם; כל תווית אחרת (למשל \"דף למרצה\") נשארת פרטית.",
+  "slides": "D:\\Sync\\תשפז סטטיסטיקה\\slides",
+  "published": [],
+  "general_labels": {
+    "G0": "צוות הקורס",
+    "G1": "מידע על הקורס",
+    "G2": "סילבוס"
+  },
+  "more_public": [
+    "סרטון",
+    "הספר המקורי",
+    "שאלות לדיון",
+    "Bayes 1763",
+    "Laplace 1774",
+    "Laplace 1814"
+  ],
+  "weeks": {
+    "1": {
+      "image": "ars.jpg",
+      "caption": "Ars Conjectandi, 1713",
+      "medal": "bernoulli-medal.jpg"
+    },
+    "2": {
+      "image": "bayes-ink.png",
+      "caption": "השולחן של Bayes, 1763",
+      "medal": "laplace-medal.jpg"
+    }
+  },
+  "thumbs": {
+    "W1.K3": "blue-marble-sm.jpg",
+    "W2.V3": "blue-marble-sm.jpg"
+  },
+  "titles": {},
+  "subtitles": {}
+}
