@@ -42,7 +42,8 @@ a:focus-visible,summary:focus-visible{outline:3px solid #b3541e;outline-offset:2
 .cur{color:#b3541e;font-weight:700}
 .sel::before{content:"";position:absolute;top:calc(100% + 11px);left:50%;width:14px;height:14px;background:#ffffff;border-top:1px solid #e3e7e9;border-left:1px solid #e3e7e9;transform:translateX(-50%) rotate(45deg);z-index:1}
 a.wk:hover .c{transform:scale(1.05)}
-.mcap{display:none}
+.mpager{display:block}
+.mpg,.mstrip,.un,.ufull{display:none}
 
 /* week */
 .hero{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px 48px;align-items:center;padding:40px 44px 34px}
@@ -107,16 +108,30 @@ a.np:hover .mt{color:#b3541e}
   .mmenu nav{position:absolute;inset-inline:4px;top:calc(100% - 2px);z-index:5;background:#ffffff;border-radius:16px;box-shadow:0 10px 30px rgba(0,26,36,.16);padding:6px;display:flex;flex-direction:column}
   .mmenu nav a{min-height:48px;display:flex;align-items:center;padding:0 14px;border-radius:10px}
   .sheet{margin-top:4px;border-radius:20px}
-  .menu{padding:14px 12px 12px}
+  /* semester menu on the phone: one unit at a time, arrows page between units (right = back, left = forward) */
+  .menu{padding:16px 6px 12px}
+  .mpager{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center}
+  .mpg{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border:0;border-radius:50%;background:transparent;color:#001a24;cursor:pointer;padding:0}
+  .mpg svg{width:28px;height:28px;stroke-width:2}
+  .mpg:active{background:#e3e8e9}
+  .mpg:disabled{color:#c6ced2;cursor:default;background:transparent}
   .sel::before{display:none}
-  .mrow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px 4px;justify-items:center}
-  .unit,.wks{display:contents}
-  .ul{display:none}
-  .wk{width:100%;font-size:0;gap:0}
-  .wk::after{content:"";display:block;width:70%;height:3px;border-radius:2px;background:var(--u);margin-top:7px}
-  .c{width:44px;height:44px;font-size:13.5px}
-  .exam .c{font-size:11px}
-  .mcap{display:flex;justify-content:space-between;gap:8px;margin:10px 0 0;padding-top:10px;border-top:1px solid #eef1f2;font-size:13.5px;color:#56656d}
+  .mrow{display:block}
+  .unit{display:none}
+  .unit.on{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .ul{font-size:15px;font-weight:700;color:var(--ui);white-space:normal;text-align:center;border-bottom-width:2px;padding-bottom:6px}
+  .un,.ufull{display:inline}
+  .ush{display:none}
+  .wks{gap:14px;justify-content:center}
+  .wk{width:58px;font-size:12.5px}
+  .c{width:54px;height:54px;font-size:15px}
+  .mstrip{display:flex;align-items:center;gap:6px;margin:12px 10px 0;padding-top:10px;border-top:1px solid #e3e7e9}
+  .seg{flex:1 1 0;display:flex;gap:3px;align-items:center;justify-content:center;height:32px;padding:0 4px;border:0;border-radius:8px;background:transparent;cursor:pointer;opacity:.45}
+  .seg.on{opacity:1;background:#ffffff;box-shadow:0 0 0 1px #e3e7e9 inset}
+  .seg i{flex:1 1 0;max-width:14px;height:6px;border-radius:3px;background:var(--u)}
+  .seg i.op{background:var(--ui)}
+  .seg i.now{background:#b3541e}
+  .mx{flex:none;font-size:13px;color:#001a24;font-weight:600;padding-inline-start:4px}
   .hero{grid-template-columns:minmax(0,1fr) 86px;gap:14px;padding:22px 18px;align-items:end}
   .eng{padding:8px 8px 4px;border-radius:12px}
   .eng figcaption,.unitline{display:none}

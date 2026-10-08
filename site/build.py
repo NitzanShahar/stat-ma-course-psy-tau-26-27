@@ -154,7 +154,8 @@ class Site:
             self.copied.add(deck)
         def grab(pat):
             m = re.search(pat, text, re.S)
-            return html.unescape(re.sub(r'<[^>]+>', '', m.group(1))).strip() if m else ''
+            t = html.unescape(re.sub(r'<[^>]+>', '', m.group(1))).strip() if m else ''
+            return re.sub(r'^[A-Z]\d+\.[A-Z]+\d+\s*[—:\-–]\s*', '', t)  # never show resource codes
         link = self.local_url(f'כלים/צפייה/{deck.name}') if self.local else href(f'decks/{deck.name}')
         return link, grab(r'<h1 class="title"[^>]*>(.*?)</h1>'), grab(r'<p class="subtitle"[^>]*>(.*?)</p>')
 
@@ -281,13 +282,17 @@ class Site:
         return out
 
     def menu(self, sel_n, cur_n, open_ns):
-        units = []
-        for u in self.data['units']:
+        # Desktop: all units in one row. Phone: one unit at a time, big arrows to page between units,
+        # and a thin semester strip underneath (one segment per unit) that keeps the overview.
+        units, dots = [], []
+        focus = sel_n or cur_n
+        ulist = [u for u in self.data['units'] if u['id'] in UNIT_COLORS and u['id'] != '0'
+                 and any(w['unit'] == u['id'] for w in self.weeks)]
+        for i, u in enumerate(ulist):
             uw = [w for w in self.weeks if w['unit'] == u['id']]
-            if not uw or u['id'] not in UNIT_COLORS or u['id'] == '0':
-                continue
-            line = UNIT_COLORS[u['id']][1]
-            wks = []
+            line, ink = UNIT_COLORS[u['id']][1], UNIT_COLORS[u['id']][0]
+            on = any(w['n'] == focus for w in uw) or (focus is None and i == 0)
+            wks, seg = [], []
             for w in uw:
                 n = w['n']
                 medal = self.cfg.get('weeks', {}).get(str(n), {}).get('medal')
@@ -300,21 +305,25 @@ class Site:
                     label = 'השבוע' if n == cur_n else dm(w['lecture'])
                     aria = f'שבוע {n}' + (', השבוע' if n == cur_n else '')
                     cur = ' aria-current="page"' if n == sel_n else ''
-                    wks.append(f'<a class="{" ".join(cls)}" href="week-{n}.html" style="--u: {line};" aria-label="{aria}"{cur}><span class="c">{face}</span>{label}</a>')
+                    wks.append(f'<a class="{" ".join(cls)}" href="week-{n}.html" style="--u: {line};" aria-label="{aria}"{cur}><span class="c">{face}</span><span class="wl">{label}</span></a>')
+                    seg.append(f'<i class="{"now" if n == cur_n else "op"}"></i>')
                 else:
-                    wks.append(f'<span class="wk" style="--u: {line};"><span class="c f">{n}</span>{dm(w["lecture"])}</span>')
-            units.append(f'<div class="unit" style="--u: {line};"><span class="ul">{esc(u["name"].replace("יחידה ", ""))} · {esc(UNIT_SHORT.get(u["id"], u["title"]))}</span><div class="wks">{"".join(wks)}</div></div>')
+                    wks.append(f'<span class="wk" style="--u: {line};"><span class="c f">{n}</span><span class="wl">{dm(w["lecture"])}</span></span>')
+                    seg.append('<i></i>')
+            name = esc(u['name'].replace('יחידה ', ''))
+            units.append(f'<div class="unit{" on" if on else ""}" data-i="{i}" style="--u: {line}; --ui: {ink};">'
+                         f'<span class="ul"><span class="un">יחידה </span>{name} · <span class="ush">{esc(UNIT_SHORT.get(u["id"], u["title"]))}</span><span class="ufull">{esc(u["title"])}</span></span>'
+                         f'<div class="wks">{"".join(wks)}</div></div>')
+            dots.append(f'<button type="button" class="seg{" on" if on else ""}" data-i="{i}" style="--u: {line}; --ui: {ink};" aria-label="יחידה {name}">{"".join(seg)}</button>')
         exam = self.data['course'].get('exam')
         if exam:
             x = d(exam)
-            units.append(f'<div class="unit" style="--u: #001a24;"><span class="ul">בחינה</span><div class="wks"><span class="wk exam" style="--u: transparent;"><span class="c">{dm(exam)}</span>{x.year}</span></div></div>')
-        cap_unit = ''
-        sw = next((w for w in self.weeks if w['n'] == (sel_n or cur_n)), None)
-        if sw:
-            u = self.units[sw['unit']]
-            cap_unit = f'{esc(u["name"])} · {esc(u["title"])}'
-        cap = f'<p class="mcap"><span>{cap_unit}</span><span>{"בחינה " + dm(exam) if exam else ""}</span></p>'
-        return f'<nav class="menu" aria-label="שבועות הסמסטר"><div class="mrow">{"".join(units)}</div>{cap}</nav>'
+            units.append(f'<div class="unit xu" style="--u: #001a24;"><span class="ul">בחינה</span><div class="wks"><span class="wk exam" style="--u: transparent;"><span class="c">{dm(exam)}</span><span class="wl">{x.year}</span></span></div></div>')
+        strip = (f'<div class="mstrip">{"".join(dots)}'
+                 + (f'<span class="mx">בחינה {dm(exam)}</span>' if exam else '') + '</div>')
+        prev = f'<button type="button" class="mpg mprev" aria-label="היחידה הקודמת">{CHEV_BACK}</button>'
+        nxt = f'<button type="button" class="mpg mnext" aria-label="היחידה הבאה">{CHEV_FWD}</button>'
+        return f'<nav class="menu" aria-label="שבועות הסמסטר"><div class="mpager">{prev}<div class="mrow">{"".join(units)}</div>{nxt}</div>{strip}</nav>'
 
     def week_article(self, w, open_ns):
         n = w['n']
@@ -418,6 +427,18 @@ class Site:
 </div>
 <footer class="foot"><img src="assets/img/tau-logo.png" alt="" class="flogo"><span>{esc(c["title"])} · {esc(c["year"])}</span><span>{lic}</span></footer>
 </div>
+<script>
+document.querySelectorAll('.menu').forEach(function(m){{
+  var us=[].slice.call(m.querySelectorAll('.unit[data-i]')), ss=[].slice.call(m.querySelectorAll('.seg'));
+  var pv=m.querySelector('.mprev'), nx=m.querySelector('.mnext');
+  var i=Math.max(0,us.findIndex(function(u){{return u.classList.contains('on')}}));
+  function show(j){{ if(j<0||j>=us.length) return; i=j;
+    us.forEach(function(u,k){{u.classList.toggle('on',k===i)}}); ss.forEach(function(s,k){{s.classList.toggle('on',k===i)}});
+    pv.disabled=i===0; nx.disabled=i===us.length-1; }}
+  pv.onclick=function(){{show(i-1)}}; nx.onclick=function(){{show(i+1)}};
+  ss.forEach(function(s,k){{s.onclick=function(){{show(k)}}}}); show(i);
+}});
+</script>
 </body>
 </html>
 '''
