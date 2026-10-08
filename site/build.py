@@ -283,8 +283,8 @@ class Site:
 
     def menu(self, sel_n, cur_n, open_ns):
         # Desktop: all units in one row. Phone: one unit at a time, big arrows to page between units,
-        # and a thin semester strip underneath (one segment per unit) that keeps the overview.
-        units, dots = [], []
+        # swipe also pages (RTL: finger to the right = forward). The exam is the last page.
+        units = []
         focus = sel_n or cur_n
         ulist = [u for u in self.data['units'] if u['id'] in UNIT_COLORS and u['id'] != '0'
                  and any(w['unit'] == u['id'] for w in self.weeks)]
@@ -292,7 +292,7 @@ class Site:
             uw = [w for w in self.weeks if w['unit'] == u['id']]
             line, ink = UNIT_COLORS[u['id']][1], UNIT_COLORS[u['id']][0]
             on = any(w['n'] == focus for w in uw) or (focus is None and i == 0)
-            wks, seg = [], []
+            wks = []
             for w in uw:
                 n = w['n']
                 medal = self.cfg.get('weeks', {}).get(str(n), {}).get('medal')
@@ -306,24 +306,19 @@ class Site:
                     aria = f'שבוע {n}' + (', השבוע' if n == cur_n else '')
                     cur = ' aria-current="page"' if n == sel_n else ''
                     wks.append(f'<a class="{" ".join(cls)}" href="week-{n}.html" style="--u: {line};" aria-label="{aria}"{cur}><span class="c">{face}</span><span class="wl">{label}</span></a>')
-                    seg.append(f'<i class="{"now" if n == cur_n else "op"}"></i>')
                 else:
                     wks.append(f'<span class="wk" style="--u: {line};"><span class="c f">{n}</span><span class="wl">{dm(w["lecture"])}</span></span>')
-                    seg.append('<i></i>')
             name = esc(u['name'].replace('יחידה ', ''))
             units.append(f'<div class="unit{" on" if on else ""}" data-i="{i}" style="--u: {line}; --ui: {ink};">'
                          f'<span class="ul"><span class="un">יחידה </span>{name} · <span class="ush">{esc(UNIT_SHORT.get(u["id"], u["title"]))}</span><span class="ufull">{esc(u["title"])}</span></span>'
                          f'<div class="wks">{"".join(wks)}</div></div>')
-            dots.append(f'<button type="button" class="seg{" on" if on else ""}" data-i="{i}" style="--u: {line}; --ui: {ink};" aria-label="יחידה {name}">{"".join(seg)}</button>')
         exam = self.data['course'].get('exam')
         if exam:
             x = d(exam)
-            units.append(f'<div class="unit xu" style="--u: #001a24;"><span class="ul">בחינה</span><div class="wks"><span class="wk exam" style="--u: transparent;"><span class="c">{dm(exam)}</span><span class="wl">{x.year}</span></span></div></div>')
-        strip = (f'<div class="mstrip">{"".join(dots)}'
-                 + (f'<span class="mx">בחינה {dm(exam)}</span>' if exam else '') + '</div>')
+            units.append(f'<div class="unit xu" data-i="{len(units)}" style="--u: #001a24; --ui: #001a24;"><span class="ul">בחינה</span><div class="wks"><span class="wk exam" style="--u: transparent;"><span class="c">{dm(exam)}</span><span class="wl">{x.year}</span></span></div></div>')
         prev = f'<button type="button" class="mpg mprev" aria-label="היחידה הקודמת">{CHEV_BACK}</button>'
         nxt = f'<button type="button" class="mpg mnext" aria-label="היחידה הבאה">{CHEV_FWD}</button>'
-        return f'<nav class="menu" aria-label="שבועות הסמסטר"><div class="mpager">{prev}<div class="mrow">{"".join(units)}</div>{nxt}</div>{strip}</nav>'
+        return f'<nav class="menu" aria-label="שבועות הסמסטר"><div class="mpager">{prev}<div class="mrow">{"".join(units)}</div>{nxt}</div></nav>'
 
     def week_article(self, w, open_ns):
         n = w['n']
@@ -429,14 +424,20 @@ class Site:
 </div>
 <script>
 document.querySelectorAll('.menu').forEach(function(m){{
-  var us=[].slice.call(m.querySelectorAll('.unit[data-i]')), ss=[].slice.call(m.querySelectorAll('.seg'));
-  var pv=m.querySelector('.mprev'), nx=m.querySelector('.mnext');
+  var us=[].slice.call(m.querySelectorAll('.unit[data-i]'));
+  var pv=m.querySelector('.mprev'), nx=m.querySelector('.mnext'), pg=m.querySelector('.mpager');
   var i=Math.max(0,us.findIndex(function(u){{return u.classList.contains('on')}}));
-  function show(j){{ if(j<0||j>=us.length) return; i=j;
-    us.forEach(function(u,k){{u.classList.toggle('on',k===i)}}); ss.forEach(function(s,k){{s.classList.toggle('on',k===i)}});
+  function show(j,dir){{ if(j<0||j>=us.length) return; i=j;
+    us.forEach(function(u,k){{u.classList.toggle('on',k===i); u.classList.remove('in-f','in-b')}});
+    if(dir){{ void us[i].offsetWidth; us[i].classList.add(dir>0?'in-f':'in-b'); }}
     pv.disabled=i===0; nx.disabled=i===us.length-1; }}
-  pv.onclick=function(){{show(i-1)}}; nx.onclick=function(){{show(i+1)}};
-  ss.forEach(function(s,k){{s.onclick=function(){{show(k)}}}}); show(i);
+  pv.onclick=function(){{show(i-1,-1)}}; nx.onclick=function(){{show(i+1,1)}};
+  var x0=null,y0=0;
+  pg.addEventListener('touchstart',function(e){{x0=e.touches[0].clientX;y0=e.touches[0].clientY}},{{passive:true}});
+  pg.addEventListener('touchend',function(e){{ if(x0===null) return;
+    var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null;
+    if(Math.abs(dx)>40&&Math.abs(dx)>1.5*Math.abs(dy)){{ dx>0?show(i+1,1):show(i-1,-1); }} }},{{passive:true}});
+  show(i);
 }});
 </script>
 </body>

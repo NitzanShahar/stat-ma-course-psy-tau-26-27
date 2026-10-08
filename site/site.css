@@ -43,7 +43,7 @@ a:focus-visible,summary:focus-visible{outline:3px solid #b3541e;outline-offset:2
 .sel::before{content:"";position:absolute;top:calc(100% + 11px);left:50%;width:14px;height:14px;background:#ffffff;border-top:1px solid #e3e7e9;border-left:1px solid #e3e7e9;transform:translateX(-50%) rotate(45deg);z-index:1}
 a.wk:hover .c{transform:scale(1.05)}
 .mpager{display:block}
-.mpg,.mstrip,.un,.ufull{display:none}
+.mpg,.un,.ufull{display:none}
 
 /* week */
 .hero{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px 48px;align-items:center;padding:40px 44px 34px}
@@ -110,7 +110,7 @@ a.np:hover .mt{color:#b3541e}
   .sheet{margin-top:4px;border-radius:20px}
   /* semester menu on the phone: one unit at a time, arrows page between units (right = back, left = forward) */
   .menu{padding:16px 6px 12px}
-  .mpager{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center}
+  .mpager{touch-action:pan-y;display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center}
   .mpg{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border:0;border-radius:50%;background:transparent;color:#001a24;cursor:pointer;padding:0}
   .mpg svg{width:28px;height:28px;stroke-width:2}
   .mpg:active{background:#e3e8e9}
@@ -125,13 +125,11 @@ a.np:hover .mt{color:#b3541e}
   .wks{gap:14px;justify-content:center}
   .wk{width:58px;font-size:12.5px}
   .c{width:54px;height:54px;font-size:15px}
-  .mstrip{display:flex;align-items:center;gap:6px;margin:12px 10px 0;padding-top:10px;border-top:1px solid #e3e7e9}
-  .seg{flex:1 1 0;display:flex;gap:3px;align-items:center;justify-content:center;height:32px;padding:0 4px;border:0;border-radius:8px;background:transparent;cursor:pointer;opacity:.45}
-  .seg.on{opacity:1;background:#ffffff;box-shadow:0 0 0 1px #e3e7e9 inset}
-  .seg i{flex:1 1 0;max-width:14px;height:6px;border-radius:3px;background:var(--u)}
-  .seg i.op{background:var(--ui)}
-  .seg i.now{background:#b3541e}
-  .mx{flex:none;font-size:13px;color:#001a24;font-weight:600;padding-inline-start:4px}
+  .exam .c{font-size:13px}
+  .in-f{animation:uin-f .22s ease-out}
+  .in-b{animation:uin-b .22s ease-out}
+  @keyframes uin-f{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+  @keyframes uin-b{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
   .hero{grid-template-columns:minmax(0,1fr) 86px;gap:14px;padding:22px 18px;align-items:end}
   .eng{padding:8px 8px 4px;border-radius:12px}
   .eng figcaption,.unitline{display:none}
