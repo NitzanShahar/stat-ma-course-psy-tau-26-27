@@ -19,12 +19,18 @@
     "1": {
       "image": "ars.jpg",
       "caption": "Ars Conjectandi, 1713",
-      "medal": "bernoulli-medal.jpg"
+      "medal": "line-bernoulli.svg"
     },
     "2": {
       "image": "bayes-ink.png",
       "caption": "השולחן של Bayes, 1763",
-      "medal": "laplace-medal.jpg"
+      "medal": "line-bayes.svg"
+    },
+    "3": {
+      "medal": "line-fisher.svg"
+    },
+    "4": {
+      "medal": "line-gauss.svg"
     }
   },
   "thumbs": {
