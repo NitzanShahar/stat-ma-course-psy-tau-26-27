@@ -31,6 +31,33 @@
     },
     "4": {
       "medal": "portrait-gauss.svg"
+    },
+    "5": {
+      "medal": "sym-w5.svg"
+    },
+    "6": {
+      "medal": "sym-w6.svg"
+    },
+    "7": {
+      "medal": "sym-w7.svg"
+    },
+    "8": {
+      "medal": "sym-w8.svg"
+    },
+    "9": {
+      "medal": "sym-w9.svg"
+    },
+    "10": {
+      "medal": "sym-w10.svg"
+    },
+    "11": {
+      "medal": "sym-w11.svg"
+    },
+    "12": {
+      "medal": "sym-w12.svg"
+    },
+    "13": {
+      "medal": "sym-w13.svg"
     }
   },
   "thumbs": {
