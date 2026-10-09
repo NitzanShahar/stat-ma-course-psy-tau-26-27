@@ -71,7 +71,9 @@ CHEV_BACK = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke=
 CHEV_FWD = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5l-5 5 5 5"/></svg>'
 
 
-PILL_PLAY = '<svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4l10 6-10 6z"/></svg>'
+PILL_PLAY = ('<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">'
+             '<rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M2.5 6.5h15M2.5 13.5h15M6 3.5v3M10 3.5v3M14 3.5v3M6 13.5v3M10 13.5v3M14 13.5v3"/>'
+             '<path d="M8.6 8.4v3.2l2.8-1.6z" fill="currentColor"/></svg>')
 PILL_AUDIO = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3.5 12V10a6.5 6.5 0 0 1 13 0v2"/><rect x="3" y="11.5" width="3.5" height="5" rx="1"/><rect x="13.5" y="11.5" width="3.5" height="5" rx="1"/></svg>'
 PILL_DOC = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 2.5h7l3.5 3.5v11.5H5z"/></svg>'
 
@@ -549,12 +551,8 @@ class Site:
             cap = '<figcaption>' + esc(extra.get('caption', '')).replace(', ', '<br>', 1) + '</figcaption>' if extra.get('caption') else ''
             egg = extra.get('egg')
             eggattr = (f' data-egg="{esc(json.dumps(egg, ensure_ascii=False))}" role="button" tabindex="0" aria-label="{esc(extra.get("caption", ""))}"' if egg else '')
-            tissue = ('<svg class="tissue" viewBox="0 0 64 56" aria-hidden="true">'
-                      '<path d="M7 11Q19 5 32 9T57 8Q61 21 57 31T59 49Q45 54 32 50T6 51Q2 38 6 27T7 11Z" fill="#fbf7ee" stroke="#8b98a0" stroke-width="1.2" stroke-linejoin="round"/>'
-                      '<path d="M12 15Q22 11 32 14T52 13Q55 23 52 31T54 44Q43 48 32 45T11 46Q8 36 11 27T12 15Z" fill="none" stroke="#185fa5" stroke-width=".9" stroke-dasharray="2 1.8"/>'
-                      '<path d="M22 12Q25 28 20 47M41 10Q37 26 43 48M7 30Q30 27 57 33" fill="none" stroke="#d9d3c4" stroke-width="1.1" stroke-linecap="round"/>'
-                      '<text x="49" y="42" font-family="Georgia,serif" font-style="italic" font-size="7" fill="#185fa5" text-anchor="end">J.B.</text></svg>') if egg else ''
-            img = f'<figure class="eng{" egg" if egg else ""}"{eggattr}><img src="{self.p}assets/img/{href(extra["image"])}" alt="{esc(extra.get("caption", ""))}">{tissue}{cap}</figure>'
+            over = f'<img class="sneeze" src="{self.p}assets/img/{href(egg["overlay"])}" alt="">' if egg and egg.get('overlay') else ''
+            img = f'<figure class="eng{" egg" if egg else ""}"{eggattr}><span class="port"><img src="{self.p}assets/img/{href(extra["image"])}" alt="{esc(extra.get("caption", ""))}">{over}</span>{cap}</figure>'
         hero = (f'<header class="hero{"" if img else " noimg"}"><div><p class="eyebrow">שבוע {n} · {span(w["lecture"], w.get("practice"))}</p>'
                 f'<h1 class="h1 fr">{esc(h1)}</h1>' + (f'<p class="fr sub">{esc(sub)}</p>' if sub else '') +
                 f'<p class="unitline">{esc(u["name"])} · {esc(u["title"])}</p></div>{img}</header>')
@@ -721,9 +719,10 @@ document.querySelectorAll('.eng.egg').forEach(function(fig){{
     if(sneeze){{ k++; fig.classList.add('sneezing'); html='<b>'+cfg.sneeze+'</b><small>התעטשויות עד עכשיו: '+k+'/'+n+'</small>'; }}
     else {{ var q; do {{ q=Math.floor(Math.random()*cfg.quotes.length); }} while(cfg.quotes.length>1&&q===last); last=q;
       fig.classList.add('yawning'); html='<span>'+cfg.quotes[q]+'</span>'; }}
-    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){{bub.classList.remove('on')}},5200);
+    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){{bub.classList.remove('on'); fig.classList.remove('sneezing','yawning');}},3400);
   }}
-  fig.addEventListener('click',go);
+  fig.addEventListener('click',function(e){{ e.stopPropagation(); go(); }});
+  document.addEventListener('click',function(){{ bub.classList.remove('on'); fig.classList.remove('sneezing','yawning'); }});
   fig.addEventListener('keydown',function(e){{ if(e.key==='Enter'||e.key===' '){{ e.preventDefault(); go(); }} }});
 }});
 // TA sign-in: the password is the name of the full version's folder.

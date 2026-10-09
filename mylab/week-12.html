@@ -56,9 +56,10 @@ document.querySelectorAll('.eng.egg').forEach(function(fig){
     if(sneeze){ k++; fig.classList.add('sneezing'); html='<b>'+cfg.sneeze+'</b><small>התעטשויות עד עכשיו: '+k+'/'+n+'</small>'; }
     else { var q; do { q=Math.floor(Math.random()*cfg.quotes.length); } while(cfg.quotes.length>1&&q===last); last=q;
       fig.classList.add('yawning'); html='<span>'+cfg.quotes[q]+'</span>'; }
-    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){bub.classList.remove('on')},5200);
+    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){bub.classList.remove('on'); fig.classList.remove('sneezing','yawning');},3400);
   }
-  fig.addEventListener('click',go);
+  fig.addEventListener('click',function(e){ e.stopPropagation(); go(); });
+  document.addEventListener('click',function(){ bub.classList.remove('on'); fig.classList.remove('sneezing','yawning'); });
   fig.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
 });
 // TA sign-in: the password is the name of the full version's folder.
