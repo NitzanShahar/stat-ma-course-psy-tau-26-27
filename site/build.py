@@ -71,9 +71,8 @@ CHEV_BACK = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke=
 CHEV_FWD = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5l-5 5 5 5"/></svg>'
 
 
-PILL_PLAY = ('<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">'
-             '<rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M2.5 6.5h15M2.5 13.5h15M6 3.5v3M10 3.5v3M14 3.5v3M6 13.5v3M10 13.5v3M14 13.5v3"/>'
-             '<path d="M8.6 8.4v3.2l2.8-1.6z" fill="currentColor"/></svg>')
+PILL_PLAY = ('<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+             '<rect x="2" y="5.5" width="11" height="9" rx="2"/><path d="M13 9l5-3v8l-5-3z"/></svg>')
 PILL_AUDIO = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3.5 12V10a6.5 6.5 0 0 1 13 0v2"/><rect x="3" y="11.5" width="3.5" height="5" rx="1"/><rect x="13.5" y="11.5" width="3.5" height="5" rx="1"/></svg>'
 PILL_DOC = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 2.5h7l3.5 3.5v11.5H5z"/></svg>'
 
