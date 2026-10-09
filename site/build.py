@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
-"""Build the student course site from the lecturer's slides folder.
+"""Build the course site from the lecturer's slides folder.
 
-The slides folder is READ-ONLY: this script only reads from it and copies
-published files into this repository. Only items whose code appears in
-site/site.json -> "published" reach the site; everything else stays private.
+The slides folder is READ-ONLY: this script only reads from it and copies files into this repository.
+
+One run builds two versions from the same code:
+  - the public version (repo root): only items listed in site/site.json -> "published";
+  - the full version (repo/<staff_dir>/, "גרסת מתרגלים"): every week and everything students will eventually get.
+    Its folder name is the TA password. The lecturer also uses it as his own local view.
+Lecturer-only material never reaches either version ("דף למרצה" etc.: extra links are private unless listed in "more_public").
+Files are copied only when they changed; files no longer needed are removed.
 
 Usage:
   python3 site/build.py --slides <path to slides folder>
-  python3 site/build.py --slides <path> --full                 # the whole course as it will look, into _preview/ (local, not committed)
-  python3 site/build.py --slides <path> --publish-week 3        # add all of week 3's items to "published", then build the public site
-  python3 site/build.py --slides <path> --preview-weeks 1,2     # only some weeks, into _preview/
+  python3 site/build.py --slides <path> --publish-week 3        # add all of week 3's items to "published", then build
+  python3 site/build.py --slides <path> --today 2026-11-20      # build as if today were that date
 """
 import argparse
 import datetime as dt
+import hashlib
 import html
 import json
 import os
@@ -25,7 +30,6 @@ from urllib.parse import quote, unquote
 REPO = Path(__file__).resolve().parent.parent
 SITE = REPO / 'site'
 CONFIG = SITE / 'site.json'
-GENERATED = ['index.html', 'assets', 'decks', 'files']  # plus week-*.html
 
 # Unit colors: main (text, icons, rule) · line (bars) · tint (small surfaces). Source of truth: the course map, "הגדרות צבעים".
 UNIT_COLORS = {
@@ -84,47 +88,93 @@ def href(path):
     return quote(path.replace(os.sep, '/'))
 
 
+class Files:
+    """Copies what the pages need into the repo, only when changed, and removes what is no longer needed."""
+    def __init__(self, repo):
+        self.repo = repo
+        self.need = set()
+        self.changed = 0
+        self.libs = {}
+
+    def _mark(self, rel):
+        if rel in self.need:
+            return None
+        self.need.add(rel)
+        return self.repo / rel
+
+    def copy(self, src, rel):
+        dest = self._mark(rel)
+        if dest is None:
+            return
+        if dest.exists():
+            a, b = src.stat(), dest.stat()
+            if a.st_size == b.st_size and a.st_mtime <= b.st_mtime + 2:
+                return
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dest)
+        self.changed += 1
+
+    def tree(self, src_dir, rel_dir):
+        for p in src_dir.rglob('*'):
+            if p.is_file():
+                self.copy(p, f'{rel_dir}/{p.relative_to(src_dir).as_posix()}')
+
+    def write(self, text, rel):
+        dest = self._mark(rel)
+        if dest is None:
+            return
+        if dest.exists() and dest.read_text(encoding='utf-8') == text:
+            return
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(text, encoding='utf-8')
+        self.changed += 1
+
+    def prune(self, roots, root_globs):
+        removed = 0
+        for r in roots:
+            base = self.repo / r
+            if not base.exists():
+                continue
+            for p in sorted(base.rglob('*'), key=lambda x: len(x.parts), reverse=True):
+                rel = p.relative_to(self.repo).as_posix()
+                if p.is_file() and rel not in self.need:
+                    p.unlink()
+                    removed += 1
+                elif p.is_dir() and not any(p.iterdir()):
+                    p.rmdir()
+        for g in root_globs:
+            for p in self.repo.glob(g):
+                if p.is_file() and p.name not in self.need:
+                    p.unlink()
+                    removed += 1
+        return removed
+
+
 class Site:
-    def __init__(self, slides, out, preview_weeks=None, full=False, today=None):
+    def __init__(self, slides, cfg, data, files, published, folder='', staff=False, today=None):
         self.today = today or dt.date.today()
         self.slides = slides
-        self.out = out
-        self.cfg = json.loads(CONFIG.read_text(encoding='utf-8'))
-        self.data = json.loads((slides / 'משאבים' / 'מבנה הקורס.json').read_text(encoding='utf-8'))
+        self.cfg = cfg
+        self.data = data
+        self.files = files
+        self.folder = folder                      # '' = repo root (public) or the staff folder
+        self.p = '../' if folder else ''          # prefix from a page to the shared assets/, decks/, files/
+        self.staff = staff
         self.decks_dir = slides / 'כלים' / 'צפייה'
         self.weeks = [w for w in self.data['weeks'] if w.get('lecture')]
         self.units = {u['id']: u for u in self.data['units']}
-        pub = set(self.cfg.get('published', []))
-        if preview_weeks or full:
-            for w in self.weeks:
-                if full or w['n'] in preview_weeks:
-                    pub |= {it['code'] for it in w.get('items', [])}
-            pub |= {g.get('code') for g in self.data.get('general', []) if g.get('code')}
-        self.published = pub
-        # A local preview links straight to the files in the slides folder instead of copying them (fast, no duplicates).
-        self.local = bool(preview_weeks or full)
-        self.win_slides = self.cfg.get('slides', '').replace('\\', '/').rstrip('/')
-        self.copied = set()
+        self.published = published
         self.warnings = []
 
     # ---------- files ----------
-    def local_url(self, rel):
-        return 'file:///' + quote(f'{self.win_slides}/{rel}'.replace(os.sep, '/'), safe='/:')
-
     def copy_file(self, src_rel, dest_dir):
-        """Copy a file from the slides folder (relative path) into out/dest_dir. Returns the site href."""
+        """Copy a file from the slides folder (relative path) into the repo at dest_dir. Returns the href from a page."""
         src = self.slides / src_rel
         if not src.is_file():
             self.warnings.append(f'missing file: {src_rel}')
             return None
-        if self.local:
-            return self.local_url(src_rel)
-        dest = self.out / dest_dir / src.name
-        if dest not in self.copied:
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(src, dest)
-            self.copied.add(dest)
-        return href(f'{dest_dir}/{src.name}')
+        self.files.copy(src, f'{dest_dir}/{src.name}')
+        return self.p + href(f'{dest_dir}/{src.name}')
 
     def deck_for(self, code):
         p = self.decks_dir / (code.replace('.', '_') + '.html')
@@ -132,14 +182,35 @@ class Site:
 
     def copy_deck(self, code):
         deck = self.deck_for(code)
-        dest = self.out / 'decks'
         text = deck.read_text(encoding='utf-8')
-        if not self.local and deck not in self.copied:
-            dest.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(deck, dest / deck.name)
-            files = deck.with_name(deck.stem + '_files')
-            if files.is_dir():
-                shutil.copytree(files, dest / files.name, dirs_exist_ok=True)
+        if f'decks/{deck.name}' not in self.files.need:
+            out = text
+            fdir = deck.with_name(deck.stem + '_files')
+            if fdir.is_dir():
+                libs = fdir / 'libs'
+                for c in fdir.iterdir():  # everything except libs (walking libs on a synced drive is slow)
+                    if c.name == 'libs':
+                        continue
+                    if c.is_dir():
+                        self.files.tree(c, f'decks/{fdir.name}/{c.name}')
+                    else:
+                        self.files.copy(c, f'decks/{fdir.name}/{c.name}')
+                if libs.is_dir():
+                    # Quarto gives every deck its own identical copy of reveal.js etc. (~6MB): keep one shared copy per version.
+                    # Signature = the lib files the deck loads, with their sizes (cheap, and changes when Quarto's libs change).
+                    used = sorted(set(re.findall(re.escape(fdir.name) + r'/libs/([^"\'?#\s)]+)', text)))
+                    sizes = [(libs / unquote(u)).stat().st_size if (libs / unquote(u)).is_file() else None for u in used]
+                    sig = hashlib.sha1('\n'.join(f'{u}:{z}' for u, z in zip(used, sizes)).encode()).hexdigest()[:10]
+                    if None in sizes and self.files.libs:
+                        # the deck's own libs are incomplete (a render that did not finish): borrow a complete copy
+                        self.warnings.append(f'{deck.name}: its _files/libs folder is incomplete in the slides folder; using the shared copy')
+                        sig = next(iter(self.files.libs))
+                    elif sig not in self.files.libs:
+                        self.files.libs[sig] = True
+                        self.files.tree(libs, f'decks/_libs/{sig}')
+                    for name in {fdir.name, quote(fdir.name)}:
+                        out = out.replace(f'{name}/libs/', f'_libs/{sig}/')
+            self.files.write(out, f'decks/{deck.name}')
             # Shared resources the deck refers to by name (images, the design folder).
             refs = {unquote(v) for v in re.findall(r'(?:src|href|data-background-image|data-src)="([^"#?]+)', text)}
             refs |= {unquote(v) for v in re.findall(r'url\(["\']?([^"\')]+)', text)}
@@ -148,15 +219,14 @@ class Site:
                     continue
                 if p.name in refs or any(r.startswith(p.name + '/') for r in refs):
                     if p.is_dir():
-                        shutil.copytree(p, dest / p.name, dirs_exist_ok=True)
+                        self.files.tree(p, f'decks/{p.name}')
                     else:
-                        shutil.copy2(p, dest / p.name)
-            self.copied.add(deck)
+                        self.files.copy(p, f'decks/{p.name}')
         def grab(pat):
             m = re.search(pat, text, re.S)
             t = html.unescape(re.sub(r'<[^>]+>', '', m.group(1))).strip() if m else ''
             return re.sub(r'^[A-Z]\d+\.[A-Z]+\d+\s*[—:\-–]\s*', '', t)  # never show resource codes
-        link = self.local_url(f'כלים/צפייה/{deck.name}') if self.local else href(f'decks/{deck.name}')
+        link = self.p + href(f'decks/{deck.name}')
         return link, grab(r'<h1 class="title"[^>]*>(.*?)</h1>'), grab(r'<p class="subtitle"[^>]*>(.*?)</p>')
 
     # ---------- items ----------
@@ -211,13 +281,13 @@ class Site:
         link, title, sub, icon, more = self.resolve(it)
         title = esc(title)
         thumb = self.cfg.get('thumbs', {}).get(it['code'])
-        ic = (f'<span class="ic thumb"><img src="assets/img/{href(thumb)}" alt=""></span>' if thumb
+        ic = (f'<span class="ic thumb"><img src="{self.p}assets/img/{href(thumb)}" alt=""></span>' if thumb
               else f'<span class="ic">{icon}</span>')
         extra = ''.join(f' · <a class="ln" href="{h}" target="_blank" rel="noopener">{esc(lbl)}</a>' for lbl, h in more)
         subhtml = f'<span class="ms">{esc(sub)}{extra}</span>' if (sub or extra) else ''
         if extra.startswith(' · ') and not sub:
             subhtml = f'<span class="ms">{extra[3:]}</span>'
-        target = '' if link and ('decks/' in link or '%D7%A6%D7%A4%D7%99%D7%99%D7%94' in link) else ' target="_blank" rel="noopener"'
+        target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
         if link and not more:
             return f'<a class="mat" href="{link}"{target}>{ic}<span><span class="mt">{title}</span>{subhtml}</span></a>'
         t = f'<a class="mt" href="{link}"{target}>{title}</a>' if link else f'<span class="mt">{title}</span>'
@@ -257,9 +327,10 @@ class Site:
                 f'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1c2a31" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6h13M3.5 10h13M3.5 14h13"/></svg>'
                 f'</summary><nav aria-label="מידע כללי">{mob}</nav></details>') if mob else ''
         c = self.data['course']
-        return (f'<header class="hdr"><a class="home" href="index.html" aria-label="לדף הבית"><img class="logo" src="assets/img/tau-logo.png" alt="אוניברסיטת תל אביב"></a>'
+        badge = ' · <b class="badge">גרסת מתרגלים</b>' if self.staff else ''
+        return (f'<header class="hdr"><a class="home" href="index.html" aria-label="לדף הבית"><img class="logo" src="{self.p}assets/img/tau-logo.png" alt="אוניברסיטת תל אביב"></a>'
                 f'<span class="sep"></span><a class="ttl home" href="index.html"><span class="fr ttl1">{esc(c["title"])}</span>'
-                f'<span class="ttl2">{esc(c["year"])} · {esc(c["lecturer"])}</span></a>'
+                f'<span class="ttl2">{esc(c["year"])} · {esc(c["lecturer"])}{badge}</span></a>'
                 f'<nav class="gen" aria-label="מידע כללי">{gen}</nav>{menu}</header>')
 
     def general_links(self):
@@ -270,13 +341,11 @@ class Site:
             if not code or code not in self.published or not g.get('link'):
                 continue
             h = self.copy_file(g['link'], 'files/' + code)
-            if code == 'G0' and not self.local:  # the staff page is an html page with its own images next to it
+            if code == 'G0':  # the staff page is an html page with its own images next to it
                 src_dir = (self.slides / g['link']).parent
                 for p in src_dir.iterdir():
                     if p.is_file() and p.name != Path(g['link']).name:
-                        dest = self.out / 'files' / code / p.name
-                        dest.parent.mkdir(parents=True, exist_ok=True)
-                        shutil.copy2(p, dest)
+                        self.files.copy(p, f'files/{code}/{p.name}')
             if h:
                 out.append((labels.get(code, g['title']), h, '' if h.endswith('.html') else ' target="_blank" rel="noopener"'))
         return out
@@ -296,7 +365,7 @@ class Site:
             for w in uw:
                 n = w['n']
                 medal = self.cfg.get('weeks', {}).get(str(n), {}).get('medal')
-                face = f'<img src="assets/img/{href(medal)}" alt="">' if medal else str(n)
+                face = f'<img src="{self.p}assets/img/{href(medal)}" alt="">' if medal else str(n)
                 cls = ['wk']
                 if n in open_ns:
                     cls.append('cur' if n == cur_n else 'past')
@@ -329,7 +398,7 @@ class Site:
         img = ''
         if extra.get('image'):
             cap = f'<figcaption>{esc(extra.get("caption", ""))}</figcaption>' if extra.get('caption') else ''
-            img = f'<figure class="eng"><img src="assets/img/{href(extra["image"])}" alt="{esc(extra.get("caption", ""))}">{cap}</figure>'
+            img = f'<figure class="eng"><img src="{self.p}assets/img/{href(extra["image"])}" alt="{esc(extra.get("caption", ""))}">{cap}</figure>'
         hero = (f'<header class="hero{"" if img else " noimg"}"><div><p class="eyebrow">שבוע {n} · {span(w["lecture"], w.get("practice"))}</p>'
                 f'<h1 class="h1 fr">{esc(h1)}</h1>' + (f'<p class="fr sub">{esc(sub)}</p>' if sub else '') +
                 f'<p class="unitline">{esc(u["name"])} · {esc(u["title"])}</p></div>{img}</header>')
@@ -356,7 +425,7 @@ class Site:
         nl = self.next_lecture(w)
         for it in reading:
             link, rtitle, sub, icon, more = self.resolve(it)
-            pic = f'<img class="npimg" src="assets/img/{href(medal)}" alt="">' if (medal and self.kind(it) == 'H') else f'<span class="ic npic">{ICON_DOC}</span>'
+            pic = f'<img class="npimg" src="{self.p}assets/img/{href(medal)}" alt="">' if (medal and self.kind(it) == 'H') else f'<span class="ic npic">{ICON_DOC}</span>'
             when = f'<span class="nd">עד {day_dm(nl).replace(" ", ", ", 1)}</span>' if nl else ''
             note = 'השיעור הבא נפתח בשאלה עליו' if self.kind(it) == 'H' else sub
             cards.append(self.np_card(link, pic, ICON_BOOK + 'קריאה', rtitle, note, when))
@@ -402,6 +471,13 @@ class Site:
     def page(self, title, unit, body):
         ink, line, tint = UNIT_COLORS.get(unit, UNIT_COLORS['0'])
         c = self.data['course']
+        robots = '<meta name="robots" content="noindex, nofollow">\n' if self.staff else ''
+        if self.staff:
+            gate = '<a class="ln" href="../index.html">לגרסה של הסטודנטים</a>'
+        else:
+            gate = ('<details class="tlog"><summary>כניסת מתרגלים</summary><form class="tlogf">'
+                    '<input type="password" autocomplete="off" aria-label="סיסמה" placeholder="סיסמה">'
+                    '<button type="submit">כניסה</button><span class="terr" hidden>סיסמה שגויה</span></form></details>')
         lic = 'חומרי הקורס ברישיון <a class="ln" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a>'
         return f'''<!doctype html>
 <html lang="he" dir="rtl">
@@ -411,7 +487,7 @@ class Site:
 <title>{esc(title)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&amp;family=Assistant:wght@400;500;600;700&amp;display=swap">
-<link rel="stylesheet" href="assets/site.css">
+{robots}<link rel="stylesheet" href="{self.p}assets/site.css">
 <style>:root{{--u-ink:{ink};--u-line:{line};--u-tint:{tint}}}</style>
 </head>
 <body>
@@ -420,7 +496,7 @@ class Site:
 <div class="sheet card">
 {body}
 </div>
-<footer class="foot"><img src="assets/img/tau-logo.png" alt="" class="flogo"><span>{esc(c["title"])} · {esc(c["year"])}</span><span>{lic}</span></footer>
+<footer class="foot"><img src="{self.p}assets/img/tau-logo.png" alt="" class="flogo"><span>{esc(c["title"])} · {esc(c["year"])}</span><span>{lic}</span>{gate}</footer>
 </div>
 <script>
 document.querySelectorAll('.menu').forEach(function(m){{
@@ -439,6 +515,15 @@ document.querySelectorAll('.menu').forEach(function(m){{
     if(Math.abs(dx)>40&&Math.abs(dx)>1.5*Math.abs(dy)){{ dx>0?show(i+1,1):show(i-1,-1); }} }},{{passive:true}});
   show(i);
 }});
+// TA sign-in: the password is the name of the full version's folder.
+document.querySelectorAll('.tlogf').forEach(function(f){{
+  f.addEventListener('submit',function(e){{ e.preventDefault();
+    var v=f.querySelector('input').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g,''), er=f.querySelector('.terr');
+    if(!v) return;
+    if(location.protocol==='file:'){{ location.href=v+'/index.html'; return; }}
+    fetch(v+'/index.html',{{method:'HEAD',cache:'no-store'}}).then(function(r){{ if(r.ok) location.href=v+'/'; else er.hidden=false; }}).catch(function(){{er.hidden=false}});
+  }});
+}});
 </script>
 </body>
 </html>
@@ -446,21 +531,7 @@ document.querySelectorAll('.menu').forEach(function(m){{
 
     # ---------- build ----------
     def build(self):
-        out = self.out
-        out.mkdir(parents=True, exist_ok=True)
-        for name in GENERATED:
-            p = out / name
-            if p.is_dir():
-                shutil.rmtree(p)
-            elif p.exists():
-                p.unlink()
-        for p in out.glob('week-*.html'):
-            p.unlink()
-        (out / 'assets' / 'img').mkdir(parents=True, exist_ok=True)
-        shutil.copy2(SITE / 'site.css', out / 'assets' / 'site.css')
-        for p in (SITE / 'img').iterdir():
-            if p.is_file():
-                shutil.copy2(p, out / 'assets' / 'img' / p.name)
+        pre = f'{self.folder}/' if self.folder else ''
         opened = self.open_weeks()
         open_ns = [w['n'] for w in opened]
         # "This week": the latest open week whose lecture is at most 6 days away; before that, the first open week.
@@ -469,7 +540,7 @@ document.querySelectorAll('.menu').forEach(function(m){{
         course = self.data['course']['title']
         for w in opened:
             body = self.menu(w['n'], cur, open_ns) + self.week_article(w, open_ns)
-            (out / f'week-{w["n"]}.html').write_text(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body), encoding='utf-8')
+            self.files.write(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body), f'{pre}week-{w["n"]}.html')
         if cur:
             w = next(x for x in opened if x['n'] == cur)
             body = self.menu(cur, cur, open_ns) + self.week_article(w, open_ns)
@@ -477,26 +548,22 @@ document.querySelectorAll('.menu').forEach(function(m){{
         else:
             body = self.menu(None, None, []) + self.welcome()
             unit = '0'
-        (out / 'index.html').write_text(self.page(course, unit, body), encoding='utf-8')
-        print(f'built {len(opened)} week page(s) into {out}; current week: {cur}')
-        for x in self.warnings:
-            print('warning:', x)
+        self.files.write(self.page(course, unit, body), f'{pre}index.html')
+        print(f'{"full" if self.staff else "public"}: {len(opened)} week page(s) in /{self.folder}; current week: {cur}')
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--slides', help='path to the slides folder (read-only)')
-    ap.add_argument('--preview-weeks', help='comma-separated week numbers to publish in full, into _preview/ (not committed)')
-    ap.add_argument('--full', action='store_true', help='the whole course, every week, into _preview/ (not committed)')
     ap.add_argument('--publish-week', type=int, action='append', help='add every item of this week to "published" in site.json')
     ap.add_argument('--today', help='pretend today is YYYY-MM-DD (to see the site as it will look on that day)')
     a = ap.parse_args()
-    slides = Path(a.slides or os.environ.get('SLIDES_DIR') or json.loads(CONFIG.read_text(encoding='utf-8')).get('slides', ''))
+    cfg = json.loads(CONFIG.read_text(encoding='utf-8'))
+    slides = Path(a.slides or os.environ.get('SLIDES_DIR') or cfg.get('slides', ''))
     if not (slides / 'משאבים' / 'מבנה הקורס.json').is_file():
         sys.exit(f'slides folder not found: {slides}')
+    data = json.loads((slides / 'משאבים' / 'מבנה הקורס.json').read_text(encoding='utf-8'))
     if a.publish_week:
-        cfg = json.loads(CONFIG.read_text(encoding='utf-8'))
-        data = json.loads((slides / 'משאבים' / 'מבנה הקורס.json').read_text(encoding='utf-8'))
         pub = list(cfg.get('published', []))
         for w in data['weeks']:
             if w['n'] in a.publish_week:
@@ -504,9 +571,23 @@ def main():
         cfg['published'] = pub
         CONFIG.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print('published now:', ', '.join(pub))
-    pw = [int(x) for x in a.preview_weeks.split(',')] if a.preview_weeks else None
-    out = REPO / '_preview' if (pw or a.full) else REPO
-    Site(slides, out, pw, a.full, d(a.today) if a.today else None).build()
+    today = d(a.today) if a.today else None
+    files = Files(REPO)
+    files.copy(SITE / 'site.css', 'assets/site.css')
+    for p in (SITE / 'img').iterdir():
+        if p.is_file():
+            files.copy(p, f'assets/img/{p.name}')
+    staff_dir = cfg.get('staff_dir', 'mylab')
+    everything = {it['code'] for w in data['weeks'] if w.get('lecture') for it in w.get('items', []) if it.get('code') != 'TO.DO'}
+    everything |= {g.get('code') for g in data.get('general', []) if g.get('code')}
+    sites = [Site(slides, cfg, data, files, set(cfg.get('published', [])), today=today),
+             Site(slides, cfg, data, files, everything, folder=staff_dir, staff=True, today=today)]
+    for s in sites:
+        s.build()
+    removed = files.prune(['assets', 'decks', 'files', staff_dir], ['week-*.html'])
+    print(f'files written or updated: {files.changed}; removed: {removed}')
+    for x in sorted({w for s in sites for w in s.warnings}):
+        print('warning:', x)
 
 
 if __name__ == '__main__':

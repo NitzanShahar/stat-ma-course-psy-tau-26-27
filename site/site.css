@@ -94,6 +94,16 @@ a.np:hover .mt{color:#b3541e}
 
 .foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 22px;padding:40px 0 56px;font-size:14.5px;color:#56656d}
 .flogo{height:30px;width:auto}
+.badge{font-weight:700;color:#001a24;white-space:nowrap}
+
+/* TA sign-in (public footer): the password is the full version's folder name */
+.tlog summary{list-style:none;cursor:pointer;min-height:44px;display:flex;align-items:center;text-decoration:underline;text-decoration-color:#cfd6d9;text-underline-offset:3px}
+.tlog summary::-webkit-details-marker{display:none}
+.tlog summary:hover{color:#001a24}
+.tlogf{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+.tlogf input{font:inherit;font-size:16px;height:44px;width:160px;padding:0 12px;border:1px solid #cfd6d9;border-radius:10px;background:#ffffff;color:#1c2a31;direction:ltr}
+.tlogf button{font:inherit;font-size:15px;height:44px;padding:0 18px;border:0;border-radius:10px;background:#001a24;color:#ffffff;cursor:pointer}
+.terr{color:#b3541e;font-size:14px}
 
 @media (max-width:640px){
   .wrap{padding:0 12px}
