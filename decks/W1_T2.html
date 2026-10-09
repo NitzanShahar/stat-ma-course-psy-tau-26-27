@@ -9,7 +9,7 @@
 <link href="_libs/1cefbca170/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
-  <meta name="author" content="פרופ’ ניצן שחר">
+  <meta name="author" content="עידו בן ארצי · גל עטון · רם אשל">
   <title>חיזוק מושג ה-likelihood</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -323,50 +323,29 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center" dir="rtl">
+<section id="title-slide" class="quarto-title-block center" dir="rtl" data-unit="a" data-practice="1">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
+  <p class="practice-label">תרגול</p>
   <h1 class="title">חיזוק מושג ה-likelihood</h1>
+  <div class="title-rule"></div>
   <p class="subtitle">התפלגות Bernoulli, תצפית אחרי תצפית</p>
-  <p class="author">פרופ’ ניצן שחר</p>
+  <p class="author">עידו בן ארצי · גל עטון · רם אשל</p>
 </section>
 <section id="חזרה" class="slide level2">
 <h2>חזרה</h2>
 
 <style>
-/* ── פלטת התרגול ─────────────────────────────────────────────
-   משאבי T צבועים ענבר על נייר חם, כדי שיהיה ברור מיד שזה תרגול ולא שיעור.
-   הטוקנים הסמנטיים של הקורס נשארים כמו שהם: p (חבוי) סגול, תצפיות תכלת, likelihood ורוד. */
-:root {
-  --t-accent:      #c47a14;
-  --t-accent-deep: #8a4c05;
-  --t-accent-soft: #f3e4cc;
-  --t-paper:       #fbf8f1;
-  --t-card:        #fffdf8;
+/* ── צבעי רכיבי התרגול ───────────────────────────────────────
+   מבנה התרגול (פס עליון, נייר, צבע היחידה, שקף הפתיחה) מגיע מ-theme.scss לפי הקוד W1.T2.
+   כאן רק כינויים לצבעי הכפתורים והסימונים, מצבע היחידה. צבעי המשמעות (חבוי, תצפיות, likelihood) נשארים כמו שהם. */
+.reveal {
+  --t-accent:      var(--unit);
+  --t-accent-deep: var(--unit);
+  --t-accent-soft: var(--unit-bg);
+  --t-card:        #fff;
   --t-yes:         var(--seen);
   --t-no:          #a89c8a;
 }
-.reveal-viewport { background-color: var(--t-paper) !important; }
-.reveal::before {
-  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 9px;
-  background: var(--t-accent); z-index: 40; pointer-events: none;
-}
-.reveal h2 { border-bottom: 3px solid var(--t-accent-soft); position: relative; }
-.reveal h2::after {
-  content: ""; position: absolute; right: 0; bottom: -3px; width: 110px; height: 3px;
-  background: var(--t-accent);
-}
-.reveal h3 { color: var(--t-accent-deep); }
-.reveal .progress span { background: var(--t-accent); }
-.reveal .slide-number { color: var(--t-accent-deep); background: transparent; font-size: 15px; }
-.reveal .controls { color: var(--t-accent); }
-#title-slide .title { color: #2b1f10; }
-#title-slide .title::before {
-  content: "תרגול"; display: block; width: fit-content; margin: 0 auto .45em;
-  background: var(--t-accent); color: #fff; font-family: "Assistant", sans-serif;
-  font-size: .36em; font-weight: 700; letter-spacing: .04em;
-  padding: .12em .9em; border-radius: 999px;
-}
-.reveal .flow-node { background: var(--t-card); }
 
 /* ── רכיבים משותפים ─────────────────────────────────────── */
 .t2 { font-size: 22px; line-height: 1.35; }
