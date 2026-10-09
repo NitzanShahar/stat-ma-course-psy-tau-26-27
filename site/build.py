@@ -268,16 +268,19 @@ class Site:
         link, sub, icon = None, '', {'K': ICON_HAND, 'H': ICON_READ, 'R': ICON_READ, 'B': ICON_PENCIL}.get(k0, ICON_ACT)
         title, rest = self.split_title(self.clean_title(it))
         if self.deck_for(it['code']):
-            link, dtitle, sub = self.copy_deck(it['code'])
-            icon = ICON_DECK
-            if it['code'] not in self.cfg.get('titles', {}):
-                title = dtitle or title
-        if not sub:
-            sub = rest
+            link, dtitle, dsub = self.copy_deck(it['code'])
+            if k0 == 'K':  # a class activity keeps its own name and the hand icon, even when it comes as a deck
+                sub = 'דף עבודה לכיתה'
+            else:
+                icon, sub = ICON_DECK, dsub
+                if it['code'] not in self.cfg.get('titles', {}):
+                    title = dtitle or title
         elif it.get('link'):
             folder = 'files/' + it['code'].replace('.', '_')
             link = self.copy_file(it['link'], folder)
             icon = ICON_VIDEO if it['link'].lower().endswith('.mp4') else {'K': ICON_HAND, 'H': ICON_READ, 'R': ICON_READ, 'B': ICON_PENCIL}.get(k0, ICON_DOC)
+        if not sub:
+            sub = rest
         k = self.kind(it)
         if not sub:
             sub = {'K': 'דף עבודה לכיתה' if link else '', 'H': 'דף היסטוריה', 'B': 'תרגיל להגשה'}.get(k, '')
@@ -310,7 +313,7 @@ class Site:
         if extra.startswith(' · ') and not sub:
             subhtml = f'<span class="ms">{extra[3:]}</span>'
         target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
-        kk = f'<span class="mk">{esc(kicker)}</span>' if kicker else ''
+        kk = ''
         if link and not more:
             return f'<a class="mat" href="{link}"{target}>{ic}<span>{kk}<span class="mt">{title}</span>{subhtml}</span></a>'
         t = f'<a class="mt" href="{link}"{target}>{title}</a>' if link else f'<span class="mt">{title}</span>'
@@ -440,33 +443,41 @@ class Site:
             mins = re.match(r'(\d+)\s*דק', it.get('load') or '')
             return t + (f', {mins.group(1)} דקות' if mins else '') + '.'
         notes_html = ''.join(f'<p class="note">{esc(note_text(it))}</p>' for it in notes)
+        def given(items):
+            if not items:
+                return ''
+            head = 'מטלת קריאה' if items[0][1] == 'קריאה' else 'מטלת הגשה'
+            return f'<h3 class="msub">{head}</h3>' + ''.join(self.mat_row(it, k) for it, k in items)
+        gl = ''.join(given([x for x in given_lesson if x[1] == lab]) for lab in ('קריאה', 'מטלת הגשה'))
+        gp = ''.join(given([x for x in given_practice if x[1] == lab]) for lab in ('קריאה', 'מטלת הגשה'))
         cols = ''
         if lesson or notes or given_lesson:
             cols += (f'<section class="mcard" aria-label="שיעור"><div class="mh"><h2 class="fr">שיעור</h2><span>{day_dm(w["lecture"])}</span></div>'
-                     f'{notes_html}{"".join(self.mat_row(it) for it in lesson)}{"".join(self.mat_row(it, k) for it, k in given_lesson)}</section>')
+                     f'{notes_html}{"".join(self.mat_row(it) for it in lesson)}{gl}</section>')
         if practice:
             cols += (f'<section class="mcard" aria-label="תרגול"><div class="mh"><h2 class="fr">תרגול</h2><span>{day_dm(w.get("practice"))}</span></div>'
-                     f'{"".join(self.mat_row(it) for it in practice)}{"".join(self.mat_row(it, k) for it, k in given_practice)}</section>')
+                     f'{"".join(self.mat_row(it) for it in practice)}{gp}</section>')
         cols = f'<div class="cols">{cols}</div>' if cols else ''
         nxt = ''
         cards = []
         nl = self.next_lecture(w)
-        for it in reading:
-            link, rtitle, sub, icon, more = self.resolve(it)
-            pic = f'<span class="ic npic">{ICON_READ}</span>'
-            when = f'<span class="nd">עד {day_dm(nl).replace(" ", ", ", 1)}</span>' if nl else ''
-            note = 'השיעור הבא נפתח בשאלה עליו' if self.kind(it) == 'H' else sub
-            cards.append(self.np_card(link, pic, ICON_BOOK + 'קריאה', rtitle, note, when))
+        if reading:
+            links = []
+            for it in reading:
+                link, rtitle, _s, _i, _m = self.resolve(it)
+                links.append(f'<a class="mt" href="{link}" target="_blank" rel="noopener">{esc(rtitle)}</a>' if link else f'<span class="mt">{esc(rtitle)}</span>')
+            note = 'השיעור הבא נפתח בשאלה על הקריאה' if any(self.kind(it) == 'H' for it in reading) else ''
+            cards.append(self.task_card(ICON_READ, 'מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', links, note, nl))
         for it in hw:
             link, _t, sub, icon, more = self.resolve(it)
             title = self.clean_title(it)
             m = re.match(r'(תרגיל להגשה מספר \d+)\s*—\s*(.+)', title)
             t1, s1 = (m.group(1), m.group(2)) if m else (title, '')
-            when = f'<span class="nd">עד {day_dm(it.get("due")).replace(" ", ", ", 1)}</span>' if it.get('due') else ''
-            cards.append(self.np_card(link, f'<span class="ic npic">{ICON_PENCIL}</span>', ICON_HW + 'הגשה', t1, s1, when))
+            t = f'<a class="mt" href="{link}" target="_blank" rel="noopener">{esc(t1)}</a>' if link else f'<span class="mt">{esc(t1)}</span>'
+            cards.append(self.task_card(ICON_PENCIL, 'מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', [t], s1, it.get('due')))
         if cards:
-            nxt = (f'<section class="next" aria-label="המטלות הבאות"><h2 class="fr nexth">המטלות הבאות</h2>'
-                   f'<div class="ng" style="grid-template-columns: repeat({min(len(cards), 3)}, minmax(0, 1fr));">{"".join(cards)}</div></section>')
+            nxt = (f'<section class="next" aria-label="מטלות קרובות"><h2 class="fr nexth">מטלות קרובות</h2>'
+                   f'<div class="ng" style="grid-template-columns: repeat({min(len(cards), 2)}, minmax(0, 1fr));">{"".join(cards)}</div></section>')
         prev = [x for x in self.weeks if x['n'] < n and x['n'] in open_ns]
         later = [x for x in self.weeks if x['n'] > n]
         nav = ''
@@ -482,6 +493,14 @@ class Site:
             else:
                 nav += f'<span>שבוע {q["n"]} ייפתח ב-{dm(q["lecture"])}{CHEV_FWD}</span>'
         return f'<article class="week">{hero}{cols}{nxt}<nav class="nav" aria-label="מעבר בין שבועות">{nav}</nav></article>'
+
+    def task_card(self, icon, label, when, titles, note, due):
+        """An upcoming task: what, by when, and a large countdown ('עוד 5 ימים', filled in by the page's script)."""
+        x = d(due)
+        dl = (f'<span class="dl" data-due="{x.isoformat()}"><b>{x.day}.{x.month}</b><span></span></span>' if x else '')
+        note_html = f'<span class="ms">{esc(note)}</span>' if note else ''
+        return (f'<div class="np"><span class="ic npic">{icon}</span><span class="npt"><span class="nk">{label}'
+                f'{" · " + esc(when) if when else ""}</span>{"".join(titles)}{note_html}</span>{dl}</div>')
 
     def np_card(self, link, pic, label, title, sub, when):
         tag, attr = ('a', f' href="{link}" target="_blank" rel="noopener"') if link else ('div', '')
@@ -542,6 +561,15 @@ document.querySelectorAll('.menu').forEach(function(m){{
     var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null;
     if(Math.abs(dx)>40&&Math.abs(dx)>1.5*Math.abs(dy)){{ dx>0?show(i+1,1):show(i-1,-1); }} }},{{passive:true}});
   show(i);
+}});
+// Upcoming tasks: a large countdown to each deadline (computed in the reader's browser, so it is always current).
+document.querySelectorAll('.dl[data-due]').forEach(function(el){{
+  var p=el.dataset.due.split('-'), due=new Date(+p[0],+p[1]-1,+p[2]), t=new Date(); t.setHours(0,0,0,0);
+  var n=Math.round((due-t)/864e5), b=el.querySelector('b'), s=el.querySelector('span');
+  if(n<0){{ el.classList.add('past'); b.textContent='הסתיים'; s.textContent=''; }}
+  else if(n===0){{ b.textContent='היום'; s.textContent=''; el.classList.add('soon'); }}
+  else if(n===1){{ b.textContent='מחר'; s.textContent=''; el.classList.add('soon'); }}
+  else {{ s.textContent='עוד'; b.textContent=n+' ימים'; if(n<=3) el.classList.add('soon'); }}
 }});
 // TA sign-in: the password is the name of the full version's folder.
 document.querySelectorAll('.tlogf').forEach(function(f){{

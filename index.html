@@ -34,6 +34,15 @@ document.querySelectorAll('.menu').forEach(function(m){
     if(Math.abs(dx)>40&&Math.abs(dx)>1.5*Math.abs(dy)){ dx>0?show(i+1,1):show(i-1,-1); } },{passive:true});
   show(i);
 });
+// Upcoming tasks: a large countdown to each deadline (computed in the reader's browser, so it is always current).
+document.querySelectorAll('.dl[data-due]').forEach(function(el){
+  var p=el.dataset.due.split('-'), due=new Date(+p[0],+p[1]-1,+p[2]), t=new Date(); t.setHours(0,0,0,0);
+  var n=Math.round((due-t)/864e5), b=el.querySelector('b'), s=el.querySelector('span');
+  if(n<0){ el.classList.add('past'); b.textContent='הסתיים'; s.textContent=''; }
+  else if(n===0){ b.textContent='היום'; s.textContent=''; el.classList.add('soon'); }
+  else if(n===1){ b.textContent='מחר'; s.textContent=''; el.classList.add('soon'); }
+  else { s.textContent='עוד'; b.textContent=n+' ימים'; if(n<=3) el.classList.add('soon'); }
+});
 // TA sign-in: the password is the name of the full version's folder.
 document.querySelectorAll('.tlogf').forEach(function(f){
   f.addEventListener('submit',function(e){ e.preventDefault();

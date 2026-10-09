@@ -17,19 +17,19 @@
   ],
   "weeks": {
     "1": {
-      "image": "sketch-bernoulli.jpg",
+      "image": "cameo-bernoulli.svg",
       "caption": "Jacob Bernoulli, 1655–1705"
     },
     "2": {
-      "image": "sketch-laplace.jpg",
+      "image": "cameo-laplace.svg",
       "caption": "Pierre-Simon Laplace, 1749–1827"
     },
     "3": {
-      "image": "sketch-fisher.jpg",
+      "image": "cameo-fisher.svg",
       "caption": "Ronald A. Fisher, 1890–1962"
     },
     "4": {
-      "image": "sketch-gauss.jpg",
+      "image": "cameo-gauss.svg",
       "caption": "Carl Friedrich Gauss, 1777–1855"
     }
   },
