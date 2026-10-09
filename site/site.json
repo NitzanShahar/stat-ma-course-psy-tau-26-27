@@ -17,47 +17,20 @@
   ],
   "weeks": {
     "1": {
-      "image": "ars.jpg",
-      "caption": "Ars Conjectandi, 1713",
-      "medal": "portrait-bernoulli.svg"
+      "image": "sketch-bernoulli.jpg",
+      "caption": "Jacob Bernoulli, 1655–1705"
     },
     "2": {
-      "image": "bayes-ink.png",
-      "caption": "השולחן של Bayes, 1763",
-      "medal": "portrait-laplace.svg"
+      "image": "sketch-laplace.jpg",
+      "caption": "Pierre-Simon Laplace, 1749–1827"
     },
     "3": {
-      "medal": "portrait-fisher.svg"
+      "image": "sketch-fisher.jpg",
+      "caption": "Ronald A. Fisher, 1890–1962"
     },
     "4": {
-      "medal": "portrait-gauss.svg"
-    },
-    "5": {
-      "medal": "sym-w5.svg"
-    },
-    "6": {
-      "medal": "sym-w6.svg"
-    },
-    "7": {
-      "medal": "sym-w7.svg"
-    },
-    "8": {
-      "medal": "sym-w8.svg"
-    },
-    "9": {
-      "medal": "sym-w9.svg"
-    },
-    "10": {
-      "medal": "sym-w10.svg"
-    },
-    "11": {
-      "medal": "sym-w11.svg"
-    },
-    "12": {
-      "medal": "sym-w12.svg"
-    },
-    "13": {
-      "medal": "sym-w13.svg"
+      "image": "sketch-gauss.jpg",
+      "caption": "Carl Friedrich Gauss, 1777–1855"
     }
   },
   "thumbs": {

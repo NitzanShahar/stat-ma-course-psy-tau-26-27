@@ -43,14 +43,28 @@ UNIT_COLORS = {
 UNIT_SHORT = {'א': 'מהמודל המייצר אל הפרמטר', 'ב': 'פאקטוריאלי', 'ג': 'הסקה', 'ד': 'רציפים', 'ה': 'הרחבות'}
 DAYS = ['שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת', 'ראשון']  # date.weekday(): Monday = 0
 MONTHS = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר']
+NEVER_KINDS = {'M'}  # 'הודעת וואטסאפ לסטודנטים' — never on any version of the site
 TITLE_PREFIXES = ['התנסות בכיתה — ', 'התנסות — ', 'תרגול: ', 'היסטוריה: ']
 
 ICON_DECK = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M10 13.5v3M7 16.5h6"/></svg>'
 ICON_DOC = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 2.5h7l3.5 3.5v11.5H5z"/><path d="M12 2.5V6h3.5M7.5 10h5M7.5 13h5"/></svg>'
 ICON_ACT = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="2.5"/></svg>'
+ICON_HAND = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.2 10.5V4.6a1.2 1.2 0 0 1 2.4 0V9.5M9.6 9.5V3.4a1.2 1.2 0 0 1 2.4 0v6.1M12 9.6V4.4a1.2 1.2 0 0 1 2.4 0v6M14.4 10.4V7a1.2 1.2 0 0 1 2.4 0v5.2c0 3.3-2.4 5.6-5.5 5.6-2.1 0-3.6-.9-4.8-2.7l-2.6-4a1.2 1.2 0 0 1 2-1.4l1.3 1.8"/></svg>'
+ICON_READ = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M10 5.5C8.5 4.2 6.3 3.5 3 3.5v11c3.3 0 5.5.7 7 2 1.5-1.3 3.7-2 7-2v-11c-3.3 0-5.5.7-7 2z"/><path d="M10 5.5v11"/></svg>'
+ICON_PENCIL = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.6 3.4l3 3-9.2 9.2-3.9.9.9-3.9z"/><path d="M11.8 5.2l3 3"/></svg>'
 ICON_VIDEO = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="4" width="15" height="12" rx="2"/><path d="M8.5 7.5v5l4-2.5z"/></svg>'
 ICON_BOOK = '<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 5.5C8.5 4.2 6.3 3.5 3 3.5v11c3.3 0 5.5.7 7 2 1.5-1.3 3.7-2 7-2v-11c-3.3 0-5.5.7-7 2z"/><path d="M10 5.5v11"/></svg>'
 ICON_HW = '<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 2.5h7l3.5 3.5v11.5H5z"/><path d="M12 2.5V6h3.5M7.5 10h5M7.5 13h3"/></svg>'
+_UI = '<svg width="34" height="22" viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{}</svg>'
+UNIT_ICONS = {
+    'א': _UI.format('<path d="M17 11c-2.6-3.6-4.6-5.4-7-5.4a5.4 5.4 0 0 0 0 10.8c2.4 0 4.4-1.8 7-5.4s4.6-5.4 7-5.4a5.4 5.4 0 0 1 0 10.8c-2.4 0-4.4-1.8-7-5.4z"/>'),
+    'ב': _UI.format('<path d="M5 20h24"/><path d="M11 4v3M11 14v3M8.5 4h5M8.5 17h5"/><rect x="7.5" y="7" width="7" height="7" rx=".6"/><path d="M7.5 10.5h7"/>'
+                    '<path d="M23 2v2.5M23 10v3M20.5 2h5M20.5 13h5"/><rect x="19.5" y="4.5" width="7" height="5.5" rx=".6"/><path d="M19.5 7h7"/>'),
+    'ג': _UI.format('<circle cx="17" cy="4.5" r="2.6"/><circle cx="6.5" cy="17" r="2.6"/><circle cx="27.5" cy="17" r="2.6"/>'
+                    '<path d="M15.3 6.5l-6.4 7.6M18.7 6.5l6.4 7.6M9.4 17h14.6M21.9 15.3l2.1 1.7-2.1 1.7M7.6 11.6l1.3 2.5 2.6-1M24.9 11.3l.2 2.8-2.7.6"/>'),
+    'ד': _UI.format('<path d="M6 2v18h24"/><g fill="currentColor" stroke="none"><circle cx="10" cy="16" r="1.2"/><circle cx="13" cy="13.5" r="1.2"/><circle cx="15" cy="15" r="1.2"/><circle cx="17.5" cy="10.5" r="1.2"/><circle cx="20" cy="11.5" r="1.2"/><circle cx="22.5" cy="7.5" r="1.2"/><circle cx="25.5" cy="6" r="1.2"/><circle cx="27" cy="8.5" r="1.2"/></g>'),
+    'ה': _UI.format('<path d="M3 18.5C11 18.5 13 3.5 17 3.5S23 3.5 31 3.5" stroke="none"/><path d="M3 17.5c7.5 0 9.5-6.5 14-6.5s6.5-6.5 14-6.5"/><g fill="currentColor" stroke="none"><circle cx="5" cy="21" r="1"/><circle cx="8.5" cy="21" r="1"/><circle cx="12" cy="21" r="1"/><circle cx="22" cy="1.2" r="1"/><circle cx="25.5" cy="1.2" r="1"/><circle cx="29" cy="1.2" r="1"/></g>'),
+}
 CHEV_BACK = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg>'
 CHEV_FWD = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5l-5 5 5 5"/></svg>'
 
@@ -250,7 +264,8 @@ class Site:
 
     def resolve(self, it):
         """Main link, subtitle, icon and extra links for an item."""
-        link, sub, icon = None, '', ICON_ACT
+        k0 = self.kind(it)
+        link, sub, icon = None, '', {'K': ICON_HAND, 'H': ICON_READ, 'R': ICON_READ, 'B': ICON_PENCIL}.get(k0, ICON_ACT)
         title, rest = self.split_title(self.clean_title(it))
         if self.deck_for(it['code']):
             link, dtitle, sub = self.copy_deck(it['code'])
@@ -262,7 +277,7 @@ class Site:
         elif it.get('link'):
             folder = 'files/' + it['code'].replace('.', '_')
             link = self.copy_file(it['link'], folder)
-            icon = ICON_VIDEO if it['link'].lower().endswith('.mp4') else ICON_DOC
+            icon = ICON_VIDEO if it['link'].lower().endswith('.mp4') else {'K': ICON_HAND, 'H': ICON_READ, 'R': ICON_READ, 'B': ICON_PENCIL}.get(k0, ICON_DOC)
         k = self.kind(it)
         if not sub:
             sub = {'K': 'דף עבודה לכיתה' if link else '', 'H': 'דף היסטוריה', 'B': 'תרגיל להגשה'}.get(k, '')
@@ -277,9 +292,16 @@ class Site:
                     more.append((m['label'], h))
         return link, title, sub, icon, more
 
-    def mat_row(self, it):
+    def mat_row(self, it, kicker=None):
         link, title, sub, icon, more = self.resolve(it)
         title = esc(title)
+        if kicker:
+            sub = sub if self.kind(it) != 'B' else ''
+            if self.kind(it) == 'B':
+                m = re.match(r'(תרגיל להגשה מספר \d+)\s*—\s*(.+)', self.clean_title(it))
+                if m:
+                    title, sub = esc(m.group(1)), m.group(2)
+            icon = ICON_READ if self.kind(it) in ('H', 'R') else ICON_PENCIL
         thumb = self.cfg.get('thumbs', {}).get(it['code'])
         ic = (f'<span class="ic thumb"><img src="{self.p}assets/img/{href(thumb)}" alt=""></span>' if thumb
               else f'<span class="ic">{icon}</span>')
@@ -288,10 +310,11 @@ class Site:
         if extra.startswith(' · ') and not sub:
             subhtml = f'<span class="ms">{extra[3:]}</span>'
         target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
+        kk = f'<span class="mk">{esc(kicker)}</span>' if kicker else ''
         if link and not more:
-            return f'<a class="mat" href="{link}"{target}>{ic}<span><span class="mt">{title}</span>{subhtml}</span></a>'
+            return f'<a class="mat" href="{link}"{target}>{ic}<span>{kk}<span class="mt">{title}</span>{subhtml}</span></a>'
         t = f'<a class="mt" href="{link}"{target}>{title}</a>' if link else f'<span class="mt">{title}</span>'
-        return f'<div class="mat">{ic}<span>{t}{subhtml}</span></div>'
+        return f'<div class="mat">{ic}<span>{kk}{t}{subhtml}</span></div>'
 
     # ---------- weeks ----------
     def open_weeks(self):
@@ -303,6 +326,8 @@ class Site:
             if it['code'] not in self.published or it['code'] == 'TO.DO':
                 continue
             k = self.kind(it)
+            if k in NEVER_KINDS:
+                continue
             if k == 'Q':
                 notes.append(it)
             elif k in ('H', 'R'):
@@ -313,7 +338,10 @@ class Site:
                 practice.append(it)
             else:
                 lesson.append(it)
-        return lesson, practice, reading, hw, notes
+        # what is handed out in class / in the practice session also appears there, at the end
+        given_lesson = [(it, 'קריאה') for it in reading]
+        given_practice = [(it, 'מטלת הגשה') for it in hw]
+        return lesson, practice, reading, hw, notes, given_lesson, given_practice
 
     def next_lecture(self, w):
         later = [x for x in self.weeks if x['n'] > w['n']]
@@ -364,8 +392,7 @@ class Site:
             wks = []
             for w in uw:
                 n = w['n']
-                medal = self.cfg.get('weeks', {}).get(str(n), {}).get('medal')
-                face = f'<img src="{self.p}assets/img/{href(medal)}" alt="">' if medal else str(n)
+                face = str(n)
                 cls = ['wk']
                 if n in open_ns:
                     cls.append('cur' if n == cur_n else 'past')
@@ -379,7 +406,7 @@ class Site:
                     wks.append(f'<span class="wk" style="--u: {line};"><span class="c f">{n}</span><span class="wl">{dm(w["lecture"])}</span></span>')
             name = esc(u['name'].replace('יחידה ', ''))
             units.append(f'<div class="unit{" on" if on else ""}" data-i="{i}" style="--u: {line}; --ui: {ink};">'
-                         f'<span class="ul"><span class="un">יחידה </span>{name} · <span class="ush">{esc(UNIT_SHORT.get(u["id"], u["title"]))}</span><span class="ufull">{esc(u["title"])}</span></span>'
+                         f'<span class="ul"><span class="un">יחידה </span>{name} · <span class="ush">{esc(UNIT_SHORT.get(u["id"], u["title"]))}</span><span class="ufull">{esc(u["title"])}</span><span class="uic">{UNIT_ICONS.get(u["id"], "")}</span></span>'
                          f'<div class="wks">{"".join(wks)}</div></div>')
         exam = self.data['course'].get('exam')
         if exam:
@@ -397,12 +424,14 @@ class Site:
         u = self.units[w['unit']]
         img = ''
         if extra.get('image'):
-            cap = f'<figcaption>{esc(extra.get("caption", ""))}</figcaption>' if extra.get('caption') else ''
+            cap = '<figcaption>' + esc(extra.get('caption', '')).replace(', ', '<br>', 1) + '</figcaption>' if extra.get('caption') else ''
             img = f'<figure class="eng"><img src="{self.p}assets/img/{href(extra["image"])}" alt="{esc(extra.get("caption", ""))}">{cap}</figure>'
         hero = (f'<header class="hero{"" if img else " noimg"}"><div><p class="eyebrow">שבוע {n} · {span(w["lecture"], w.get("practice"))}</p>'
                 f'<h1 class="h1 fr">{esc(h1)}</h1>' + (f'<p class="fr sub">{esc(sub)}</p>' if sub else '') +
                 f'<p class="unitline">{esc(u["name"])} · {esc(u["title"])}</p></div>{img}</header>')
-        lesson, practice, reading, hw, notes = self.split(w)
+        lesson, practice, reading, hw, notes, given_lesson, given_practice = self.split(w)
+        if not practice and given_practice:
+            given_lesson, given_practice = given_lesson + given_practice, []
         def note_text(it):
             t = it['title']
             m = re.match(r'שאלת חובה ב-Moodle\s*—\s*(.+)', t)
@@ -412,20 +441,19 @@ class Site:
             return t + (f', {mins.group(1)} דקות' if mins else '') + '.'
         notes_html = ''.join(f'<p class="note">{esc(note_text(it))}</p>' for it in notes)
         cols = ''
-        if lesson or notes:
+        if lesson or notes or given_lesson:
             cols += (f'<section class="mcard" aria-label="שיעור"><div class="mh"><h2 class="fr">שיעור</h2><span>{day_dm(w["lecture"])}</span></div>'
-                     f'{notes_html}{"".join(self.mat_row(it) for it in lesson)}</section>')
+                     f'{notes_html}{"".join(self.mat_row(it) for it in lesson)}{"".join(self.mat_row(it, k) for it, k in given_lesson)}</section>')
         if practice:
             cols += (f'<section class="mcard" aria-label="תרגול"><div class="mh"><h2 class="fr">תרגול</h2><span>{day_dm(w.get("practice"))}</span></div>'
-                     f'{"".join(self.mat_row(it) for it in practice)}</section>')
+                     f'{"".join(self.mat_row(it) for it in practice)}{"".join(self.mat_row(it, k) for it, k in given_practice)}</section>')
         cols = f'<div class="cols">{cols}</div>' if cols else ''
         nxt = ''
         cards = []
-        medal = extra.get('medal')
         nl = self.next_lecture(w)
         for it in reading:
             link, rtitle, sub, icon, more = self.resolve(it)
-            pic = f'<img class="npimg" src="{self.p}assets/img/{href(medal)}" alt="">' if (medal and self.kind(it) == 'H') else f'<span class="ic npic">{ICON_DOC}</span>'
+            pic = f'<span class="ic npic">{ICON_READ}</span>'
             when = f'<span class="nd">עד {day_dm(nl).replace(" ", ", ", 1)}</span>' if nl else ''
             note = 'השיעור הבא נפתח בשאלה עליו' if self.kind(it) == 'H' else sub
             cards.append(self.np_card(link, pic, ICON_BOOK + 'קריאה', rtitle, note, when))
@@ -435,9 +463,9 @@ class Site:
             m = re.match(r'(תרגיל להגשה מספר \d+)\s*—\s*(.+)', title)
             t1, s1 = (m.group(1), m.group(2)) if m else (title, '')
             when = f'<span class="nd">עד {day_dm(it.get("due")).replace(" ", ", ", 1)}</span>' if it.get('due') else ''
-            cards.append(self.np_card(link, f'<span class="ic npic">{ICON_DOC}</span>', ICON_HW + 'הגשה', t1, s1, when))
+            cards.append(self.np_card(link, f'<span class="ic npic">{ICON_PENCIL}</span>', ICON_HW + 'הגשה', t1, s1, when))
         if cards:
-            nxt = (f'<section class="next" aria-label="לשבוע הבא"><h2 class="fr nexth">לשבוע הבא</h2>'
+            nxt = (f'<section class="next" aria-label="המטלות הבאות"><h2 class="fr nexth">המטלות הבאות</h2>'
                    f'<div class="ng" style="grid-template-columns: repeat({min(len(cards), 3)}, minmax(0, 1fr));">{"".join(cards)}</div></section>')
         prev = [x for x in self.weeks if x['n'] < n and x['n'] in open_ns]
         later = [x for x in self.weeks if x['n'] > n]
@@ -567,7 +595,8 @@ def main():
         pub = list(cfg.get('published', []))
         for w in data['weeks']:
             if w['n'] in a.publish_week:
-                pub += [it['code'] for it in w.get('items', []) if it.get('code') not in pub and it.get('code') != 'TO.DO']
+                pub += [it['code'] for it in w.get('items', []) if it.get('code') not in pub and it.get('code') != 'TO.DO'
+                        and not re.match(r'W\d+\.M\d+$', it.get('code', ''))]
         cfg['published'] = pub
         CONFIG.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print('published now:', ', '.join(pub))
@@ -578,7 +607,8 @@ def main():
         if p.is_file():
             files.copy(p, f'assets/img/{p.name}')
     staff_dir = cfg.get('staff_dir', 'mylab')
-    everything = {it['code'] for w in data['weeks'] if w.get('lecture') for it in w.get('items', []) if it.get('code') != 'TO.DO'}
+    everything = {it['code'] for w in data['weeks'] if w.get('lecture') for it in w.get('items', [])
+                  if it.get('code') != 'TO.DO' and not re.match(r'W\d+\.M\d+$', it.get('code', ''))}
     everything |= {g.get('code') for g in data.get('general', []) if g.get('code')}
     sites = [Site(slides, cfg, data, files, set(cfg.get('published', [])), today=today),
              Site(slides, cfg, data, files, everything, folder=staff_dir, staff=True, today=today)]

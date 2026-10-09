@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="he"><head>
-<script src="_libs/949b648774/clipboard/clipboard.min.js"></script>
-<script src="_libs/949b648774/quarto-html/tabby.min.js"></script>
-<script src="_libs/949b648774/quarto-html/popper.min.js"></script>
-<script src="_libs/949b648774/quarto-html/tippy.umd.min.js"></script>
-<link href="_libs/949b648774/quarto-html/tippy.css" rel="stylesheet">
-<link href="_libs/949b648774/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="_libs/949b648774/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="_libs/1cefbca170/clipboard/clipboard.min.js"></script>
+<script src="_libs/1cefbca170/quarto-html/tabby.min.js"></script>
+<script src="_libs/1cefbca170/quarto-html/popper.min.js"></script>
+<script src="_libs/1cefbca170/quarto-html/tippy.umd.min.js"></script>
+<link href="_libs/1cefbca170/quarto-html/tippy.css" rel="stylesheet">
+<link href="_libs/1cefbca170/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="_libs/1cefbca170/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>כד חתום</title>
+  <title>הערכת אחוז המים בכדור הארץ</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="_libs/949b648774/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="_libs/949b648774/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="_libs/1cefbca170/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="_libs/1cefbca170/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,11 +29,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="_libs/949b648774/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="_libs/949b648774/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="_libs/949b648774/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="_libs/949b648774/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="_libs/949b648774/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="_libs/1cefbca170/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="_libs/1cefbca170/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="_libs/1cefbca170/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="_libs/1cefbca170/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="_libs/1cefbca170/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -325,26 +325,22 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">כד חתום</h1>
+  <h1 class="title">הערכת אחוז המים בכדור הארץ</h1>
   <p class="subtitle">הדגמה לכל הכיתה</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
-<section id="כד-חתום" class="slide level2">
-<h2>כד חתום</h2>
-<div>
-<ul>
-<li class="fragment">בכד כדורים שחורים ולבנים. אי אפשר להציץ, ואי אפשר לספור כמה כדורים יש בו.</li>
-<li class="fragment">שולפים כדור אחד, רושמים את הצבע, מחזירים ומנערים.</li>
-<li class="fragment"><span class="math inline">\(p\)</span> = חלק הכדורים השחורים. בלי לדעת כמה כדורים יש, <span class="math inline">\(p\)</span> יכול להיות <strong>כל</strong> מספר בין 0 ל-1, לא רק חמישה עולמות.</li>
-</ul>
+<section id="blue-marble" class="slide level2 photo-slide" data-background-image="W1_K3 Blue Marble.jpg" data-background-size="contain" data-background-color="#000">
+<h2>Blue Marble</h2>
+<div class="photo-credit">
+<p>NASA · Apollo 17 · 7.12.1972</p>
 </div>
 </section>
-<section id="שליפה-מהכד" class="slide level2 demo-slide">
-<h2>שליפה מהכד</h2>
-<div class="urn-demo" id="urn">
+<section id="הטלת-כדור-הארץ" class="slide level2 demo-slide">
+<h2>הטלת כדור הארץ</h2>
+<div class="globe-demo" id="globe">
   <div class="gd-row">
-    <button type="button" class="gd-btn black" data-obs="W">שחור</button>
-    <button type="button" class="gd-btn white" data-obs="L">לבן</button>
+    <button type="button" class="gd-btn water" data-obs="W">ים</button>
+    <button type="button" class="gd-btn land" data-obs="L">יבשה</button>
     <div class="gd-obs" id="gd-obs"></div>
     <span class="gd-count" id="gd-count"></span>
     <button type="button" class="gd-btn ghost small" id="gd-undo">ביטול</button>
@@ -362,18 +358,20 @@
 
 <style>
 .reveal .demo-slide > h2 { display: none; }
-.urn-demo { font-size: 22px; display: flex; flex-direction: column; gap: 10px; margin-top: -20px; }
+.reveal .photo-slide > h2 { display: none; }
+.reveal .photo-credit { position: absolute; bottom: -10px; left: 0; font-size: 14px; color: rgba(255,255,255,.6); direction: ltr; }
+.globe-demo { font-size: 22px; display: flex; flex-direction: column; gap: 10px; margin-top: -20px; }
 .gd-row { display: flex; align-items: center; gap: 12px; min-height: 58px; }
 .gd-btn { font-family: inherit; font-size: 24px; padding: 8px 26px; border-radius: 8px; border: none; color: #fff; cursor: pointer; }
-.gd-btn.black { background: #222; }
-.gd-btn.white { background: #fff; color: #222; border: 2px solid #222; }
+.gd-btn.water { background: var(--water); }
+.gd-btn.land  { background: var(--land); }
 .gd-btn.curve { background: var(--curve); }
 .gd-btn.ghost { background: #fff; color: var(--ink-soft); border: 1px solid var(--rule); }
 .gd-btn.small { font-size: 17px; padding: 6px 14px; }
 .gd-btn:disabled { opacity: .35; cursor: default; }
 .gd-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .gd-obs { flex: 1; display: flex; flex-wrap: wrap; gap: 5px; direction: ltr; justify-content: flex-start; }
-.gd-obs span { width: 20px; height: 20px; border-radius: 50%; display: inline-block; box-sizing: border-box; border: 2px solid #222; }
+.gd-obs span { width: 20px; height: 20px; border-radius: 50%; display: inline-block; }
 .gd-count { color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .gd-calc { flex: 1; text-align: center; font-size: 26px; color: var(--ink); font-variant-numeric: tabular-nums; }
 .gd-calc .p { color: var(--curve); font-weight: 600; }
@@ -383,7 +381,7 @@
 
 <script>
 (function () {
-  // Likelihood of the observed sequence under black-ball proportion p: p^W (1-p)^L.
+  // Likelihood of the observed sequence under water proportion p: p^W (1-p)^L.
   var obs = [], computed = [], continuous = false;
   var GRID = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1];
   var X0 = 50, X1 = 985, Y0 = 350, Y1 = 12;
@@ -418,7 +416,7 @@
       el('line', { x1: sx(p), y1: Y0, x2: sx(p), y2: Y0 + 7, stroke: ink, 'stroke-width': 1.5 });
       el('text', { x: sx(p), y: Y0 + 30, 'text-anchor': 'middle', 'font-size': 20 }, String(p));
     });
-    el('text', { x: (X0 + X1) / 2, y: Y0 + 52, 'text-anchor': 'middle', 'font-size': 20 }, 'p = חלק הכדורים השחורים');
+    el('text', { x: (X0 + X1) / 2, y: Y0 + 52, 'text-anchor': 'middle', 'font-size': 20 }, 'p = אחוז המים');
     el('text', { x: 20, y: (Y0 + Y1) / 2, 'text-anchor': 'middle', 'font-size': 20, transform: 'rotate(-90 20 ' + (Y0 + Y1) / 2 + ')' }, 'נראות');
 
     if (continuous) {
@@ -436,9 +434,9 @@
 
   function update() {
     var c = counts();
-    $('gd-count').textContent = obs.length ? 'שחור ' + c.w + ' · לבן ' + c.l : '';
+    $('gd-count').textContent = obs.length ? 'ים ' + c.w + ' · יבשה ' + c.l : '';
     $('gd-obs').innerHTML = obs.map(function (o) {
-      return '<span style="background:' + (o === 'W' ? '#222' : '#fff') + '"></span>';
+      return '<span style="background:var(--' + (o === 'W' ? 'water' : 'land') + ')"></span>';
     }).join('');
     var next = GRID[computed.length];
     var step = $('gd-step');
@@ -457,7 +455,7 @@
   // New observations invalidate the computed points: the likelihood belongs to a fixed data set.
   function setObs(next) { obs = next; computed = []; continuous = false; $('gd-cont').textContent = 'רציף'; $('gd-calc').innerHTML = ''; draw(); }
 
-  document.querySelectorAll('#urn [data-obs]').forEach(function (b) {
+  document.querySelectorAll('#globe [data-obs]').forEach(function (b) {
     b.addEventListener('click', function () { setObs(obs.concat(b.dataset.obs)); });
   });
   $('gd-undo').addEventListener('click', function () { setObs(obs.slice(0, -1)); });
@@ -471,6 +469,17 @@
   draw();
 })();
 </script>
+</section>
+<section id="איך-מדווחים-על-הממצא-הזה" class="slide level2 question-slide">
+<h2>איך מדווחים על הממצא הזה?</h2>
+<div class="question-note">
+<p>שאלה לשיעור הבא</p>
+</div>
+<style>
+.reveal .question-slide { text-align: center; }
+.reveal .question-slide > h2 { border: none; margin-top: 200px; font-size: 1.6em; }
+.reveal .question-note { color: var(--ink-soft); font-size: .8em; margin-top: 30px; }
+</style>
 <div class="footer footer-default">
 
 </div>
@@ -479,19 +488,19 @@
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="_libs/949b648774/revealjs/dist/reveal.js"></script>
+  <script src="_libs/1cefbca170/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="_libs/949b648774/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="_libs/949b648774/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="_libs/949b648774/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="_libs/949b648774/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="_libs/949b648774/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="_libs/1cefbca170/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="_libs/1cefbca170/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="_libs/1cefbca170/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="_libs/1cefbca170/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="_libs/1cefbca170/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="_libs/949b648774/revealjs/plugin/notes/notes.js"></script>
-  <script src="_libs/949b648774/revealjs/plugin/search/search.js"></script>
-  <script src="_libs/949b648774/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="_libs/949b648774/revealjs/plugin/math/math.js"></script>
+  <script src="_libs/1cefbca170/revealjs/plugin/notes/notes.js"></script>
+  <script src="_libs/1cefbca170/revealjs/plugin/search/search.js"></script>
+  <script src="_libs/1cefbca170/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="_libs/1cefbca170/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -710,6 +719,31 @@
       }
       document.addEventListener('DOMContentLoaded', function () {
         if (Reveal.isReady()) apply(); else Reveal.on('ready', apply);
+      });
+    })();
+    </script>
+    <script>
+    // Unit color and practice mark: build.ps1 writes data-unit / data-practice on the title slide,
+    // and the whole deck takes them as classes on .reveal (rules in theme.scss, under .reveal.unit).
+    // A slide may override the unit with its own data-unit / data-practice; only G3 uses that, to show every unit.
+    (function () {
+      var title = document.getElementById('title-slide');
+      if (!title || !title.hasAttribute('data-unit')) return;
+      var baseUnit = title.getAttribute('data-unit');
+      var basePractice = title.hasAttribute('data-practice');
+      function apply(slide) {
+        var reveal = document.querySelector('.reveal');
+        if (!reveal) return;
+        var unit = (slide && slide.getAttribute('data-unit')) || baseUnit;
+        var practice = basePractice || !!(slide && slide.hasAttribute('data-practice'));
+        Array.prototype.slice.call(reveal.classList).forEach(function (c) { if (/^unit-/.test(c)) reveal.classList.remove(c); });
+        reveal.classList.add('unit', 'unit-' + unit);
+        reveal.classList.toggle('practice', practice);
+      }
+      apply(null);
+      document.addEventListener('DOMContentLoaded', function () {
+        Reveal.on('slidechanged', function (e) { apply(e.currentSlide); });
+        if (Reveal.isReady()) apply(Reveal.getCurrentSlide()); else Reveal.on('ready', function (e) { apply(e.currentSlide); });
       });
     })();
     </script>
