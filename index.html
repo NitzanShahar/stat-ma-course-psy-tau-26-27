@@ -61,6 +61,10 @@ document.querySelectorAll('.eng.egg').forEach(function(fig){
   document.addEventListener('click',function(){ bub.classList.remove('on'); fig.classList.remove('sneezing','yawning'); });
   fig.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
 });
+// Media buttons: tell the player which page to return to.
+document.querySelectorAll('a[href*="play.html?"]').forEach(function(a){
+  a.addEventListener('click',function(){ if(a.href.indexOf('&back=')<0) a.href+='&back='+encodeURIComponent(location.href); });
+});
 // TA sign-in: the password is the name of the full version's folder.
 document.querySelectorAll('.tlogf').forEach(function(f){
   f.addEventListener('submit',function(e){ e.preventDefault();

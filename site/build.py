@@ -197,9 +197,11 @@ PLAYER = """<!doctype html>
   el.setAttribute('controlsList','nodownload'); el.setAttribute('disablePictureInPicture','');
   el.addEventListener('contextmenu',function(e){e.preventDefault()});
   document.getElementById('m').appendChild(el);
-  var back=document.getElementById('back');
-  try{ if(document.referrer && new URL(document.referrer).origin===location.origin){ back.href=document.referrer;
-    back.addEventListener('click',function(e){ if(history.length>1){ e.preventDefault(); history.back(); } }); } }catch(e){}
+  var back=document.getElementById('back'), from=q.get('back')||document.referrer||'';
+  try{ var u=new URL(from,location.href);
+    if(u.origin===location.origin){ back.href=u.href;
+      if(/\\/mylab\\//.test(u.pathname)){ document.querySelector('.hdr .home').href='mylab/index.html'; }
+      back.addEventListener('click',function(e){ if(history.length>1&&document.referrer){ e.preventDefault(); history.back(); } }); } }catch(e){}
 })();
 </script>
 </body>
@@ -724,6 +726,10 @@ document.querySelectorAll('.eng.egg').forEach(function(fig){{
   fig.addEventListener('click',function(e){{ e.stopPropagation(); go(); }});
   document.addEventListener('click',function(){{ bub.classList.remove('on'); fig.classList.remove('sneezing','yawning'); }});
   fig.addEventListener('keydown',function(e){{ if(e.key==='Enter'||e.key===' '){{ e.preventDefault(); go(); }} }});
+}});
+// Media buttons: tell the player which page to return to.
+document.querySelectorAll('a[href*="play.html?"]').forEach(function(a){{
+  a.addEventListener('click',function(){{ if(a.href.indexOf('&back=')<0) a.href+='&back='+encodeURIComponent(location.href); }});
 }});
 // TA sign-in: the password is the name of the full version's folder.
 document.querySelectorAll('.tlogf').forEach(function(f){{

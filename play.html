@@ -28,9 +28,11 @@
   el.setAttribute('controlsList','nodownload'); el.setAttribute('disablePictureInPicture','');
   el.addEventListener('contextmenu',function(e){e.preventDefault()});
   document.getElementById('m').appendChild(el);
-  var back=document.getElementById('back');
-  try{ if(document.referrer && new URL(document.referrer).origin===location.origin){ back.href=document.referrer;
-    back.addEventListener('click',function(e){ if(history.length>1){ e.preventDefault(); history.back(); } }); } }catch(e){}
+  var back=document.getElementById('back'), from=q.get('back')||document.referrer||'';
+  try{ var u=new URL(from,location.href);
+    if(u.origin===location.origin){ back.href=u.href;
+      if(/\/mylab\//.test(u.pathname)){ document.querySelector('.hdr .home').href='mylab/index.html'; }
+      back.addEventListener('click',function(e){ if(history.length>1&&document.referrer){ e.preventDefault(); history.back(); } }); } }catch(e){}
 })();
 </script>
 </body>
