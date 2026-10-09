@@ -76,7 +76,7 @@ PILL_DOC = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="
 
 def pill_icon(h):
     h = h.lower()
-    return PILL_PLAY if h.endswith(('.mp4', '.webm', '.mov')) else PILL_AUDIO if h.endswith(('.mp3', '.m4a', '.wav', '.ogg')) else PILL_DOC
+    return PILL_PLAY if (h.endswith(('.mp4', '.webm', '.mov')) or 'youtu' in h or 'vimeo' in h) else PILL_AUDIO if h.endswith(('.mp3', '.m4a', '.wav', '.ogg')) else PILL_DOC
 
 
 def short_label(lbl):
@@ -309,7 +309,7 @@ class Site:
             lbl = m.get('label') or ''
             if m.get('href') and (lbl in public_more or lbl.split(':')[0].strip() in public_more):  # 'הקראה: ...' counts as 'הקראה'  # extra links are private unless their label is listed
                 folder = 'files/' + it['code'].replace('.', '_')
-                h = self.copy_file(m['href'], folder)
+                h = m['href'] if re.match(r'https?://', m['href']) else self.copy_file(m['href'], folder)
                 if h:
                     more.append((m['label'], h))
         return link, title, sub, icon, more
@@ -482,6 +482,9 @@ class Site:
             for it in reading:
                 link, rtitle, _s, _i, _m = self.resolve(it)
                 links.append(f'<a class="mt" href="{link}" target="_blank" rel="noopener">{esc(rtitle)}</a>' if link else f'<span class="mt">{esc(rtitle)}</span>')
+                pills = ''.join(f'<a class="pill" href="{h}" target="_blank" rel="noopener">{pill_icon(h)}{esc(short_label(lbl))}</a>' for lbl, h in _m)
+                if pills:
+                    links.append(f'<span class="tpills">{pills}</span>')
             note = 'השיעור הבא נפתח בשאלה על הקריאה' if any(self.kind(it) == 'H' for it in reading) else ''
             cards.append(self.task_card(ICON_READ, 'מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', links, note, nl))
         for it in hw:
