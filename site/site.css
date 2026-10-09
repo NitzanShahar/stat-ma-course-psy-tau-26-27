@@ -94,9 +94,9 @@ a.mlink:hover .mt,a.mt:hover{color:#b3541e}
 .dl b{font-family:'Frank Ruhl Libre',serif;font-size:26px;font-weight:700;line-height:1}
 .dl.soon,.dl.soon span{color:#b3541e}
 .tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
-.tl li{display:flex;gap:12px;align-items:flex-start}
+.tl li{display:flex;gap:12px;align-items:center}
 .tl .ic{width:36px;height:36px;border-radius:10px}
-.tli{display:flex;flex-direction:column;gap:6px;min-width:0;padding-top:5px}
+.tli{flex:1 1 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
 .tli .mt{font-size:18px}
 a.mt:hover{color:#b3541e}
 .tpills{display:flex;flex-wrap:wrap;gap:6px}
