@@ -90,7 +90,9 @@ def short_label(lbl):
 def pill(lbl, h):
     """A round icon-only media button (the label goes into the tooltip / screen reader)."""
     tone = ' purple' if 'סגול' in lbl else ' yellow' if 'צהוב' in lbl else ''
-    return f'<a class="pill{tone}" href="{h}" target="_blank" rel="noopener" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h)}</a>'
+    # same tab (students come back with "back"); external links (YouTube) still open in a new tab
+    tgt = ' target="_blank" rel="noopener"' if re.match(r'https?://', h) else ''
+    return f'<a class="pill{tone}" href="{h}"{tgt} title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h)}</a>'
 
 
 def br(s):
