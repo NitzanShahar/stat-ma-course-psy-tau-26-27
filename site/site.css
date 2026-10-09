@@ -68,7 +68,7 @@ a.wk:hover .c{transform:scale(1.05)}
 .mat:last-child{border-bottom:none}
 a.mlink:hover .mt,a.mt:hover{color:#b3541e}
 .mlink{display:flex;gap:14px;align-items:center;flex:1 1 auto;min-width:0;color:inherit}
-.pills{flex:none;display:flex;gap:8px;align-items:center}
+.pills{flex:none;display:flex;gap:8px;align-items:center;margin-inline-start:auto}
 .pill{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid #d5dcde;border-radius:50%;background:#ffffff;color:var(--u-ink)}
 .pill svg{width:16px;height:16px}
 .pill.purple{background:#efe6fb;border-color:#c9b3ec;color:#6a3fb0}
@@ -86,7 +86,7 @@ a.mlink:hover .mt,a.mt:hover{color:#b3541e}
 .tasks{margin-top:18px;padding:22px 44px 26px}
 .tasksh{margin:0 0 14px;font-size:24px;font-weight:700;color:#001a24}
 .ng{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr));gap:14px}
-.np{display:flex;flex-direction:column;gap:10px;padding:16px 20px 18px;border:1px solid #e3e8e9;border-radius:16px;background:#fcfcfb;color:#1c2a31}
+.np{display:flex;flex-direction:column;gap:12px;padding:16px 20px 18px;border:1px solid #e3e8e9;border-radius:16px;background:#fcfcfb;color:#1c2a31}
 .nph{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px solid #eef1f2}
 .nk{font-size:14px;font-weight:700;color:var(--u-ink);padding-top:4px}
 .dl{flex:none;display:flex;align-items:baseline;gap:6px;color:#001a24;white-space:nowrap}
@@ -99,8 +99,8 @@ a.mlink:hover .mt,a.mt:hover{color:#b3541e}
 .tli{flex:1 1 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
 .tli .mt{font-size:18px}
 a.mt:hover{color:#b3541e}
-.tpills{display:flex;flex-wrap:wrap;gap:6px}
-.tnote{margin:0;font-size:14px}
+.tpills{flex:none;display:flex;gap:8px;margin-inline-start:auto}
+.tnote{margin:auto 0 0;padding-top:10px;border-top:1px dashed #dde3e5;font-size:14px;color:#7a878d}
 
 /* week navigation */
 .nav{display:flex;justify-content:space-between;gap:12px;padding:12px 28px;border-top:1px solid #e9edee;background:#f5f7f7}

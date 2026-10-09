@@ -93,6 +93,11 @@ def pill(lbl, h):
     return f'<a class="pill{tone}" href="{h}" target="_blank" rel="noopener" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h)}</a>'
 
 
+def br(s):
+    """Escape, keeping intended line breaks (written as \\n in site.json titles)."""
+    return esc(s).replace('\n', '<br>')
+
+
 def esc(s):
     return html.escape(str(s or ''), quote=True)
 
@@ -366,7 +371,7 @@ class Site:
 
     def mat_row(self, it, kicker=None):
         link, title, sub, icon, more = self.resolve(it)
-        title = esc(title)
+        title = br(title)
         if kicker:
             sub = sub if self.kind(it) != 'B' else ''
             if self.kind(it) == 'B':
@@ -548,19 +553,21 @@ class Site:
         _l, _p, reading, hw, _n, _gl, _gp = self.split(w)
         nl = self.next_lecture(w)
         cards = []
-        def row(it, icon, title=None):
+        def row(it, icon, title=None, sub=''):
             link, rtitle, _s, _i, more = self.resolve(it)
-            t = esc(title or rtitle)
+            t = br(title or rtitle)
             t = f'<a class="mt" href="{link}" target="_blank" rel="noopener">{t}</a>' if link else f'<span class="mt">{t}</span>'
+            if sub:
+                t = f'<span>{t}<span class="ms">{esc(sub)}</span></span>'
             pills = ''.join(pill(lbl, h) for lbl, h in more)
             return f'<li><span class="ic">{icon}</span><span class="tli">{t}' + (f'<span class="tpills">{pills}</span>' if pills else '') + '</span></li>'
         if reading:
-            note = 'השיעור הבא נפתח בשאלה על הקריאה' if any(self.kind(it) == 'H' for it in reading) else ''
+            note = self.cfg.get('task_notes', {}).get('reading', 'הגשה: השלמת שאלת Moodle בתחילת השיעור')
             cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', [row(it, ICON_READ) for it in reading], note, nl))
         for it in hw:
             m = re.match(r'(תרגיל להגשה מספר \d+)\s*—\s*(.+)', self.clean_title(it))
             t1, s1 = (m.group(1), m.group(2)) if m else (self.clean_title(it), '')
-            cards.append(self.task_card('מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', [row(it, ICON_PENCIL, t1)], s1, it.get('due')))
+            cards.append(self.task_card('מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', [row(it, ICON_PENCIL, t1, s1)], self.cfg.get('task_notes', {}).get('hw', 'הגשה באמצעות העלאת קובץ ל-Moodle'), it.get('due')))
         if not cards:
             return ''
         return (f'<section class="tasks card" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
