@@ -1,2 +1,5 @@
 _preview/
 __pycache__/
+
+# GitHub token for pushing (never commit)
+.github-token
