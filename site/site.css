@@ -66,7 +66,11 @@ a.wk:hover .c{transform:scale(1.05)}
 .note{margin:14px 0 2px;font-size:15px;color:#56656d}
 .mat{display:flex;gap:14px;align-items:center;min-height:60px;padding:8px 0;border-bottom:1px solid #eef1f2}
 .mat:last-child{border-bottom:none}
-a.mat:hover .mt,a.mt:hover{color:#b3541e}
+a.mlink:hover .mt,a.mt:hover{color:#b3541e}
+.mlink{display:flex;gap:14px;align-items:center;flex:1 1 auto;min-width:0;color:inherit}
+.pills{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border:1px solid #d5dcde;border-radius:999px;background:#ffffff;color:var(--u-ink);font-size:13.5px;font-weight:600;white-space:nowrap}
+.pill:hover{border-color:var(--u-ink);color:var(--u-ink)}
 .ic{flex:none;width:42px;height:42px;border-radius:12px;background:var(--u-tint);display:flex;align-items:center;justify-content:center;color:var(--u-ink);overflow:hidden}
 .ic.thumb{background:#000000}
 .ic img{width:100%;height:100%;object-fit:cover}
@@ -160,6 +164,7 @@ a.np:hover .mt{color:#b3541e}
   .mcard+.mcard{border-inline-start:none;border-top:1px solid #e9edee}
   .mh h2{font-size:26px}
   .mt{font-size:18.5px}
+  .pill{min-height:40px;padding:0 10px;font-size:13px}
   .next{padding:18px 18px 20px}
   .nexth{font-size:21px}
   .ng{grid-template-columns:1fr !important}

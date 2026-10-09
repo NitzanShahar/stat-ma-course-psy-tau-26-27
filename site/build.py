@@ -69,6 +69,22 @@ CHEV_BACK = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke=
 CHEV_FWD = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5l-5 5 5 5"/></svg>'
 
 
+PILL_PLAY = '<svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4l10 6-10 6z"/></svg>'
+PILL_AUDIO = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3.5 12V10a6.5 6.5 0 0 1 13 0v2"/><rect x="3" y="11.5" width="3.5" height="5" rx="1"/><rect x="13.5" y="11.5" width="3.5" height="5" rx="1"/></svg>'
+PILL_DOC = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 2.5h7l3.5 3.5v11.5H5z"/></svg>'
+
+
+def pill_icon(h):
+    h = h.lower()
+    return PILL_PLAY if h.endswith(('.mp4', '.webm', '.mov')) else PILL_AUDIO if h.endswith(('.mp3', '.m4a', '.wav', '.ogg')) else PILL_DOC
+
+
+def short_label(lbl):
+    """'הקראה: הקטעים הסגולים' -> 'הקטעים הסגולים' (the headphones icon already says it is audio)."""
+    m = re.match(r'הקראה:\s*(.+)', lbl)
+    return m.group(1) if m else lbl
+
+
 def esc(s):
     return html.escape(str(s or ''), quote=True)
 
@@ -267,10 +283,12 @@ class Site:
         k0 = self.kind(it)
         link, sub, icon = None, '', {'K': ICON_HAND, 'H': ICON_READ, 'R': ICON_READ, 'B': ICON_PENCIL}.get(k0, ICON_ACT)
         title, rest = self.split_title(self.clean_title(it))
+        if k0 == 'K' and title.startswith('דף עבודה') and rest:  # 'דף עבודה: שליפת כדורים' -> the activity's name first
+            title, rest = rest, 'דף עבודה לכיתה'
         if self.deck_for(it['code']):
             link, dtitle, dsub = self.copy_deck(it['code'])
             if k0 == 'K':  # a class activity keeps its own name and the hand icon, even when it comes as a deck
-                sub = 'דף עבודה לכיתה'
+                sub = rest or 'דף עבודה לכיתה'
             else:
                 icon, sub = ICON_DECK, dsub
                 if it['code'] not in self.cfg.get('titles', {}):
@@ -288,7 +306,8 @@ class Site:
         more = []
         public_more = set(self.cfg.get('more_public', []))
         for m in it.get('more', []):
-            if m.get('href') and m.get('label') in public_more:  # extra links are private unless their label is listed
+            lbl = m.get('label') or ''
+            if m.get('href') and (lbl in public_more or lbl.split(':')[0].strip() in public_more):  # 'הקראה: ...' counts as 'הקראה'  # extra links are private unless their label is listed
                 folder = 'files/' + it['code'].replace('.', '_')
                 h = self.copy_file(m['href'], folder)
                 if h:
@@ -308,16 +327,13 @@ class Site:
         thumb = self.cfg.get('thumbs', {}).get(it['code'])
         ic = (f'<span class="ic thumb"><img src="{self.p}assets/img/{href(thumb)}" alt=""></span>' if thumb
               else f'<span class="ic">{icon}</span>')
-        extra = ''.join(f' · <a class="ln" href="{h}" target="_blank" rel="noopener">{esc(lbl)}</a>' for lbl, h in more)
-        subhtml = f'<span class="ms">{esc(sub)}{extra}</span>' if (sub or extra) else ''
-        if extra.startswith(' · ') and not sub:
-            subhtml = f'<span class="ms">{extra[3:]}</span>'
+        # extra media (explainer video, read-aloud audio, ...) as small buttons at the row's far (left) end
+        pills = ''.join(f'<a class="pill" href="{h}" target="_blank" rel="noopener">{pill_icon(h)}{esc(short_label(lbl))}</a>' for lbl, h in more)
+        subhtml = f'<span class="ms">{esc(sub)}</span>' if sub else ''
         target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
-        kk = ''
-        if link and not more:
-            return f'<a class="mat" href="{link}"{target}>{ic}<span>{kk}<span class="mt">{title}</span>{subhtml}</span></a>'
-        t = f'<a class="mt" href="{link}"{target}>{title}</a>' if link else f'<span class="mt">{title}</span>'
-        return f'<div class="mat">{ic}<span>{kk}{t}{subhtml}</span></div>'
+        body = f'<span class="mt">{title}</span>{subhtml}'
+        main = f'<a class="mlink" href="{link}"{target}>{ic}<span>{body}</span></a>' if link else f'<span class="mlink">{ic}<span>{body}</span></span>'
+        return f'<div class="mat">{main}' + (f'<span class="pills">{pills}</span>' if pills else '') + '</div>'
 
     # ---------- weeks ----------
     def open_weeks(self):
