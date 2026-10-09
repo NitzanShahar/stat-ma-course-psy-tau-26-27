@@ -33,7 +33,10 @@
           "אני כל כך שונא את יוהאן!!",
           "<i>Eadem mutata resurgo</i><small>על המצבה שלי: „אף שהשתניתי, אקום שוב אותו אחד״</small>"
         ],
-        "overlay": "sneeze-bernoulli.svg"
+        "frames": [
+          "sneeze-bernoulli-a.webp",
+          "sneeze-bernoulli-b.webp"
+        ]
       }
     },
     "2": {
