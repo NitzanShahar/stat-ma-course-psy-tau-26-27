@@ -37,7 +37,8 @@
           "sneeze-bernoulli-a.webp",
           "sneeze-bernoulli-b.webp"
         ]
-      }
+      },
+      "sub": "Conjectures"
     },
     "2": {
       "image": "cameo-laplace.svg",

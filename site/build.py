@@ -546,6 +546,7 @@ class Site:
         extra = self.cfg.get('weeks', {}).get(str(n), {})
         parts = [p.strip() for p in w['topic'].split('·')]
         h1, sub = parts[0], ' · '.join(parts[1:])
+        sub = extra.get('sub', sub)  # the line under the week's title can be set in site.json
         u = self.units[w['unit']]
         img = ''
         if extra.get('image'):
