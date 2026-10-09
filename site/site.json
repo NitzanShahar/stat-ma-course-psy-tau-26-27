@@ -36,7 +36,11 @@
     }
   },
   "thumbs": {},
-  "titles": {},
-  "subtitles": {},
+  "titles": {
+    "W1.H2": "Ars Conjectandi, חלק ד (סימון סגול וצהוב)"
+  },
+  "subtitles": {
+    "W1.H2": "קטעים מהספר"
+  },
   "staff_dir": "mylab"
 }

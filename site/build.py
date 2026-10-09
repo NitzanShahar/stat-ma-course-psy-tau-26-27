@@ -23,6 +23,8 @@ import json
 import os
 import re
 import shutil
+import subprocess
+import tempfile
 import sys
 from pathlib import Path
 from urllib.parse import quote, unquote
@@ -85,6 +87,12 @@ def short_label(lbl):
     return m.group(1) if m else lbl
 
 
+def pill(lbl, h):
+    """A round icon-only media button (the label goes into the tooltip / screen reader)."""
+    tone = ' purple' if 'סגול' in lbl else ' yellow' if 'צהוב' in lbl else ''
+    return f'<a class="pill{tone}" href="{h}" target="_blank" rel="noopener" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h)}</a>'
+
+
 def esc(s):
     return html.escape(str(s or ''), quote=True)
 
@@ -118,6 +126,33 @@ def href(path):
     return quote(path.replace(os.sep, '/'))
 
 
+SQUEEZE = ('.mp4', '.mov', '.webm', '.mp3', '.m4a', '.wav', '.pdf')
+
+
+def squeeze(src, tmpdir):
+    """Make a smaller copy of a video, audio or PDF file for the site, without visible/audible loss for this use
+    (screen recordings and speech). Returns the new file, or None to keep the original."""
+    ext = src.suffix.lower()
+    out = Path(tmpdir) / ('out' + ('.mp4' if ext in ('.mp4', '.mov', '.webm') else ext))
+    if ext in ('.mp4', '.mov', '.webm'):
+        cmd = ['ffmpeg', '-y', '-v', 'error', '-i', str(src), '-vf', "scale='min(1280,iw)':-2", '-c:v', 'libx264', '-preset', 'medium',
+               '-crf', '27', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '96k', '-movflags', '+faststart', str(out)]
+    elif ext in ('.mp3', '.m4a', '.wav'):
+        out = out.with_suffix('.mp3') if ext == '.wav' else out
+        cmd = ['ffmpeg', '-y', '-v', 'error', '-i', str(src), '-vn', '-ac', '1', '-c:a', 'libmp3lame', '-b:a', '64k', str(out)] if ext != '.m4a' else \
+              ['ffmpeg', '-y', '-v', 'error', '-i', str(src), '-vn', '-ac', '1', '-c:a', 'aac', '-b:a', '64k', str(out)]
+    elif ext == '.pdf':
+        cmd = ['gs', '-q', '-sDEVICE=pdfwrite', '-dCompatibilityLevel=1.5', '-dPDFSETTINGS=/ebook', '-dNOPAUSE', '-dBATCH',
+               '-dColorImageResolution=200', '-dGrayImageResolution=200', '-dMonoImageResolution=400', f'-sOutputFile={out}', str(src)]
+    else:
+        return None
+    try:
+        subprocess.run(cmd, check=True, timeout=600, capture_output=True)
+    except Exception:
+        return None
+    return out if out.exists() and out.stat().st_size < 0.85 * src.stat().st_size else None
+
+
 class Files:
     """Copies what the pages need into the repo, only when changed, and removes what is no longer needed."""
     def __init__(self, repo):
@@ -125,6 +160,7 @@ class Files:
         self.need = set()
         self.changed = 0
         self.libs = {}
+        self.squeezed = []
 
     def _mark(self, rel):
         if rel in self.need:
@@ -135,6 +171,20 @@ class Files:
     def copy(self, src, rel):
         dest = self._mark(rel)
         if dest is None:
+            return
+        if src.suffix.lower() in SQUEEZE:
+            # media and PDFs go up compressed; the copy carries the source's time, so it is redone only when the source changes
+            if dest.exists() and abs(dest.stat().st_mtime - src.stat().st_mtime) < 2:
+                return
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.TemporaryDirectory() as tmp:
+                small = squeeze(src, tmp)
+                shutil.copyfile(small or src, dest)
+            t = src.stat().st_mtime
+            os.utime(dest, (t, t))
+            self.changed += 1
+            if dest.stat().st_size < src.stat().st_size:
+                self.squeezed.append((rel, src.stat().st_size, dest.stat().st_size))
             return
         if dest.exists():
             a, b = src.stat(), dest.stat()
@@ -328,7 +378,7 @@ class Site:
         ic = (f'<span class="ic thumb"><img src="{self.p}assets/img/{href(thumb)}" alt=""></span>' if thumb
               else f'<span class="ic">{icon}</span>')
         # extra media (explainer video, read-aloud audio, ...) as small buttons at the row's far (left) end
-        pills = ''.join(f'<a class="pill" href="{h}" target="_blank" rel="noopener">{pill_icon(h)}{esc(short_label(lbl))}</a>' for lbl, h in more)
+        pills = ''.join(pill(lbl, h) for lbl, h in more)
         subhtml = f'<span class="ms">{esc(sub)}</span>' if sub else ''
         target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
         body = f'<span class="mt">{title}</span>{subhtml}'
@@ -475,28 +525,6 @@ class Site:
                      f'{"".join(self.mat_row(it) for it in practice)}{gp}</section>')
         cols = f'<div class="cols">{cols}</div>' if cols else ''
         nxt = ''
-        cards = []
-        nl = self.next_lecture(w)
-        if reading:
-            links = []
-            for it in reading:
-                link, rtitle, _s, _i, _m = self.resolve(it)
-                links.append(f'<a class="mt" href="{link}" target="_blank" rel="noopener">{esc(rtitle)}</a>' if link else f'<span class="mt">{esc(rtitle)}</span>')
-                pills = ''.join(f'<a class="pill" href="{h}" target="_blank" rel="noopener">{pill_icon(h)}{esc(short_label(lbl))}</a>' for lbl, h in _m)
-                if pills:
-                    links.append(f'<span class="tpills">{pills}</span>')
-            note = 'השיעור הבא נפתח בשאלה על הקריאה' if any(self.kind(it) == 'H' for it in reading) else ''
-            cards.append(self.task_card(ICON_READ, 'מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', links, note, nl))
-        for it in hw:
-            link, _t, sub, icon, more = self.resolve(it)
-            title = self.clean_title(it)
-            m = re.match(r'(תרגיל להגשה מספר \d+)\s*—\s*(.+)', title)
-            t1, s1 = (m.group(1), m.group(2)) if m else (title, '')
-            t = f'<a class="mt" href="{link}" target="_blank" rel="noopener">{esc(t1)}</a>' if link else f'<span class="mt">{esc(t1)}</span>'
-            cards.append(self.task_card(ICON_PENCIL, 'מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', [t], s1, it.get('due')))
-        if cards:
-            nxt = (f'<section class="next" aria-label="מטלות קרובות"><h2 class="fr nexth">מטלות קרובות</h2>'
-                   f'<div class="ng" style="grid-template-columns: repeat({min(len(cards), 2)}, minmax(0, 1fr));">{"".join(cards)}</div></section>')
         prev = [x for x in self.weeks if x['n'] < n and x['n'] in open_ns]
         later = [x for x in self.weeks if x['n'] > n]
         nav = ''
@@ -513,13 +541,38 @@ class Site:
                 nav += f'<span>שבוע {q["n"]} ייפתח ב-{dm(q["lecture"])}{CHEV_FWD}</span>'
         return f'<article class="week">{hero}{cols}{nxt}<nav class="nav" aria-label="מעבר בין שבועות">{nav}</nav></article>'
 
-    def task_card(self, icon, label, when, titles, note, due):
-        """An upcoming task: what, by when, and a large countdown ('עוד 5 ימים', filled in by the page's script)."""
+    def tasks(self, w):
+        """'מטלות קרובות': what is due next, taken from the current week — the same on every page, outside the week sheet."""
+        if not w:
+            return ''
+        _l, _p, reading, hw, _n, _gl, _gp = self.split(w)
+        nl = self.next_lecture(w)
+        cards = []
+        def row(it, icon, title=None):
+            link, rtitle, _s, _i, more = self.resolve(it)
+            t = esc(title or rtitle)
+            t = f'<a class="mt" href="{link}" target="_blank" rel="noopener">{t}</a>' if link else f'<span class="mt">{t}</span>'
+            pills = ''.join(pill(lbl, h) for lbl, h in more)
+            return f'<li><span class="ic">{icon}</span><span class="tli">{t}' + (f'<span class="tpills">{pills}</span>' if pills else '') + '</span></li>'
+        if reading:
+            note = 'השיעור הבא נפתח בשאלה על הקריאה' if any(self.kind(it) == 'H' for it in reading) else ''
+            cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', [row(it, ICON_READ) for it in reading], note, nl))
+        for it in hw:
+            m = re.match(r'(תרגיל להגשה מספר \d+)\s*—\s*(.+)', self.clean_title(it))
+            t1, s1 = (m.group(1), m.group(2)) if m else (self.clean_title(it), '')
+            cards.append(self.task_card('מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', [row(it, ICON_PENCIL, t1)], s1, it.get('due')))
+        if not cards:
+            return ''
+        return (f'<section class="tasks card" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
+                f'<div class="ng">{"".join(cards)}</div></section>')
+
+    def task_card(self, label, when, rows, note, due):
+        """One upcoming task: label and date, a large countdown (filled in by the page's script), the items."""
         x = d(due)
-        dl = (f'<span class="dl" data-due="{x.isoformat()}"><b>{x.day}.{x.month}</b><span></span></span>' if x else '')
-        note_html = f'<span class="ms">{esc(note)}</span>' if note else ''
-        return (f'<div class="np"><span class="ic npic">{icon}</span><span class="npt"><span class="nk">{label}'
-                f'{" · " + esc(when) if when else ""}</span>{"".join(titles)}{note_html}</span>{dl}</div>')
+        dl = f'<span class="dl" data-due="{x.isoformat()}"><span></span><b>{x.day}.{x.month}</b></span>' if x else ''
+        note_html = f'<p class="ms tnote">{esc(note)}</p>' if note else ''
+        return (f'<div class="np"><div class="nph"><span class="nk">{esc(label)}{" · " + esc(when) if when else ""}</span>{dl}</div>'
+                f'<ul class="tl">{"".join(rows)}</ul>{note_html}</div>')
 
     def np_card(self, link, pic, label, title, sub, when):
         tag, attr = ('a', f' href="{link}" target="_blank" rel="noopener"') if link else ('div', '')
@@ -534,7 +587,7 @@ class Site:
                 f'<p class="fr sub">השיעור הראשון: {day_dm(c["firstLecture"])}, {esc(c["lecture"].split(",")[-1].strip())}</p>'
                 f'<p class="unitline">חומרי הקורס יופיעו כאן שבוע אחרי שבוע.</p></div></header></article>')
 
-    def page(self, title, unit, body):
+    def page(self, title, unit, body, tasks=''):
         ink, line, tint = UNIT_COLORS.get(unit, UNIT_COLORS['0'])
         c = self.data['course']
         robots = '<meta name="robots" content="noindex, nofollow">\n' if self.staff else ''
@@ -562,6 +615,7 @@ class Site:
 <div class="sheet card">
 {body}
 </div>
+{tasks}
 <footer class="foot"><img src="{self.p}assets/img/tau-logo.png" alt="" class="flogo"><span>{esc(c["title"])} · {esc(c["year"])}</span><span>{lic}</span>{gate}</footer>
 </div>
 <script>
@@ -585,11 +639,12 @@ document.querySelectorAll('.menu').forEach(function(m){{
 document.querySelectorAll('.dl[data-due]').forEach(function(el){{
   var p=el.dataset.due.split('-'), due=new Date(+p[0],+p[1]-1,+p[2]), t=new Date(); t.setHours(0,0,0,0);
   var n=Math.round((due-t)/864e5), b=el.querySelector('b'), s=el.querySelector('span');
-  if(n<0){{ el.classList.add('past'); b.textContent='הסתיים'; s.textContent=''; }}
+  if(n<0){{ var c=el.closest('.np'); if(c) c.hidden=true; return; }}
   else if(n===0){{ b.textContent='היום'; s.textContent=''; el.classList.add('soon'); }}
   else if(n===1){{ b.textContent='מחר'; s.textContent=''; el.classList.add('soon'); }}
   else {{ s.textContent='עוד'; b.textContent=n+' ימים'; if(n<=3) el.classList.add('soon'); }}
 }});
+document.querySelectorAll('.tasks').forEach(function(t){{ if(!t.querySelector('.np:not([hidden])')) t.hidden=true; }});
 // TA sign-in: the password is the name of the full version's folder.
 document.querySelectorAll('.tlogf').forEach(function(f){{
   f.addEventListener('submit',function(e){{ e.preventDefault();
@@ -613,9 +668,10 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
         soon = [w['n'] for w in opened if d(w['lecture']) <= self.today + dt.timedelta(days=6)]
         cur = soon[-1] if soon else (open_ns[0] if open_ns else None)
         course = self.data['course']['title']
+        tasks = self.tasks(next((x for x in opened if x['n'] == cur), None))
         for w in opened:
             body = self.menu(w['n'], cur, open_ns) + self.week_article(w, open_ns)
-            self.files.write(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body), f'{pre}week-{w["n"]}.html')
+            self.files.write(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body, tasks), f'{pre}week-{w["n"]}.html')
         if cur:
             w = next(x for x in opened if x['n'] == cur)
             body = self.menu(cur, cur, open_ns) + self.week_article(w, open_ns)
@@ -623,7 +679,7 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
         else:
             body = self.menu(None, None, []) + self.welcome()
             unit = '0'
-        self.files.write(self.page(course, unit, body), f'{pre}index.html')
+        self.files.write(self.page(course, unit, body, tasks), f'{pre}index.html')
         print(f'{"full" if self.staff else "public"}: {len(opened)} week page(s) in /{self.folder}; current week: {cur}')
 
 
@@ -663,6 +719,8 @@ def main():
         s.build()
     removed = files.prune(['assets', 'decks', 'files', staff_dir], ['week-*.html'])
     print(f'files written or updated: {files.changed}; removed: {removed}')
+    for rel, a_, b_ in files.squeezed:
+        print(f'compressed: {rel}  {a_ / 1e6:.1f}MB -> {b_ / 1e6:.1f}MB')
     for x in sorted({w for s in sites for w in s.warnings}):
         print('warning:', x)
 
