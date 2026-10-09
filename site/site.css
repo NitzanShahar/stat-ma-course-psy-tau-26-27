@@ -178,3 +178,20 @@ a.mt:hover{color:#b3541e}
   .nav i{display:none}
   .foot{justify-content:center;text-align:center;padding:28px 0 40px}
 }
+
+/* the portrait toy (week 1: Bernoulli sneezes with probability p) */
+.eng{position:relative}
+.eng.egg{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.eng.egg img{transform-origin:50% 85%}
+.tissue{position:absolute;width:34%;top:30%;left:33%;opacity:0;pointer-events:none}
+.sneezing img{animation:sneeze .9s ease-out}
+.sneezing .tissue{animation:tissue 1.6s ease-out}
+.yawning img{animation:yawn 1.6s ease-in-out}
+@keyframes sneeze{0%{transform:none}22%{transform:rotate(-4deg) scale(1.03) translateY(-3px)}34%{transform:rotate(5deg) scale(.97) translateY(4px)}46%{transform:rotate(-2deg)}62%{transform:rotate(1.5deg)}100%{transform:none}}
+@keyframes tissue{0%{opacity:0;transform:translateY(8px) scale(.6)}20%{opacity:1;transform:none}70%{opacity:1}100%{opacity:0;transform:translateY(-6px)}}
+@keyframes yawn{0%{transform:none}40%{transform:rotate(-3deg) scaleY(1.04)}70%{transform:rotate(-2deg) scaleY(1.02)}100%{transform:none}}
+.bubble{position:absolute;z-index:4;top:calc(100% + 10px);inset-inline-end:0;width:min(260px,72vw);padding:12px 14px;background:#ffffff;border:1px solid #d5dcde;border-radius:14px;box-shadow:0 8px 24px rgba(0,26,36,.12);font-family:'Frank Ruhl Libre',serif;font-size:16px;line-height:1.4;color:#001a24;text-align:start;opacity:0;transform:translateY(-4px);transition:opacity .25s,transform .25s;pointer-events:none}
+.bubble.on{opacity:1;transform:none}
+.bubble::before{content:"";position:absolute;top:-7px;inset-inline-end:28px;width:12px;height:12px;background:#ffffff;border-top:1px solid #d5dcde;border-inline-start:1px solid #d5dcde;transform:rotate(45deg)}
+.bubble small{display:block;margin-top:6px;font-family:'Assistant',sans-serif;font-size:12.5px;color:#56656d}
+@media (prefers-reduced-motion:reduce){.sneezing img,.yawning img,.sneezing .tissue{animation:none}}

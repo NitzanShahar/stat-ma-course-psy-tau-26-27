@@ -45,6 +45,21 @@ document.querySelectorAll('.dl[data-due]').forEach(function(el){
   else { s.textContent='עוד'; b.textContent=n+' ימים'; if(n<=3) el.classList.add('soon'); }
 });
 document.querySelectorAll('.tasks').forEach(function(t){ if(!t.querySelector('.np:not([hidden])')) t.hidden=true; });
+// A hidden toy: click the portrait. With probability p he sneezes (a Bernoulli trial, of course); otherwise he yawns and says something.
+document.querySelectorAll('.eng.egg').forEach(function(fig){
+  var cfg=JSON.parse(fig.dataset.egg), n=0, k=0, last=-1, timer=null, bub=document.createElement('div');
+  bub.className='bubble'; bub.setAttribute('role','status'); fig.appendChild(bub);
+  function go(){
+    n++; var sneeze=Math.random()<(cfg.p||0.3), html;
+    fig.classList.remove('sneezing','yawning'); void fig.offsetWidth;
+    if(sneeze){ k++; fig.classList.add('sneezing'); html='<b>'+cfg.sneeze+'</b><small>התעטשויות עד עכשיו: '+k+'/'+n+'</small>'; }
+    else { var q; do { q=Math.floor(Math.random()*cfg.quotes.length); } while(cfg.quotes.length>1&&q===last); last=q;
+      fig.classList.add('yawning'); html='<span>'+cfg.quotes[q]+'</span>'; }
+    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){bub.classList.remove('on')},5200);
+  }
+  fig.addEventListener('click',go);
+  fig.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+});
 // TA sign-in: the password is the name of the full version's folder.
 document.querySelectorAll('.tlogf').forEach(function(f){
   f.addEventListener('submit',function(e){ e.preventDefault();

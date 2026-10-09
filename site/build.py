@@ -501,7 +501,11 @@ class Site:
         img = ''
         if extra.get('image'):
             cap = '<figcaption>' + esc(extra.get('caption', '')).replace(', ', '<br>', 1) + '</figcaption>' if extra.get('caption') else ''
-            img = f'<figure class="eng"><img src="{self.p}assets/img/{href(extra["image"])}" alt="{esc(extra.get("caption", ""))}">{cap}</figure>'
+            egg = extra.get('egg')
+            eggattr = (f' data-egg="{esc(json.dumps(egg, ensure_ascii=False))}" role="button" tabindex="0" aria-label="{esc(extra.get("caption", ""))}"' if egg else '')
+            tissue = ('<svg class="tissue" viewBox="0 0 40 34" aria-hidden="true"><path d="M4 9c6-6 26-7 32-1 2 7 0 17-4 21-8 4-20 4-26-1-4-6-5-13-2-19z" fill="#fff" stroke="#9aa5aa" stroke-width="1.4"/>'
+                      '<path d="M12 10c3 5 2 11-1 16M21 9c2 6 2 12 0 18M29 11c-2 5-1 10 2 14" fill="none" stroke="#c6ced2" stroke-width="1.2"/></svg>') if egg else ''
+            img = f'<figure class="eng{" egg" if egg else ""}"{eggattr}><img src="{self.p}assets/img/{href(extra["image"])}" alt="{esc(extra.get("caption", ""))}">{tissue}{cap}</figure>'
         hero = (f'<header class="hero{"" if img else " noimg"}"><div><p class="eyebrow">שבוע {n} · {span(w["lecture"], w.get("practice"))}</p>'
                 f'<h1 class="h1 fr">{esc(h1)}</h1>' + (f'<p class="fr sub">{esc(sub)}</p>' if sub else '') +
                 f'<p class="unitline">{esc(u["name"])} · {esc(u["title"])}</p></div>{img}</header>')
@@ -658,6 +662,21 @@ document.querySelectorAll('.dl[data-due]').forEach(function(el){{
   else {{ s.textContent='עוד'; b.textContent=n+' ימים'; if(n<=3) el.classList.add('soon'); }}
 }});
 document.querySelectorAll('.tasks').forEach(function(t){{ if(!t.querySelector('.np:not([hidden])')) t.hidden=true; }});
+// A hidden toy: click the portrait. With probability p he sneezes (a Bernoulli trial, of course); otherwise he yawns and says something.
+document.querySelectorAll('.eng.egg').forEach(function(fig){{
+  var cfg=JSON.parse(fig.dataset.egg), n=0, k=0, last=-1, timer=null, bub=document.createElement('div');
+  bub.className='bubble'; bub.setAttribute('role','status'); fig.appendChild(bub);
+  function go(){{
+    n++; var sneeze=Math.random()<(cfg.p||0.3), html;
+    fig.classList.remove('sneezing','yawning'); void fig.offsetWidth;
+    if(sneeze){{ k++; fig.classList.add('sneezing'); html='<b>'+cfg.sneeze+'</b><small>התעטשויות עד עכשיו: '+k+'/'+n+'</small>'; }}
+    else {{ var q; do {{ q=Math.floor(Math.random()*cfg.quotes.length); }} while(cfg.quotes.length>1&&q===last); last=q;
+      fig.classList.add('yawning'); html='<span>'+cfg.quotes[q]+'</span>'; }}
+    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){{bub.classList.remove('on')}},5200);
+  }}
+  fig.addEventListener('click',go);
+  fig.addEventListener('keydown',function(e){{ if(e.key==='Enter'||e.key===' '){{ e.preventDefault(); go(); }} }});
+}});
 // TA sign-in: the password is the name of the full version's folder.
 document.querySelectorAll('.tlogf').forEach(function(f){{
   f.addEventListener('submit',function(e){{ e.preventDefault();
