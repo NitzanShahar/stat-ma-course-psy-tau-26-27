@@ -29,7 +29,9 @@
 1. המשתמש אומר "פרסם את שבוע N" (או קודים מסוימים). `--publish-week N` מוסיף ל-`published` את כל קודי השבוע (חוץ מ-TO.DO); לפריטים בודדים — עורכים את `published` ידנית.
 2. בונים (פקודה למעלה). המצגות נלקחות מ-`slides/כלים/צפייה/` — הן צריכות להיות בנויות שם.
 3. בדיקה לפני commit: כל הקישורים המקומיים בדפים ובמצגות קיימים; צילומי מסך ב-1280 וב-390, בלי גלילה רוחבית.
-4. commit. push: אין הרשאות GitHub בסביבה של Claude — המשתמש דוחף (GitHub Desktop), אלא אם נתן token.
+4. commit ו-push. **Claude דוחף בעצמו** עם ה-token שבקובץ `.github-token` בשורש הריפו (fine-grained, רק לריפו הזה, Contents+Pages, עד 1.3.2027; ב-.gitignore — לעולם לא ל-commit, לא להדפיס, לא לשמור בהגדרות git):
+   `T=$(python3 -c "print(open('.github-token',encoding='utf-8-sig').read().strip())"); H=$(printf 'x-access-token:%s' "$T" | base64 -w0); git -c http.extraheader="AUTHORIZATION: basic $H" push origin main`
+5. בדיקה באוויר: https://nitzanshahar.github.io/stat-ma-course-psy-tau-26-27/ (ו-`mylab/`). מה-VM ומהענן אין גישה ל-github.io — בודקים בדפדפן המובנה (האתר מאושר).
 
 ## מה הסקריפט מייצר (לא עורכים ידנית)
 שורש: `index.html`, `week-N.html`. `mylab/`: אותו דבר לכל השבועות. משותף: `assets/` (CSS ותמונות מ-`site/`), `decks/` (מצגות + `_libs/` + הקבצים שהן טוענות), `files/<קוד>/` (PDF וכו').
