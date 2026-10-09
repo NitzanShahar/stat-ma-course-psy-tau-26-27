@@ -480,7 +480,7 @@ class Site:
         exam = self.data['course'].get('exam')
         if exam:
             x = d(exam)
-            units.append(f'<div class="unit xu" data-i="{len(units)}" style="--u: #001a24; --ui: #001a24;"><span class="ul">בחינה</span><div class="wks"><span class="wk exam" style="--u: transparent;"><span class="c">{dm(exam)}</span><span class="wl">{x.year}</span></span></div></div>')
+            units.append(f'<div class="unit xu" data-i="{len(units)}" style="--u: #c6ced2; --ui: #56656d;"><span class="ul">בחינה</span><div class="wks"><span class="wk exam" style="--u: transparent;"><span class="c">{dm(exam)}</span><span class="wl">{x.year}</span></span></div></div>')
         prev = f'<button type="button" class="mpg mprev" aria-label="היחידה הקודמת">{CHEV_BACK}</button>'
         nxt = f'<button type="button" class="mpg mnext" aria-label="היחידה הבאה">{CHEV_FWD}</button>'
         return f'<nav class="menu" aria-label="שבועות הסמסטר"><div class="mpager">{prev}<div class="mrow">{"".join(units)}</div>{nxt}</div></nav>'

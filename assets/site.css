@@ -36,8 +36,8 @@ a:focus-visible,summary:focus-visible{outline:3px solid #b3541e;outline-offset:2
 .c{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:15px;font-weight:600;color:#7a878d;background:#ffffff;flex:none;transition:transform .15s}
 .c img{width:100%;height:100%;object-fit:cover}
 .f{border:1.5px dashed #b5bfc4}
-.exam .c{border:5px double #001a24;color:#001a24;font-size:12px}
-.exam{color:#001a24;font-weight:600}
+.exam .c{color:#56656d;font-size:13px}
+.exam{color:#56656d}
 .sel .c{background:#001a24;color:#ffffff;border-color:#001a24}
 .sel{color:#001a24;font-weight:700}
 .cur .c{box-shadow:0 0 0 3px #f5f7f7,0 0 0 4.5px #b3541e}
