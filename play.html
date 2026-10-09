@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>נגן</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&amp;family=Assistant:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<div class="wrap">
+<header class="hdr"><a class="home" href="index.html" aria-label="לדף הבית"><img class="logo" src="assets/img/tau-logo.png" alt="אוניברסיטת תל אביב"></a></header>
+<main class="sheet card player">
+<a class="back" id="back" href="index.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg>חזרה</a>
+<h1 class="fr ptitle" id="t"></h1>
+<div id="m"></div>
+</main>
+</div>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search), src=q.get('src')||'', t=q.get('t')||'';
+  // only files that belong to this site
+  if(!/^(files|decks)\//.test(src) || src.indexOf('..')>=0){ document.getElementById('t').textContent='הקובץ לא נמצא'; return; }
+  document.title=t||'נגן'; document.getElementById('t').textContent=t;
+  var video=/\.(mp4|webm|mov)$/i.test(src), el=document.createElement(video?'video':'audio');
+  el.src=src; el.controls=true; el.preload='metadata'; el.autoplay=true;
+  el.setAttribute('controlsList','nodownload'); el.setAttribute('disablePictureInPicture','');
+  el.addEventListener('contextmenu',function(e){e.preventDefault()});
+  document.getElementById('m').appendChild(el);
+  var back=document.getElementById('back');
+  try{ if(document.referrer && new URL(document.referrer).origin===location.origin){ back.href=document.referrer;
+    back.addEventListener('click',function(e){ if(history.length>1){ e.preventDefault(); history.back(); } }); } }catch(e){}
+})();
+</script>
+</body>
+</html>

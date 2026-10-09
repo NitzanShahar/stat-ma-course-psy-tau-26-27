@@ -87,12 +87,17 @@ def short_label(lbl):
     return m.group(1) if m else lbl
 
 
-def pill(lbl, h):
-    """A round icon-only media button (the label goes into the tooltip / screen reader)."""
+def pill(lbl, h, ctx='', p=''):
+    """A round icon-only media button (the label goes into the tooltip / screen reader).
+    Local audio/video opens in the site's own player page, in the same tab; external links open in a new tab."""
     tone = ' purple' if 'סגול' in lbl else ' yellow' if 'צהוב' in lbl else ''
-    # same tab (students come back with "back"); external links (YouTube) still open in a new tab
-    tgt = ' target="_blank" rel="noopener"' if re.match(r'https?://', h) else ''
-    return f'<a class="pill{tone}" href="{h}"{tgt} title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h)}</a>'
+    if re.match(r'https?://', h):
+        return f'<a class="pill{tone}" href="{h}" target="_blank" rel="noopener" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h)}</a>'
+    if h.lower().endswith(('.mp4', '.webm', '.mov', '.mp3', '.m4a', '.wav', '.ogg')):
+        src = h[len(p):] if p and h.startswith(p) else h
+        title = f'{ctx} · {lbl}' if ctx else lbl
+        h = f'{p}play.html?src={quote(src, safe="")}&t={quote(title, safe="")}'
+    return f'<a class="pill{tone}" href="{h}" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h if "play.html" not in h else src)}</a>'
 
 
 def br(s):
@@ -158,6 +163,46 @@ def squeeze(src, tmpdir):
     except Exception:
         return None
     return out if out.exists() and out.stat().st_size < 0.85 * src.stat().st_size else None
+
+
+PLAYER = """<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>נגן</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&amp;family=Assistant:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<div class="wrap">
+<header class="hdr"><a class="home" href="index.html" aria-label="לדף הבית"><img class="logo" src="assets/img/tau-logo.png" alt="אוניברסיטת תל אביב"></a></header>
+<main class="sheet card player">
+<a class="back" id="back" href="index.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg>חזרה</a>
+<h1 class="fr ptitle" id="t"></h1>
+<div id="m"></div>
+</main>
+</div>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search), src=q.get('src')||'', t=q.get('t')||'';
+  // only files that belong to this site
+  if(!/^(files|decks)\\//.test(src) || src.indexOf('..')>=0){ document.getElementById('t').textContent='הקובץ לא נמצא'; return; }
+  document.title=t||'נגן'; document.getElementById('t').textContent=t;
+  var video=/\\.(mp4|webm|mov)$/i.test(src), el=document.createElement(video?'video':'audio');
+  el.src=src; el.controls=true; el.preload='metadata'; el.autoplay=true;
+  el.setAttribute('controlsList','nodownload'); el.setAttribute('disablePictureInPicture','');
+  el.addEventListener('contextmenu',function(e){e.preventDefault()});
+  document.getElementById('m').appendChild(el);
+  var back=document.getElementById('back');
+  try{ if(document.referrer && new URL(document.referrer).origin===location.origin){ back.href=document.referrer;
+    back.addEventListener('click',function(e){ if(history.length>1){ e.preventDefault(); history.back(); } }); } }catch(e){}
+})();
+</script>
+</body>
+</html>
+"""
 
 
 class Files:
@@ -373,6 +418,7 @@ class Site:
 
     def mat_row(self, it, kicker=None):
         link, title, sub, icon, more = self.resolve(it)
+        raw_title = title.replace('\n', ' ')
         title = br(title)
         if kicker:
             sub = sub if self.kind(it) != 'B' else ''
@@ -385,7 +431,7 @@ class Site:
         ic = (f'<span class="ic thumb"><img src="{self.p}assets/img/{href(thumb)}" alt=""></span>' if thumb
               else f'<span class="ic">{icon}</span>')
         # extra media (explainer video, read-aloud audio, ...) as small buttons at the row's far (left) end
-        pills = ''.join(pill(lbl, h) for lbl, h in more)
+        pills = ''.join(pill(lbl, h, raw_title, self.p) for lbl, h in more)
         subhtml = f'<span class="ms">{esc(sub)}</span>' if sub else ''
         target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
         body = f'<span class="mt">{title}</span>{subhtml}'
@@ -503,8 +549,11 @@ class Site:
             cap = '<figcaption>' + esc(extra.get('caption', '')).replace(', ', '<br>', 1) + '</figcaption>' if extra.get('caption') else ''
             egg = extra.get('egg')
             eggattr = (f' data-egg="{esc(json.dumps(egg, ensure_ascii=False))}" role="button" tabindex="0" aria-label="{esc(extra.get("caption", ""))}"' if egg else '')
-            tissue = ('<svg class="tissue" viewBox="0 0 40 34" aria-hidden="true"><path d="M4 9c6-6 26-7 32-1 2 7 0 17-4 21-8 4-20 4-26-1-4-6-5-13-2-19z" fill="#fff" stroke="#9aa5aa" stroke-width="1.4"/>'
-                      '<path d="M12 10c3 5 2 11-1 16M21 9c2 6 2 12 0 18M29 11c-2 5-1 10 2 14" fill="none" stroke="#c6ced2" stroke-width="1.2"/></svg>') if egg else ''
+            tissue = ('<svg class="tissue" viewBox="0 0 64 56" aria-hidden="true">'
+                      '<path d="M7 11Q19 5 32 9T57 8Q61 21 57 31T59 49Q45 54 32 50T6 51Q2 38 6 27T7 11Z" fill="#fbf7ee" stroke="#8b98a0" stroke-width="1.2" stroke-linejoin="round"/>'
+                      '<path d="M12 15Q22 11 32 14T52 13Q55 23 52 31T54 44Q43 48 32 45T11 46Q8 36 11 27T12 15Z" fill="none" stroke="#185fa5" stroke-width=".9" stroke-dasharray="2 1.8"/>'
+                      '<path d="M22 12Q25 28 20 47M41 10Q37 26 43 48M7 30Q30 27 57 33" fill="none" stroke="#d9d3c4" stroke-width="1.1" stroke-linecap="round"/>'
+                      '<text x="49" y="42" font-family="Georgia,serif" font-style="italic" font-size="7" fill="#185fa5" text-anchor="end">J.B.</text></svg>') if egg else ''
             img = f'<figure class="eng{" egg" if egg else ""}"{eggattr}><img src="{self.p}assets/img/{href(extra["image"])}" alt="{esc(extra.get("caption", ""))}">{tissue}{cap}</figure>'
         hero = (f'<header class="hero{"" if img else " noimg"}"><div><p class="eyebrow">שבוע {n} · {span(w["lecture"], w.get("practice"))}</p>'
                 f'<h1 class="h1 fr">{esc(h1)}</h1>' + (f'<p class="fr sub">{esc(sub)}</p>' if sub else '') +
@@ -565,7 +614,7 @@ class Site:
             t = f'<a class="mt" href="{link}" target="_blank" rel="noopener">{t}</a>' if link else f'<span class="mt">{t}</span>'
             if sub:
                 t = f'<span>{t}<span class="ms">{esc(sub)}</span></span>'
-            pills = ''.join(pill(lbl, h) for lbl, h in more)
+            pills = ''.join(pill(lbl, h, rtitle.replace('\n', ' '), self.p) for lbl, h in more)
             return f'<li><span class="ic">{icon}</span><span class="tli">{t}' + (f'<span class="tpills">{pills}</span>' if pills else '') + '</span></li>'
         texts = self.cfg.get('task_texts', {}).get(str(w['n']), {})
         if reading:
@@ -749,7 +798,8 @@ def main():
              Site(slides, cfg, data, files, everything, folder=staff_dir, staff=True, today=today)]
     for s in sites:
         s.build()
-    removed = files.prune(['assets', 'decks', 'files', staff_dir], ['week-*.html'])
+    files.write(PLAYER, 'play.html')
+    removed = files.prune(['assets', 'decks', 'files', staff_dir], ['week-*.html'])  # play.html is always rewritten
     print(f'files written or updated: {files.changed}; removed: {removed}')
     for rel, a_, b_ in files.squeezed:
         print(f'compressed: {rel}  {a_ / 1e6:.1f}MB -> {b_ / 1e6:.1f}MB')
