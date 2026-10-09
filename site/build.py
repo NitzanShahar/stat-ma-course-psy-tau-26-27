@@ -65,7 +65,7 @@ UNIT_ICONS = {
     'ג': _UI.format('<circle cx="17" cy="4.5" r="2.6"/><circle cx="6.5" cy="17" r="2.6"/><circle cx="27.5" cy="17" r="2.6"/>'
                     '<path d="M15.3 6.5l-6.4 7.6M18.7 6.5l6.4 7.6M9.4 17h14.6M21.9 15.3l2.1 1.7-2.1 1.7M7.6 11.6l1.3 2.5 2.6-1M24.9 11.3l.2 2.8-2.7.6"/>'),
     'ד': _UI.format('<path d="M6 2v18h24"/><g fill="currentColor" stroke="none"><circle cx="10" cy="16" r="1.2"/><circle cx="13" cy="13.5" r="1.2"/><circle cx="15" cy="15" r="1.2"/><circle cx="17.5" cy="10.5" r="1.2"/><circle cx="20" cy="11.5" r="1.2"/><circle cx="22.5" cy="7.5" r="1.2"/><circle cx="25.5" cy="6" r="1.2"/><circle cx="27" cy="8.5" r="1.2"/></g>'),
-    'ה': _UI.format('<path d="M3 18.5C11 18.5 13 3.5 17 3.5S23 3.5 31 3.5" stroke="none"/><path d="M3 17.5c7.5 0 9.5-6.5 14-6.5s6.5-6.5 14-6.5"/><g fill="currentColor" stroke="none"><circle cx="5" cy="21" r="1"/><circle cx="8.5" cy="21" r="1"/><circle cx="12" cy="21" r="1"/><circle cx="22" cy="1.2" r="1"/><circle cx="25.5" cy="1.2" r="1"/><circle cx="29" cy="1.2" r="1"/></g>'),
+    'ה': _UI.format('<path d="M3.0 18.95L3.5 18.94 4.0 18.93 4.5 18.91 5.0 18.89 5.5 18.87 6.0 18.84 6.5 18.80 7.0 18.76 7.5 18.70 8.0 18.63 8.5 18.55 9.0 18.45 9.5 18.33 10.0 18.18 10.5 18.00 11.0 17.79 11.5 17.53 12.0 17.23 12.5 16.87 13.0 16.46 13.5 15.98 14.0 15.44 14.5 14.83 15.0 14.15 15.5 13.42 16.0 12.64 16.5 11.83 17.0 11.00 17.5 10.17 18.0 9.36 18.5 8.58 19.0 7.85 19.5 7.17 20.0 6.56 20.5 6.02 21.0 5.54 21.5 5.13 22.0 4.77 22.5 4.47 23.0 4.21 23.5 4.00 24.0 3.82 24.5 3.67 25.0 3.55 25.5 3.45 26.0 3.37 26.5 3.30 27.0 3.24 27.5 3.20 28.0 3.16 28.5 3.13 29.0 3.11 29.5 3.09 30.0 3.07 30.5 3.06 31.0 3.05"/><g fill="currentColor" stroke="none"><circle cx="4" cy="21" r="1"/><circle cx="7.5" cy="21" r="1"/><circle cx="11" cy="21" r="1"/><circle cx="14.5" cy="21" r="1"/><circle cx="19.5" cy="1" r="1"/><circle cx="23" cy="1" r="1"/><circle cx="26.5" cy="1" r="1"/><circle cx="30" cy="1" r="1"/></g>'),
 }
 CHEV_BACK = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg>'
 CHEV_FWD = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5l-5 5 5 5"/></svg>'
@@ -562,16 +562,16 @@ class Site:
             pills = ''.join(pill(lbl, h) for lbl, h in more)
             return f'<li><span class="ic">{icon}</span><span class="tli">{t}' + (f'<span class="tpills">{pills}</span>' if pills else '') + '</span></li>'
         texts = self.cfg.get('task_texts', {}).get(str(w['n']), {})
-        go = f'<a class="ln tgo" href="week-{w["n"]}.html">לחומרים של שבוע {w["n"]}</a>'
         if reading:
             names = ' ו'.join(self.split_title(self.clean_title(it))[0] for it in reading)
             text = texts.get('reading') or f'השלמת הקריאה: {names}.'
             note = self.cfg.get('task_notes', {}).get('reading', 'הגשה: השלמת שאלת Moodle בתחילת השיעור')
-            cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', text, note, nl, go))
+            cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', text, note, nl))
         for it in hw:
             m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
-            text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)} ב-Moodle: {m.group(2)}.' if m else f'{self.clean_title(it)} — הגשה ב-Moodle.')
-            cards.append(self.task_card('מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', text, '', it.get('due'), go))
+            text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)}: {m.group(2)}.' if m else f'{self.clean_title(it)}.')
+            hw_note = self.cfg.get('task_notes', {}).get('hw', 'הגשה דרך ה-Moodle')
+            cards.append(self.task_card('מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', text, hw_note, it.get('due')))
         if not cards:
             return ''
         return (f'<section class="tasks card" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
