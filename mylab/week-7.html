@@ -56,7 +56,7 @@ document.querySelectorAll('.eng.egg').forEach(function(fig){
     if(sneeze){ k++; fig.classList.add('sneezing'); html='<b>'+cfg.sneeze+'</b><small>התעטשויות עד עכשיו: '+k+'/'+n+'</small>'; }
     else { var q; do { q=Math.floor(Math.random()*cfg.quotes.length); } while(cfg.quotes.length>1&&q===last); last=q;
       fig.classList.add('yawning'); html='<span>'+cfg.quotes[q]+'</span>'; }
-    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){bub.classList.remove('on'); fig.classList.remove('sneezing','yawning');},3400);
+    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){bub.classList.remove('on'); fig.classList.remove('sneezing','yawning');},1700);
   }
   fig.addEventListener('click',function(e){ e.stopPropagation(); go(); });
   document.addEventListener('click',function(){ bub.classList.remove('on'); fig.classList.remove('sneezing','yawning'); });
