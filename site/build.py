@@ -561,25 +561,29 @@ class Site:
                 t = f'<span>{t}<span class="ms">{esc(sub)}</span></span>'
             pills = ''.join(pill(lbl, h) for lbl, h in more)
             return f'<li><span class="ic">{icon}</span><span class="tli">{t}' + (f'<span class="tpills">{pills}</span>' if pills else '') + '</span></li>'
+        texts = self.cfg.get('task_texts', {}).get(str(w['n']), {})
+        go = f'<a class="ln tgo" href="week-{w["n"]}.html">לחומרים של שבוע {w["n"]}</a>'
         if reading:
+            names = ' ו'.join(self.split_title(self.clean_title(it))[0] for it in reading)
+            text = texts.get('reading') or f'השלמת הקריאה: {names}.'
             note = self.cfg.get('task_notes', {}).get('reading', 'הגשה: השלמת שאלת Moodle בתחילת השיעור')
-            cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', [row(it, ICON_READ) for it in reading], note, nl))
+            cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', text, note, nl, go))
         for it in hw:
-            m = re.match(r'(תרגיל להגשה מספר \d+)\s*—\s*(.+)', self.clean_title(it))
-            t1, s1 = (m.group(1), m.group(2)) if m else (self.clean_title(it), '')
-            cards.append(self.task_card('מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', [row(it, ICON_PENCIL, t1, s1)], self.cfg.get('task_notes', {}).get('hw', 'הגשה באמצעות העלאת קובץ ל-Moodle'), it.get('due')))
+            m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
+            text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)} ב-Moodle: {m.group(2)}.' if m else f'{self.clean_title(it)} — הגשה ב-Moodle.')
+            cards.append(self.task_card('מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', text, '', it.get('due'), go))
         if not cards:
             return ''
         return (f'<section class="tasks card" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
                 f'<div class="ng">{"".join(cards)}</div></section>')
 
-    def task_card(self, label, when, rows, note, due):
-        """One upcoming task: label and date, a large countdown (filled in by the page's script), the items."""
+    def task_card(self, label, when, text, note, due, go=''):
+        """One upcoming task: label and date, a large countdown (filled in by the page's script), one sentence."""
         x = d(due)
         dl = f'<span class="dl" data-due="{x.isoformat()}"><span></span><b>{x.day}.{x.month}</b></span>' if x else ''
         note_html = f'<p class="ms tnote">{esc(note)}</p>' if note else ''
         return (f'<div class="np"><div class="nph"><span class="nk">{esc(label)}{" · " + esc(when) if when else ""}</span>{dl}</div>'
-                f'<ul class="tl">{"".join(rows)}</ul>{note_html}</div>')
+                f'<p class="ttext">{esc(text)}</p>{go}{note_html}</div>')
 
     def np_card(self, link, pic, label, title, sub, when):
         tag, attr = ('a', f' href="{link}" target="_blank" rel="noopener"') if link else ('div', '')

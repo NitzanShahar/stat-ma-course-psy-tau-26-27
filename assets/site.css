@@ -100,6 +100,8 @@ a.mlink:hover .mt,a.mt:hover{color:#b3541e}
 .tli .mt{font-size:18px}
 a.mt:hover{color:#b3541e}
 .tpills{flex:none;display:flex;gap:8px;margin-inline-start:auto}
+.ttext{margin:0;font-size:17px;line-height:1.55;color:#1c2a31}
+.tgo{align-self:flex-start;font-size:14px;color:#56656d}
 .tnote{margin:auto 0 0;padding-top:10px;border-top:1px dashed #dde3e5;font-size:14px;color:#7a878d}
 
 /* week navigation */
