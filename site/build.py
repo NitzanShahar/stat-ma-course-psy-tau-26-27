@@ -554,6 +554,8 @@ class Site:
             egg = extra.get('egg')
             if egg and egg.get('frames'):  # drawn sneeze frames, shown in turn (paths relative to this page)
                 egg = dict(egg, frames=[f'{self.p}assets/img/{href(f)}' for f in egg['frames']])
+            if egg and egg.get('gestures'):  # other drawn moments: frames + a line
+                egg = dict(egg, gestures=[dict(g, frames=[f'{self.p}assets/img/{href(f)}' for f in g['frames']]) for g in egg['gestures']])
             eggattr = (f' data-egg="{esc(json.dumps(egg, ensure_ascii=False))}" role="button" tabindex="0" aria-label="{esc(extra.get("caption", ""))}"' if egg else '')
             over = f'<img class="sneeze" src="{self.p}assets/img/{href(egg["overlay"])}" alt="">' if egg and egg.get('overlay') else ''
             img = f'<figure class="eng{" egg" if egg else ""}"{eggattr}><span class="port"><img src="{self.p}assets/img/{href(extra["image"])}" alt="{esc(extra.get("caption", ""))}">{over}</span>{cap}</figure>'
@@ -717,8 +719,9 @@ document.querySelectorAll('.tasks').forEach(function(t){{ if(!t.querySelector('.
 document.querySelectorAll('.eng.egg').forEach(function(fig){{
   var cfg=JSON.parse(fig.dataset.egg), n=0, k=0, last=-1, timer=null, ft=[], bub=document.createElement('div');
   var pic=fig.querySelector('.port>img'), orig=pic.getAttribute('src');
-  (cfg.frames||[]).forEach(function(f){{ var i=new Image(); i.src=f; }});   // preload
-  function play(){{ ft.forEach(clearTimeout); ft=[]; var fr=cfg.frames||[], t=0, d=[380,900];
+  var all=(cfg.frames||[]).slice(); (cfg.gestures||[]).forEach(function(g){{ all=all.concat(g.frames); }});
+  all.forEach(function(f){{ var i=new Image(); i.src=f; }});   // preload
+  function play(fr,d){{ ft.forEach(clearTimeout); ft=[]; fr=fr||cfg.frames||[]; d=d||[380,900]; var t=0;
     fr.forEach(function(f,i){{ ft.push(setTimeout(function(){{ pic.src=f; }},t)); t+=d[i]||500; }});
     ft.push(setTimeout(function(){{ pic.src=orig; }},t)); }}
   bub.className='bubble'; bub.setAttribute('role','status'); fig.appendChild(bub);
@@ -726,9 +729,11 @@ document.querySelectorAll('.eng.egg').forEach(function(fig){{
     n++; var sneeze=Math.random()<(cfg.p||0.3), html;
     fig.classList.remove('sneezing','yawning'); void fig.offsetWidth;
     if(sneeze){{ k++; fig.classList.add('sneezing'); if(cfg.frames) play(); html='<b>'+cfg.sneeze+'</b><small>התעטשויות עד עכשיו: '+k+'/'+n+'</small>'; }}
-    else {{ var q; do {{ q=Math.floor(Math.random()*cfg.quotes.length); }} while(cfg.quotes.length>1&&q===last); last=q;
-      fig.classList.add('yawning'); html='<span>'+cfg.quotes[q]+'</span>'; }}
-    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){{bub.classList.remove('on'); fig.classList.remove('sneezing','yawning');}},1700);
+    else {{ var opts=cfg.quotes.concat(cfg.gestures||[]), q; do {{ q=Math.floor(Math.random()*opts.length); }} while(opts.length>1&&q===last); last=q;
+      var o=opts[q];
+      if(typeof o==='string'){{ fig.classList.add('yawning'); html='<span>'+o+'</span>'; }}
+      else {{ play(o.frames,[350,1300]); html='<span>'+o.text+'</span>'; }} }}
+    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){{bub.classList.remove('on'); fig.classList.remove('sneezing','yawning');}},(typeof o==='object'&&!sneeze)?2000:1700);
   }}
   fig.addEventListener('click',function(e){{ e.stopPropagation(); go(); }});
   document.addEventListener('click',function(){{ bub.classList.remove('on'); fig.classList.remove('sneezing','yawning'); }});

@@ -36,6 +36,15 @@
         "frames": [
           "sneeze-bernoulli-a.webp",
           "sneeze-bernoulli-b.webp"
+        ],
+        "gestures": [
+          {
+            "frames": [
+              "shrug-bernoulli-a.webp",
+              "shrug-bernoulli-b.webp"
+            ],
+            "text": "אוי לי, אם רק היה לי מושג כמה חלוקים יש בכד!!"
+          }
         ]
       },
       "sub": "Conjectures"
