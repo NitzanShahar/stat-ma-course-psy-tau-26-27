@@ -375,27 +375,14 @@
 </section>
 <section id="מהי-סבירות-likelihood" class="slide level2">
 <h2>מהי סבירות (Likelihood)?</h2>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>התפלגות הנראות (Likelihood) מתארת את מידת הסבירות של תצפיות שונות במדגם שנאסף (המשתנה התלוי שלנו) עבור כל ערך פרמטר אפשרי במודל הסטטיסטי.</p>
-</div>
-</div>
-</div>
+<div class="soft-card"><h3>הגדרה</h3><p>התפלגות הנראות (Likelihood) מתארת את מידת הסבירות של תצפיות שונות במדגם שנאסף (המשתנה התלוי שלנו) עבור כל ערך פרמטר אפשרי במודל הסטטיסטי.</p></div>
 <div>
 <ul>
 <li class="fragment"><strong>נקודה קריטית:</strong> ה-Likelihood <strong>אינה</strong> ההסתברות של הפרמטר להיות נכון!</li>
 <li class="fragment"><strong>ההבדל בין הסתברות לסבירות:</strong>
 <ul>
 <li class="fragment">פונקציית הסתברות (Probability) מסכמת את כל התצפיות האפשריות תחת פרמטר קבוע, ומתכנסת ל-1.</li>
-<li class="fragment">פונקציית סבירות (Likelihood) משווה ערכי פרמטרים שונים עבור <em>תצפית נתונה</em>.</li>
-<li class="fragment">השטח תחת עקומת ה-Likelihood <strong>לא מסתכם ל-1</strong>.</li>
+<li class="fragment">פונקציית סבירות (Likelihood) משווה ערכי פרמטרים שונים עבור <em>תצפית נתונה</em>. <span style="font-size:.78em; color:var(--ink-soft)">(השטח תחת עקומת ה-Likelihood לא מסתכם ל-1.)</span></li>
 </ul></li>
 </ul>
 </div>
@@ -411,19 +398,7 @@
 <section id="הגן-של-שבילי-הנתונים" class="slide level2">
 <h2>הגן של שבילי הנתונים</h2>
 <p>איך מחשבים סבירות? נחזור לבסיס:</p>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p><strong>דברים שיש יותר דרכים שבהן הם יכולים לקרות, הם סבירים יותר.</strong></p>
-</div>
-</div>
-</div>
+<div class="soft-card"><h3>הגדרה</h3><p><strong>דברים שיש יותר דרכים שבהן הם יכולים לקרות, הם סבירים יותר.</strong></p></div>
 <div class="fragment">
 <p>נניח שיש לנו שק ובו בדיוק 4 גולות (שחורות או לבנות). אנו דוגמים 3 פעמים (עם החזרה). התצפית שקיבלנו: <strong>שחור, לבן, שחור</strong>.</p>
 </div>
@@ -735,6 +710,7 @@
       <text x="430" y="258" text-anchor="middle" font-size="13" fill="var(--ink-soft)">0.75</text>
       <text x="560" y="258" text-anchor="middle" font-size="13" fill="var(--ink-soft)">1</text>
       <text x="10" y="45" font-size="13" fill="var(--ink-soft)">L(θ)</text>
+      <path id="d-curve" class="fragment" data-fragment-index="5" fill="none" stroke="var(--curve)" stroke-width="3" stroke-opacity=".6"></path>
       <circle id="dp-0" class="fragment" data-fragment-index="0" cx="40" cy="240" r="7" fill="var(--curve)"></circle>
       <circle id="dp-1" class="fragment" data-fragment-index="1" cx="170" cy="240" r="7" fill="var(--curve)"></circle>
       <circle id="dp-2" class="fragment" data-fragment-index="2" cx="300" cy="240" r="7" fill="var(--curve)"></circle>
@@ -798,6 +774,14 @@
       const values = grid.map(p => likelihood(p, nBlue, nWhite));
       const total = values.reduce((a, b) => a + b, 0);
 
+      let d = '';
+      for (let i = 0; i <= 100; i++) {
+        const p = i / 100;
+        const y = h - pad - (likelihood(p, nBlue, nWhite) / maxL) * (h - 2 * pad);
+        d += (i ? ' L ' : 'M ') + (pad + p * 520) + ' ' + y;
+      }
+      document.getElementById('d-curve').setAttribute('d', d);
+
       grid.forEach((p, i) => {
         const l = values[i];
         const y = h - pad - (l / maxL) * (h - 2 * pad);
@@ -809,101 +793,6 @@
     }
 
     sel.addEventListener('change', draw);
-    setTimeout(draw, 100);
-  })();
-</script>
-</section>
-<section id="נראות-הנתונים-likelihood-curve" class="slide level2">
-<h2>נראות הנתונים (Likelihood Curve)</h2>
-<p>הפונקציה <span class="math inline">\(\mathcal{L}(\theta) = \theta^2(1-\theta)\)</span> אינה הסתברות. השטח תחתיה אינו 1. היא מתארת רק עד כמה הנתונים <em>צפויים</em> תחת ערכים שונים של <span class="math inline">\(\theta\)</span>.</p>
-<div class="demo-panel">
-  <div class="demo-controls">
-    <label>הדגימה שנצפתה:
-      <select id="lik-obs-select">
-        <option value="BBB">שחור, שחור, שחור</option>
-        <option value="BBW">שחור, שחור, לבן</option>
-        <option value="BWB" selected="">שחור, לבן, שחור</option>
-        <option value="BWW">שחור, לבן, לבן</option>
-        <option value="WBB">לבן, שחור, שחור</option>
-        <option value="WBW">לבן, שחור, לבן</option>
-        <option value="WWB">לבן, לבן, שחור</option>
-        <option value="WWW">לבן, לבן, לבן</option>
-      </select>
-    </label>
-  </div>
-  <div style="text-align:center;">
-    <svg id="lik-svg" viewbox="0 0 600 280" style="width:100%; max-width:560px; height:auto; border:1px solid var(--rule); background:#fefefe; border-radius:8px;"></svg>
-  </div>
-  <div class="demo-controls" style="justify-content:center; margin-top:14px; margin-bottom:0;">
-    <input type="range" id="theta-slider" min="0" max="1" step="0.01" value="0.5" style="width:340px; cursor:pointer; accent-color: var(--hidden);">
-  </div>
-  <div class="demo-readout" style="text-align:center; margin-top:10px;">
-    השערה לפרמטר (θ): <span class="ltr" id="theta-val" style="color:var(--curve); font-weight:700;">0.50</span> |
-    סבירות (Likelihood): <span class="ltr" id="lik-val" style="color:var(--hidden); font-weight:700;">0.1250</span>
-  </div>
-  <div class="demo-note">
-    המספר עצמו אינו הסתברות ואין לו משמעות בבידוד — מה שחשוב הוא <strong>ההשוואה</strong> בין ערכים: ככל שה-Likelihood גבוה יותר עבור $\theta$ מסוים, כך הנתונים שנצפו "סבירים" יותר תחת אותה השערה, ביחס להשערות אחרות.
-  </div>
-</div>
-<script>
-  (function() {
-    const svg = document.getElementById('lik-svg');
-    const slider = document.getElementById('theta-slider');
-    const obsSel = document.getElementById('lik-obs-select');
-    const tVal = document.getElementById('theta-val');
-    const lVal = document.getElementById('lik-val');
-
-    if(!svg || !slider || !obsSel || !tVal || !lVal) return;
-
-    const codeToColor = { B: 'blue', W: 'white' };
-
-    function likelihood(p, nBlue, nWhite) {
-      return Math.pow(p, nBlue) * Math.pow(1 - p, nWhite);
-    }
-
-    function draw() {
-      const w = 600, h = 280, pad = 40;
-      const obs = obsSel.value.split('').map(c => codeToColor[c]);
-      const nBlue = obs.filter(c => c === 'blue').length;
-      const nWhite = obs.filter(c => c === 'white').length;
-
-      let maxL = 0, argmax = 0;
-      for (let i = 0; i <= 100; i++) {
-        const p = i / 100;
-        const l = likelihood(p, nBlue, nWhite);
-        if (l > maxL) { maxL = l; argmax = p; }
-      }
-      if (maxL === 0) maxL = 1;
-
-      let pathD = `M ${pad} ${h-pad}`;
-      for(let i=0; i<=100; i++) {
-        let p = i/100;
-        let l = likelihood(p, nBlue, nWhite);
-        let x = pad + p*(w-2*pad);
-        let y = h - pad - (l/maxL)*(h-2*pad);
-        pathD += ` L ${x} ${y}`;
-      }
-
-      let currentP = parseFloat(slider.value);
-      let currentL = likelihood(currentP, nBlue, nWhite);
-      let cx = pad + currentP*(w-2*pad);
-      let cy = h - pad - (currentL/maxL)*(h-2*pad);
-      let amx = pad + argmax*(w-2*pad);
-
-      svg.innerHTML = `
-        <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h-pad}" stroke="black" stroke-width="2"/>
-        <line x1="${pad}" y1="${h-pad}" x2="${w-pad}" y2="${h-pad}" stroke="black" stroke-width="2"/>
-        <path d="${pathD}" fill="none" stroke="steelblue" stroke-width="4" />
-        <line x1="${amx}" y1="${pad}" x2="${amx}" y2="${h-pad}" stroke="gray" stroke-dasharray="4"/>
-        <text x="${amx - 30}" y="${pad - 10}" fill="gray" font-family="sans-serif">Max Likelihood (${argmax.toFixed(2)})</text>
-        <circle cx="${cx}" cy="${cy}" r="8" fill="red" />
-        <line x1="${cx}" y1="${cy}" x2="${cx}" y2="${h-pad}" stroke="red" stroke-width="2" stroke-dasharray="4" />
-      `;
-      tVal.innerText = currentP.toFixed(2);
-      lVal.innerText = currentL.toFixed(4);
-    }
-    slider.addEventListener('input', draw);
-    obsSel.addEventListener('change', draw);
     setTimeout(draw, 100);
   })();
 </script>

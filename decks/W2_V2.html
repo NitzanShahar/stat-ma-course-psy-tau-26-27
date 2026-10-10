@@ -777,6 +777,215 @@
 </ul>
 </div>
 </section>
+<section id="בדיקה-חיובית" class="slide level2">
+<h2>בדיקה חיובית</h2>
+<div class="soft-card riddle">
+<p>הפרעה שכיחה ב-1% מהאוכלוסייה. הבדיקה מזהה 90% מהחולים, אבל יוצאת חיובית גם אצל 10% מהבריאים.</p>
+<p><strong>הבדיקה של המטופל יצאה חיובית. מה הסיכוי שהוא חולה?</strong></p>
+</div>
+<div class="fragment">
+<p><strong><span class="math inline">\(A\)</span> = חולה</strong>, <span class="math inline">\(\neg A\)</span> = בריא     <strong><span class="math inline">\(B\)</span> = בדיקה חיובית</strong>, <span class="math inline">\(\neg B\)</span> = שלילית</p>
+</div>
+<div class="fragment centered-table">
+<table>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(p(A)\)</span></td>
+<td>שכיחות (base rate)</td>
+<td>1%</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(p(B \mid A)\)</span></td>
+<td>רגישות (sensitivity)</td>
+<td>90%</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(p(B \mid \neg A)\)</span></td>
+<td>חיובי שגוי (false positive)</td>
+<td>10%</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(p(\neg B \mid \neg A)\)</span></td>
+<td>סגוליות (specificity)</td>
+<td>90%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="כמה-מהחיוביים-באמת-חולים" class="slide level2 ppv-slide">
+<h2>כמה מהחיוביים באמת חולים?</h2>
+<style>
+  .reveal .ppv-slide { font-size: .92em; }
+  .reveal .ppv-slide mjx-container[display="true"] { margin: .25em 0; }
+</style>
+<div>
+<ul>
+<li class="fragment">השאלה היא על <span class="math inline">\(p(A \mid B)\)</span>. האינטואיציה אומרת 90%, אבל 90% הוא <span class="math inline">\(p(B \mid A)\)</span>: שוב <span class="term">confusion of the inverse</span>.</li>
+<li class="fragment">את <span class="math inline">\(p(B)\)</span> לא נתנו לנו. מחברים את שתי הדרכים לקבל בדיקה חיובית: חולים שהבדיקה זיהתה, ובריאים שקיבלו חיובי שגוי.</li>
+</ul>
+</div>
+<div class="fragment ltr">
+<p><span class="math display">\[p(A \mid B) = \frac{p(B \mid A)\, p(A)}{p(B \mid A)\, p(A) + p(B \mid \neg A)\, p(\neg A)}\]</span></p>
+</div>
+<div class="fragment ltr">
+<p><span class="math display">\[= \frac{0.90 \cdot 0.01}{0.90 \cdot 0.01 + 0.10 \cdot 0.99} = \frac{0.009}{0.009 + 0.099} \approx 8\%\]</span></p>
+</div>
+<div class="fragment">
+<p>מתוך 1,000 נבדקים: 9 חולים עם בדיקה חיובית, ו-99 בריאים עם בדיקה חיובית. מתוך 108 החיוביים, רק 9 חולים.</p>
+</div>
+</section>
+<section id="מחשבון-bayes" class="slide level2">
+<h2>מחשבון Bayes</h2>
+<style>
+  .reveal .bc { font-size: .74em; padding: 22px 32px; margin-top: .5em; }
+  .reveal .bc-rows { display: grid; grid-template-columns: 6.5em 9em 1fr 3.5em; gap: 12px 18px; align-items: center; }
+  /* סליידר מצויר: ידית ברוחב קבוע (20px), כדי שאפשר יהיה למקם בדיוק קווי גבול על המסילה. המילוי מימין, לפי --v */
+  .reveal .bc input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; margin: 0; border-radius: 4px; display: block;
+    background: linear-gradient(to left, var(--hidden) calc(10px + var(--v, 0) * (100% - 20px)), var(--rule) 0); }
+  .reveal .bc input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--hidden); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--hidden); cursor: pointer; }
+  .reveal .bc input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--hidden); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--hidden); cursor: pointer; }
+  /* תחום אסור על המסילה: מקווקו, וקו גבול שהידית לא עוברת */
+  .reveal .bc-track { position: relative; }
+  .reveal .bc-track input[type="range"] { position: relative; z-index: 1; }
+  .reveal .bc-wall { position: absolute; box-sizing: border-box; top: 50%; height: 24px; transform: translateY(-50%); pointer-events: none; z-index: 0;
+    background: repeating-linear-gradient(-45deg, var(--ink-faint) 0 2px, transparent 2px 7px); }
+  .reveal .bc-wall.lo { right: 0; border-left: 3px solid var(--ink); }
+  .reveal .bc-wall.hi { left: 0; border-right: 3px solid var(--ink); }
+  .reveal .bc-sym { direction: ltr; unicode-bidi: isolate; font-family: "Times New Roman", serif; font-style: italic; font-size: 1.15em; }
+  .reveal .bc-name { color: var(--ink-soft); }
+  .reveal .bc-val { font-variant-numeric: tabular-nums; font-weight: 700; direction: ltr; text-align: left; }
+  .reveal .bc-eq { display: flex; justify-content: center; align-items: center; gap: .5em; direction: ltr; margin: 1.1em 0 .9em;
+                   font-size: 1.15em; font-variant-numeric: tabular-nums; }
+  .reveal .bc-frac { display: inline-flex; flex-direction: column; align-items: center; }
+  .reveal .bc-frac > span { padding: 0 .3em; }
+  .reveal .bc-frac > span:first-child { border-bottom: 2px solid var(--ink); padding-bottom: .1em; }
+  .reveal .bc-frac > span:last-child { padding-top: .1em; }
+  .reveal .bc-res { font-size: 1.6em; font-weight: 700; color: var(--hidden); min-width: 3.2em; text-align: left; }
+  .reveal .bc-cap { color: var(--ink-soft); margin-bottom: 6px; }
+  .reveal .bc-bar { display: flex; height: 40px; border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); background: var(--rule); }
+  .reveal .bc-bar span { transition: width .25s; }
+  .reveal .bc-bar #bc-sick { background: var(--hidden); }
+  .reveal .bc-legend { display: flex; justify-content: space-between; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .reveal .bc-legend b { color: var(--hidden); }
+</style>
+<div class="demo-panel bc">
+  <div class="bc-rows">
+    <span class="bc-sym">p(A)</span><span class="bc-name">שכיחות</span>
+    <input type="range" id="bc-pa" min="0.01" max="0.99" step="0.01" value="0.01"><span class="bc-val" id="bc-pa-v"></span>
+    <span class="bc-sym">p(B | A)</span><span class="bc-name">רגישות</span>
+    <input type="range" id="bc-ba" min="0" max="1" step="0.01" value="0.9"><span class="bc-val" id="bc-ba-v"></span>
+    <span class="bc-sym">p(B | ¬A)</span><span class="bc-name">חיובי שגוי</span>
+    <input type="range" id="bc-bn" min="0" max="1" step="0.01" value="0.1"><span class="bc-val" id="bc-bn-v"></span>
+  </div>
+  <div class="bc-eq">
+    <span class="bc-sym">p(A | B)</span> =
+    <span class="bc-frac"><span id="bc-num"></span><span id="bc-den"></span></span> =
+    <span class="bc-frac"><span id="bc-n2"></span><span id="bc-d2"></span></span> =
+    <span class="bc-res" id="bc-res"></span>
+  </div>
+  <div class="bc-cap">מכל מי שהבדיקה שלו חיובית:</div>
+  <div class="bc-bar"><span id="bc-sick"></span></div>
+  <div class="bc-legend"><span><b>חולים</b> <span id="bc-l1"></span></span><span>בריאים, חיובי שגוי <span id="bc-l2"></span></span></div>
+</div>
+<script>
+  (function () {
+    const $ = id => document.getElementById(id);
+    if (!$('bc-pa')) return;
+    const pct = v => Math.round(v * 100) + '%';
+    const num = v => String(+v.toPrecision(3));
+    function draw() {
+      const pa = +$('bc-pa').value, ba = +$('bc-ba').value, bn = +$('bc-bn').value;
+      const sick = ba * pa, healthy = bn * (1 - pa), all = sick + healthy;
+      const f = v => v.toFixed(2);
+      ['bc-pa', 'bc-ba', 'bc-bn'].forEach(id => $(id).style.setProperty('--v', $(id).value));
+      $('bc-pa-v').textContent = pct(pa); $('bc-ba-v').textContent = pct(ba); $('bc-bn-v').textContent = pct(bn);
+      $('bc-num').textContent = `${f(ba)} × ${f(pa)}`;
+      $('bc-den').textContent = `${f(ba)} × ${f(pa)} + ${f(bn)} × ${f(1 - pa)}`;
+      $('bc-n2').textContent = num(sick); $('bc-d2').textContent = num(all);
+      const post = all ? sick / all : null;
+      $('bc-res').textContent = post === null ? '—' : (Math.round(post * 1000) / 10) + '%';
+      $('bc-sick').style.width = post === null ? '0' : (post * 100) + '%';
+      $('bc-l1').textContent = post === null ? '' : pct(post);
+      $('bc-l2').textContent = post === null ? '' : pct(1 - post);
+    }
+    // אחרי שמשחררים סליידר הוא מאבד את הפוקוס, כדי שהחצים במקלדת יחזרו לנווט בין השקפים
+    ['bc-pa', 'bc-ba', 'bc-bn'].forEach(id => { $(id).addEventListener('input', draw); $(id).addEventListener('change', e => e.target.blur()); });
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>נסו: מה קורה כשההפרעה שכיחה יותר? ומה כשהבדיקה כמעט לא טועה אצל בריאים?</p>
+</div>
+</section>
+<section id="מחשבון-bayes-עם-pb" class="slide level2">
+<h2>מחשבון Bayes, עם <span class="math inline">\(p(B)\)</span></h2>
+<div class="demo-panel bc">
+  <div class="bc-rows">
+    <span class="bc-sym">p(A)</span><span class="bc-name">שכיחות</span>
+    <input type="range" id="bd-pa" min="0.01" max="0.99" step="0.01" value="0.01"><span class="bc-val" id="bd-pa-v"></span>
+    <span class="bc-sym">p(B | A)</span><span class="bc-name">רגישות</span>
+    <input type="range" id="bd-ba" min="0" max="1" step="0.01" value="0.9"><span class="bc-val" id="bd-ba-v"></span>
+    <span class="bc-sym">p(B)</span><span class="bc-name">בדיקה חיובית</span>
+    <div class="bc-track">
+      <input type="range" id="bd-pb" min="0" max="1" step="0.001" value="0.108">
+      <div class="bc-wall lo" id="bd-lo"></div><div class="bc-wall hi" id="bd-hi"></div>
+    </div><span class="bc-val" id="bd-pb-v"></span>
+  </div>
+  <div class="bc-eq">
+    <span class="bc-sym">p(A | B)</span> =
+    <span class="bc-frac"><span id="bd-num"></span><span id="bd-den"></span></span> =
+    <span class="bc-frac"><span id="bd-n2"></span><span id="bd-d2"></span></span> =
+    <span class="bc-res" id="bd-res"></span>
+  </div>
+  <div class="bc-cap">מכל מי שהבדיקה שלו חיובית:</div>
+  <div class="bc-bar"><span id="bd-sick" style="background:var(--hidden)"></span></div>
+  <div class="bc-legend"><span><b>חולים</b> <span id="bd-l1"></span></span><span>בריאים, חיובי שגוי <span id="bd-l2"></span></span></div>
+</div>
+<script>
+  (function () {
+    const $ = id => document.getElementById(id);
+    if (!$('bd-pa')) return;
+    const pct = v => Math.round(v * 100) + '%';
+    const num = v => String(+v.toPrecision(3));
+    // הגבולות של p(B), מנוסחת ההסתברות השלמה: p(B) = p(B|A)p(A) + p(B|¬A)p(¬A), ו-p(B|¬A) בין 0 ל-1.
+    // מלמטה: אף בריא לא חיובי. מלמעלה: כל הבריאים חיוביים. מעוגל פנימה לצעד של הסליידר (0.001)
+    function bounds() {
+      const pa = +$('bd-pa').value, ba = +$('bd-ba').value, sick = ba * pa;
+      return [Math.ceil(sick * 1000 - 1e-9) / 1000, Math.floor((sick + 1 - pa) * 1000 + 1e-9) / 1000];
+    }
+    const at = v => v <= 0 ? '0%' : v >= 1 ? '100%' : `calc(10px + ${v} * (100% - 20px))`;
+    const wall = (el, v) => { el.style.display = v > 0 ? 'block' : 'none'; el.style.width = at(v); };
+    function draw() {
+      const [lo, hi] = bounds(), pbEl = $('bd-pb');
+      // קיר שזז דוחף את הידית, וידית שנגררת אל הקיר נעצרת בו
+      if (+pbEl.value < lo) pbEl.value = lo;
+      if (+pbEl.value > hi) pbEl.value = hi;
+      const pa = +$('bd-pa').value, ba = +$('bd-ba').value, pb = +pbEl.value;
+      wall($('bd-lo'), lo); wall($('bd-hi'), 1 - hi);
+      ['bd-pa', 'bd-ba'].forEach(id => $(id).style.setProperty('--v', $(id).value));
+      // במסילה של p(B) התחום האסור שקוף, כדי שהמקווקו שמתחתיה ייראה
+      pbEl.style.background = `linear-gradient(to left, transparent ${at(lo)}, var(--hidden) ${at(lo)} ${at(pb)}, var(--rule) ${at(pb)} ${at(hi)}, transparent ${at(hi)})`;
+      const f = v => v.toFixed(2);
+      $('bd-pa-v').textContent = pct(pa); $('bd-ba-v').textContent = pct(ba);
+      $('bd-pb-v').textContent = (Math.round(pb * 1000) / 10) + '%';
+      $('bd-num').textContent = `${f(ba)} × ${f(pa)}`;
+      $('bd-den').textContent = num(pb);
+      $('bd-n2').textContent = num(ba * pa); $('bd-d2').textContent = num(pb);
+      const post = pb ? Math.min(1, ba * pa / pb) : null;
+      $('bd-res').textContent = post === null ? '—' : (Math.round(post * 1000) / 10) + '%';
+      $('bd-sick').style.width = post === null ? '0' : (post * 100) + '%';
+      $('bd-l1').textContent = post === null ? '' : pct(post);
+      $('bd-l2').textContent = post === null ? '' : pct(1 - post);
+    }
+    ['bd-pa', 'bd-ba', 'bd-pb'].forEach(id => { $(id).addEventListener('input', draw); $(id).addEventListener('change', e => e.target.blur()); });
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>האזור המקווקו אסור. <span class="math inline">\(p(B)\)</span> לא יכול להיות קטן מ-<span class="math inline">\(p(B \mid A)\,p(A)\)</span>, החולים שהבדיקה שלהם חיובית, ולא גדול מזה ועוד <span class="math inline">\(p(\neg A)\)</span>, כל הבריאים.</p>
+</div>
+</section>
 <section id="מאפשרויות-בודדות-להתפלגות" class="slide level2 part-gate">
 <h2>מאפשרויות בודדות להתפלגות</h2>
 <div class="gate">
