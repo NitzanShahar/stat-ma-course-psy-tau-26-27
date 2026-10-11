@@ -148,8 +148,9 @@ def squeeze(src, tmpdir):
     ext = src.suffix.lower()
     out = Path(tmpdir) / ('out' + ('.mp4' if ext in ('.mp4', '.mov', '.webm') else ext))
     if ext in ('.mp4', '.mov', '.webm'):
-        cmd = ['ffmpeg', '-y', '-v', 'error', '-i', str(src), '-vf', "scale='min(1280,iw)':-2", '-c:v', 'libx264', '-preset', 'medium',
-               '-crf', '27', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '96k', '-movflags', '+faststart', str(out)]
+        # screen recordings: 720p, 24 fps, CRF 28, mono speech — tested on W1V1: ~1.1 MB per minute, no visible loss
+        cmd = ['ffmpeg', '-y', '-v', 'error', '-i', str(src), '-vf', "scale=-2:'min(720,ih)',fps=24", '-c:v', 'libx264', '-preset', 'medium',
+               '-crf', '28', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '64k', '-ac', '1', '-movflags', '+faststart', str(out)]
     elif ext in ('.mp3', '.m4a', '.wav'):
         out = out.with_suffix('.mp3') if ext == '.wav' else out
         cmd = ['ffmpeg', '-y', '-v', 'error', '-i', str(src), '-vn', '-ac', '1', '-c:a', 'libmp3lame', '-b:a', '64k', str(out)] if ext != '.m4a' else \
@@ -160,7 +161,7 @@ def squeeze(src, tmpdir):
     else:
         return None
     try:
-        subprocess.run(cmd, check=True, timeout=600, capture_output=True)
+        subprocess.run(cmd, check=True, timeout=3600, capture_output=True)
     except Exception:
         return None
     return out if out.exists() and out.stat().st_size < 0.85 * src.stat().st_size else None
@@ -417,7 +418,26 @@ class Site:
                 h = m['href'] if re.match(r'https?://', m['href']) else self.copy_file(m['href'], folder)
                 if h:
                     more.append((m['label'], h))
+        # recordings the lecturer put in the item's own folder (e.g. משאבים/W1_V1 …/W1V1.mp4) appear as a video button
+        known = {Path(m.get('href') or '').name for m in it.get('more', [])} | {Path(it.get('link') or '').name}
+        for vid in self.item_videos(it['code']):
+            if vid.name not in known:
+                rel = vid.relative_to(self.slides).as_posix()
+                h = self.copy_file(rel, 'files/' + it['code'].replace('.', '_'))
+                if h:
+                    more.append(('הקלטה', h))
         return link, title, sub, icon, more
+
+    def item_videos(self, code):
+        prefix = code.replace('.', '_') + ' '
+        if not hasattr(self, '_resdirs'):
+            self._resdirs = [d_ for d_ in (self.slides / 'משאבים').iterdir() if d_.is_dir()]
+        out = []
+        for d_ in self._resdirs:
+            if d_.is_dir() and d_.name.startswith(prefix):
+                out += sorted(p for p in d_.iterdir() if p.is_file() and p.suffix.lower() in ('.mp4', '.mov', '.webm')
+                              and 'למרצה' not in p.name)
+        return out
 
     def mat_row(self, it, kicker=None):
         link, title, sub, icon, more = self.resolve(it)
