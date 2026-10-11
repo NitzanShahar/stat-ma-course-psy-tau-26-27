@@ -580,10 +580,12 @@ class Site:
             return f'<h3 class="msub">{head}</h3>' + ''.join(self.mat_row(it, k) for it, k in items)
         gl = ''.join(given([x for x in given_lesson if x[1] == lab]) for lab in ('קריאה', 'מטלת הגשה'))
         gp = ''.join(given([x for x in given_practice if x[1] == lab]) for lab in ('קריאה', 'מטלת הגשה'))
+        k_items = [it for it in lesson if self.kind(it) == 'K']
+        acts = ('<h3 class="msub">התנסות בכיתה</h3>' + ''.join(self.mat_row(it) for it in k_items)) if k_items else ''
         cols = ''
         if lesson or notes or given_lesson:
             cols += (f'<section class="mcard" aria-label="שיעור"><div class="mh"><h2 class="fr">שיעור</h2><span>{day_dm(w["lecture"])}</span></div>'
-                     f'{notes_html}{"".join(self.mat_row(it) for it in lesson)}{gl}</section>')
+                     f'{notes_html}{"".join(self.mat_row(it) for it in lesson if self.kind(it) != 'K')}{acts}{gl}</section>')
         if practice:
             cols += (f'<section class="mcard" aria-label="תרגול"><div class="mh"><h2 class="fr">תרגול</h2><span>{day_dm(w.get("practice"))}</span></div>'
                      f'{"".join(self.mat_row(it) for it in practice)}{gp}</section>')
