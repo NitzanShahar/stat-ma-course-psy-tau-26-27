@@ -585,7 +585,7 @@ class Site:
         cols = ''
         if lesson or notes or given_lesson:
             cols += (f'<section class="mcard" aria-label="שיעור"><div class="mh"><h2 class="fr">שיעור</h2><span>{day_dm(w["lecture"])}</span></div>'
-                     f'{notes_html}{"".join(self.mat_row(it) for it in lesson if self.kind(it) != 'K')}{acts}{gl}</section>')
+                     f'{notes_html}{"".join(self.mat_row(it) for it in lesson if self.kind(it) != "K")}{acts}{gl}</section>')
         if practice:
             cols += (f'<section class="mcard" aria-label="תרגול"><div class="mh"><h2 class="fr">תרגול</h2><span>{day_dm(w.get("practice"))}</span></div>'
                      f'{"".join(self.mat_row(it) for it in practice)}{gp}</section>')
