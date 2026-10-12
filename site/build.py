@@ -632,7 +632,7 @@ class Site:
 
     def tasks(self, w):
         """'מטלות קרובות': what is due next, taken from the current week — the same on every page, outside the week sheet."""
-        if not w:
+        if not w or (not self.staff and not self.cfg.get('tasks_public', True)):
             return ''
         _l, _p, reading, hw, _n, _gl, _gp = self.split(w)
         nl = self.next_lecture(w)
