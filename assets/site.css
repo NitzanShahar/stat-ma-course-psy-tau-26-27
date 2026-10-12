@@ -77,7 +77,8 @@ a.mlink:hover .mt,a.mt:hover{color:#b3541e}
 .ic{flex:none;width:42px;height:42px;border-radius:12px;background:var(--u-tint);display:flex;align-items:center;justify-content:center;color:var(--u-ink);overflow:hidden}
 .ic.thumb{background:#000000}
 .ic img{width:100%;height:100%;object-fit:cover}
-.msub{margin:22px 0 2px;padding-top:14px;border-top:1px dashed #d5dcde;font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--u-ink)}
+.msub{margin:36px 0 0;padding-bottom:8px;border-bottom:1px solid #eef1f2;font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--u-ink)}
+.mh+.msub,.note+.msub{margin-top:18px}
 .mt{display:block;font-family:'Frank Ruhl Libre',serif;font-size:20px;font-weight:500;line-height:1.25}
 .ms{display:block;font-size:15px;color:#56656d}
 .ms .ln{color:#56656d}
