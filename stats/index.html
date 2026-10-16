@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>סטטיסטיקת האתר</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700&amp;family=Assistant:wght@400;600;700&amp;display=swap">
+<style>
+:root{--bg:#eef1f1;--card:#fff;--ink:#001a24;--muted:#5b6b72;--line:#dfe4e6;--bar:#185fa5;--bar-hi:#0d3f72;--warn:#b3541e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Assistant,system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+h1,h2{font-family:"Frank Ruhl Libre",serif;margin:0}
+h1{font-size:28px}
+h2{font-size:20px;margin-bottom:10px}
+.card{background:var(--card);border-radius:12px;padding:18px;margin-top:16px;box-shadow:0 1px 2px rgba(0,26,36,.06)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+button,input,select{font:inherit;color:inherit}
+button{background:var(--ink);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;min-height:40px}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button:disabled{opacity:.5;cursor:default}
+input,select{border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-height:40px;background:#fff}
+label{display:inline-flex;align-items:center;gap:6px}
+.bar-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.muted{color:var(--muted);font-size:14px}
+.err{color:#a3261b;font-weight:600}
+.login{max-width:380px;margin:60px auto}
+.login form{display:grid;gap:10px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.tile{background:var(--card);border-radius:12px;padding:14px 16px}
+.tile b{display:block;font-size:30px;line-height:1.2}
+.tile span{color:var(--muted);font-size:14px}
+.grid2{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+@media (max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .axis{fill:var(--muted);font-size:12px}
+.chart rect.hit{fill:transparent}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:13px;padding:6px 9px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-110%);display:none;z-index:2}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:right;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:13px;cursor:pointer;white-space:nowrap;user-select:none}
+td.n,th.n{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
+.meter{display:inline-block;width:60px;height:6px;background:var(--line);border-radius:3px;vertical-align:middle;margin-inline-start:6px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--bar);border-radius:3px}
+.hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="login" class="card login" hidden>
+  <h1>סטטיסטיקת האתר</h1>
+  <p class="muted">כניסה למרצה בלבד.</p>
+  <form id="lf">
+    <input id="em" type="email" autocomplete="username" placeholder="אימייל" required>
+    <input id="pw" type="password" autocomplete="current-password" placeholder="סיסמה" required>
+    <button type="submit">כניסה</button>
+    <span id="lerr" class="err"></span>
+  </form>
+</section>
+
+<main id="app" hidden>
+  <div class="top">
+    <div><h1>סטטיסטיקת האתר</h1><span class="muted" id="who"></span></div>
+    <button class="ghost" id="out">יציאה</button>
+  </div>
+
+  <div class="card bar-row">
+    <label>מתאריך <input type="date" id="from"></label>
+    <label>עד <input type="date" id="to"></label>
+    <button class="ghost" data-days="7">7 ימים</button>
+    <button class="ghost" data-days="30">30 ימים</button>
+    <button class="ghost" data-days="all">הכל</button>
+    <button id="load">טען נתונים</button>
+    <span class="muted" id="status"></span>
+  </div>
+
+  <div class="card bar-row">
+    <label>שבוע <select id="wk"><option value="">כל השבועות</option></select></label>
+    <label>מכשיר <select id="dev"><option value="">הכל</option><option value="desktop">מחשב</option><option value="mobile">טלפון</option><option value="tablet">טאבלט</option></select></label>
+    <label><input type="checkbox" id="tests"> לכלול שורות בדיקה</label>
+    <button class="ghost" id="csv">הורדת כל השורות (CSV)</button>
+  </div>
+
+  <div class="tiles" style="margin-top:16px">
+    <div class="tile"><b id="k-vis">–</b><span>מבקרים שונים (דפדפנים)</span></div>
+    <div class="tile"><b id="k-ses">–</b><span>ביקורים</span></div>
+    <div class="tile"><b id="k-views">–</b><span>צפיות בדפים</span></div>
+    <div class="tile"><b id="k-hours">–</b><span>שעות פעילות (סה״כ)</span></div>
+    <div class="tile"><b id="k-min">–</b><span>דקות פעילות לממוצע מבקר</span></div>
+  </div>
+
+  <div class="grid2">
+    <section class="card"><h2>מבקרים שונים בכל יום</h2><div class="chart" id="c-day"></div></section>
+    <section class="card"><h2>צפיות לפי שעה ביום</h2><div class="chart" id="c-hour"></div><p class="muted" id="devs"></p></section>
+  </div>
+
+  <section class="card"><div class="hd"><h2>חומרים: מצגות, דפים ונגן</h2><button class="ghost" data-csv="t-mat">CSV</button></div><div class="tw"><table id="t-mat"></table></div></section>
+  <section class="card"><div class="hd"><h2>סרטונים והקראות: כמה נצפה</h2><button class="ghost" data-csv="t-vid">CSV</button></div>
+    <p class="muted">"נצפה" = שניות שהתנגנו באמת (דילוג לא נחשב), מצטבר לאורך ביקורים באותו דפדפן. לכל מבקר נלקח המקסימום.</p>
+    <div class="tw"><table id="t-vid"></table></div></section>
+  <section class="card"><div class="hd"><h2>לחיצות</h2><button class="ghost" data-csv="t-clk">CSV</button></div><div class="tw"><table id="t-clk"></table></div></section>
+  <section class="card"><div class="hd"><h2>לפי יום (טבלה)</h2><button class="ghost" data-csv="t-day">CSV</button></div><div class="tw"><table id="t-day"></table></div></section>
+  <p class="muted">"מבקר" = דפדפן אחד: מחשב משותף נספר פעם אחת, וסטודנט עם טלפון ומחשב נספר פעמיים. הזמנים בשעון המקומי של המחשב הזה.</p>
+</main>
+</div>
+
+<script>
+(function () {
+  var URL_ = 'https://udyvcrzgjdjsctpzmfkl.supabase.co', KEY = 'sb_publishable_RP9f8bUiI86gdPrvnPQ7tg_jRxA9lyw';
+  var COLS = ['id', 'created_at', 'visitor', 'session', 'type', 'page', 'target', 'label', 'seconds', 'percent', 'device', 'week'];
+  var demo = /[?&]demo\b/.test(location.search);
+  var token = null, rows = [], $ = function (id) { return document.getElementById(id); };
+  var store = {}; try { store = localStorage; } catch (e) {}
+
+  // ---------- sign-in (Supabase Auth, email + password; the session is remembered in this browser) ----------
+  function auth(grant, body) {
+    return fetch(URL_ + '/auth/v1/token?grant_type=' + grant, {
+      method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+    }).then(function (r) { return r.json().then(function (j) {
+      if (!r.ok) throw new Error(j.error_description || j.msg || j.message || ('שגיאה ' + r.status));
+      token = j.access_token; store.dash_rt = j.refresh_token; $('who').textContent = j.user && j.user.email || '';
+      return j;
+    }); });
+  }
+  function showLogin(msg) { $('app').hidden = true; $('login').hidden = false; $('lerr').textContent = msg || ''; }
+  function showApp() { $('login').hidden = true; $('app').hidden = false; }
+  $('lf').addEventListener('submit', function (e) {
+    e.preventDefault(); $('lerr').textContent = '';
+    auth('password', { email: $('em').value.trim(), password: $('pw').value })
+      .then(function () { $('pw').value = ''; showApp(); load(); })
+      .catch(function (err) { $('lerr').textContent = err.message; });
+  });
+  $('out').addEventListener('click', function () {
+    var t = token; token = null; delete store.dash_rt;
+    if (t) fetch(URL_ + '/auth/v1/logout', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + t } }).catch(function () {});
+    showLogin();
+  });
+
+  // ---------- data ----------
+  function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function setDays(n) {
+    var to = new Date(); $('to').value = iso(to);
+    $('from').value = n === 'all' ? '2026-09-01' : iso(new Date(to.getTime() - (n - 1) * 864e5));
+  }
+  document.querySelectorAll('[data-days]').forEach(function (b) {
+    b.addEventListener('click', function () { setDays(b.dataset.days === 'all' ? 'all' : +b.dataset.days); load(); });
+  });
+  $('load').addEventListener('click', load);
+
+  function page(lastId, from, to, retried) {
+    var q = '/rest/v1/events?select=' + COLS.join(',') + '&id=gt.' + lastId +
+            '&created_at=gte.' + encodeURIComponent(from) + '&created_at=lt.' + encodeURIComponent(to) + '&order=id&limit=1000';
+    return fetch(URL_ + q, { headers: { apikey: KEY, Authorization: 'Bearer ' + token } }).then(function (r) {
+      if (r.status === 401 && !retried && store.dash_rt) return auth('refresh_token', { refresh_token: store.dash_rt }).then(function () { return page(lastId, from, to, true); });
+      if (!r.ok) return r.text().then(function (t) { throw new Error('שגיאה ' + r.status + ': ' + t); });
+      return r.json();
+    });
+  }
+  function load() {
+    var from = new Date($('from').value + 'T00:00:00'), to = new Date($('to').value + 'T00:00:00');
+    to = new Date(to.getTime() + 864e5);
+    $('load').disabled = true; $('status').textContent = 'טוען…'; rows = [];
+    if (demo) { rows = fake(from, to); done(); return; }
+    (function next(lastId) {
+      page(lastId, from.toISOString(), to.toISOString()).then(function (batch) {
+        rows = rows.concat(batch); $('status').textContent = 'טוען… ' + rows.length + ' שורות';
+        if (batch.length === 1000) next(batch[batch.length - 1].id); else done();
+      }).catch(function (err) { $('load').disabled = false; $('status').innerHTML = '<span class="err">' + esc(err.message) + '</span>'; });
+    })(0);
+    function done() {
+      $('load').disabled = false;
+      $('status').textContent = rows.length + ' שורות נטענו · ' + new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+      var weeks = {}; rows.forEach(function (r) { if (r.week) weeks[r.week] = 1; });
+      var sel = $('wk'), cur = sel.value;
+      sel.innerHTML = '<option value="">כל השבועות</option>' + Object.keys(weeks).sort(function (a, b) { return a - b; })
+        .map(function (w) { return '<option value="' + w + '">שבוע ' + w + '</option>'; }).join('');
+      sel.value = weeks[cur] ? cur : '';
+      render();
+    }
+  }
+  ['wk', 'dev', 'tests'].forEach(function (id) { $(id).addEventListener('change', render); });
+
+  function filtered() {
+    var w = $('wk').value, dv = $('dev').value, t = $('tests').checked;
+    return rows.filter(function (r) {
+      return (t || !/^test-/.test(r.visitor)) && (!w || String(r.week) === w) && (!dv || r.device === dv);
+    });
+  }
+
+  // ---------- summaries ----------
+  function uniq(a) { var s = {}; a.forEach(function (x) { s[x] = 1; }); return Object.keys(s).length; }
+  function median(a) { if (!a.length) return 0; a = a.slice().sort(function (x, y) { return x - y; }); var m = a.length >> 1; return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2; }
+  function fmt(n, d) { return (+n).toLocaleString('he-IL', { maximumFractionDigits: d || 0 }); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function kindOf(r) { return r.page === 'play.html' ? 'נגן' : /^decks\//.test(r.page) ? 'מצגת' : 'דף באתר'; }
+  function keyOf(r) { return r.page === 'play.html' ? r.target || 'play.html' : r.page; }
+
+  function render() {
+    var R = filtered();
+    var views = R.filter(function (r) { return r.type === 'view'; });
+    var time = R.filter(function (r) { return r.type === 'time'; });
+    var vis = uniq(R.map(function (r) { return r.visitor; }));
+    var secs = time.reduce(function (s, r) { return s + (r.seconds || 0); }, 0);
+    $('k-vis').textContent = fmt(vis);
+    $('k-ses').textContent = fmt(uniq(R.map(function (r) { return r.session; })));
+    $('k-views').textContent = fmt(views.length);
+    $('k-hours').textContent = fmt(secs / 3600, 1);
+    $('k-min').textContent = vis ? fmt(secs / 60 / vis, 1) : '–';
+
+    // per day
+    var days = {}, d0 = new Date($('from').value + 'T00:00:00'), d1 = new Date($('to').value + 'T00:00:00');
+    for (var d = new Date(d0); d <= d1; d.setDate(d.getDate() + 1)) days[iso(d)] = { v: {}, views: 0, secs: 0 };
+    R.forEach(function (r) {
+      var k = iso(new Date(r.created_at)); if (!days[k]) return;
+      days[k].v[r.visitor] = 1; if (r.type === 'view') days[k].views++; if (r.type === 'time') days[k].secs += r.seconds || 0;
+    });
+    var dayList = Object.keys(days).sort().map(function (k) {
+      var x = days[k], p = k.split('-');
+      return { k: k, label: +p[2] + '.' + +p[1], n: Object.keys(x.v).length, views: x.views, min: x.secs / 60 };
+    });
+    bars($('c-day'), dayList.map(function (x) {
+      return { label: x.label, value: x.n, tip: x.label + ': ' + fmt(x.n) + ' מבקרים · ' + fmt(x.views) + ' צפיות · ' + fmt(x.min) + ' דק׳' };
+    }));
+    table('t-day', [['יום', 0], ['מבקרים', 1], ['צפיות', 1], ['דקות פעילות', 1]],
+      dayList.slice().reverse().map(function (x) { return [x.k, x.n, x.views, Math.round(x.min)]; }));
+
+    // per hour of day
+    var hours = []; for (var h = 0; h < 24; h++) hours.push(0);
+    views.forEach(function (r) { hours[new Date(r.created_at).getHours()]++; });
+    bars($('c-hour'), hours.map(function (n, h) { return { label: h % 3 ? '' : String(h), value: n, tip: h + ':00–' + h + ':59 · ' + fmt(n) + ' צפיות' }; }));
+    var dv = {}; R.forEach(function (r) { (dv[r.device || '?'] = dv[r.device || '?'] || {})[r.visitor] = 1; });
+    var dn = { desktop: 'מחשב', mobile: 'טלפון', tablet: 'טאבלט' };
+    $('devs').textContent = 'מבקרים לפי מכשיר: ' + Object.keys(dv).map(function (k) { return (dn[k] || k) + ' ' + fmt(Object.keys(dv[k]).length); }).join(' · ');
+
+    // materials
+    var mat = {};
+    R.forEach(function (r) {
+      if (r.type !== 'view' && r.type !== 'time') return;
+      var k = keyOf(r), m = mat[k] || (mat[k] = { name: '', kind: kindOf(r), views: 0, v: {}, secs: 0 });
+      if (r.type === 'view') { m.views++; m.v[r.visitor] = 1; if (r.label && !m.name) m.name = r.label; }
+      else m.secs += r.seconds || 0;
+    });
+    table('t-mat', [['פריט', 0], ['סוג', 0], ['צפיות', 1], ['מבקרים', 1], ['דקות (סה״כ)', 1], ['דקות למבקר', 1]],
+      Object.keys(mat).map(function (k) {
+        var m = mat[k], n = Object.keys(m.v).length;
+        return [m.name || k, m.kind, m.views, n, Math.round(m.secs / 60), n ? +(m.secs / 60 / n).toFixed(1) : 0];
+      }).sort(function (a, b) { return b[3] - a[3]; }));
+
+    // videos: per visitor the highest share reached
+    var vid = {};
+    R.forEach(function (r) {
+      if (r.type !== 'video') return;
+      var v = vid[r.target] || (vid[r.target] = { name: r.label || r.target, best: {}, secs: {} });
+      v.best[r.visitor] = Math.max(v.best[r.visitor] || 0, r.percent || 0);
+      v.secs[r.visitor] = Math.max(v.secs[r.visitor] || 0, r.seconds || 0);
+    });
+    table('t-vid', [['סרטון', 0], ['צופים', 1], ['חציון % נצפה', 2], ['הגיעו ל-80%+', 2], ['דקות נצפו (סה״כ)', 1]],
+      Object.keys(vid).map(function (k) {
+        var v = vid[k], p = Object.keys(v.best).map(function (x) { return v.best[x]; });
+        var s = Object.keys(v.secs).reduce(function (a, x) { return a + v.secs[x]; }, 0);
+        return [v.name, p.length, Math.round(median(p)), Math.round(100 * p.filter(function (x) { return x >= 80; }).length / p.length), Math.round(s / 60)];
+      }).sort(function (a, b) { return b[1] - a[1]; }));
+
+    // clicks
+    var clk = {};
+    R.forEach(function (r) {
+      if (r.type !== 'click') return;
+      var c = clk[r.target] || (clk[r.target] = { name: r.label || r.target, n: 0, v: {} });
+      c.n++; c.v[r.visitor] = 1;
+    });
+    table('t-clk', [['על מה', 0], ['יעד', 0], ['לחיצות', 1], ['מבקרים', 1]],
+      Object.keys(clk).map(function (k) { return [clk[k].name, k, clk[k].n, Object.keys(clk[k].v).length]; })
+        .sort(function (a, b) { return b[2] - a[2]; }));
+  }
+
+  // ---------- drawing ----------
+  function bars(el, data) {
+    var W = 640, H = 220, L = 34, B = 24, T = 8, n = data.length || 1, max = Math.max.apply(null, data.map(function (x) { return x.value; }).concat([1]));
+    var step = Math.pow(10, Math.floor(Math.log10(max))), top = Math.ceil(max / step) * step; if (top / step > 5) step *= 2;
+    var bw = (W - L) / n, gap = Math.min(2, bw * .2), svg = '';
+    for (var g = 0; g <= top; g += step) {
+      var y = T + (H - T - B) * (1 - g / top);
+      svg += '<line class="grid" x1="' + L + '" x2="' + W + '" y1="' + y + '" y2="' + y + '"/><text class="axis" x="' + (L - 6) + '" y="' + (y + 4) + '" text-anchor="end">' + fmt(g) + '</text>';
+    }
+    var every = Math.ceil(n / 12);
+    data.forEach(function (x, i) {
+      var h = (H - T - B) * x.value / top, xx = L + i * bw + gap / 2, w = Math.max(1, bw - gap), r = Math.min(4, w / 2, h);
+      if (h > 0) svg += '<path class="b" fill="var(--bar)" d="M' + xx + ',' + (H - B) + 'v' + (-(h - r)) + 'q0,' + (-r) + ' ' + r + ',' + (-r) + 'h' + (w - 2 * r) + 'q' + r + ',0 ' + r + ',' + r + 'v' + (h - r) + 'z"/>';
+      svg += '<rect class="hit" x="' + (L + i * bw) + '" y="' + T + '" width="' + bw + '" height="' + (H - T - B) + '" data-i="' + i + '"/>';
+      if (x.label && (i % every === 0)) svg += '<text class="axis" x="' + (xx + w / 2) + '" y="' + (H - 6) + '" text-anchor="middle">' + esc(x.label) + '</text>';
+    });
+    el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(data.map(function (x) { return x.tip; }).join('; ')) + '" style="direction:ltr">' + svg + '</svg><div class="tip"></div>';
+    var tip = el.querySelector('.tip'), s = el.querySelector('svg');
+    s.addEventListener('mousemove', function (e) {
+      var t = e.target.closest('rect.hit'); if (!t) { tip.style.display = 'none'; return; }
+      var box = el.getBoundingClientRect(); tip.textContent = data[+t.dataset.i].tip; tip.style.display = 'block';
+      tip.style.left = (e.clientX - box.left) + 'px'; tip.style.top = (e.clientY - box.top) + 'px';
+    });
+    s.addEventListener('mouseleave', function () { tip.style.display = 'none'; });
+  }
+
+  var tables = {};
+  function table(id, cols, data) {
+    tables[id] = { cols: cols, data: data, sort: tables[id] ? tables[id].sort : null };
+    draw(id);
+  }
+  function draw(id) {
+    var t = tables[id], data = t.data.slice();
+    if (t.sort) data.sort(function (a, b) { var x = a[t.sort.i], y = b[t.sort.i]; return (x > y ? 1 : x < y ? -1 : 0) * t.sort.dir; });
+    var html = '<thead><tr>' + t.cols.map(function (c, i) { return '<th class="' + (c[1] ? 'n' : '') + '" data-i="' + i + '">' + esc(c[0]) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      (data.length ? data.map(function (r) {
+        return '<tr>' + r.map(function (v, i) {
+          var c = t.cols[i];
+          if (c[1] === 2) return '<td class="n">' + fmt(v) + '%<span class="meter"><i style="width:' + Math.min(100, v) + '%"></i></span></td>';
+          return '<td class="' + (c[1] ? 'n' : '') + '">' + (c[1] ? fmt(v, 1) : esc(v)) + '</td>';
+        }).join('') + '</tr>';
+      }).join('') : '<tr><td colspan="' + t.cols.length + '" class="muted">אין נתונים בטווח הזה</td></tr>') + '</tbody>';
+    var el = $(id); el.innerHTML = html;
+    el.querySelectorAll('th').forEach(function (th) {
+      th.addEventListener('click', function () {
+        var i = +th.dataset.i; t.sort = { i: i, dir: t.sort && t.sort.i === i ? -t.sort.dir : (t.cols[i][1] ? -1 : 1) }; draw(id);
+      });
+    });
+  }
+
+  // ---------- CSV (with a BOM so Excel shows Hebrew correctly) ----------
+  function csv(name, head, data) {
+    var q = function (v) { v = v == null ? '' : String(v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    var text = '﻿' + [head].concat(data).map(function (r) { return r.map(q).join(','); }).join('\r\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
+    a.download = name + '_' + $('from').value + '_' + $('to').value + '.csv'; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+  $('csv').addEventListener('click', function () {
+    csv('events', COLS.concat(['local_time']), filtered().map(function (r) {
+      return COLS.map(function (c) { return r[c]; }).concat([new Date(r.created_at).toLocaleString('sv-SE')]);
+    }));
+  });
+  document.querySelectorAll('[data-csv]').forEach(function (b) {
+    b.addEventListener('click', function () { var t = tables[b.dataset.csv]; if (t) csv(b.dataset.csv.slice(2), t.cols.map(function (c) { return c[0]; }), t.data); });
+  });
+
+  // ---------- demo data (?demo), to see the page without signing in ----------
+  function fake(from, to) {
+    var out = [], id = 0, pages = ['index.html', 'week-1.html', 'decks/W1_V1.html', 'decks/W1_V2.html', 'decks/W1_V3.html', 'play.html'];
+    for (var v = 0; v < 60; v++) {
+      var vis = 'v' + v, dev = ['desktop', 'mobile', 'tablet'][v % 7 === 0 ? 2 : v % 3 === 0 ? 1 : 0];
+      for (var s = 0; s < 1 + v % 5; s++) {
+        var t = new Date(from.getTime() + Math.random() * (to - from)), ses = vis + 's' + s;
+        pages.forEach(function (p, i) {
+          if (Math.random() < .4) return;
+          var base = { visitor: vis, session: ses, page: p, device: dev, week: 1, created_at: new Date(t.getTime() + i * 6e4).toISOString() };
+          var src = p === 'play.html' ? 'files/W1_V' + (1 + i % 3) + '/W1V' + (1 + i % 3) + '.mp4' : null;
+          out.push(Object.assign({ id: ++id, type: 'view', label: p === 'play.html' ? 'הקלטה ' + (1 + i % 3) : 'דף ' + p, target: src }, base));
+          out.push(Object.assign({ id: ++id, type: 'time', seconds: Math.round(Math.random() * 900), target: src }, base));
+          if (src) { var pc = Math.round(Math.random() * 100); out.push(Object.assign({ id: ++id, type: 'video', target: src, label: 'הקלטה ' + (1 + i % 3), percent: pc, seconds: pc * 7 }, base)); }
+          if (Math.random() < .3) out.push(Object.assign({ id: ++id, type: 'click', target: 'files/W1_H1/W1_H1 דף היסטוריה.pdf', label: 'יעקב ברנולי' }, base));
+        });
+      }
+    }
+    return out;
+  }
+
+  // ---------- start ----------
+  setDays(7);
+  if (demo) { $('who').textContent = 'הדגמה: נתונים מומצאים'; showApp(); load(); }
+  else if (store.dash_rt) auth('refresh_token', { refresh_token: store.dash_rt }).then(function () { showApp(); load(); }).catch(function () { showLogin(); });
+  else showLogin();
+})();
+</script>
+</body>
+</html>
