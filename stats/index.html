@@ -106,7 +106,7 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
   </div>
 
   <div class="card bar-row">
-    <label>שבוע <select id="wk"><option value="">כל השבועות</option></select></label>
+    <label>חומרי שבוע <select id="wk"><option value="">כל השבועות</option></select></label>
     <label>מכשיר <select id="dev"><option value="">הכל</option><option value="desktop">מחשב</option><option value="mobile">טלפון</option><option value="tablet">טאבלט</option></select></label>
     <label><input type="checkbox" id="tests"> לכלול שורות בדיקה</label>
     <button class="ghost" id="csv">הורדת כל השורות (CSV)</button>
@@ -273,13 +273,14 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
     });
     var dayList = Object.keys(days).sort().map(function (k) {
       var x = days[k], p = k.split('-');
-      return { k: k, label: +p[2] + '.' + +p[1], n: Object.keys(x.v).length, views: x.views, min: x.secs / 60 };
+      var dd = new Date(k + 'T00:00:00');
+      return { k: k, label: +p[2] + '.' + +p[1], week: semWeek(dd), day: dayName(dd), n: Object.keys(x.v).length, views: x.views, min: x.secs / 60 };
     });
     bars($('c-day'), dayList.map(function (x) {
-      return { label: x.label, value: x.n, tip: x.label + ': ' + fmt(x.n) + ' מבקרים · ' + fmt(x.views) + ' צפיות · ' + fmt(x.min) + ' דק׳' };
+      return { label: x.label, value: x.n, tip: (x.week ? x.week + ' · ' : '') + x.label + ': ' + fmt(x.n) + ' מבקרים · ' + fmt(x.views) + ' צפיות · ' + fmt(x.min) + ' דק׳' };
     }));
-    table('t-day', [['יום', 0], ['מבקרים', 1], ['צפיות', 1], ['דקות פעילות', 1]],
-      dayList.slice().reverse().map(function (x) { return [x.k, x.n, x.views, Math.round(x.min)]; }));
+    table('t-day', [['שבוע', 0], ['יום', 0], ['תאריך', 0], ['מבקרים', 1], ['צפיות', 1], ['דקות פעילות', 1]],
+      dayList.slice().reverse().map(function (x) { return [x.week, x.day, x.k, x.n, x.views, Math.round(x.min)]; }));
 
     // per hour of day
     var hours = []; for (var h = 0; h < 24; h++) hours.push(0);
@@ -329,6 +330,22 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
       Object.keys(clk).map(function (k) { return [clk[k].name, k, clk[k].n, Object.keys(clk[k].v).length]; })
         .sort(function (a, b) { return b[2] - a[2]; }));
   }
+
+  // ---------- semester weeks: week N = Sunday to Saturday of the week of lecture N; before week 1 = week 0 ----------
+  var SEM = null;
+  fetch('../assets/weeks.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
+    SEM = j.weeks.map(function (w) { var d = new Date(w.lecture + 'T00:00:00'); d.setDate(d.getDate() - d.getDay()); return { n: w.n, start: d }; });
+    if (rows.length) render();
+  }).catch(function () {});
+  function semWeek(d) {
+    if (!SEM || !SEM.length) return '';
+    var cur = null;
+    SEM.forEach(function (w) { if (d >= w.start) cur = w; });
+    if (!cur) return 'שבוע 0';
+    if (cur === SEM[SEM.length - 1] && d - cur.start >= 7 * 864e5) return 'תקופת הבחינות';
+    return 'שבוע ' + cur.n;
+  }
+  function withWeek(d, text) { var w = semWeek(d); return w ? w + ' · ' + text : text; }
 
   // ---------- second tab: visits, and single events by time ----------
   var onlyVisitor = null, view = 'visits', order = 1, shown = 300, names = {};
@@ -394,7 +411,7 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
   function renderLog() {
     learnNames();
     var R = filtered(), out = [], lastDay = '', total;
-    function dayHead(d) { var k = iso(d); if (k !== lastDay) { lastDay = k; out.push('<h3 class="day">' + esc(dayName(d)) + '</h3>'); } }
+    function dayHead(d) { var k = iso(d); if (k !== lastDay) { lastDay = k; out.push('<h3 class="day">' + esc(withWeek(d, dayName(d))) + '</h3>'); } }
     function vbtn(v) { return '<button class="vcode vc" data-v="' + esc(v) + '" title="הצג רק את המבקר הזה">' + esc(vcode(v)) + '</button>'; }
     if (view === 'events') {
       var E = R.slice().sort(function (a, b) { return (a.id - b.id) * order; }); total = E.length;
@@ -419,9 +436,9 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
     $('more').hidden = total <= shown;
   }
   $('csv-visits').addEventListener('click', function () {
-    csv('visits', ['visitor', 'session', 'start', 'end', 'active_seconds', 'device', 'events', 'pages'],
+    csv('visits', ['semester_week', 'visitor', 'session', 'start', 'end', 'active_seconds', 'device', 'events', 'pages'],
       visitsOf(filtered()).sort(function (a, b) { return a.start - b.start; }).map(function (v) {
-        return [v.visitor, v.session, v.start.toLocaleString('sv-SE'), v.end.toLocaleString('sv-SE'), v.secs, DEV[v.device] || v.device, v.ev.length, v.path.join(' ← ')];
+        return [semWeek(v.start), v.visitor, v.session, v.start.toLocaleString('sv-SE'), v.end.toLocaleString('sv-SE'), v.secs, DEV[v.device] || v.device, v.ev.length, v.path.join(' ← ')];
       }));
   });
 
@@ -484,8 +501,9 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
     setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
   }
   $('csv').addEventListener('click', function () {
-    csv('events', COLS.concat(['local_time']), filtered().map(function (r) {
-      return COLS.map(function (c) { return r[c]; }).concat([new Date(r.created_at).toLocaleString('sv-SE')]);
+    csv('events', COLS.concat(['local_time', 'semester_week']), filtered().map(function (r) {
+      var d = new Date(r.created_at);
+      return COLS.map(function (c) { return r[c]; }).concat([d.toLocaleString('sv-SE'), semWeek(d)]);
     }));
   });
   document.querySelectorAll('[data-csv]').forEach(function (b) {

@@ -87,6 +87,12 @@ def track_tag(cfg, p, ctx='', week=None):
     return f'<script src="{p}assets/track.js" data-url="{esc(t["url"])}" data-key="{esc(t["key"])}"{attrs} defer></script>'
 
 
+def weeks_json(data):
+    """Lecture dates per week (already public on the site) and the exam date, for the stats dashboard."""
+    weeks = [{'n': w['n'], 'lecture': w['lecture']} for w in data['weeks'] if w.get('lecture')]
+    return json.dumps({'weeks': weeks, 'exam': data['course'].get('exam')}, ensure_ascii=False) + '\n'
+
+
 def pill_icon(h):
     h = h.lower()
     return PILL_PLAY if (h.endswith(('.mp4', '.webm', '.mov')) or 'youtu' in h or 'vimeo' in h) else PILL_AUDIO if h.endswith(('.mp3', '.m4a', '.wav', '.ogg')) else PILL_DOC
@@ -862,6 +868,7 @@ def main():
     if cfg.get('tracking', {}).get('on'):
         files.copy(SITE / 'track.js', 'assets/track.js')
     files.write(PLAYER.replace('<!--TRACK-->', track_tag(cfg, '')), 'play.html')
+    files.write(weeks_json(data), 'assets/weeks.json')  # the stats dashboard labels each day with its semester week
     removed = files.prune(['assets', 'decks', 'files', staff_dir], ['week-*.html'])  # play.html is always rewritten
     print(f'files written or updated: {files.changed}; removed: {removed}')
     for rel, a_, b_ in files.squeezed:
