@@ -77,6 +77,11 @@
     "W1.H2": "קטעים מחלק ד"
   },
   "staff_dir": "mylab",
+  "tracking": {
+    "on": true,
+    "url": "https://udyvcrzgjdjsctpzmfkl.supabase.co",
+    "key": "sb_publishable_RP9f8bUiI86gdPrvnPQ7tg_jRxA9lyw"
+  },
   "task_texts": {
     "1": {
       "reading": "קריאת דף ההיסטוריה והמקור בנושא יעקב ברנולי.",

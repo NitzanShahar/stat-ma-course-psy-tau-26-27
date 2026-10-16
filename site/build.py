@@ -77,6 +77,16 @@ PILL_AUDIO = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke
 PILL_DOC = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 2.5h7l3.5 3.5v11.5H5z"/></svg>'
 
 
+def track_tag(cfg, p, ctx='', week=None):
+    """The anonymous statistics script (site/track.js), when "tracking" is on in site.json. Off = no tag anywhere."""
+    t = cfg.get('tracking', {})
+    if not t.get('on'):
+        return ''
+    attrs = f' data-ctx="{ctx}"' if ctx else ''
+    attrs += f' data-week="{week}"' if week else ''
+    return f'<script src="{p}assets/track.js" data-url="{esc(t["url"])}" data-key="{esc(t["key"])}"{attrs} defer></script>'
+
+
 def pill_icon(h):
     h = h.lower()
     return PILL_PLAY if (h.endswith(('.mp4', '.webm', '.mov')) or 'youtu' in h or 'vimeo' in h) else PILL_AUDIO if h.endswith(('.mp3', '.m4a', '.wav', '.ogg')) else PILL_DOC
@@ -204,6 +214,7 @@ PLAYER = """<!doctype html>
       back.addEventListener('click',function(e){ if(history.length>1&&document.referrer){ e.preventDefault(); history.back(); } }); } }catch(e){}
 })();
 </script>
+<!--TRACK-->
 </body>
 </html>
 """
@@ -321,6 +332,10 @@ class Site:
         text = deck.read_text(encoding='utf-8')
         if f'decks/{deck.name}' not in self.files.need:
             out = text
+            tag = track_tag(self.cfg, '../')
+            if tag and '</body>' in out:  # decks are shared by both versions; the script skips tabs that came from the staff version
+                i = out.rindex('</body>')
+                out = out[:i] + tag + '\n' + out[i:]
             fdir = deck.with_name(deck.stem + '_files')
             if fdir.is_dir():
                 libs = fdir / 'libs'
@@ -682,7 +697,7 @@ class Site:
                 f'<p class="fr sub">השיעור הראשון: {day_dm(c["firstLecture"])}, {esc(c["lecture"].split(",")[-1].strip())}</p>'
                 f'<p class="unitline">חומרי הקורס יופיעו כאן שבוע אחרי שבוע.</p></div></header></article>')
 
-    def page(self, title, unit, body, tasks=''):
+    def page(self, title, unit, body, tasks='', week=None):
         ink, line, tint = UNIT_COLORS.get(unit, UNIT_COLORS['0'])
         c = self.data['course']
         robots = '<meta name="robots" content="noindex, nofollow">\n' if self.staff else ''
@@ -692,6 +707,9 @@ class Site:
             gate = ('<details class="tlog"><summary>כניסת מתרגלים</summary><form class="tlogf">'
                     '<input type="password" autocomplete="off" aria-label="סיסמה" placeholder="סיסמה">'
                     '<button type="submit">כניסה</button><span class="terr" hidden>סיסמה שגויה</span></form></details>')
+        # statistics: public pages only; a staff page marks its tab so the decks and player opened from it are not counted
+        track = ("<script>try{sessionStorage.setItem('cv_staff','1')}catch(e){}</script>" if self.staff
+                 else track_tag(self.cfg, self.p, 'site', week))
         lic = 'חומרי הקורס ברישיון <a class="ln" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a>'
         return f'''<!doctype html>
 <html lang="he" dir="rtl">
@@ -778,6 +796,7 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
   }});
 }});
 </script>
+{track}
 </body>
 </html>
 '''
@@ -794,7 +813,7 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
         tasks = self.tasks(next((x for x in opened if x['n'] == cur), None))
         for w in opened:
             body = self.menu(w['n'], cur, open_ns) + self.week_article(w, open_ns)
-            self.files.write(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body, tasks), f'{pre}week-{w["n"]}.html')
+            self.files.write(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body, tasks, w['n']), f'{pre}week-{w["n"]}.html')
         if cur:
             w = next(x for x in opened if x['n'] == cur)
             body = self.menu(cur, cur, open_ns) + self.week_article(w, open_ns)
@@ -802,7 +821,7 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
         else:
             body = self.menu(None, None, []) + self.welcome()
             unit = '0'
-        self.files.write(self.page(course, unit, body, tasks), f'{pre}index.html')
+        self.files.write(self.page(course, unit, body, tasks, cur), f'{pre}index.html')
         print(f'{"full" if self.staff else "public"}: {len(opened)} week page(s) in /{self.folder}; current week: {cur}')
 
 
@@ -840,7 +859,9 @@ def main():
              Site(slides, cfg, data, files, everything, folder=staff_dir, staff=True, today=today)]
     for s in sites:
         s.build()
-    files.write(PLAYER, 'play.html')
+    if cfg.get('tracking', {}).get('on'):
+        files.copy(SITE / 'track.js', 'assets/track.js')
+    files.write(PLAYER.replace('<!--TRACK-->', track_tag(cfg, '')), 'play.html')
     removed = files.prune(['assets', 'decks', 'files', staff_dir], ['week-*.html'])  # play.html is always rewritten
     print(f'files written or updated: {files.changed}; removed: {removed}')
     for rel, a_, b_ in files.squeezed:
