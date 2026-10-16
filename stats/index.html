@@ -47,6 +47,31 @@ td.n,th.n{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
 .meter{display:inline-block;width:60px;height:6px;background:var(--line);border-radius:3px;vertical-align:middle;margin-inline-start:6px;overflow:hidden}
 .meter i{display:block;height:100%;background:var(--bar);border-radius:3px}
 .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;margin-top:16px;border-bottom:2px solid var(--line)}
+.tabs button{background:transparent;color:var(--muted);border-radius:8px 8px 0 0;font-weight:600;padding:10px 18px;margin-bottom:-2px;border-bottom:2px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{background:#fff;color:var(--ink);border-radius:0;min-height:38px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#e3ecf5;border-radius:16px;padding:4px 6px 4px 12px;font-size:14px}
+.chip button{min-height:28px;padding:0 9px;background:transparent;color:var(--ink);font-size:16px}
+.vcode{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:#eef1f1;border:0;border-radius:5px;padding:1px 6px;color:var(--ink);min-height:0;cursor:pointer;direction:ltr}
+.vcode:hover{background:#dbe3e6}
+.day{font-family:"Frank Ruhl Libre",serif;font-size:18px;margin:22px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.day:first-child{margin-top:4px}
+.ev{display:grid;grid-template-columns:72px 64px 1fr;gap:10px;padding:5px 0;border-bottom:1px solid #f0f3f4;font-size:15px;align-items:baseline}
+.ev time,.vs time{font-variant-numeric:tabular-nums;color:var(--muted);direction:ltr;text-align:right}
+.ev .what b{font-weight:600}
+.k{color:var(--muted);font-size:13px}
+details.vs{border-bottom:1px solid var(--line)}
+details.vs summary{display:grid;grid-template-columns:110px 64px 110px 1fr;gap:10px;padding:9px 0;cursor:pointer;list-style:none;align-items:baseline}
+details.vs summary::-webkit-details-marker{display:none}
+details.vs summary .dur{font-weight:700;font-variant-numeric:tabular-nums}
+details.vs summary .path{color:var(--muted);font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+details.vs[open] summary .path{white-space:normal}
+details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:0 6px 10px 0}
+@media (max-width:640px){.ev{grid-template-columns:64px 1fr}.ev .vc,.ev>span:empty{display:none}
+  details.vs summary{grid-template-columns:96px 1fr 70px}details.vs summary .path{grid-column:1/-1}}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -87,6 +112,12 @@ td.n,th.n{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
     <button class="ghost" id="csv">הורדת כל השורות (CSV)</button>
   </div>
 
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="sum" aria-selected="true">סיכום</button>
+    <button role="tab" data-tab="log" aria-selected="false">ביקורים ואירועים</button>
+  </nav>
+
+  <div id="tab-sum">
   <div class="tiles" style="margin-top:16px">
     <div class="tile"><b id="k-vis">–</b><span>מבקרים שונים (דפדפנים)</span></div>
     <div class="tile"><b id="k-ses">–</b><span>ביקורים</span></div>
@@ -106,6 +137,25 @@ td.n,th.n{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
     <div class="tw"><table id="t-vid"></table></div></section>
   <section class="card"><div class="hd"><h2>לחיצות</h2><button class="ghost" data-csv="t-clk">CSV</button></div><div class="tw"><table id="t-clk"></table></div></section>
   <section class="card"><div class="hd"><h2>לפי יום (טבלה)</h2><button class="ghost" data-csv="t-day">CSV</button></div><div class="tw"><table id="t-day"></table></div></section>
+  </div>
+
+  <div id="tab-log" hidden>
+    <div class="card bar-row">
+      <span class="seg" role="group" aria-label="תצוגה">
+        <button data-view="visits" aria-pressed="true">ביקורים</button>
+        <button data-view="events" aria-pressed="false">כל האירועים</button>
+      </span>
+      <span class="seg" role="group" aria-label="סדר">
+        <button data-order="1" aria-pressed="true">מהמוקדם למאוחר</button>
+        <button data-order="-1" aria-pressed="false">החדשים למעלה</button>
+      </span>
+      <span id="vchip" class="chip" hidden>מבקר <b id="vchip-t" class="vcode"></b><button id="vchip-x" aria-label="הצג את כל המבקרים">✕</button></span>
+      <button class="ghost" id="csv-visits">ביקורים (CSV)</button>
+      <span class="muted" id="logcount"></span>
+    </div>
+    <section class="card"><div id="log"></div><button class="ghost" id="more" hidden>הצג עוד</button></section>
+    <p class="muted">השעה של כניסה ולחיצה מדויקת. "זמן" נרשם כשיוצאים מהדף (או כל 5 דקות), ולכן השעה שלו היא סוף פרק הזמן. "ביקור" = טאב אחד בדפדפן, מהפתיחה ועד הסגירה. לחיצה על קוד של מבקר מציגה רק אותו (גם בלשונית הסיכום).</p>
+  </div>
   <p class="muted">"מבקר" = דפדפן אחד: מחשב משותף נספר פעם אחת, וסטודנט עם טלפון ומחשב נספר פעמיים. הזמנים בשעון המקומי של המחשב הזה.</p>
 </main>
 </div>
@@ -189,7 +239,7 @@ td.n,th.n{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
   function filtered() {
     var w = $('wk').value, dv = $('dev').value, t = $('tests').checked;
     return rows.filter(function (r) {
-      return (t || !/^test-/.test(r.visitor)) && (!w || String(r.week) === w) && (!dv || r.device === dv);
+      return (t || !/^test-/.test(r.visitor)) && (!w || String(r.week) === w) && (!dv || r.device === dv) && (!onlyVisitor || r.visitor === onlyVisitor);
     });
   }
 
@@ -202,6 +252,7 @@ td.n,th.n{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
   function keyOf(r) { return r.page === 'play.html' ? r.target || 'play.html' : r.page; }
 
   function render() {
+    renderLog();
     var R = filtered();
     var views = R.filter(function (r) { return r.type === 'view'; });
     var time = R.filter(function (r) { return r.type === 'time'; });
@@ -278,6 +329,101 @@ td.n,th.n{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
       Object.keys(clk).map(function (k) { return [clk[k].name, k, clk[k].n, Object.keys(clk[k].v).length]; })
         .sort(function (a, b) { return b[2] - a[2]; }));
   }
+
+  // ---------- second tab: visits, and single events by time ----------
+  var onlyVisitor = null, view = 'visits', order = 1, shown = 300, names = {};
+  var COURSE = 'סטטיסטיקה ושיטות מחקר', DEV = { desktop: 'מחשב', mobile: 'טלפון', tablet: 'טאבלט' };
+  document.querySelectorAll('[data-tab]').forEach(function (b) { b.addEventListener('click', function () { tab(b.dataset.tab); }); });
+  function tab(t) {
+    document.querySelectorAll('[data-tab]').forEach(function (x) { x.setAttribute('aria-selected', String(x.dataset.tab === t)); });
+    $('tab-sum').hidden = t !== 'sum'; $('tab-log').hidden = t !== 'log';
+    try { history.replaceState(null, '', location.pathname + location.search + (t === 'log' ? '#log' : '')); } catch (e) {}
+  }
+  function seg(sel, key, val) { document.querySelectorAll(sel).forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset[key] === val)); }); }
+  document.querySelectorAll('[data-view]').forEach(function (b) {
+    b.addEventListener('click', function () { view = b.dataset.view; shown = 300; seg('[data-view]', 'view', view); renderLog(); });
+  });
+  document.querySelectorAll('[data-order]').forEach(function (b) {
+    b.addEventListener('click', function () { order = +b.dataset.order; shown = 300; seg('[data-order]', 'order', b.dataset.order); renderLog(); });
+  });
+  function pickVisitor(v) { onlyVisitor = v; shown = 300; $('vchip').hidden = !v; $('vchip-t').textContent = v ? vcode(v) : ''; render(); }
+  $('vchip-x').addEventListener('click', function () { pickVisitor(null); });
+  $('log').addEventListener('click', function (e) {
+    var b = e.target.closest('.vcode[data-v]'); if (!b) return;
+    e.preventDefault(); e.stopPropagation(); pickVisitor(b.dataset.v);
+  });
+  $('more').addEventListener('click', function () { shown += 300; renderLog(); });
+
+  function vcode(v) { return (/^test-/.test(v) ? 'T-' : '') + v.replace(/^test-/, '').slice(0, 4); }
+  function hm(d, sec) { return d.toLocaleTimeString('he-IL', sec ? { hour: '2-digit', minute: '2-digit', second: '2-digit' } : { hour: '2-digit', minute: '2-digit' }); }
+  function dayName(d) { return d.toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'numeric' }); }
+  function dur(s) { return s < 60 ? s + ' שנ׳' : Math.round(s / 60) + ' דק׳'; }
+  function nameOf(r) {
+    var k = keyOf(r), m = /^week-(\d+)/.exec(r.page || '');
+    if (!r.page || r.page === 'index.html') return 'דף הבית';
+    if (m) return 'דף שבוע ' + m[1];
+    return names[k] || k;
+  }
+  function learnNames() {   // a readable name per page/file, from the titles the visits recorded
+    names = {};
+    rows.forEach(function (r) { if (r.type === 'view' && r.label && !names[keyOf(r)]) names[keyOf(r)] = r.label.replace(' · ' + COURSE, ''); });
+  }
+  function kindWord(r) { return r.page === 'play.html' ? (/\.(mp3|m4a|wav|ogg)$/i.test(r.target || '') ? 'הקראה' : 'סרטון') : /^decks\//.test(r.page) ? 'מצגת' : ''; }
+  function describe(r) {
+    var n = esc(nameOf(r)), k = kindWord(r), kk = k ? '<span class="k">' + k + '</span> ' : '';
+    if (r.type === 'view') return 'כניסה: ' + kk + '<b>' + n + '</b>';
+    if (r.type === 'time') return 'זמן פעיל: <b>' + dur(r.seconds || 0) + '</b> ב' + kk + n;
+    if (r.type === 'video') return 'צפייה: <b>' + (r.percent || 0) + '%</b> מה' + kk + n + ' <span class="k">(' + dur(r.seconds || 0) + ' מצטבר)</span>';
+    if (r.type === 'click') return 'לחיצה: <b>' + esc(r.label || r.target) + '</b> <span class="k">ב' + n + '</span>';
+    return esc(r.type);
+  }
+  function visitsOf(R) {
+    var by = {};
+    R.forEach(function (r) {
+      var v = by[r.session] || (by[r.session] = { session: r.session, visitor: r.visitor, device: r.device, ev: [], secs: 0 });
+      v.ev.push(r); if (r.type === 'time') v.secs += r.seconds || 0;
+    });
+    return Object.keys(by).map(function (k) {
+      var v = by[k], seen = {};
+      v.ev.sort(function (a, b) { return a.id - b.id; });
+      v.start = new Date(v.ev[0].created_at); v.end = new Date(v.ev[v.ev.length - 1].created_at); v.path = [];
+      v.ev.forEach(function (r) { if (r.type === 'view') { var n = nameOf(r); if (!seen[n]) { seen[n] = 1; v.path.push(n); } } });
+      return v;
+    });
+  }
+  function renderLog() {
+    learnNames();
+    var R = filtered(), out = [], lastDay = '', total;
+    function dayHead(d) { var k = iso(d); if (k !== lastDay) { lastDay = k; out.push('<h3 class="day">' + esc(dayName(d)) + '</h3>'); } }
+    function vbtn(v) { return '<button class="vcode vc" data-v="' + esc(v) + '" title="הצג רק את המבקר הזה">' + esc(vcode(v)) + '</button>'; }
+    if (view === 'events') {
+      var E = R.slice().sort(function (a, b) { return (a.id - b.id) * order; }); total = E.length;
+      E.slice(0, shown).forEach(function (r) {
+        var d = new Date(r.created_at); dayHead(d);
+        out.push('<div class="ev"><time>' + hm(d, true) + '</time>' + vbtn(r.visitor) + '<span class="what">' + describe(r) + '</span></div>');
+      });
+      $('logcount').textContent = fmt(total) + ' אירועים';
+    } else {
+      var V = visitsOf(R).sort(function (a, b) { return (a.start - b.start) * order; }); total = V.length;
+      V.slice(0, shown).forEach(function (v) {
+        dayHead(v.start);
+        out.push('<details class="vs"><summary><time>' + hm(v.start) + '–' + hm(v.end) + '</time>' + vbtn(v.visitor) +
+          '<span class="dur">' + (v.secs ? dur(v.secs) : '–') + ' <span class="k">' + (DEV[v.device] || '') + '</span></span>' +
+          '<span class="path">' + esc(v.path.join(' ← ')) + '</span></summary><div class="evs">' +
+          v.ev.map(function (r) { return '<div class="ev"><time>' + hm(new Date(r.created_at), true) + '</time><span></span><span class="what">' + describe(r) + '</span></div>'; }).join('') +
+          '</div></details>');
+      });
+      $('logcount').textContent = fmt(total) + ' ביקורים';
+    }
+    $('log').innerHTML = out.join('') || '<p class="muted">אין נתונים בטווח הזה</p>';
+    $('more').hidden = total <= shown;
+  }
+  $('csv-visits').addEventListener('click', function () {
+    csv('visits', ['visitor', 'session', 'start', 'end', 'active_seconds', 'device', 'events', 'pages'],
+      visitsOf(filtered()).sort(function (a, b) { return a.start - b.start; }).map(function (v) {
+        return [v.visitor, v.session, v.start.toLocaleString('sv-SE'), v.end.toLocaleString('sv-SE'), v.secs, DEV[v.device] || v.device, v.ev.length, v.path.join(' ← ')];
+      }));
+  });
 
   // ---------- drawing ----------
   function bars(el, data) {
@@ -369,6 +515,7 @@ td.n,th.n{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
 
   // ---------- start ----------
   setDays(7);
+  if (location.hash === '#log') tab('log');
   if (demo) { $('who').textContent = 'הדגמה: נתונים מומצאים'; showApp(); load(); }
   else if (store.dash_rt) auth('refresh_token', { refresh_token: store.dash_rt }).then(function () { showApp(); load(); }).catch(function () { showLogin(); });
   else showLogin();
