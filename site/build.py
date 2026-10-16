@@ -875,6 +875,11 @@ def main():
         print(f'compressed: {rel}  {a_ / 1e6:.1f}MB -> {b_ / 1e6:.1f}MB')
     for x in sorted({w for s in sites for w in s.warnings}):
         print('warning:', x)
+    if cfg.get('tracking', {}).get('on'):  # the statistics script must be on every public page, deck and the player
+        pages = [REPO / 'index.html', REPO / 'play.html', *REPO.glob('week-*.html'), *(REPO / 'decks').glob('*.html')]
+        bare = [p.relative_to(REPO).as_posix() for p in pages if 'assets/track.js' not in p.read_text(encoding='utf-8')]
+        if bare:
+            print(f'WARNING: statistics script missing in {len(bare)} page(s): {", ".join(bare)}')
 
 
 if __name__ == '__main__':

@@ -72,6 +72,8 @@ details.vs[open] summary .path{white-space:normal}
 details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:0 6px 10px 0}
 @media (max-width:640px){.ev{grid-template-columns:64px 1fr}.ev .vc,.ev>span:empty{display:none}
   details.vs summary{grid-template-columns:96px 1fr 70px}details.vs summary .path{grid-column:1/-1}}
+.health{margin:10px 0 0;font-size:15px}
+.health.bad{color:var(--warn);font-weight:700}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -94,6 +96,7 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
     <div><h1>סטטיסטיקת האתר</h1><span class="muted" id="who"></span></div>
     <button class="ghost" id="out">יציאה</button>
   </div>
+  <p id="health" class="health" hidden></p>
 
   <div class="card bar-row">
     <label>מתאריך <input type="date" id="from"></label>
@@ -531,9 +534,31 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
     return out;
   }
 
+  // ---------- is the statistics script still on every public page? (checks the live site itself) ----------
+  function checkInstalled() {
+    var base = new URL('../', location.href).href, missing = [], n = 0;
+    function get(path) { return fetch(base + path, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }); }
+    function check(path, html) { n++; if (html.indexOf('assets/track.js') < 0) missing.push(decodeURIComponent(path)); }
+    function links(html, re) { var out = {}, m; while ((m = re.exec(html))) out[m[1]] = 1; return Object.keys(out); }
+    get('index.html').then(function (home) {
+      check('index.html', home);
+      var weeks = links(home, /href="(week-\d+\.html)"/g);
+      return Promise.all(weeks.map(function (w) { return get(w).then(function (h) { check(w, h); return h; }); }))
+        .then(function (pages) {
+          var decks = links(pages.concat([home]).join(' '), /href="(decks\/[^"#?]+\.html)"/g);
+          return Promise.all(decks.map(function (d) { return get(d).then(function (h) { check(d, h); }); }).concat([get('play.html').then(function (h) { check('play.html', h); })]));
+        });
+    }).then(function () {
+      var el = $('health'); el.hidden = false;
+      if (missing.length) { el.className = 'health bad'; el.textContent = '⚠ קוד המדידה חסר ב-' + missing.length + ' מתוך ' + n + ' דפים: ' + missing.join(', ') + '. כניסות לדפים האלה לא נרשמות.'; }
+      else { el.className = 'health'; el.textContent = '✓ המדידה פעילה: קוד המדידה נמצא בכל ' + n + ' הדפים, המצגות והנגן של האתר הציבורי (נבדק עכשיו).'; }
+    }).catch(function () {});
+  }
+
   // ---------- start ----------
   setDays(7);
   if (location.hash === '#log') tab('log');
+  checkInstalled();
   if (demo) { $('who').textContent = 'הדגמה: נתונים מומצאים'; showApp(); load(); }
   else if (store.dash_rt) auth('refresh_token', { refresh_token: store.dash_rt }).then(function () { showApp(); load(); }).catch(function () { showLogin(); });
   else showLogin();
