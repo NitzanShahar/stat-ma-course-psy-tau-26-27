@@ -125,8 +125,8 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
     <div class="tile"><b id="k-vis">–</b><span>מבקרים שונים (דפדפנים)</span></div>
     <div class="tile"><b id="k-ses">–</b><span>ביקורים</span></div>
     <div class="tile"><b id="k-views">–</b><span>צפיות בדפים</span></div>
-    <div class="tile"><b id="k-hours">–</b><span>שעות פעילות (סה״כ)</span></div>
-    <div class="tile"><b id="k-min">–</b><span>דקות פעילות לממוצע מבקר</span></div>
+    <div class="tile"><b id="k-hours">–</b><span>שעות עיסוק (סה״כ)</span></div>
+    <div class="tile"><b id="k-min">–</b><span>דקות עיסוק לממוצע מבקר</span></div>
   </div>
 
   <div class="grid2">
@@ -157,9 +157,9 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
       <span class="muted" id="logcount"></span>
     </div>
     <section class="card"><div id="log"></div><button class="ghost" id="more" hidden>הצג עוד</button></section>
-    <p class="muted">השעה של כניסה ולחיצה מדויקת. "זמן" נרשם כשיוצאים מהדף (או כל 5 דקות), ולכן השעה שלו היא סוף פרק הזמן. "ביקור" = טאב אחד בדפדפן, מהפתיחה ועד הסגירה. לחיצה על קוד של מבקר מציגה רק אותו (גם בלשונית הסיכום).</p>
+    <p class="muted">הזמן בשורת הביקור = זמן עיסוק: במצגת ובדף — זמן מול המסך; בהקראה ובסרטון — כמה דקות חדשות התנגנו (גם עם מסך כבוי), או הזמן מול המסך אם הוא ארוך יותר. השעה של כניסה ולחיצה מדויקת; "זמן מול המסך" נרשם כשיוצאים מהדף (או כל 5 דקות), ולכן השעה שלו היא סוף פרק הזמן. "ביקור" = טאב אחד בדפדפן, מהפתיחה ועד הסגירה. לחיצה על קוד של מבקר מציגה רק אותו (גם בלשונית הסיכום).</p>
   </div>
-  <p class="muted">"מבקר" = דפדפן אחד: מחשב משותף נספר פעם אחת, וסטודנט עם טלפון ומחשב נספר פעמיים. הזמנים בשעון המקומי של המחשב הזה.</p>
+  <p class="muted">"זמן עיסוק" = זמן מול המסך, ובהקראות ובסרטונים — זמן ההאזנה/צפייה אם הוא ארוך יותר (באייפון עם מסך נעול ההאזנה לא תמיד נספרת). "מבקר" = דפדפן אחד: מחשב משותף נספר פעם אחת, וסטודנט עם טלפון ומחשב נספר פעמיים. הזמנים בשעון המקומי של המחשב הזה.</p>
 </main>
 </div>
 
@@ -254,13 +254,38 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
   function kindOf(r) { return r.page === 'play.html' ? 'נגן' : /^decks\//.test(r.page) ? 'מצגת' : 'דף באתר'; }
   function keyOf(r) { return r.page === 'play.html' ? r.target || 'play.html' : r.page; }
 
+  // Engagement time ("זמן עיסוק"): screen time, except that for audio/video in the player it is the larger of
+  // screen time and the new seconds that played during the visit (listening with the screen off counts).
+  // Returned as time-like rows: every 'time' row, plus one extra row per visit+file for listening beyond the screen time.
+  function engRows(R) {
+    var out = [], groups = {}, hist = {};
+    R.forEach(function (r) {
+      if (r.type === 'time') out.push({ created_at: r.created_at, visitor: r.visitor, session: r.session, page: r.page, target: r.target, seconds: r.seconds || 0 });
+      if (r.page !== 'play.html' || !r.target || (r.type !== 'time' && r.type !== 'video')) return;
+      var g = groups[r.session + '|' + r.target] || (groups[r.session + '|' + r.target] = { screen: 0, vids: [] });
+      if (r.type === 'time') g.screen += r.seconds || 0; else g.vids.push(r);
+    });
+    rows.forEach(function (r) { if (r.type === 'video') (hist[r.visitor + '|' + r.target] = hist[r.visitor + '|' + r.target] || []).push(r); });
+    Object.keys(groups).forEach(function (k) {
+      var g = groups[k]; if (!g.vids.length) return;
+      g.vids.sort(function (a, b) { return a.id - b.id; });
+      var first = g.vids[0], last = g.vids[g.vids.length - 1], before = 0, most = 0;
+      g.vids.forEach(function (r) { most = Math.max(most, r.seconds || 0); });
+      // the counter is cumulative in the browser: subtract what was already heard in earlier visits
+      (hist[first.visitor + '|' + first.target] || []).forEach(function (h) { if (h.id < first.id && h.session !== first.session) before = Math.max(before, h.seconds || 0); });
+      var extra = Math.max(0, most - before) - g.screen;
+      if (extra > 0) out.push({ created_at: last.created_at, visitor: last.visitor, session: last.session, page: last.page, target: last.target, seconds: extra });
+    });
+    return out;
+  }
+
   function render() {
     renderLog();
     var R = filtered();
     var views = R.filter(function (r) { return r.type === 'view'; });
-    var time = R.filter(function (r) { return r.type === 'time'; });
+    var eng = engRows(R);
     var vis = uniq(R.map(function (r) { return r.visitor; }));
-    var secs = time.reduce(function (s, r) { return s + (r.seconds || 0); }, 0);
+    var secs = eng.reduce(function (s, r) { return s + r.seconds; }, 0);
     $('k-vis').textContent = fmt(vis);
     $('k-ses').textContent = fmt(uniq(R.map(function (r) { return r.session; })));
     $('k-views').textContent = fmt(views.length);
@@ -272,17 +297,18 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
     for (var d = new Date(d0); d <= d1; d.setDate(d.getDate() + 1)) days[iso(d)] = { v: {}, views: 0, secs: 0 };
     R.forEach(function (r) {
       var k = iso(new Date(r.created_at)); if (!days[k]) return;
-      days[k].v[r.visitor] = 1; if (r.type === 'view') days[k].views++; if (r.type === 'time') days[k].secs += r.seconds || 0;
+      days[k].v[r.visitor] = 1; if (r.type === 'view') days[k].views++;
     });
+    eng.forEach(function (r) { var k = iso(new Date(r.created_at)); if (days[k]) days[k].secs += r.seconds; });
     var dayList = Object.keys(days).sort().map(function (k) {
       var x = days[k], p = k.split('-');
       var dd = new Date(k + 'T00:00:00');
       return { k: k, label: +p[2] + '.' + +p[1], week: semWeek(dd), day: dayName(dd), n: Object.keys(x.v).length, views: x.views, min: x.secs / 60 };
     });
     bars($('c-day'), dayList.map(function (x) {
-      return { label: x.label, value: x.n, tip: (x.week ? x.week + ' · ' : '') + x.label + ': ' + fmt(x.n) + ' מבקרים · ' + fmt(x.views) + ' צפיות · ' + fmt(x.min) + ' דק׳' };
+      return { label: x.label, value: x.n, tip: (x.week ? x.week + ' · ' : '') + x.label + ': ' + fmt(x.n) + ' מבקרים · ' + fmt(x.views) + ' צפיות · ' + fmt(x.min) + ' דק׳ עיסוק' };
     }));
-    table('t-day', [['שבוע', 0], ['יום', 0], ['תאריך', 0], ['מבקרים', 1], ['צפיות', 1], ['דקות פעילות', 1]],
+    table('t-day', [['שבוע', 0], ['יום', 0], ['תאריך', 0], ['מבקרים', 1], ['צפיות', 1], ['דקות עיסוק', 1]],
       dayList.slice().reverse().map(function (x) { return [x.week, x.day, x.k, x.n, x.views, Math.round(x.min)]; }));
 
     // per hour of day
@@ -295,13 +321,10 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
 
     // materials
     var mat = {};
-    R.forEach(function (r) {
-      if (r.type !== 'view' && r.type !== 'time') return;
-      var k = keyOf(r), m = mat[k] || (mat[k] = { name: '', kind: kindOf(r), views: 0, v: {}, secs: 0 });
-      if (r.type === 'view') { m.views++; m.v[r.visitor] = 1; if (r.label && !m.name) m.name = r.label; }
-      else m.secs += r.seconds || 0;
-    });
-    table('t-mat', [['פריט', 0], ['סוג', 0], ['צפיות', 1], ['מבקרים', 1], ['דקות (סה״כ)', 1], ['דקות למבקר', 1]],
+    function matOf(r) { var k = keyOf(r); return mat[k] || (mat[k] = { name: '', kind: kindOf(r), views: 0, v: {}, secs: 0 }); }
+    views.forEach(function (r) { var m = matOf(r); m.views++; m.v[r.visitor] = 1; if (r.label && !m.name) m.name = r.label; });
+    eng.forEach(function (r) { matOf(r).secs += r.seconds; });
+    table('t-mat', [['פריט', 0], ['סוג', 0], ['צפיות', 1], ['מבקרים', 1], ['דקות עיסוק (סה״כ)', 1], ['דקות עיסוק למבקר', 1]],
       Object.keys(mat).map(function (k) {
         var m = mat[k], n = Object.keys(m.v).length;
         return [m.name || k, m.kind, m.views, n, Math.round(m.secs / 60), n ? +(m.secs / 60 / n).toFixed(1) : 0];
@@ -392,7 +415,7 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
   function describe(r) {
     var n = esc(nameOf(r)), k = kindWord(r), kk = k ? '<span class="k">' + k + '</span> ' : '';
     if (r.type === 'view') return 'כניסה: ' + kk + '<b>' + n + '</b>';
-    if (r.type === 'time') return 'זמן פעיל: <b>' + dur(r.seconds || 0) + '</b> ב' + kk + n;
+    if (r.type === 'time') return 'זמן מול המסך: <b>' + dur(r.seconds || 0) + '</b> ב' + kk + n;
     if (r.type === 'video') return 'צפייה: <b>' + (r.percent || 0) + '%</b> מה' + kk + n + ' <span class="k">(' + dur(r.seconds || 0) + ' מצטבר)</span>';
     if (r.type === 'click') return 'לחיצה: <b>' + esc(r.label || r.target) + '</b> <span class="k">ב' + n + '</span>';
     return esc(r.type);
@@ -400,9 +423,10 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
   function visitsOf(R) {
     var by = {};
     R.forEach(function (r) {
-      var v = by[r.session] || (by[r.session] = { session: r.session, visitor: r.visitor, device: r.device, ev: [], secs: 0 });
-      v.ev.push(r); if (r.type === 'time') v.secs += r.seconds || 0;
+      var v = by[r.session] || (by[r.session] = { session: r.session, visitor: r.visitor, device: r.device, ev: [], secs: 0, screen: 0 });
+      v.ev.push(r); if (r.type === 'time') v.screen += r.seconds || 0;
     });
+    engRows(R).forEach(function (e) { if (by[e.session]) by[e.session].secs += e.seconds; });
     return Object.keys(by).map(function (k) {
       var v = by[k], seen = {};
       v.ev.sort(function (a, b) { return a.id - b.id; });
@@ -428,7 +452,7 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
       V.slice(0, shown).forEach(function (v) {
         dayHead(v.start);
         out.push('<details class="vs"><summary><time>' + hm(v.start) + '–' + hm(v.end) + '</time>' + vbtn(v.visitor) +
-          '<span class="dur">' + (v.secs ? dur(v.secs) : '–') + ' <span class="k">' + (DEV[v.device] || '') + '</span></span>' +
+          '<span class="dur" title="זמן עיסוק (מול המסך: ' + dur(v.screen) + ')">' + (v.secs ? dur(v.secs) : '–') + ' <span class="k">' + (DEV[v.device] || '') + '</span></span>' +
           '<span class="path">' + esc(v.path.join(' ← ')) + '</span></summary><div class="evs">' +
           v.ev.map(function (r) { return '<div class="ev"><time>' + hm(new Date(r.created_at), true) + '</time><span></span><span class="what">' + describe(r) + '</span></div>'; }).join('') +
           '</div></details>');
@@ -439,9 +463,9 @@ details.vs .evs{padding:0 18px 10px 0;border-right:2px solid var(--line);margin:
     $('more').hidden = total <= shown;
   }
   $('csv-visits').addEventListener('click', function () {
-    csv('visits', ['semester_week', 'visitor', 'session', 'start', 'end', 'active_seconds', 'device', 'events', 'pages'],
+    csv('visits', ['semester_week', 'visitor', 'session', 'start', 'end', 'engaged_seconds', 'screen_seconds', 'device', 'events', 'pages'],
       visitsOf(filtered()).sort(function (a, b) { return a.start - b.start; }).map(function (v) {
-        return [semWeek(v.start), v.visitor, v.session, v.start.toLocaleString('sv-SE'), v.end.toLocaleString('sv-SE'), v.secs, DEV[v.device] || v.device, v.ev.length, v.path.join(' ← ')];
+        return [semWeek(v.start), v.visitor, v.session, v.start.toLocaleString('sv-SE'), v.end.toLocaleString('sv-SE'), v.secs, v.screen, DEV[v.device] || v.device, v.ev.length, v.path.join(' ← ')];
       }));
   });
 
