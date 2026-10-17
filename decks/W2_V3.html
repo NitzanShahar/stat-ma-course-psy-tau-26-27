@@ -837,6 +837,57 @@ p(p \mid W, L) &amp;\;\propto\; p^{W}(1-p)^{L} \times 1 &amp;&amp; \text{posteri
 <li class="fragment"><strong>posterior predictive:</strong> ניבוי שכולל גם את אי-הוודאות על הפרמטר.</li>
 </ul>
 </div>
+</section>
+<section id="ה-posterior-הוא-פשרה" class="slide level2 example-slide">
+<h2>ה-posterior הוא פשרה</h2>
+<p>ה-posterior תמיד נופל <strong>בין</strong> ה-prior ל-likelihood, וקרוב יותר למי שצר יותר.</p>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center; font-size:.56em; gap:10px 28px;">
+    <label><b style="color:rgb(140,118,204)">prior</b> מיקום <input type="range" id="cp-pm" min="0.05" max="0.95" step="0.01" value="0.3"></label>
+    <label>רוחב <input type="range" id="cp-ps" min="0.06" max="0.3" step="0.01" value="0.12"></label>
+    <label><b style="color:var(--curve)">likelihood</b> מיקום <input type="range" id="cp-lm" min="0.05" max="0.95" step="0.01" value="0.7"></label>
+    <label>רוחב <input type="range" id="cp-ls" min="0.06" max="0.3" step="0.01" value="0.12"></label>
+  </div>
+  <svg id="cp-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="prior, likelihood ו-posterior על אותו ציר"></svg>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('cp-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    const G = 400, ts = Array.from({ length: G + 1 }, (_, i) => i / G);
+    const x0 = 90, x1 = 930, X = t => x0 + t * (x1 - x0), yb = 270, yt = 40;
+    const norm = v => { const a = v.reduce((s, x) => s + x, 0) / G; return v.map(x => x / a); };
+    const bell = (m, sd) => norm(ts.map(t => Math.exp(-.5 * ((t - m) / sd) ** 2)));
+    const mean = v => v.reduce((s, x, i) => s + x * ts[i], 0) / v.reduce((s, x) => s + x, 0);
+    function draw() {
+      const pr = bell(+$('cp-pm').value, +$('cp-ps').value), lk = bell(+$('cp-lm').value, +$('cp-ls').value);
+      const po = norm(pr.map((v, i) => v * lk[i]));
+      // ציר קבוע: כשמשנים עקומה אחת, האחרות לא "זזות". ה-posterior הצר ביותר האפשרי מגיע לבערך 9.4
+      const top = 10;
+      const Y = v => yb - v / top * (yb - yt);
+      const path = v => v.map((y, i) => (i ? 'L' : 'M') + X(ts[i]).toFixed(1) + ',' + Y(y).toFixed(1)).join('');
+      const curves = [[pr, 'rgb(167,148,216)', 'prior', '', 'p(θ)'], [lk, 'var(--curve)', 'likelihood', 'stroke-dasharray="10 6"', 'p(y | θ)'], [po, 'var(--hidden)', 'posterior', '', 'p(θ | y)']];
+      let s = `<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      [0, .25, .5, .75, 1].forEach(t => { s += `<text x="${X(t)}" y="${yb + 24}" text-anchor="middle" font-size="16" fill="var(--ink-soft)">${t}</text>`; });
+      s += `<text x="${(x0 + x1) / 2}" y="${yb + 52}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">θ</text>`;
+      s += `<path d="${path(po)} L${x1},${yb} L${x0},${yb} Z" fill="var(--hidden-bg)" opacity=".7"/>`;
+      curves.forEach(([v, c, name, dash, sym]) => {
+        const m = mean(v), im = v.indexOf(Math.max(...v)), lx = Math.min(Math.max(X(ts[im]), x0 + 50), x1 - 50);
+        s += `<line x1="${X(m)}" y1="${yb}" x2="${X(m)}" y2="${Y(v[Math.round(m * G)])}" stroke="${c}" stroke-width="1.5" stroke-dasharray="3 4"/>
+              <path d="${path(v)}" fill="none" stroke="${c}" stroke-width="${name === 'posterior' ? 4.5 : 3.5}" ${dash}/>
+              <text x="${lx}" y="${Y(v[im]) - 10}" text-anchor="middle" font-size="18" font-weight="700" fill="${c}">${name}</text>
+              <text x="${lx}" y="${Y(v[im]) - 34}" text-anchor="middle" direction="ltr" font-family="'Times New Roman', serif" font-style="italic" font-size="19" fill="${c}">${sym}</text>`;
+      });
+      svg.innerHTML = s;
+    }
+    ['cp-pm', 'cp-ps', 'cp-lm', 'cp-ls'].forEach(id => $(id).addEventListener('input', draw));
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>prior צר: אמונה חזקה מראש. likelihood צר: הרבה נתונים. הקווים המקווקווים מסמנים את המרכז של כל עקומה.</p>
+</div>
 <div class="footer footer-default">
 
 </div>

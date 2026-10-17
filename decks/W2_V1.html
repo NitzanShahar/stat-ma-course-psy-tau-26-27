@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>מ-Bernoulli ל-Bayes ול-Laplace</title>
+  <title>הרקע ההיסטורי לחוק Bayes</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,7 +325,7 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">מ-Bernoulli ל-Bayes ול-Laplace</h1>
+  <h1 class="title">הרקע ההיסטורי לחוק Bayes</h1>
   <p class="subtitle">שולחן הביליארד והמשוואה</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
@@ -1028,99 +1028,16 @@ Pierre-Simon Laplace · 1749–1827
 <li class="fragment"><strong>כל כדור הוא ראיה.</strong> הוא לא מגלה איפה <span class="math inline">\(W\)</span>, אבל מחליש אזורים שלא מתאימים לו.</li>
 <li class="fragment"><strong>האמונה עוברת ממקום למקום.</strong> מה שאזור אחד מאבד, אזורים אחרים מרוויחים. סך האמונה נשאר אחד.</li>
 <li class="fragment"><strong>עם יותר כדורים העקומה מתחדדת</strong>, אבל אף פעם לא הופכת לנקודה.</li>
-<li class="fragment">זה הרעיון שפגשתם בקריאה אצל Kruschke: הסקה Bayesian היא <strong>חלוקה מחדש של אמינות בין אפשרויות</strong>.</li>
+<li class="fragment">הסקה Bayesian היא <strong>חלוקה מחדש של אמינות בין אפשרויות</strong>.</li>
 </ul>
 </div>
 </section>
-<section id="price-עונה-ל-hume" class="slide level2">
-<h2>Price עונה ל-Hume</h2>
-<div class="side-figure price-slide">
-<div>
-<blockquote>
-<p><span class="fragment">נדמיין אדם שזה עתה הובא לעולם, ונותר ללמוד מתוך התבוננות בסדר המאורעות אילו כוחות וסיבות פועלים בו.</span> <span class="fragment">השמש תהיה כנראה הדבר הראשון שימשוך את תשומת ליבו.</span> <span class="fragment">אבל אחרי שאיבד אותה בלילה הראשון, לא ידע כלל אם יראה אותה שוב.</span> <span class="fragment">הוא במצבו של מי שעורך ניסוי ראשון על מאורע שאינו ידוע לו כלל.</span> <span class="fragment">אבל אם יראה אותה מופיעה שוב, תתעורר בו ציפייה לשיבה נוספת, והוא יוכל לדעת שיש <strong>יחס סיכויים של 3 ל-1</strong> שקיימת נטייה כלשהי לשיבה כזו.</span> <span class="fragment">הסיכוי הזה יגדל עם כל שיבה שיראה.</span> <span class="fragment">אבל שום מספר סופי של שיבות לא יספיק לוודאות מוחלטת, גם אם ראה אותה שבה מיליון פעמים.</span></p>
-</blockquote>
+<section id="דילמת-ה-prior" class="slide level2">
+<h2>דילמת ה-prior</h2>
 <div>
 <ul>
-<li class="fragment">התשובה ל-Hume היא לא הוכחה, אלא חשבון של אמונה: אפשר לומר <strong>כמה</strong> בטוחים.</li>
-</ul>
-</div>
-</div>
-<div>
-<p><img data-src="W2_V1%20Price%20עמוד.png" height="470"></p>
-<div class="fig-caption">
-<p>Richard Price, 1763</p>
-</div>
-</div>
-</div>
-</section>
-<section id="העיקרון-של-laplace" class="slide level2">
-<h2>העיקרון של Laplace</h2>
-<div class="side-figure laplace-slide">
-<div class="fragment">
-<blockquote>
-<p><strong>העיקרון השישי.</strong> כל סיבה שאפשר לייחס לה מאורע שנצפה סבירה בדיוק באותה מידה שבה המאורע צפוי לקרות אם היא הסיבה. ההסתברות של כל סיבה היא שבר: במונה, ההסתברות של המאורע תחת הסיבה הזו; במכנה, סכום ההסתברויות האלה על פני כל הסיבות. ואם הסיבות אינן שוות מראש (<em>à priori</em>), מכפילים כל הסתברות כזו בסיכוי של הסיבה עצמה.</p>
-<p>זה העיקרון היסודי של הענף שעובר <strong>ממאורעות אל סיבות</strong>.</p>
-</blockquote>
-</div>
-<div>
-<p><img data-src="W2_V1%20Laplace%20עיקרון%20א.png" width="330"> <img data-src="W2_V1%20Laplace%20עיקרון%20ב.png" width="330"></p>
-<div class="fig-caption">
-<p>Laplace, <em>A Philosophical Essay on Probabilities</em>, 1814</p>
-</div>
-</div>
-</div>
-<div>
-<ul>
-<li class="fragment">“סיבה” = ערך של הפרמטר. “מאורע” = הנתונים.</li>
-<li class="fragment">הסיבה שהייתה מייצרת את הנתונים <strong>בקלות רבה יותר</strong> מקבלת יותר אמינות.</li>
-<li class="fragment">זה ה-likelihood שכבר אתם יודעים לחשב, רק במבט מהכיוון השני.</li>
-</ul>
-</div>
-</section>
-<section id="הנוסחה-בשמות" class="slide level2">
-<h2>הנוסחה, בשמות</h2>
-<div id="bayes-formula" class="ltr">
-<p><span class="math display">\[
-\cssId{bf-posterior}{\underbrace{p(\theta \mid y)}_{\text{posterior}} =}
-\frac{\cssId{bf-likelihood}{\overbrace{p(y \mid \theta)}^{\text{likelihood}}} \;\cssId{bf-dot}{\cdot}\; \cssId{bf-prior}{\overbrace{p(\theta)}^{\text{prior}}}}
-{\cssId{bf-evidence}{\underbrace{p(y)}_{\text{evidence}}}}
-\]</span></p>
-</div>
-<div>
-<ul>
-<li class="fragment"><span class="term">prior</span>: מה האמנו על <span class="math inline">\(\theta\)</span> <strong>לפני</strong> הנתונים. בשולחן: השטיח השטוח.</li>
-<li class="fragment"><span class="term">likelihood</span>: כמה כל ערך של <span class="math inline">\(\theta\)</span> מסביר את הנתונים. בשולחן: כל כדור שנפל.</li>
-<li class="fragment"><span class="term">evidence</span>: גורם נרמול. דואג שסך האמונה יהיה אחד.</li>
-<li class="fragment"><span class="term">posterior</span>: מה אנחנו מאמינים <strong>אחרי</strong> הנתונים. בשולחן: העקומה.</li>
-</ul>
-</div>
-<script>
-  // כל רכיב בנוסחה מופיע יחד עם הבולט שלו. רכיב שעוד לא הופיע שקוף, כך שהנוסחה לא זזה.
-  (function () {
-    const steps = [['bf-prior'], ['bf-likelihood', 'bf-dot'], ['bf-evidence'], ['bf-posterior']];
-    function sync() {
-      const box = document.getElementById('bayes-formula');
-      if (!box) return;
-      const shown = box.closest('section').querySelectorAll('li.fragment.visible').length;
-      box.style.opacity = shown ? 1 : 0;
-      steps.forEach((ids, i) => ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) { el.style.transition = 'opacity .35s'; el.style.opacity = i < shown ? 1 : 0; }
-      }));
-    }
-    const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready'].forEach(e => Reveal.on(e, sync)); sync(); };
-    if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
-  })();
-</script>
-</section>
-<section id="ומה-כשלא-יודעים-כלום" class="slide level2">
-<h2>ומה כשלא יודעים כלום?</h2>
-<div>
-<ul>
-<li class="fragment">כדי לחשב posterior צריך prior. אבל מה ה-prior כשחוקרים משהו חדש לגמרי?</li>
+<li class="fragment">חישובים Bayesian דורשים אמונה מקדימה. אבל מה קורה כשחוקרים משהו חדש לגמרי?</li>
 <li class="fragment">התשובה של Bayes ו-Laplace: אם אין סיבה להעדיף ערך אחד על פני אחר, נותנים לכולם <strong>אותו משקל</strong>.</li>
-<li class="fragment">זה <span class="term">uniform prior</span>, או <span class="term">flat prior</span>: כל ערך בין <span class="math inline">\(0\)</span> ל-<span class="math inline">\(1\)</span> סביר באותה מידה.</li>
-<li class="fragment">ואז ה-posterior הוא פשוט ה-likelihood, אחרי נרמול. בדיוק מה שקרה על שולחן הביליארד.</li>
 </ul>
 </div>
 <!-- הוסר זמנית (3.10.2026):
@@ -1157,11 +1074,9 @@ Pierre-Simon Laplace · 1749–1827
 <ul>
 <li><strong>הבעיה ההפוכה:</strong> Bernoulli חישב מהפרמטר אל הנתונים. במדע צריך ללכת מהנתונים אל הפרמטר.</li>
 <li><strong>Hume:</strong> אין הוכחה שהעתיד ידמה לעבר. אפשר רק לכמת עד כמה אנחנו בטוחים.</li>
-<li><strong>שולחן הביליארד:</strong> פרמטר חבוי, prior שטוח, וכל תצפית מעבירה אמינות בין אפשרויות.</li>
-<li><strong>העיקרון של Laplace:</strong> הסבירות של כל סיבה יחסית לסיכוי שהיא הייתה מייצרת את הנתונים.</li>
-<li><strong>הנוסחה:</strong> posterior = likelihood × prior, חלקי evidence.</li>
-<li><strong>uniform prior:</strong> כשאין סיבה להעדיף ערך, כולם מקבלים אותו משקל.</li>
-<li><strong>הילודה:</strong> Laplace הראה בנוסחה שהעדפת הבנים בלידה איננה מקרה.</li>
+<li><strong>שולחן הביליארד:</strong> פרמטר חבוי, אמונה מקדימה שטוחה, וכל תצפית מעבירה אמינות בין אפשרויות.</li>
+<li><strong>דילמת ה-prior:</strong> כשאין סיבה להעדיף ערך, כולם מקבלים אותו משקל.</li>
+<li><strong>הילודה:</strong> Laplace הראה בחשבון שהעדפת הבנים בלידה איננה מקרה.</li>
 </ul>
 <div class="footer footer-default">
 

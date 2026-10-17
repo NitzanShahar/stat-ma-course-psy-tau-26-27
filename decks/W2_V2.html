@@ -334,26 +334,16 @@
 <style>
   .reveal .riddle { font-size: .95em; max-width: 30em; margin: .6em 0 0; }
   .reveal .riddle p { margin: 0 0 .3em; }
-  .reveal .riddle ul { margin: .2em 0 .4em; }
-  .reveal .riddle.small { font-size: .56em; max-width: none; margin: 0 0 .3em; padding: .4em .9em; }
-  .reveal .riddle.small ul { margin: .1em 0 .2em; }
-  .reveal .riddle.small li { margin-bottom: .1em; }
 </style>
 <div class="soft-card riddle">
-<p>אולם בלי חלונות. נכנסת סטודנטית עם מעיל.</p>
-<div>
-<ul>
-<li class="fragment">כשיורד גשם, כמעט תמיד היא במעיל. לפעמים גם בימים יבשים וקרים.</li>
-<li class="fragment">בתל אביב יורד גשם בערך 50 ימים בשנה.</li>
-</ul>
-</div>
+<p>לאולם בלי חלונות נכנסת סטודנטית עם מעיל. אנחנו יודעים שכשיורד גשם, כמעט תמיד היא במעיל.</p>
 <div class="fragment">
-<p><strong>מה הסיכוי שיורד גשם בחוץ?</strong> רשמו לעצמכם מספר. נחזור אליו.</p>
+<p><strong>מה הסיכוי שיורד גשם בחוץ?</strong> רשמו לעצמכם מספר. נחזור אליו אחר כך.</p>
 </div>
 </div>
 </section>
-<section id="חלוקה-מחדש-של-אמינות" class="slide level2 part-gate">
-<h2>חלוקה מחדש של אמינות</h2>
+<section id="רקע-מחשבתי" class="slide level2 part-gate">
+<h2>רקע מחשבתי</h2>
 <style>
   /* שקף שער: הכותרת הרגילה נשארת לניווט אבל לא מוצגת. במרכז: נקודות התקדמות, שם החלק ושורה אחת */
   .reveal .slides section.part-gate > h2 { display: none; }
@@ -368,7 +358,7 @@
 </style>
 <div class="gate">
   <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span></div>
-  <div class="gate-title">חלוקה מחדש של אמינות</div>
+  <div class="gate-title">רקע מחשבתי</div>
   <div class="gate-why">מה קורה לאמונות שלנו כשמגיעה תצפית. בלי נוסחאות.</div>
 </div>
 </section>
@@ -450,43 +440,55 @@
 </section>
 <section id="הכדורים-של-kruschke" class="slide level2 example-slide">
 <h2>הכדורים של Kruschke</h2>
-<p>אצל הולמס תצפית <strong>פוסלת</strong>. בדרך כלל היא רק <strong>מחלישה</strong>, והאמינות זזה מעט.</p>
+<p>ארבעה מפעלים מייצרים כדורים. כל מפעל מתמחה בגודל אחד, אבל יש רעש, והכדורים שלו מתפזרים כמו בעקומות. קנינו כדורים ולא ידוע לנו מאיזה מפעל, וננסה להסיק את זה מהמדידות.</p>
 <style>
-  .reveal .ball-curves { margin: 2px 0 0; font-size: .44em; gap: 8px; }
+  .reveal .ball-curves { margin: 0 0 4px; font-size: .44em; gap: 8px; }
   .reveal .ball-curves .demo-btn, .reveal .ball-curves .demo-btn.ghost { min-width: 0; padding: 4px 12px; }
+  .reveal .ball-bar { justify-content: flex-start; }
+  .reveal .ball-bar .demo-readout { flex: 0 0 auto; }
+  .reveal .ball-bar .ball-buy { font-size: 1.4em; font-weight: 700; padding: 10px 30px; min-width: 0; }
+  .reveal .ball-bar #ball1-reset { margin-inline-start: auto; }
 </style>
 <div class="demo-panel">
-  <svg id="ball1-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="אמינות של ארבעה גדלים אפשריים"></svg>
   <div class="gen-demo-bar ball-curves" id="ball1-curves"></div>
-  <div class="gen-demo-bar">
-    <button id="ball1-add" class="demo-btn">מדידה נוספת</button>
+  <svg id="ball1-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="אמינות של ארבעה מפעלים אפשריים"></svg>
+  <div class="gen-demo-bar ball-bar">
+    <button id="ball1-buy" class="demo-btn ball-buy">קנה כדור</button>
+    <button id="ball1-upd" class="demo-btn">עדכן אמונה</button>
+    <span class="demo-readout" id="ball1-out"></span>
     <button id="ball1-reset" class="demo-btn ghost">התחלה מחדש</button>
-    <span class="demo-readout" id="ball1-out" style="flex-basis:20em;"></span>
   </div>
 </div>
 <script>
-  // הדגמת הכדורים משמשת פעמיים: כאן בלי עקומות בהתחלה, ובחלק האחרון עם כל העקומות (ה-likelihood)
-  window.ballsDemo = function (id, startWithCurves) {
-    const svg = document.getElementById(id + '-svg');
+  (function () {
+    const id = 'ball1', svg = document.getElementById(id + '-svg');
     if (!svg) return;
-    // ארבעה גדלים אפשריים. הקוטר הנמדד מתפזר נורמלית סביב הגודל (sd=1.17 משחזר את המספרים בספר)
+    // ארבעה מפעלים, כל אחד מתמחה בגודל אחד. הקוטר מתפזר נורמלית סביב הגודל (sd=1.17 משחזר את המספרים בספר)
     const sizes = [1, 2, 3, 4], sd = 1.17, truth = 2, book = [1.77, 2.23, 2.70];
     const x0 = 110, x1 = 950, lo = -.5, hi = 5.5, X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
     const yb = 196, h = 172, dot0 = yb + 46, step = 15, levels = 4;
     const dn = (x, m) => Math.exp(-.5 * ((x - m) / sd) ** 2);
     const post = d => { const l = sizes.map(m => d.reduce((a, x) => a * dn(x, m), 1)), t = l.reduce((a, b) => a + b, 0); return l.map(v => v / t); };
-    let data, prev, show = sizes.map(() => startWithCurves);
+    // data = כל הכדורים שקנינו; used = כמה מהם כבר נכנסו לאמונה (בלחיצה על "עדכן אמונה")
+    let data, used, prev, show = sizes.map(() => false);
     function randn() { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+    // כדור חדש: שלושת הראשונים מהספר, ואחריהם סביב 2, לפעמים קצת לכיוון 1 ולפעמים לכיוון 3
+    function ball() {
+      if (data.length < book.length) return book[data.length];
+      let x;
+      do x = truth + sd * randn(); while (Math.abs(x - truth) > 1.2);
+      return x;
+    }
 
     const bar = document.getElementById(id + '-curves');
-    bar.innerHTML = '<span class="demo-readout" style="flex:0 0 auto;">איפה נוחתות המדידות:</span>' +
-      sizes.map(m => `<button class="demo-btn" data-m="${m}">גודל ${m}</button>`).join('') +
+    bar.innerHTML = '<span class="demo-readout" style="flex:0 0 auto;">מה מייצרים המפעלים:</span>' +
+      sizes.map(m => `<button class="demo-btn" data-m="${m}">מפעל ${m}</button>`).join('') +
       '<button class="demo-btn ghost" data-all="1">הראה הכל</button><button class="demo-btn ghost" data-all="0">הסתר הכל</button>';
     bar.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { show[b.dataset.m - 1] = !show[b.dataset.m - 1]; draw(); });
     bar.querySelectorAll('[data-all]').forEach(b => b.onclick = () => { show = show.map(() => b.dataset.all === '1'); draw(); });
 
     function draw() {
-      const p = post(data), bw = 70, tapeY = yb, tapeH = 30, tx0 = X(0) - 8, tx1 = X(hi);
+      const p = post(data.slice(0, used)), bw = 70, tapeY = yb, tapeH = 30, tx0 = X(0) - 8, tx1 = X(hi);
       let s = `<text x="24" y="${yb - h / 2}" text-anchor="middle" font-size="18" fill="var(--ink-soft)" transform="rotate(-90 24 ${yb - h / 2})">אמינות</text>`;
       [0, .25, .5, .75, 1].forEach(v => {
         s += `<text x="${x0 - 10}" y="${yb - v * h + 6}" text-anchor="end" font-size="16" fill="var(--ink-soft)">${v}</text>
@@ -497,7 +499,7 @@
         s += `<rect x="${X(m) - bw / 2}" y="${yb - p[i] * h}" width="${bw}" height="${p[i] * h}" fill="var(--hidden)" opacity=".85"/>
               <text x="${X(m)}" y="${yb - p[i] * h - 8}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">${Math.round(100 * p[i])}%</text>`;
       });
-      // עקומה לכל גודל: איפה נוחתות מדידות של כדור בגודל הזה. מעל העמודות, כדי שתיראה גם כשהיא חוצה אותן
+      // עקומה לכל מפעל: איפה נוחתים הכדורים שלו. מעל העמודות, כדי שתיראה גם כשהיא חוצה אותן
       sizes.forEach((m, i) => {
         if (!show[i]) return;
         let d = '';
@@ -512,60 +514,58 @@
         s += `<line x1="${X(v)}" y1="${tapeY}" x2="${X(v)}" y2="${tapeY + len}" stroke="#6b5a1e" stroke-width="${k % 10 === 0 ? 1.6 : 1}"/>`;
         if (k % 10 === 0) s += `<text x="${X(v) + 4}" y="${tapeY + 25}" text-anchor="start" font-size="13" font-weight="700" fill="#6b5a1e">${k / 10}</text>`;
       }
-      // המדידות מתחת לסרט. מדידות קרובות נערמות זו מתחת לזו, והאחרונה מלאה
+      // הכדורים מתחת לסרט. קרובים נערמים זה מתחת לזה. כדור שעוד לא נכנס לאמונה מלא, ומסומן גם על הסרט
       const placed = [];
       data.forEach((x, i) => {
-        const cx = X(x);
+        const cx = X(x), fresh = i >= used;
         let lv = 0;
         while (lv < levels - 1 && placed.some(q => q.lv === lv && Math.abs(q.cx - cx) < 15)) lv++;
         placed.push({ cx, lv });
-        s += `<circle cx="${cx}" cy="${dot0 + lv * step}" r="6.5" fill="${i === data.length - 1 ? 'var(--seen)' : '#fff'}" stroke="var(--seen)" stroke-width="2.5"/>`;
+        if (fresh) s += `<line x1="${cx}" y1="${tapeY - 6}" x2="${cx}" y2="${dot0 + lv * step}" stroke="var(--seen)" stroke-width="3"/>`;
+        s += `<circle cx="${cx}" cy="${dot0 + lv * step}" r="6.5" fill="${fresh ? 'var(--seen)' : '#fff'}" stroke="var(--seen)" stroke-width="2.5"/>`;
       });
-      s += `<text x="${(x0 + x1) / 2}" y="${dot0 + (levels - 1) * step + 34}" text-anchor="middle" font-size="17" fill="var(--ink-soft)" direction="rtl">גודל הכדור (העמודות) וקוטר נמדד (העיגולים מתחת לסרט)</text>`;
+      s += `<text x="${(x0 + x1) / 2}" y="${dot0 + (levels - 1) * step + 34}" text-anchor="middle" font-size="17" fill="var(--ink-soft)" direction="rtl">המפעלים (העמודות) והקוטר של כל כדור (העיגולים מתחת לסרט)</text>`;
       svg.innerHTML = s;
       bar.querySelectorAll('[data-m]').forEach(b => b.classList.toggle('ghost', !show[b.dataset.m - 1]));
+      document.getElementById(id + '-buy').disabled = data.length >= 25;
+      document.getElementById(id + '-upd').disabled = used === data.length;
       document.getElementById(id + '-out').innerHTML = data.length
-        ? `מדידות: <span class="ltr">${data.length}</span> · אחרונה: <span class="ltr">${data[data.length - 1].toFixed(2)}</span>`
-        : 'עוד לא מדדנו';
+        ? `כדורים: <span class="ltr">${data.length}</span> · אחרון: <span class="ltr">${data[data.length - 1].toFixed(2)}</span>`
+        : 'עוד לא קנינו';
     }
-    function reset() { data = startWithCurves ? book.slice() : []; prev = null; draw(); }
-    document.getElementById(id + '-add').onclick = () => {
-      if (data.length >= 25) return;
-      prev = post(data);
-      data.push(data.length < book.length ? book[data.length] : Math.min(hi - .1, Math.max(.05, truth + sd * randn())));
+    function reset() { data = []; used = 0; prev = null; draw(); }
+    document.getElementById(id + '-buy').onclick = () => { if (data.length < 25) { data.push(ball()); draw(); } };
+    document.getElementById(id + '-upd').onclick = () => {
+      if (used === data.length) return;
+      prev = post(data.slice(0, used));
+      used = data.length;
       draw();
     };
     document.getElementById(id + '-reset').onclick = reset;
     reset();
-  };
-  window.ballsDemo('ball1', false);
+  })();
 </script>
-<div class="demo-note">
-<p>הזמנו כדורים בגודל 2. המפעל מייצר ארבעה גדלים, והמדידה לא מדויקת. כל עיגול הוא מדידה של כדור אחד. קיבלנו את מה שהזמנו?</p>
-</div>
 </section>
-<section id="כמה-אמינות-להעביר" class="slide level2">
+<section id="כמה-אמינות-להעביר" class="slide level2 ask-slide">
 <h2>כמה אמינות להעביר?</h2>
+<style>
+  /* שקף שאלה: הכותרת נשארת לניווט אבל לא מוצגת, והשאלה עצמה גדולה במרכז */
+  .reveal .slides section.ask-slide > h2 { display: none; }
+  .reveal .ask-big { margin-top: 2.2em; text-align: center; font-family: "Frank Ruhl Libre", serif; font-size: 1.7em; font-weight: 700; line-height: 1.3; color: var(--ink); }
+</style>
 <div class="kq">
 <p>הסקה בייסיאנית (<span class="term">Bayesian inference</span>) היא חלוקה מחדש של אמינות בין אפשרויות.</p>
 <p><span class="kq-src">John K. Kruschke, <em>Doing Bayesian Data Analysis</em> (2015)</span></p>
 </div>
-<div>
-<ul>
-<li class="fragment">תצפיות מעבירות אמינות בין אפשרויות. אבל איך מחשבים <strong>בדיוק</strong> כמה אמינות עוברת, ולאיזו אפשרות?</li>
-<li class="fragment">הפתרון הוא <strong>נוסחת Bayes</strong>. נלמד אותה בשני שלבים:
-<ul>
-<li class="fragment"><strong>קודם על מאורעות פשוטים, <span class="math inline">\(A\)</span> ו-<span class="math inline">\(B\)</span>.</strong> כך הנוסחה עצמה ברורה, ונוכל לפתור את החידה.</li>
-<li class="fragment"><strong>אחר כך על התפלגויות.</strong> במחקר הפרמטר יכול לקבל הרבה ערכים, וכך נשתמש בנוסחה בהמשך הקורס.</li>
-</ul></li>
-</ul>
+<div class="ask-big fragment">
+<p>אבל איך מחשבים <strong>בדיוק</strong> כמה אמינות עוברת, ולאיזו אפשרות?</p>
 </div>
 </section>
-<section id="נוסחת-bayes-על-a-ו-b" class="slide level2 part-gate">
-<h2>נוסחת Bayes על <span class="math inline">\(A\)</span> ו-<span class="math inline">\(B\)</span></h2>
+<section id="נוסחת-bayes-על-מאורעות" class="slide level2 part-gate">
+<h2>נוסחת Bayes על מאורעות</h2>
 <div class="gate">
   <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span></div>
-  <div class="gate-title">נוסחת Bayes על <span class="ltr">A</span> ו-<span class="ltr">B</span></div>
+  <div class="gate-title">נוסחת Bayes על מאורעות</div>
   <div class="gate-why">שני הכיוונים של הסתברות מותנית, והנוסחה שהופכת ביניהם. בסוף נפתור את החידה.</div>
 </div>
 </section>
@@ -580,10 +580,31 @@
 <li class="fragment"><span class="math inline">\(A\)</span>: סטודנט לפסיכולוגיה. <span class="math inline">\(B\)</span>: מסתכל על המצגת הזו.</li>
 <li class="fragment"><span class="math inline">\(p(A \mid B)\)</span>, ההסתברות שמי שמסתכל על המצגת הזו הוא סטודנט לפסיכולוגיה: <strong>גבוהה מאוד</strong>.</li>
 <li class="fragment"><span class="math inline">\(p(B \mid A)\)</span>, ההסתברות שסטודנט לפסיכולוגיה (בכל העולם) מסתכל על המצגת הזו: <strong>נמוכה מאוד</strong>.</li>
-<li class="fragment">הבלבול בין השניים נקרא <span class="term">confusion of the inverse</span>, והוא נפוץ גם אצל מדענים. זו המלכודת בחידה: “כמעט תמיד במעיל” הוא מעיל <strong>בהינתן</strong> גשם, והשאלה היא על גשם <strong>בהינתן</strong> מעיל.</li>
+<li class="fragment">הבלבול בין השניים נקרא <span class="term">confusion of the inverse</span>, והוא נפוץ גם אצל מדענים.</li>
 <li class="fragment">בדרך כלל יודעים רק כיוון אחד. נוסחת Bayes <strong>הופכת</strong> אותו.</li>
 </ul>
 </div>
+</section>
+<section id="חזרה-לחידה" class="slide level2">
+<h2>חזרה לחידה</h2>
+<div class="ltr">
+<p><span class="math display">\[p(A \mid B) \qquad \neq \qquad p(B \mid A)\]</span></p>
+</div>
+<div class="soft-card riddle">
+<p>לאולם בלי חלונות נכנסת סטודנטית עם מעיל. אנחנו יודעים שכשיורד גשם, כמעט תמיד היא במעיל.</p>
+<p><strong>מה הסיכוי שיורד גשם בחוץ?</strong> רשמו לעצמכם מספר. נחזור אליו אחר כך.</p>
+</div>
+<div class="riddle-sol">
+<ul>
+<li class="fragment"><strong>הטעות:</strong> לחשוב ש”כמעט תמיד במעיל כשיורד גשם” אומר לנו מה הסיכוי לגשם <strong>בהינתן</strong> מעיל.</li>
+<li class="fragment">בפועל צריך בשביל זה עוד שני מספרים: הסיכוי הבסיסי לגשם, והסיכוי הבסיסי למעיל.</li>
+<li class="fragment">נוסחת Bayes מחברת את שלושת המספרים, והופכת את הכיוון.</li>
+</ul>
+</div>
+<style>
+  .reveal .riddle-sol { font-size: .85em; margin-top: .7em; }
+  .reveal .riddle-sol li { margin-bottom: .25em; }
+</style>
 </section>
 <section id="נוסחת-bayes" class="slide level2">
 <h2>נוסחת Bayes</h2>
@@ -758,239 +779,22 @@
 </div>
 </div>
 </section>
-<section id="חזרה-לחידה" class="slide level2">
-<h2>חזרה לחידה</h2>
-<div class="soft-card riddle small">
-<p>אולם בלי חלונות. נכנסת סטודנטית עם מעיל.</p>
-<ul>
-<li>כשיורד גשם, כמעט תמיד היא במעיל. לפעמים גם בימים יבשים וקרים.</li>
-<li>בתל אביב יורד גשם בערך 50 ימים בשנה.</li>
-</ul>
-<p><strong>מה הסיכוי שיורד גשם בחוץ?</strong></p>
+<section id="שתי-טעויות" class="slide level2">
+<h2>שתי טעויות</h2>
+<div class="soft-card">
+<h3><span class="ltr">confusion of the inverse</span></h3>
+<p>בלבול בין <span class="math inline">\(p(A \mid B)\)</span> ל-<span class="math inline">\(p(B \mid A)\)</span>: מתייחסים להסתברות בכיוון אחד כאילו היא ההסתברות בכיוון ההפוך.</p>
 </div>
-<p><strong>התשובה: 42%.</strong></p>
-<div>
-<ul>
-<li class="fragment">“כמעט תמיד במעיל” הוא <span class="math inline">\(p(B \mid A)\)</span>, מעיל בהינתן גשם. השאלה הייתה <span class="math inline">\(p(A \mid B)\)</span>, גשם בהינתן מעיל. זה <span class="term">confusion of the inverse</span>.</li>
-<li class="fragment">התשובה נמוכה גם כי בתל אביב גשם נדיר: <span class="math inline">\(p(A)\)</span> קטן. בלונדון, עם בערך 150 ימי גשם בשנה, אותו מעיל היה אומר בערך 76%.</li>
-<li class="fragment">להתעלמות מ-<span class="math inline">\(p(A)\)</span> יש שם: <span class="term">base rate neglect</span>. Kahneman ו-Tversky הראו שאנשים עושים את זה באופן עקבי, גם אנשי מקצוע.</li>
-</ul>
+<div class="soft-card">
+<h3><span class="ltr">base rate neglect</span></h3>
+<p>התעלמות מהשכיחות הבסיסית, <span class="math inline">\(p(A)\)</span>, כשמעריכים את <span class="math inline">\(p(A \mid B)\)</span>.</p>
 </div>
 </section>
-<section id="בדיקה-חיובית" class="slide level2">
-<h2>בדיקה חיובית</h2>
-<div class="soft-card riddle">
-<p>הפרעה שכיחה ב-1% מהאוכלוסייה. הבדיקה מזהה 90% מהחולים, אבל יוצאת חיובית גם אצל 10% מהבריאים.</p>
-<p><strong>הבדיקה של המטופל יצאה חיובית. מה הסיכוי שהוא חולה?</strong></p>
-</div>
-<div class="fragment">
-<p><strong><span class="math inline">\(A\)</span> = חולה</strong>, <span class="math inline">\(\neg A\)</span> = בריא     <strong><span class="math inline">\(B\)</span> = בדיקה חיובית</strong>, <span class="math inline">\(\neg B\)</span> = שלילית</p>
-</div>
-<div class="fragment centered-table">
-<table>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(p(A)\)</span></td>
-<td>שכיחות (base rate)</td>
-<td>1%</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(p(B \mid A)\)</span></td>
-<td>רגישות (sensitivity)</td>
-<td>90%</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(p(B \mid \neg A)\)</span></td>
-<td>חיובי שגוי (false positive)</td>
-<td>10%</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(p(\neg B \mid \neg A)\)</span></td>
-<td>סגוליות (specificity)</td>
-<td>90%</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="כמה-מהחיוביים-באמת-חולים" class="slide level2 ppv-slide">
-<h2>כמה מהחיוביים באמת חולים?</h2>
-<style>
-  .reveal .ppv-slide { font-size: .92em; }
-  .reveal .ppv-slide mjx-container[display="true"] { margin: .25em 0; }
-</style>
-<div>
-<ul>
-<li class="fragment">השאלה היא על <span class="math inline">\(p(A \mid B)\)</span>. האינטואיציה אומרת 90%, אבל 90% הוא <span class="math inline">\(p(B \mid A)\)</span>: שוב <span class="term">confusion of the inverse</span>.</li>
-<li class="fragment">את <span class="math inline">\(p(B)\)</span> לא נתנו לנו. מחברים את שתי הדרכים לקבל בדיקה חיובית: חולים שהבדיקה זיהתה, ובריאים שקיבלו חיובי שגוי.</li>
-</ul>
-</div>
-<div class="fragment ltr">
-<p><span class="math display">\[p(A \mid B) = \frac{p(B \mid A)\, p(A)}{p(B \mid A)\, p(A) + p(B \mid \neg A)\, p(\neg A)}\]</span></p>
-</div>
-<div class="fragment ltr">
-<p><span class="math display">\[= \frac{0.90 \cdot 0.01}{0.90 \cdot 0.01 + 0.10 \cdot 0.99} = \frac{0.009}{0.009 + 0.099} \approx 8\%\]</span></p>
-</div>
-<div class="fragment">
-<p>מתוך 1,000 נבדקים: 9 חולים עם בדיקה חיובית, ו-99 בריאים עם בדיקה חיובית. מתוך 108 החיוביים, רק 9 חולים.</p>
-</div>
-</section>
-<section id="מחשבון-bayes" class="slide level2">
-<h2>מחשבון Bayes</h2>
-<style>
-  .reveal .bc { font-size: .74em; padding: 22px 32px; margin-top: .5em; }
-  .reveal .bc-rows { display: grid; grid-template-columns: 6.5em 9em 1fr 3.5em; gap: 12px 18px; align-items: center; }
-  /* סליידר מצויר: ידית ברוחב קבוע (20px), כדי שאפשר יהיה למקם בדיוק קווי גבול על המסילה. המילוי מימין, לפי --v */
-  .reveal .bc input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; margin: 0; border-radius: 4px; display: block;
-    background: linear-gradient(to left, var(--hidden) calc(10px + var(--v, 0) * (100% - 20px)), var(--rule) 0); }
-  .reveal .bc input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--hidden); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--hidden); cursor: pointer; }
-  .reveal .bc input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--hidden); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--hidden); cursor: pointer; }
-  /* תחום אסור על המסילה: מקווקו, וקו גבול שהידית לא עוברת */
-  .reveal .bc-track { position: relative; }
-  .reveal .bc-track input[type="range"] { position: relative; z-index: 1; }
-  .reveal .bc-wall { position: absolute; box-sizing: border-box; top: 50%; height: 24px; transform: translateY(-50%); pointer-events: none; z-index: 0;
-    background: repeating-linear-gradient(-45deg, var(--ink-faint) 0 2px, transparent 2px 7px); }
-  .reveal .bc-wall.lo { right: 0; border-left: 3px solid var(--ink); }
-  .reveal .bc-wall.hi { left: 0; border-right: 3px solid var(--ink); }
-  .reveal .bc-sym { direction: ltr; unicode-bidi: isolate; font-family: "Times New Roman", serif; font-style: italic; font-size: 1.15em; }
-  .reveal .bc-name { color: var(--ink-soft); }
-  .reveal .bc-val { font-variant-numeric: tabular-nums; font-weight: 700; direction: ltr; text-align: left; }
-  .reveal .bc-eq { display: flex; justify-content: center; align-items: center; gap: .5em; direction: ltr; margin: 1.1em 0 .9em;
-                   font-size: 1.15em; font-variant-numeric: tabular-nums; }
-  .reveal .bc-frac { display: inline-flex; flex-direction: column; align-items: center; }
-  .reveal .bc-frac > span { padding: 0 .3em; }
-  .reveal .bc-frac > span:first-child { border-bottom: 2px solid var(--ink); padding-bottom: .1em; }
-  .reveal .bc-frac > span:last-child { padding-top: .1em; }
-  .reveal .bc-res { font-size: 1.6em; font-weight: 700; color: var(--hidden); min-width: 3.2em; text-align: left; }
-  .reveal .bc-cap { color: var(--ink-soft); margin-bottom: 6px; }
-  .reveal .bc-bar { display: flex; height: 40px; border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); background: var(--rule); }
-  .reveal .bc-bar span { transition: width .25s; }
-  .reveal .bc-bar #bc-sick { background: var(--hidden); }
-  .reveal .bc-legend { display: flex; justify-content: space-between; margin-top: 6px; font-variant-numeric: tabular-nums; }
-  .reveal .bc-legend b { color: var(--hidden); }
-</style>
-<div class="demo-panel bc">
-  <div class="bc-rows">
-    <span class="bc-sym">p(A)</span><span class="bc-name">שכיחות</span>
-    <input type="range" id="bc-pa" min="0.01" max="0.99" step="0.01" value="0.01"><span class="bc-val" id="bc-pa-v"></span>
-    <span class="bc-sym">p(B | A)</span><span class="bc-name">רגישות</span>
-    <input type="range" id="bc-ba" min="0" max="1" step="0.01" value="0.9"><span class="bc-val" id="bc-ba-v"></span>
-    <span class="bc-sym">p(B | ¬A)</span><span class="bc-name">חיובי שגוי</span>
-    <input type="range" id="bc-bn" min="0" max="1" step="0.01" value="0.1"><span class="bc-val" id="bc-bn-v"></span>
-  </div>
-  <div class="bc-eq">
-    <span class="bc-sym">p(A | B)</span> =
-    <span class="bc-frac"><span id="bc-num"></span><span id="bc-den"></span></span> =
-    <span class="bc-frac"><span id="bc-n2"></span><span id="bc-d2"></span></span> =
-    <span class="bc-res" id="bc-res"></span>
-  </div>
-  <div class="bc-cap">מכל מי שהבדיקה שלו חיובית:</div>
-  <div class="bc-bar"><span id="bc-sick"></span></div>
-  <div class="bc-legend"><span><b>חולים</b> <span id="bc-l1"></span></span><span>בריאים, חיובי שגוי <span id="bc-l2"></span></span></div>
-</div>
-<script>
-  (function () {
-    const $ = id => document.getElementById(id);
-    if (!$('bc-pa')) return;
-    const pct = v => Math.round(v * 100) + '%';
-    const num = v => String(+v.toPrecision(3));
-    function draw() {
-      const pa = +$('bc-pa').value, ba = +$('bc-ba').value, bn = +$('bc-bn').value;
-      const sick = ba * pa, healthy = bn * (1 - pa), all = sick + healthy;
-      const f = v => v.toFixed(2);
-      ['bc-pa', 'bc-ba', 'bc-bn'].forEach(id => $(id).style.setProperty('--v', $(id).value));
-      $('bc-pa-v').textContent = pct(pa); $('bc-ba-v').textContent = pct(ba); $('bc-bn-v').textContent = pct(bn);
-      $('bc-num').textContent = `${f(ba)} × ${f(pa)}`;
-      $('bc-den').textContent = `${f(ba)} × ${f(pa)} + ${f(bn)} × ${f(1 - pa)}`;
-      $('bc-n2').textContent = num(sick); $('bc-d2').textContent = num(all);
-      const post = all ? sick / all : null;
-      $('bc-res').textContent = post === null ? '—' : (Math.round(post * 1000) / 10) + '%';
-      $('bc-sick').style.width = post === null ? '0' : (post * 100) + '%';
-      $('bc-l1').textContent = post === null ? '' : pct(post);
-      $('bc-l2').textContent = post === null ? '' : pct(1 - post);
-    }
-    // אחרי שמשחררים סליידר הוא מאבד את הפוקוס, כדי שהחצים במקלדת יחזרו לנווט בין השקפים
-    ['bc-pa', 'bc-ba', 'bc-bn'].forEach(id => { $(id).addEventListener('input', draw); $(id).addEventListener('change', e => e.target.blur()); });
-    draw();
-  })();
-</script>
-<div class="demo-note">
-<p>נסו: מה קורה כשההפרעה שכיחה יותר? ומה כשהבדיקה כמעט לא טועה אצל בריאים?</p>
-</div>
-</section>
-<section id="מחשבון-bayes-עם-pb" class="slide level2">
-<h2>מחשבון Bayes, עם <span class="math inline">\(p(B)\)</span></h2>
-<div class="demo-panel bc">
-  <div class="bc-rows">
-    <span class="bc-sym">p(A)</span><span class="bc-name">שכיחות</span>
-    <input type="range" id="bd-pa" min="0.01" max="0.99" step="0.01" value="0.01"><span class="bc-val" id="bd-pa-v"></span>
-    <span class="bc-sym">p(B | A)</span><span class="bc-name">רגישות</span>
-    <input type="range" id="bd-ba" min="0" max="1" step="0.01" value="0.9"><span class="bc-val" id="bd-ba-v"></span>
-    <span class="bc-sym">p(B)</span><span class="bc-name">בדיקה חיובית</span>
-    <div class="bc-track">
-      <input type="range" id="bd-pb" min="0" max="1" step="0.001" value="0.108">
-      <div class="bc-wall lo" id="bd-lo"></div><div class="bc-wall hi" id="bd-hi"></div>
-    </div><span class="bc-val" id="bd-pb-v"></span>
-  </div>
-  <div class="bc-eq">
-    <span class="bc-sym">p(A | B)</span> =
-    <span class="bc-frac"><span id="bd-num"></span><span id="bd-den"></span></span> =
-    <span class="bc-frac"><span id="bd-n2"></span><span id="bd-d2"></span></span> =
-    <span class="bc-res" id="bd-res"></span>
-  </div>
-  <div class="bc-cap">מכל מי שהבדיקה שלו חיובית:</div>
-  <div class="bc-bar"><span id="bd-sick" style="background:var(--hidden)"></span></div>
-  <div class="bc-legend"><span><b>חולים</b> <span id="bd-l1"></span></span><span>בריאים, חיובי שגוי <span id="bd-l2"></span></span></div>
-</div>
-<script>
-  (function () {
-    const $ = id => document.getElementById(id);
-    if (!$('bd-pa')) return;
-    const pct = v => Math.round(v * 100) + '%';
-    const num = v => String(+v.toPrecision(3));
-    // הגבולות של p(B), מנוסחת ההסתברות השלמה: p(B) = p(B|A)p(A) + p(B|¬A)p(¬A), ו-p(B|¬A) בין 0 ל-1.
-    // מלמטה: אף בריא לא חיובי. מלמעלה: כל הבריאים חיוביים. מעוגל פנימה לצעד של הסליידר (0.001)
-    function bounds() {
-      const pa = +$('bd-pa').value, ba = +$('bd-ba').value, sick = ba * pa;
-      return [Math.ceil(sick * 1000 - 1e-9) / 1000, Math.floor((sick + 1 - pa) * 1000 + 1e-9) / 1000];
-    }
-    const at = v => v <= 0 ? '0%' : v >= 1 ? '100%' : `calc(10px + ${v} * (100% - 20px))`;
-    const wall = (el, v) => { el.style.display = v > 0 ? 'block' : 'none'; el.style.width = at(v); };
-    function draw() {
-      const [lo, hi] = bounds(), pbEl = $('bd-pb');
-      // קיר שזז דוחף את הידית, וידית שנגררת אל הקיר נעצרת בו
-      if (+pbEl.value < lo) pbEl.value = lo;
-      if (+pbEl.value > hi) pbEl.value = hi;
-      const pa = +$('bd-pa').value, ba = +$('bd-ba').value, pb = +pbEl.value;
-      wall($('bd-lo'), lo); wall($('bd-hi'), 1 - hi);
-      ['bd-pa', 'bd-ba'].forEach(id => $(id).style.setProperty('--v', $(id).value));
-      // במסילה של p(B) התחום האסור שקוף, כדי שהמקווקו שמתחתיה ייראה
-      pbEl.style.background = `linear-gradient(to left, transparent ${at(lo)}, var(--hidden) ${at(lo)} ${at(pb)}, var(--rule) ${at(pb)} ${at(hi)}, transparent ${at(hi)})`;
-      const f = v => v.toFixed(2);
-      $('bd-pa-v').textContent = pct(pa); $('bd-ba-v').textContent = pct(ba);
-      $('bd-pb-v').textContent = (Math.round(pb * 1000) / 10) + '%';
-      $('bd-num').textContent = `${f(ba)} × ${f(pa)}`;
-      $('bd-den').textContent = num(pb);
-      $('bd-n2').textContent = num(ba * pa); $('bd-d2').textContent = num(pb);
-      const post = pb ? Math.min(1, ba * pa / pb) : null;
-      $('bd-res').textContent = post === null ? '—' : (Math.round(post * 1000) / 10) + '%';
-      $('bd-sick').style.width = post === null ? '0' : (post * 100) + '%';
-      $('bd-l1').textContent = post === null ? '' : pct(post);
-      $('bd-l2').textContent = post === null ? '' : pct(1 - post);
-    }
-    ['bd-pa', 'bd-ba', 'bd-pb'].forEach(id => { $(id).addEventListener('input', draw); $(id).addEventListener('change', e => e.target.blur()); });
-    draw();
-  })();
-</script>
-<div class="demo-note">
-<p>האזור המקווקו אסור. <span class="math inline">\(p(B)\)</span> לא יכול להיות קטן מ-<span class="math inline">\(p(B \mid A)\,p(A)\)</span>, החולים שהבדיקה שלהם חיובית, ולא גדול מזה ועוד <span class="math inline">\(p(\neg A)\)</span>, כל הבריאים.</p>
-</div>
-</section>
-<section id="מאפשרויות-בודדות-להתפלגות" class="slide level2 part-gate">
-<h2>מאפשרויות בודדות להתפלגות</h2>
+<section id="נוסחת-bayes-על-התפלגויות" class="slide level2 part-gate">
+<h2>נוסחת Bayes על התפלגויות</h2>
 <div class="gate">
   <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span></div>
-  <div class="gate-title">מאפשרויות בודדות להתפלגות</div>
+  <div class="gate-title">נוסחת Bayes על התפלגויות</div>
   <div class="gate-why">במחקר הפרמטר יכול לקבל הרבה ערכים. אותה נוסחה, על התפלגות שלמה.</div>
 </div>
 </section>
@@ -1187,69 +991,15 @@
 <p>את <span class="math inline">\(p(y)\)</span> לא חישבנו. הוא אותו מספר לכל ערך של <span class="math inline">\(\theta\)</span>, ולכן הוא לא משנה את צורת ה-posterior, רק דואג שהשטח מתחתיו יהיה 1. מספיק לכפול prior ב-likelihood ולנרמל: posterior ∝ likelihood × prior.</p>
 </div>
 </section>
-<section id="ה-posterior-הוא-פשרה" class="slide level2 example-slide">
-<h2>ה-posterior הוא פשרה</h2>
-<p>ה-posterior תמיד נופל <strong>בין</strong> ה-prior ל-likelihood, וקרוב יותר למי שצר יותר.</p>
-<div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center; font-size:.56em; gap:10px 28px;">
-    <label><b style="color:rgb(140,118,204)">prior</b> מיקום <input type="range" id="cp-pm" min="0.05" max="0.95" step="0.01" value="0.3"></label>
-    <label>רוחב <input type="range" id="cp-ps" min="0.06" max="0.3" step="0.01" value="0.12"></label>
-    <label><b style="color:var(--curve)">likelihood</b> מיקום <input type="range" id="cp-lm" min="0.05" max="0.95" step="0.01" value="0.7"></label>
-    <label>רוחב <input type="range" id="cp-ls" min="0.06" max="0.3" step="0.01" value="0.12"></label>
-  </div>
-  <svg id="cp-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="prior, likelihood ו-posterior על אותו ציר"></svg>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('cp-svg');
-    if (!svg) return;
-    const $ = id => document.getElementById(id);
-    const G = 400, ts = Array.from({ length: G + 1 }, (_, i) => i / G);
-    const x0 = 90, x1 = 930, X = t => x0 + t * (x1 - x0), yb = 270, yt = 40;
-    const norm = v => { const a = v.reduce((s, x) => s + x, 0) / G; return v.map(x => x / a); };
-    const bell = (m, sd) => norm(ts.map(t => Math.exp(-.5 * ((t - m) / sd) ** 2)));
-    const mean = v => v.reduce((s, x, i) => s + x * ts[i], 0) / v.reduce((s, x) => s + x, 0);
-    function draw() {
-      const pr = bell(+$('cp-pm').value, +$('cp-ps').value), lk = bell(+$('cp-lm').value, +$('cp-ls').value);
-      const po = norm(pr.map((v, i) => v * lk[i]));
-      // ציר קבוע: כשמשנים עקומה אחת, האחרות לא "זזות". ה-posterior הצר ביותר האפשרי מגיע לבערך 9.4
-      const top = 10;
-      const Y = v => yb - v / top * (yb - yt);
-      const path = v => v.map((y, i) => (i ? 'L' : 'M') + X(ts[i]).toFixed(1) + ',' + Y(y).toFixed(1)).join('');
-      const curves = [[pr, 'rgb(167,148,216)', 'prior', '', 'p(θ)'], [lk, 'var(--curve)', 'likelihood', 'stroke-dasharray="10 6"', 'p(y | θ)'], [po, 'var(--hidden)', 'posterior', '', 'p(θ | y)']];
-      let s = `<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      [0, .25, .5, .75, 1].forEach(t => { s += `<text x="${X(t)}" y="${yb + 24}" text-anchor="middle" font-size="16" fill="var(--ink-soft)">${t}</text>`; });
-      s += `<text x="${(x0 + x1) / 2}" y="${yb + 52}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">θ</text>`;
-      s += `<path d="${path(po)} L${x1},${yb} L${x0},${yb} Z" fill="var(--hidden-bg)" opacity=".7"/>`;
-      curves.forEach(([v, c, name, dash, sym]) => {
-        const m = mean(v), im = v.indexOf(Math.max(...v)), lx = Math.min(Math.max(X(ts[im]), x0 + 50), x1 - 50);
-        s += `<line x1="${X(m)}" y1="${yb}" x2="${X(m)}" y2="${Y(v[Math.round(m * G)])}" stroke="${c}" stroke-width="1.5" stroke-dasharray="3 4"/>
-              <path d="${path(v)}" fill="none" stroke="${c}" stroke-width="${name === 'posterior' ? 4.5 : 3.5}" ${dash}/>
-              <text x="${lx}" y="${Y(v[im]) - 10}" text-anchor="middle" font-size="18" font-weight="700" fill="${c}">${name}</text>
-              <text x="${lx}" y="${Y(v[im]) - 34}" text-anchor="middle" direction="ltr" font-family="'Times New Roman', serif" font-style="italic" font-size="19" fill="${c}">${sym}</text>`;
-      });
-      svg.innerHTML = s;
-    }
-    ['cp-pm', 'cp-ps', 'cp-lm', 'cp-ls'].forEach(id => $(id).addEventListener('input', draw));
-    draw();
-  })();
-</script>
-<div class="demo-note">
-<p>prior צר: אמונה חזקה מראש. likelihood צר: הרבה נתונים. הקווים המקווקווים מסמנים את המרכז של כל עקומה.</p>
-</div>
-</section>
 <section id="סיכום" class="slide level2 summary-slide">
 <h2>סיכום</h2>
 <div>
 <ul>
-<li class="fragment"><strong>הסקה בייסיאנית היא חלוקה מחדש של אמינות</strong> בין אפשרויות. לפעמים תצפית פוסלת (הולמס), ובדרך כלל רק מחלישה (הכדורים).</li>
-<li class="fragment"><strong>הסתברות מותנית</strong> מצמצמת את העולם לחלק שבו התנאי נכון.</li>
-<li class="fragment"><strong>שני כיוונים:</strong> <span class="math inline">\(p(A \mid B) \neq p(B \mid A)\)</span>. מעיל ביום גשם כמעט ודאי. גשם כשרואים מעיל, הרבה פחות.</li>
-<li class="fragment"><strong>נוסחת Bayes</strong> הופכת את הכיוון: <span class="math inline">\(p(A \mid B) = p(B \mid A)\, p(A) / p(B)\)</span>.</li>
-<li class="fragment"><strong>base rate:</strong> כשאפשרות נדירה, גם תצפית חזקה מזיזה אליה מעט אמינות.</li>
-<li class="fragment"><strong>אותה נוסחה על <span class="math inline">\(\theta\)</span> ו-<span class="math inline">\(y\)</span>:</strong> posterior ∝ likelihood × prior, איבר באיבר על כל ערכי <span class="math inline">\(\theta\)</span>. את <span class="math inline">\(p(y)\)</span> לא צריך לחשב, רק לנרמל.</li>
-<li class="fragment"><strong>ה-posterior של היום הוא ה-prior של מחר</strong>, וה-posterior הוא תמיד פשרה בין ה-prior ל-likelihood.</li>
-<li class="fragment"><strong>במצגת הבאה:</strong> נשתמש בזה כדי להעריך כמה מים יש על כדור הארץ.</li>
+<li class="fragment"><strong>הסקה בייסיאנית</strong> היא חלוקה מחדש של אמינות בין אפשרויות.</li>
+<li class="fragment"><strong>נוסחת Bayes:</strong> <span class="math inline">\(p(A \mid B) = \dfrac{p(B \mid A)\, p(A)}{p(B)}\)</span></li>
+<li class="fragment"><strong>שתי טעויות:</strong> <span class="term">confusion of the inverse</span> ו-<span class="term">base rate neglect</span>.</li>
+<li class="fragment">בעזרת נוסחת Bayes אפשר לחשב הסתברויות בודדות, וגם התפלגויות.</li>
+<li class="fragment"><strong>במצגת הבאה:</strong> נלמד איך משתמשים בנוסחת Bayes, בהדגמה.</li>
 </ul>
 </div>
 <div class="footer footer-default">
