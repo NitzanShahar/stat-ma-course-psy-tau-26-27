@@ -125,10 +125,11 @@ def short_label(lbl):
     return m.group(1) if m else lbl
 
 
-def pill(lbl, h, ctx='', p=''):
+def pill(lbl, h, ctx='', p='', tone=''):
     """A round icon-only media button (the label goes into the tooltip / screen reader).
-    Local audio/video opens in the site's own player page, in the same tab; external links open in a new tab."""
-    tone = ' purple' if 'סגול' in lbl else ' yellow' if 'צהוב' in lbl else ''
+    Local audio/video opens in the site's own player page, in the same tab; external links open in a new tab.
+    tone: a colour for the button (site.json doc_tones colours the read-alouds of an original text)."""
+    tone = ' ' + tone if tone else ' purple' if 'סגול' in lbl else ' yellow' if 'צהוב' in lbl else ''
     if re.match(r'https?://', h):
         return f'<a class="pill{tone}" href="{h}" target="_blank" rel="noopener" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h)}</a>'
     if h.lower().endswith(('.mp4', '.webm', '.mov', '.mp3', '.m4a', '.wav', '.ogg')):
@@ -503,9 +504,10 @@ class Site:
         target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
         body = f'<span class="mt">{title}</span>{subhtml}'
         main = f'<a class="mlink" href="{link}"{target}>{ic}<span>{body}</span></a>' if link else f'<span class="mlink">{ic}<span>{body}</span></span>'
+        tones = self.cfg.get('doc_tones', {})
         rows = ''.join(f'<div class="mat"><a class="mlink" href="{h}" target="_blank" rel="noopener"><span class="ic">{icon}</span>'
                        f'<span><span class="mt">{esc(lbl)}</span><span class="ms">טקסט מקורי</span></span></a>'
-                       + (f'<span class="pills">{"".join(pill(ml, mh, lbl, self.p) for ml, mh in dm_)}</span>' if dm_ else '') + '</div>'
+                       + (f'<span class="pills">{"".join(pill(ml, mh, lbl, self.p, tones.get(lbl)) for ml, mh in dm_)}</span>' if dm_ else '') + '</div>'
                        for lbl, h, dm_ in docs)
         return f'<div class="mat">{main}' + (f'<span class="pills">{pills}</span>' if pills else '') + '</div>' + rows
 
@@ -691,11 +693,12 @@ class Site:
             t = f'<a class="mt" href="{link}" target="_blank" rel="noopener">{t}</a>' if link else f'<span class="mt">{t}</span>'
             if sub:
                 t = f'<span>{t}<span class="ms">{esc(sub)}</span></span>'
+            tones = self.cfg.get('doc_tones', {})
             own, dl = split_more(more, self.cfg.get('more_attach'))
             pills = ''.join(pill(lbl, h, rtitle.replace('\n', ' '), self.p) for lbl, h in own)
             docs = ''.join(f'<li><span class="ic">{icon}</span><span class="tli"><span><a class="mt" href="{h}" target="_blank" rel="noopener">{esc(lbl)}</a>'
                            f'<span class="ms">טקסט מקורי</span></span>'
-                           + (f'<span class="tpills">{"".join(pill(ml, mh, lbl, self.p) for ml, mh in dm_)}</span>' if dm_ else '') + '</span></li>'
+                           + (f'<span class="tpills">{"".join(pill(ml, mh, lbl, self.p, tones.get(lbl)) for ml, mh in dm_)}</span>' if dm_ else '') + '</span></li>'
                            for lbl, h, dm_ in dl)
             return f'<li><span class="ic">{icon}</span><span class="tli">{t}' + (f'<span class="tpills">{pills}</span>' if pills else '') + '</span></li>' + docs
         texts = self.cfg.get('task_texts', {}).get(str(w['n']), {})

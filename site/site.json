@@ -70,6 +70,10 @@
     }
   },
   "thumbs": {},
+  "doc_tones": {
+    "Bayes 1763": "purple",
+    "Laplace 1814": "blue"
+  },
   "more_attach": {
     "Price": "Bayes 1763"
   },

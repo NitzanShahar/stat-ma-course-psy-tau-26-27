@@ -73,6 +73,7 @@ a.mlink:hover .mt,a.mt:hover{color:#b3541e}
 .pill svg{width:16px;height:16px}
 .pill.purple{background:#efe6fb;border-color:#c9b3ec;color:#6a3fb0}
 .pill.yellow{background:#fdf3c8;border-color:#ecd47a;color:#8a6a00}
+.pill.blue{background:#e6effb;border-color:#a9c4ec;color:#1f5fae}
 .pill:hover{border-color:var(--u-ink);color:var(--u-ink)}
 .ic{flex:none;width:42px;height:42px;border-radius:12px;background:var(--u-tint);display:flex;align-items:center;justify-content:center;color:var(--u-ink);overflow:hidden}
 .ic.thumb{background:#000000}
