@@ -103,6 +103,22 @@ def is_media(h):
     return pill_icon(h) != PILL_DOC
 
 
+def split_more(more, aliases=None):
+    """Extra links -> (media buttons for the item's own row, [(doc label, doc link, its media buttons)]).
+    Media whose label names a document goes on that document's row: 'הקראה: Laplace' -> the 'Laplace 1814' row.
+    aliases (site.json more_attach) maps a name to a document: {"Price": "Bayes 1763"}."""
+    docs = [(lbl, h, []) for lbl, h in more if not is_media(h)]
+    own = []
+    for lbl, h in more:
+        if is_media(h):
+            rest = lbl.split(':', 1)[1].split() if ':' in lbl else []
+            w = rest[0] if rest else ''
+            w = (aliases or {}).get(w, w)
+            d = next((d for d in docs if w and (d[0] == w or w in d[0].split())), None)
+            (d[2] if d else own).append((lbl, h))
+    return own, docs
+
+
 def short_label(lbl):
     """'הקראה: הקטעים הסגולים' -> 'הקטעים הסגולים' (the headphones icon already says it is audio)."""
     m = re.match(r'הקראה:\s*(.+)', lbl)
@@ -481,14 +497,16 @@ class Site:
               else f'<span class="ic">{icon}</span>')
         # extra media (explainer video, read-aloud audio, ...) as small buttons at the row's far (left) end;
         # extra documents (e.g. the original texts behind a history page) as rows of their own, like a reading item
-        docs = [(lbl, h) for lbl, h in more if not is_media(h)]
-        pills = ''.join(pill(lbl, h, raw_title, self.p) for lbl, h in more if is_media(h))
+        own, docs = split_more(more, self.cfg.get('more_attach'))
+        pills = ''.join(pill(lbl, h, raw_title, self.p) for lbl, h in own)
         subhtml = f'<span class="ms">{esc(sub)}</span>' if sub else ''
         target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
         body = f'<span class="mt">{title}</span>{subhtml}'
         main = f'<a class="mlink" href="{link}"{target}>{ic}<span>{body}</span></a>' if link else f'<span class="mlink">{ic}<span>{body}</span></span>'
         rows = ''.join(f'<div class="mat"><a class="mlink" href="{h}" target="_blank" rel="noopener"><span class="ic">{icon}</span>'
-                       f'<span><span class="mt">{esc(lbl)}</span><span class="ms">טקסט מקורי</span></span></a></div>' for lbl, h in docs)
+                       f'<span><span class="mt">{esc(lbl)}</span><span class="ms">טקסט מקורי</span></span></a>'
+                       + (f'<span class="pills">{"".join(pill(ml, mh, lbl, self.p) for ml, mh in dm_)}</span>' if dm_ else '') + '</div>'
+                       for lbl, h, dm_ in docs)
         return f'<div class="mat">{main}' + (f'<span class="pills">{pills}</span>' if pills else '') + '</div>' + rows
 
     # ---------- weeks ----------
@@ -673,9 +691,12 @@ class Site:
             t = f'<a class="mt" href="{link}" target="_blank" rel="noopener">{t}</a>' if link else f'<span class="mt">{t}</span>'
             if sub:
                 t = f'<span>{t}<span class="ms">{esc(sub)}</span></span>'
-            pills = ''.join(pill(lbl, h, rtitle.replace('\n', ' '), self.p) for lbl, h in more if is_media(h))
+            own, dl = split_more(more, self.cfg.get('more_attach'))
+            pills = ''.join(pill(lbl, h, rtitle.replace('\n', ' '), self.p) for lbl, h in own)
             docs = ''.join(f'<li><span class="ic">{icon}</span><span class="tli"><span><a class="mt" href="{h}" target="_blank" rel="noopener">{esc(lbl)}</a>'
-                           f'<span class="ms">טקסט מקורי</span></span></span></li>' for lbl, h in more if not is_media(h))
+                           f'<span class="ms">טקסט מקורי</span></span>'
+                           + (f'<span class="tpills">{"".join(pill(ml, mh, lbl, self.p) for ml, mh in dm_)}</span>' if dm_ else '') + '</span></li>'
+                           for lbl, h, dm_ in dl)
             return f'<li><span class="ic">{icon}</span><span class="tli">{t}' + (f'<span class="tpills">{pills}</span>' if pills else '') + '</span></li>' + docs
         texts = self.cfg.get('task_texts', {}).get(str(w['n']), {})
         if reading:
