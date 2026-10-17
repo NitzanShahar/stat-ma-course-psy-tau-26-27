@@ -98,6 +98,11 @@ def pill_icon(h):
     return PILL_PLAY if (h.endswith(('.mp4', '.webm', '.mov')) or 'youtu' in h or 'vimeo' in h) else PILL_AUDIO if h.endswith(('.mp3', '.m4a', '.wav', '.ogg')) else PILL_DOC
 
 
+def is_media(h):
+    """Audio/video (local or YouTube/Vimeo) -> a round button; anything else (a PDF...) gets a row of its own."""
+    return pill_icon(h) != PILL_DOC
+
+
 def short_label(lbl):
     """'הקראה: הקטעים הסגולים' -> 'הקטעים הסגולים' (the headphones icon already says it is audio)."""
     m = re.match(r'הקראה:\s*(.+)', lbl)
@@ -474,13 +479,17 @@ class Site:
         thumb = self.cfg.get('thumbs', {}).get(it['code'])
         ic = (f'<span class="ic thumb"><img src="{self.p}assets/img/{href(thumb)}" alt=""></span>' if thumb
               else f'<span class="ic">{icon}</span>')
-        # extra media (explainer video, read-aloud audio, ...) as small buttons at the row's far (left) end
-        pills = ''.join(pill(lbl, h, raw_title, self.p) for lbl, h in more)
+        # extra media (explainer video, read-aloud audio, ...) as small buttons at the row's far (left) end;
+        # extra documents (e.g. the original texts behind a history page) as rows of their own, like a reading item
+        docs = [(lbl, h) for lbl, h in more if not is_media(h)]
+        pills = ''.join(pill(lbl, h, raw_title, self.p) for lbl, h in more if is_media(h))
         subhtml = f'<span class="ms">{esc(sub)}</span>' if sub else ''
         target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
         body = f'<span class="mt">{title}</span>{subhtml}'
         main = f'<a class="mlink" href="{link}"{target}>{ic}<span>{body}</span></a>' if link else f'<span class="mlink">{ic}<span>{body}</span></span>'
-        return f'<div class="mat">{main}' + (f'<span class="pills">{pills}</span>' if pills else '') + '</div>'
+        rows = ''.join(f'<div class="mat"><a class="mlink" href="{h}" target="_blank" rel="noopener"><span class="ic">{icon}</span>'
+                       f'<span><span class="mt">{esc(lbl)}</span><span class="ms">טקסט מקורי</span></span></a></div>' for lbl, h in docs)
+        return f'<div class="mat">{main}' + (f'<span class="pills">{pills}</span>' if pills else '') + '</div>' + rows
 
     # ---------- weeks ----------
     def open_weeks(self):
@@ -664,8 +673,10 @@ class Site:
             t = f'<a class="mt" href="{link}" target="_blank" rel="noopener">{t}</a>' if link else f'<span class="mt">{t}</span>'
             if sub:
                 t = f'<span>{t}<span class="ms">{esc(sub)}</span></span>'
-            pills = ''.join(pill(lbl, h, rtitle.replace('\n', ' '), self.p) for lbl, h in more)
-            return f'<li><span class="ic">{icon}</span><span class="tli">{t}' + (f'<span class="tpills">{pills}</span>' if pills else '') + '</span></li>'
+            pills = ''.join(pill(lbl, h, rtitle.replace('\n', ' '), self.p) for lbl, h in more if is_media(h))
+            docs = ''.join(f'<li><span class="ic">{icon}</span><span class="tli"><span><a class="mt" href="{h}" target="_blank" rel="noopener">{esc(lbl)}</a>'
+                           f'<span class="ms">טקסט מקורי</span></span></span></li>' for lbl, h in more if not is_media(h))
+            return f'<li><span class="ic">{icon}</span><span class="tli">{t}' + (f'<span class="tpills">{pills}</span>' if pills else '') + '</span></li>' + docs
         texts = self.cfg.get('task_texts', {}).get(str(w['n']), {})
         if reading:
             names = ' ו'.join(self.split_title(self.clean_title(it))[0] for it in reading)
