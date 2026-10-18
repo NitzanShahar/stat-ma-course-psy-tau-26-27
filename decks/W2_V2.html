@@ -365,17 +365,6 @@
 <p>הסקה בייסיאנית (<span class="term">Bayesian inference</span>) היא חלוקה מחדש של אמינות בין אפשרויות.</p>
 <p><span class="kq-src">John K. Kruschke, <em>Doing Bayesian Data Analysis</em> (2015)</span></p>
 </div>
-<div>
-<ul>
-<li class="fragment"><strong>אפשרויות:</strong> כל ההסברים שיכולים לעמוד מאחורי מה שצפינו.</li>
-<li class="fragment"><strong>אמינות:</strong> כמה אנחנו מאמינים לכל הסבר. סך האמינות הוא אחד.</li>
-<li class="fragment"><strong>תצפית</strong> לא מוסיפה אמינות ולא מוחקת אותה. היא מעבירה אמינות מאפשרות לאפשרות.</li>
-</ul>
-</div>
-<div class="kq fragment">
-<p>כשסילקת את הבלתי אפשרי, מה שנשאר, בלתי סביר ככל שיהיה, חייב להיות האמת.</p>
-<p><span class="kq-src">Arthur Conan Doyle, <em>The Sign of the Four</em> (1890)</span></p>
-</div>
 </section>
 <section id="מפעלי-הכדורים" class="slide level2 example-slide">
 <h2>מפעלי הכדורים</h2>
@@ -755,7 +744,7 @@
 <section id="נוסחת-bayes-על-התפלגויות-1" class="slide level2">
 <h2>נוסחת Bayes על התפלגויות</h2>
 <style>
-  .reveal .morph { display: grid; direction: ltr; }
+  .reveal .morph { position: relative; display: grid; direction: ltr; }
   .reveal .morph-layer { grid-area: 1 / 1; text-align: center; transition: opacity .5s; }
   .reveal .morph-map { display: flex; justify-content: center; gap: 2.5em; font-size: .8em; margin: -.2em 0 .3em; }
   .reveal [id^="nb-"] { color: transparent; transition: color .4s; }
@@ -766,26 +755,30 @@
 <div class="morph">
 <div id="mx-ab" class="morph-layer">
 <p><span class="math display">\[
-\color{transparent}{\underbrace{\color{#1b2028}{p(A \mid B)}}_{\text{posterior}}} = \frac{\color{transparent}{\overbrace{\color{#1b2028}{p(B \mid A)}}^{\text{likelihood}}} \;\cdot\; \color{transparent}{\overbrace{\color{#1b2028}{p(A)}}^{\text{prior}}}}{\color{transparent}{\underbrace{\color{#1b2028}{p(B)}}_{\text{evidence}}}}
+\color{transparent}{\underbrace{\color{#1b2028}{p(A \mid B)}}_{\text{posterior}}} = \frac{\color{transparent}{\overbrace{\color{#1b2028}{p(B \mid A)}}^{\text{likelihood}}} \;\cdot\; \color{transparent}{\overbrace{\color{#1b2028}{p(A)}}^{\text{prior}}}}{\color{transparent}{\underbrace{\color{#1b2028}{p(B)}}_{\text{normalization factor}}}}
 \]</span></p>
 </div>
 <div id="mx-tb" class="morph-layer">
 <p><span class="math display">\[
-\color{transparent}{\underbrace{\color{#1b2028}{p({\color{#5b3fa8}{\theta}} \mid B)}}_{\text{posterior}}} = \frac{\color{transparent}{\overbrace{\color{#1b2028}{p(B \mid {\color{#5b3fa8}{\theta}})}}^{\text{likelihood}}} \;\cdot\; \color{transparent}{\overbrace{\color{#1b2028}{p({\color{#5b3fa8}{\theta}})}}^{\text{prior}}}}{\color{transparent}{\underbrace{\color{#1b2028}{p(B)}}_{\text{evidence}}}}
+\color{transparent}{\underbrace{\color{#1b2028}{p({\color{#5b3fa8}{\theta}} \mid B)}}_{\text{posterior}}} = \frac{\color{transparent}{\overbrace{\color{#1b2028}{p(B \mid {\color{#5b3fa8}{\theta}})}}^{\text{likelihood}}} \;\cdot\; \color{transparent}{\overbrace{\color{#1b2028}{p({\color{#5b3fa8}{\theta}})}}^{\text{prior}}}}{\color{transparent}{\underbrace{\color{#1b2028}{p(B)}}_{\text{normalization factor}}}}
 \]</span></p>
 </div>
 <div id="mx-ty" class="morph-layer">
 <p><span class="math display">\[
-\cssId{nb-post}{\underbrace{\cssId{ni-post}{p({\color{#5b3fa8}{\theta}} \mid {\color{#16697a}{y}})}}_{\text{posterior}}} = \frac{\cssId{nb-lik}{\overbrace{\cssId{ni-lik}{p({\color{#16697a}{y}} \mid {\color{#5b3fa8}{\theta}})}}^{\text{likelihood}}} \;\cdot\; \cssId{nb-pri}{\overbrace{\cssId{ni-pri}{p({\color{#5b3fa8}{\theta}})}}^{\text{prior}}}}{\cssId{nb-ev}{\underbrace{\cssId{ni-ev}{p({\color{#16697a}{y}})}}_{\text{evidence}}}}
+\cssId{nb-post}{\underbrace{\cssId{ni-post}{p({\color{#5b3fa8}{\theta}} \mid {\color{#16697a}{y}})}}_{\text{posterior}}} = \frac{\cssId{nb-lik}{\overbrace{\cssId{ni-lik}{p({\color{#16697a}{y}} \mid {\color{#5b3fa8}{\theta}})}}^{\text{likelihood}}} \;\cdot\; \cssId{nb-pri}{\overbrace{\cssId{ni-pri}{p({\color{#5b3fa8}{\theta}})}}^{\text{prior}}}}{\cssId{nb-ev}{\underbrace{\cssId{ni-ev}{p({\color{#16697a}{y}})}}_{\text{normalization factor}}}}
 \]</span></p>
 </div>
 </div>
 <div class="morph-map">
 <p><span class="fragment"><span class="math inline">\(A \;\rightarrow\; \theta\)</span>: ערך אפשרי של הפרמטר</span> <span class="fragment"><span class="math inline">\(B \;\rightarrow\; y\)</span>: הנתונים שראינו</span></p>
 </div>
-<p><span class="fragment"></span></p>
+<p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
 <div class="fragment centered-table">
 <table>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>רכיב</th>
@@ -802,7 +795,7 @@
 <td>כמה הנתונים צפויים, <strong>אם</strong> <span class="math inline">\(\theta\)</span> הוא הערך הזה</td>
 </tr>
 <tr class="odd">
-<td><strong>evidence</strong></td>
+<td><strong>normalization factor</strong></td>
 <td>ההסתברות לנתונים, על פני כל הערכים של <span class="math inline">\(\theta\)</span></td>
 </tr>
 <tr class="even">
@@ -813,17 +806,33 @@
 </table>
 </div>
 <script>
-  // A מתחלף ל-θ, אחר כך B ל-y, ואז מופיעים השמות. הכול לפי מספר הצעדים שכבר הוצגו בשקף
+  // A מתחלף ל-θ, אחר כך B ל-y, עיגול סביב p(y|θ), עיגול סביב p(θ|y), ואז השמות במקום העיגולים.
+  // הכול לפי מספר הצעדים שכבר הוצגו בשקף. העיגולים כמו בשקף "נוסחת Bayes" (.bz-ring)
   (function () {
+    const rings = {};
+    function ring(box, id, show) {
+      const term = document.getElementById(id);
+      if (!term) return;
+      if (!rings[id]) { rings[id] = document.createElement('div'); rings[id].className = 'bz-ring'; box.appendChild(rings[id]); }
+      const k = Reveal.getScale ? Reveal.getScale() : 1, t = term.getBoundingClientRect(), b = box.getBoundingClientRect();
+      const w = t.width / k * 1.5, h = t.height / k * 1.55;
+      const cx = (t.left + t.right) / 2 - b.left, cy = (t.top + t.bottom) / 2 - b.top;
+      Object.assign(rings[id].style, { width: w + 'px', height: h + 'px', left: cx / k - w / 2 + 'px', top: cy / k - h / 2 + 'px' });
+      rings[id].classList.toggle('on', show);
+    }
     function sync() {
       const box = document.querySelector('.morph');
       if (!box) return;
-      const n = box.closest('section').querySelectorAll('.fragment.visible').length;
+      const sec = box.closest('section');
+      const n = sec.querySelectorAll('.fragment.visible').length;
       const on = n >= 2 ? 'mx-ty' : n === 1 ? 'mx-tb' : 'mx-ab';
       box.querySelectorAll('.morph-layer').forEach(l => { l.style.opacity = l.id === on ? 1 : 0; });
-      box.classList.toggle('names', n >= 3);
+      box.classList.toggle('names', n >= 5);
+      if (!sec.classList.contains('present')) return;
+      ring(box, 'ni-lik', n >= 3 && n < 5);
+      ring(box, 'ni-post', n >= 4 && n < 5);
     }
-    const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready'].forEach(e => Reveal.on(e, sync)); sync(); };
+    const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready', 'resize'].forEach(e => Reveal.on(e, sync)); sync(); };
     if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
   })();
 </script>
@@ -943,7 +952,7 @@
 </script>
 <p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
 <div class="fragment demo-note" style="font-size:.6em;">
-<p>את <span class="math inline">\(p(y)\)</span> לא חישבנו. הוא אותו מספר לכל ערך של <span class="math inline">\(\theta\)</span>, ולכן הוא לא משנה את צורת ה-posterior, רק דואג שהשטח מתחתיו יהיה 1. מספיק לכפול prior ב-likelihood ולנרמל: posterior ∝ likelihood × prior.</p>
+<p>את <span class="math inline">\(p(y)\)</span>, ה-normalization factor, לא חישבנו. הוא אותו מספר לכל ערך של <span class="math inline">\(\theta\)</span>, ולכן הוא לא משנה את צורת ה-posterior, רק דואג שהשטח מתחתיו יהיה 1. מספיק לכפול prior ב-likelihood ולנרמל: posterior ∝ likelihood × prior.</p>
 </div>
 </section>
 <section id="סיכום" class="slide level2 summary-slide">

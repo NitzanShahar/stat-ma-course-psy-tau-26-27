@@ -705,12 +705,14 @@ class Site:
         if reading:
             names = ' ו'.join(self.split_title(self.clean_title(it))[0] for it in reading)
             text = texts.get('reading') or f'השלמת הקריאה: {names}.'
-            note = self.cfg.get('task_notes', {}).get('reading', 'הגשה: השלמת שאלת Moodle בתחילת השיעור')
+            x = d(nl)
+            note = self.cfg.get('task_notes', {}).get('reading') or (
+                f'הגשה: שאלת בוחן בתחילת השיעור של יום {DAYS[x.weekday()]}, {x.day}.{x.month}' if x else 'הגשה: שאלת בוחן בתחילת השיעור')
             cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', text, note, nl))
         for it in hw:
             m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
             text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)}: {m.group(2)}.' if m else f'{self.clean_title(it)}.')
-            hw_note = self.cfg.get('task_notes', {}).get('hw', 'הגשה דרך ה-Moodle')
+            hw_note = self.cfg.get('task_notes', {}).get('hw', 'הגשת צילום או סריקה דרך ה-Moodle')
             cards.append(self.task_card('מטלת הגשה', 'הגשה ב' + day_dm(it.get('due')) if it.get('due') else '', text, hw_note, it.get('due')))
         if not cards:
             return ''

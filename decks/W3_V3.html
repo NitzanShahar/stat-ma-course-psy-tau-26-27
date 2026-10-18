@@ -376,7 +376,7 @@
       ['pri', 860, 196, 290, 'prior', L('p(θ)') + ': מה האמנו לפני', 'W2', 'bay', 1,
         '<b>prior:</b> האמונה על ' + L('θ') + ' לפני הנתונים. uniform / flat כשאין סיבה להעדיף ערך (Bayes ו-Laplace). weakly informative ו-informative כשיש ידע. <b>base rate</b> הוא prior.'],
       ['pos', 860, 274, 290, 'posterior', L('p(θ | y) ∝ p(y | θ) · p(θ)'), 'W2', 'bay', 1,
-        '<b>posterior:</b> ההתפלגות על ' + L('θ') + ' אחרי הנתונים. likelihood כפול prior, חלקי <b>evidence</b> ' + L('p(y)') + ' שמנרמל. מחשבים ב-<b>grid approximation</b>. ה-posterior של היום הוא ה-prior של מחר.'],
+        '<b>posterior:</b> ההתפלגות על ' + L('θ') + ' אחרי הנתונים. likelihood כפול prior, חלקי ה-<b>normalization factor</b> ' + L('p(y)') + '. מחשבים ב-<b>grid approximation</b>. ה-posterior של היום הוא ה-prior של מחר.'],
       ['sum', 860, 352, 290, 'לתאר את ה-posterior', 'MAP · רווח אמינות · PD', 'W2', 'bay', 1,
         '<b>תיאור:</b> MAP, חציון וממוצע למרכז. <b>credible interval</b> (PI או HDI): "בהסתברות 89%, ' + L('θ') + ' כאן". <b>PD</b>: כמה מה-posterior בצד אחד של ערך ייחוס. או פשוט לדגום מה-posterior.'],
       ['pre', 860, 430, 290, 'ניבוי', 'posterior predictive', 'W2', 'bay', 1,
