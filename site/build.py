@@ -717,8 +717,9 @@ class Site:
             names = ' ו'.join(self.split_title(self.clean_title(it))[0] for it in reading)
             text = texts.get('reading') or f'השלמת הקריאה: {names}.'
             x = d(nl)
+            at = self.cfg.get('reading_due_time', '10:00')
             note = self.cfg.get('task_notes', {}).get('reading') or (
-                f'הגשה: שאלת בוחן בתחילת השיעור של יום {DAYS[x.weekday()]}, {x.day}.{x.month}' if x else 'הגשה: שאלת בוחן בתחילת השיעור')
+                f'תאריך הגשה אחרון: יום {DAYS[x.weekday()]} {x.day}.{x.month} ב-{at}' if x else '')
             url = self.cfg.get('task_links', {}).get(str(w['n']), {}).get('reading')
             go = f'<a class="go" href="{esc(url)}" target="_blank" rel="noopener">להגשת מטלת הקריאה</a>' if url else ''
             cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', text, note, nl, go))

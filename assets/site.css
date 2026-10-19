@@ -110,9 +110,12 @@ a.mt:hover{color:#b3541e}
 .info p{margin:0 0 14px}
 .steps{margin:0 0 26px;padding-inline-start:24px}
 .steps li{margin-bottom:8px}
-.info .go,.np .go{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:12px;background:#001a24;color:#ffffff;font-weight:700;font-size:18px;text-decoration:none}
-.info .go:hover,.np .go:hover{background:#0b3446;color:#ffffff}
-.np .go{align-self:stretch}
+.info .go{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:12px;background:#001a24;color:#ffffff;font-weight:700;font-size:18px;text-decoration:none}
+.info .go:hover{background:#0b3446;color:#ffffff}
+/* the submit link inside a task card: clear, but quieter than a filled button */
+.np .go{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:1.5px solid var(--u-ink);border-radius:10px;background:#ffffff;color:var(--u-ink);font-weight:600;font-size:16px;text-decoration:none}
+.np .go::after{content:'←'}
+.np .go:hover{background:var(--u-tint)}
 .tasks .nk{font-size:16px}
 .tasks .dl span{font-size:16px}
 .tasks .dl b{font-size:32px}
