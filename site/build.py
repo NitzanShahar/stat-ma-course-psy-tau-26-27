@@ -746,13 +746,14 @@ class Site:
         for it in hw:
             m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
             text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)}: {m.group(2)}.' if m else f'{self.clean_title(it)}.')
-            y = d(it.get('due'))
+            due_s = self.cfg.get('task_due', {}).get(str(w['n']), {}).get('hw') or it.get('due')  # site.json can move the deadline
+            y = d(due_s)
             hw_at = self.cfg.get('hw_due_time')  # no time given: the date alone
             hw_note = []
             if y:
                 hw_note.append(esc(f'תאריך אחרון להגשה: יום {DAYS[y.weekday()]} {y.day}.{y.month}' + (f' ב-{hw_at}' if hw_at else '')))
             hw_note.append(esc(self.cfg.get('task_notes', {}).get('hw', 'הגשה מקוונת: צילום או סריקה דרך ה-Moodle')))
-            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, it.get('due')))
+            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s))
         if not cards:
             return ''
         return (f'<section class="tasks card" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
