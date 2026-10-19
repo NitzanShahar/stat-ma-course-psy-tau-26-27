@@ -122,7 +122,8 @@ a.mt:hover{color:#b3541e}
 .tasks .dl span{font-size:16px}
 .tasks .dl b{font-size:32px}
 .tasks .ttext{font-size:20px}
-.tasks .tnote{font-size:16px;color:#5f6d73}
+.tasks .tnote{font-size:16px;color:#5f6d73;line-height:1.7}
+.tasks .tnote .ln{color:var(--u-ink);border-bottom-color:currentColor;font-weight:600}
 
 /* week navigation */
 .nav{display:flex;justify-content:space-between;gap:12px;padding:12px 28px;border-top:1px solid #e9edee;background:#f5f7f7}

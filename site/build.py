@@ -736,11 +736,13 @@ class Site:
             text = texts.get('reading') or f'השלמת הקריאה: {names}.'
             x = d(nl)
             at = self.cfg.get('reading_due_time', '10:00')
-            note = self.cfg.get('task_notes', {}).get('reading') or (
-                f'תאריך הגשה אחרון: יום {DAYS[x.weekday()]} {x.day}.{x.month} ב-{at}' if x else '')
+            due = self.cfg.get('task_notes', {}).get('reading') or (
+                f'תאריך אחרון להגשה: יום {DAYS[x.weekday()]} {x.day}.{x.month} ב-{at}' if x else '')
             url = self.cfg.get('task_links', {}).get(str(w['n']), {}).get('reading')
-            go = f'<a class="go" href="{esc(url)}" target="_blank" rel="noopener">להגשת מטלת הקריאה</a>' if url else ''
-            cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', text, note, nl, go))
+            note = [esc(due)] if due else []
+            if url:
+                note.append(f'הגשה מקוונת: <a class="ln" href="{esc(url)}" target="_blank" rel="noopener">טופס ההגשה</a>')
+            cards.append(self.task_card('מטלת קריאה שבועית', '', text, note, nl))
         for it in hw:
             m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
             text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)}: {m.group(2)}.' if m else f'{self.clean_title(it)}.')
@@ -755,7 +757,8 @@ class Site:
         """One upcoming task: label and date, a large countdown (filled in by the page's script), one sentence."""
         x = d(due)
         dl = f'<span class="dl" data-due="{x.isoformat()}"><span></span><b>{x.day}.{x.month}</b></span>' if x else ''
-        note_html = f'<p class="ms tnote">{esc(note)}</p>' if note else ''
+        lines = [esc(note)] if isinstance(note, str) else note  # a list holds lines that are already html
+        note_html = f'<p class="ms tnote">{"<br>".join(lines)}</p>' if lines and any(lines) else ''
         return (f'<div class="np"><div class="nph"><span class="nk">{esc(label)}{" · " + esc(when) if when else ""}</span>{dl}</div>'
                 f'<p class="ttext">{esc(text)}</p>{go}{note_html}</div>')
 
