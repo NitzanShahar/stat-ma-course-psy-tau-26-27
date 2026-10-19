@@ -719,7 +719,9 @@ class Site:
             x = d(nl)
             note = self.cfg.get('task_notes', {}).get('reading') or (
                 f'הגשה: שאלת בוחן בתחילת השיעור של יום {DAYS[x.weekday()]}, {x.day}.{x.month}' if x else 'הגשה: שאלת בוחן בתחילת השיעור')
-            cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', text, note, nl))
+            url = self.cfg.get('task_links', {}).get(str(w['n']), {}).get('reading')
+            go = f'<a class="go" href="{esc(url)}" target="_blank" rel="noopener">להגשת מטלת הקריאה</a>' if url else ''
+            cards.append(self.task_card('מטלת קריאה', 'לשיעור של ' + day_dm(nl) if nl else '', text, note, nl, go))
         for it in hw:
             m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
             text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)}: {m.group(2)}.' if m else f'{self.clean_title(it)}.')

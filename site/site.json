@@ -100,6 +100,11 @@
       "hw": "הגשת תרגיל מספר 1: נראות של אחוז ההצבעה ביישוב."
     }
   },
+  "task_links": {
+    "1": {
+      "reading": "https://socialtau.qualtrics.com/jfe/form/SV_bfKVUGUXurS3L4a"
+    }
+  },
   "tasks_public": true,
   "info_pages": [
     {
