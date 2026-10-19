@@ -217,18 +217,39 @@ def find_chrome():
     return None
 
 
+# Printing to PDF flattens 3D: the hidden back of a flip card (rotateY(180deg) + backface-visibility: hidden) would show
+# through, mirrored. Before printing, hide every such face that is turned away from the viewer.
+PRINT_FIX = """<script>
+addEventListener('load', function () { setTimeout(function () {
+  document.querySelectorAll('*').forEach(function (el) {
+    if (getComputedStyle(el).backfaceVisibility !== 'hidden') return;
+    var T = function (x) { var t = getComputedStyle(x).transform; return new DOMMatrix(t && t !== 'none' ? t : undefined); };
+    var m = T(el), e = el.parentElement;  // its own turn, times the turns of the parents that share its 3D space
+    while (e && getComputedStyle(e).transformStyle === 'preserve-3d') { m = T(e).multiply(m); e = e.parentElement; }
+    if (m.m33 < 0) el.style.visibility = 'hidden';
+  });
+}, 1500); });
+</script>"""
+
+
 def deck_to_pdf(deck, out, tmpdir):
     """Print a reveal.js deck (the copy in the repo) to PDF with headless Chrome (reveal's ?print-pdf view: one slide per page,
-    every fragment shown). Returns True on success."""
+    every fragment shown). Prints a temporary copy next to the deck, with PRINT_FIX added. Returns True on success."""
     chrome = find_chrome()
     if not chrome:
         return False
+    text = deck.read_text(encoding='utf-8')
+    i = text.rindex('</body>') if '</body>' in text else len(text)
+    tmp_deck = deck.with_name('_print_' + deck.name)  # same folder, so the deck's relative links still work
+    tmp_deck.write_text(text[:i] + PRINT_FIX + '\n' + text[i:], encoding='utf-8')
     cmd = [chrome, '--headless=new', '--disable-gpu', '--no-pdf-header-footer', '--run-all-compositor-stages-before-draw',
-           '--virtual-time-budget=20000', f'--user-data-dir={Path(tmpdir) / "profile"}', f'--print-to-pdf={out}', deck.resolve().as_uri() + '?print-pdf']
+           '--virtual-time-budget=20000', f'--user-data-dir={Path(tmpdir) / "profile"}', f'--print-to-pdf={out}', tmp_deck.resolve().as_uri() + '?print-pdf']
     try:
         subprocess.run(cmd, timeout=180, capture_output=True)
     except Exception:
         return False
+    finally:
+        tmp_deck.unlink(missing_ok=True)
     return out.exists() and out.stat().st_size > 0
 
 
@@ -437,10 +458,10 @@ class Site:
         return link, grab(r'<h1 class="title"[^>]*>(.*?)</h1>'), grab(r'<p class="subtitle"[^>]*>(.*?)</p>')
 
     def deck_pdf(self, code):
-        """Staff version only, for the weeks in site.json deck_pdf_weeks: a PDF of the deck, printed from the copy in the repo.
+        """For the weeks in site.json deck_pdf_weeks (both versions): a PDF of the deck, printed from the copy in the repo.
         Redone only when the deck in the slides folder changes (the PDF carries its time). Returns the href, or None."""
         m = re.match(r'W(\d+)\.', code)
-        if not (self.staff and m and int(m.group(1)) in self.cfg.get('deck_pdf_weeks', [])):
+        if not (m and int(m.group(1)) in self.cfg.get('deck_pdf_weeks', [])):
             return None
         src = self.deck_for(code)
         name = code.replace('.', '_')
@@ -522,7 +543,7 @@ class Site:
                 h = self.copy_file(rel, 'files/' + it['code'].replace('.', '_'))
                 if h:
                     more.append(('הקלטה', h))
-        self._pdf = pdf  # a deck's PDF (staff version): a download button on the deck's row
+        self._pdf = pdf  # a deck's PDF: a download button on the deck's row
         return link, title, sub, icon, more
 
     def item_videos(self, code):
