@@ -74,6 +74,7 @@ CHEV_FWD = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="
 PILL_PLAY = ('<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
              '<rect x="2" y="5.5" width="11" height="9" rx="2"/><path d="M13 9l5-3v8l-5-3z"/></svg>')
 PILL_AUDIO = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3.5 12V10a6.5 6.5 0 0 1 13 0v2"/><rect x="3" y="11.5" width="3.5" height="5" rx="1"/><rect x="13.5" y="11.5" width="3.5" height="5" rx="1"/></svg>'
+PILL_DOWNLOAD = '<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v9.5M6 8.5l4 4 4-4M3.5 13.5v3h13v-3"/></svg>'
 PILL_DOC = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 2.5h7l3.5 3.5v11.5H5z"/></svg>'
 
 
@@ -203,6 +204,32 @@ def squeeze(src, tmpdir):
     except Exception:
         return None
     return out if out.exists() and out.stat().st_size < 0.85 * src.stat().st_size else None
+
+
+def find_chrome():
+    for n in ('google-chrome', 'chromium', 'chromium-browser', 'chrome', 'msedge'):
+        if shutil.which(n):
+            return shutil.which(n)
+    for p in (r'C:\Program Files\Google\Chrome\Application\chrome.exe', r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe',
+              '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'):
+        if Path(p).is_file():
+            return p
+    return None
+
+
+def deck_to_pdf(deck, out, tmpdir):
+    """Print a reveal.js deck (the copy in the repo) to PDF with headless Chrome (reveal's ?print-pdf view: one slide per page,
+    every fragment shown). Returns True on success."""
+    chrome = find_chrome()
+    if not chrome:
+        return False
+    cmd = [chrome, '--headless=new', '--disable-gpu', '--no-pdf-header-footer', '--run-all-compositor-stages-before-draw',
+           '--virtual-time-budget=20000', f'--user-data-dir={Path(tmpdir) / "profile"}', f'--print-to-pdf={out}', deck.resolve().as_uri() + '?print-pdf']
+    try:
+        subprocess.run(cmd, timeout=180, capture_output=True)
+    except Exception:
+        return False
+    return out.exists() and out.stat().st_size > 0
 
 
 PLAYER = """<!doctype html>
@@ -340,6 +367,7 @@ class Site:
         self.units = {u['id']: u for u in self.data['units']}
         self.published = published
         self.warnings = []
+        self._pdf = None
 
     # ---------- files ----------
     def copy_file(self, src_rel, dest_dir):
@@ -408,6 +436,30 @@ class Site:
         link = self.p + href(f'decks/{deck.name}')
         return link, grab(r'<h1 class="title"[^>]*>(.*?)</h1>'), grab(r'<p class="subtitle"[^>]*>(.*?)</p>')
 
+    def deck_pdf(self, code):
+        """Staff version only, for the weeks in site.json deck_pdf_weeks: a PDF of the deck, printed from the copy in the repo.
+        Redone only when the deck in the slides folder changes (the PDF carries its time). Returns the href, or None."""
+        m = re.match(r'W(\d+)\.', code)
+        if not (self.staff and m and int(m.group(1)) in self.cfg.get('deck_pdf_weeks', [])):
+            return None
+        src = self.deck_for(code)
+        name = code.replace('.', '_')
+        rel = f'files/{name}/{name} מצגת.pdf'
+        dest = self.files._mark(rel)
+        if dest is not None and not (dest.exists() and abs(dest.stat().st_mtime - src.stat().st_mtime) < 2):
+            with tempfile.TemporaryDirectory() as tmp:
+                raw = Path(tmp) / 'deck.pdf'
+                if deck_to_pdf(self.files.repo / 'decks' / src.name, raw, tmp):
+                    small = squeeze(raw, tmp)
+                    dest.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(small or raw, dest)
+                    t = src.stat().st_mtime
+                    os.utime(dest, (t, t))
+                    self.files.changed += 1
+                else:
+                    self.warnings.append(f'{src.name}: could not print a PDF (Chrome not found or failed)' + ('; keeping the old one' if dest.exists() else ''))
+        return self.p + href(rel) if (self.files.repo / rel).exists() else None
+
     # ---------- items ----------
     def kind(self, it):
         m = re.match(r'W\d+\.([A-Z])\d+$', it.get('code', ''))
@@ -430,7 +482,7 @@ class Site:
     def resolve(self, it):
         """Main link, subtitle, icon and extra links for an item."""
         k0 = self.kind(it)
-        link, sub, icon = None, '', {'K': ICON_HAND, 'H': ICON_READ, 'R': ICON_READ, 'B': ICON_PENCIL}.get(k0, ICON_ACT)
+        link, sub, icon, pdf = None, '', {'K': ICON_HAND, 'H': ICON_READ, 'R': ICON_READ, 'B': ICON_PENCIL}.get(k0, ICON_ACT), None
         title, rest = self.split_title(self.clean_title(it))
         if k0 == 'K' and title.startswith('דף עבודה') and rest:  # 'דף עבודה: שליפת כדורים' -> the activity's name first
             title, rest = rest, 'דף עבודה לכיתה'
@@ -442,6 +494,7 @@ class Site:
                 icon, sub = ICON_DECK, dsub
                 if it['code'] not in self.cfg.get('titles', {}):
                     title = dtitle or title
+                pdf = self.deck_pdf(it['code'])
         elif it.get('link'):
             folder = 'files/' + it['code'].replace('.', '_')
             link = self.copy_file(it['link'], folder)
@@ -469,6 +522,7 @@ class Site:
                 h = self.copy_file(rel, 'files/' + it['code'].replace('.', '_'))
                 if h:
                     more.append(('הקלטה', h))
+        self._pdf = pdf  # a deck's PDF (staff version): a download button on the deck's row
         return link, title, sub, icon, more
 
     def item_videos(self, code):
@@ -500,6 +554,10 @@ class Site:
         # extra documents (e.g. the original texts behind a history page) as rows of their own, like a reading item
         own, docs = split_more(more, self.cfg.get('more_attach'))
         pills = ''.join(pill(lbl, h, raw_title, self.p) for lbl, h in own)
+        if self._pdf:
+            fn = re.sub(r'[\/:*?"<>|]', '', raw_title).strip() + '.pdf'
+            pills += (f'<a class="pill" href="{self._pdf}" download="{esc(fn)}" title="הורדת המצגת (PDF)" '
+                      f'aria-label="הורדת המצגת (PDF)">{PILL_DOWNLOAD}</a>')
         subhtml = f'<span class="ms">{esc(sub)}</span>' if sub else ''
         target = '' if link and 'decks/' in link else ' target="_blank" rel="noopener"'
         body = f'<span class="mt">{title}</span>{subhtml}'
