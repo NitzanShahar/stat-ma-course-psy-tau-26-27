@@ -674,7 +674,9 @@ class Site:
             url = self.general_href(s['general']) if s.get('general') else s.get('url')
             if s.get('general') and not url:
                 continue  # not published in this version
-            btn = f'<a class="go" href="{esc(url)}" target="_blank" rel="noopener">{esc(s.get("button", "לטופס"))}</a>' if url else ''
+            btns = ([(url, s.get('button', 'לטופס'))] if url else []) + [(x['url'], x['button']) for x in s.get('links', [])]
+            btn = ''.join(f'<a class="go" href="{esc(u)}" target="_blank" rel="noopener">{esc(t)}</a>' for u, t in btns)
+            btn = f'<div class="gos">{btn}</div>' if btn else ''
             pre = f'<p class="pre">{esc(s["button_intro"])}</p>' if url and s.get('button_intro') else ''
             secs += (f'<section><h2 class="fr">{esc(s["title"])}</h2>{paras}'
                      + (f'<ol class="steps">{steps}</ol>' if steps else '') + f'{pre}{btn}</section>')

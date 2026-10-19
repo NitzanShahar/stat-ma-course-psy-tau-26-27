@@ -118,7 +118,13 @@
       {
         "title": "סילבוס",
         "general": "G2",
-        "button": "לסילבוס (PDF)"
+        "button": "לסילבוס (PDF)",
+        "links": [
+          {
+            "button": "לעמוד הקורס בידיעון האוניברסיטה",
+            "url": "https://ims.tau.ac.il/tal/syllabus/Syllabus_L.aspx?lang=HE&course=1071434601&year=2026&req=48b33e72d7ec76c4664a5788b03a7e558fafcee0a85f9adf66e6aff162fa6a99&caller=ac"
+          }
+        ]
       },
       {
         "title": "הגשת מטלת קריאה להרצאה",

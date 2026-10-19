@@ -113,6 +113,7 @@ a.mt:hover{color:#b3541e}
 .adm section{padding:22px 0 26px;border-top:1px solid #e9edee}
 .adm section:first-child{border-top:none;padding-top:4px}
 .adm h2{margin:0 0 12px;font-size:26px;font-weight:700;color:var(--u-ink)}
+.adm .gos{display:flex;flex-wrap:wrap;gap:10px}
 .adm .pre{margin:4px 0 10px;color:#56656d;font-size:16px}
 /* a link out (syllabus, a form): clear, but quieter than a filled button */
 .info .go,.np .go{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:1.5px solid var(--u-ink);border-radius:10px;background:#ffffff;color:var(--u-ink);font-weight:600;font-size:16px;text-decoration:none}
