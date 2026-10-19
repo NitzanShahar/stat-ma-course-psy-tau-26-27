@@ -105,6 +105,13 @@ a.mt:hover{color:#b3541e}
 .ttext{margin:0;font-size:17px;line-height:1.55;color:#1c2a31}
 .tgo{align-self:flex-start;font-size:14px;color:#56656d}
 .tnote{margin:auto 0 0;padding-top:10px;border-top:1px dashed #dde3e5;font-size:14px;color:#7a878d}
+/* course admin page (info_pages in site.json): a few lines and one button */
+.info{padding:6px 44px 40px;max-width:760px;font-size:18px;line-height:1.65;color:#1c2a31}
+.info p{margin:0 0 14px}
+.steps{margin:0 0 26px;padding-inline-start:24px}
+.steps li{margin-bottom:8px}
+.info .go{display:inline-flex;align-items:center;min-height:48px;padding:0 26px;border-radius:12px;background:#001a24;color:#ffffff;font-weight:700;font-size:18px;text-decoration:none}
+.info .go:hover{background:#0b3446}
 .tasks .nk{font-size:16px}
 .tasks .dl span{font-size:16px}
 .tasks .dl b{font-size:32px}
@@ -179,6 +186,8 @@ a.mt:hover{color:#b3541e}
   .tasks{padding:18px 16px 20px;margin-top:12px;border-radius:20px}
   .tasksh{font-size:21px}
   .np{padding:14px 14px 16px}
+  .info{padding:4px 18px 26px;font-size:17px}
+  .info .go{display:flex;justify-content:center}
   .tasks .dl b{font-size:28px}
   .tasks .ttext{font-size:19px}
   .dl b{font-size:22px}

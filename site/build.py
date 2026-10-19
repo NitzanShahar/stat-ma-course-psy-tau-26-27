@@ -571,7 +571,18 @@ class Site:
                         self.files.copy(p, f'files/{code}/{p.name}')
             if h:
                 out.append((labels.get(code, g['title']), h, '' if h.endswith('.html') else ' target="_blank" rel="noopener"'))
+        for ip in self.cfg.get('info_pages', []):  # course admin pages written by this script (info_page)
+            out.append((ip['label'], ip['file'], ''))
         return out
+
+    def info_page(self, ip):
+        """A short course-admin page: a few lines of explanation and one button to an outside form."""
+        steps = ''.join(f'<li>{esc(s)}</li>' for s in ip.get('steps', []))
+        sub = f'<p class="fr sub">{esc(ip["sub"])}</p>' if ip.get('sub') else ''
+        return (f'<article class="week"><header class="hero noimg"><div><p class="eyebrow">מנהלות הקורס</p>'
+                f'<h1 class="h1 fr">{esc(ip["label"])}</h1>{sub}</div></header>'
+                f'<div class="info"><p>{esc(ip.get("intro", ""))}</p>' + (f'<ol class="steps">{steps}</ol>' if steps else '')
+                + f'<a class="go" href="{esc(ip["url"])}" target="_blank" rel="noopener">{esc(ip.get("button", "לטופס"))}</a></div></article>')
 
     def menu(self, sel_n, cur_n, open_ns):
         # Desktop: all units in one row. Phone: one unit at a time, big arrows to page between units,
@@ -865,6 +876,8 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
             body = self.menu(None, None, []) + self.welcome()
             unit = '0'
         self.files.write(self.page(course, unit, body, tasks, cur), f'{pre}index.html')
+        for ip in self.cfg.get('info_pages', []):
+            self.files.write(self.page(f'{ip["label"]} · {course}', unit, self.info_page(ip), tasks), f'{pre}{ip["file"]}')
         print(f'{"full" if self.staff else "public"}: {len(opened)} week page(s) in /{self.folder}; current week: {cur}')
 
 
@@ -913,7 +926,8 @@ def main():
     for x in sorted({w for s in sites for w in s.warnings}):
         print('warning:', x)
     if cfg.get('tracking', {}).get('on'):  # the statistics script must be on every public page, deck and the player
-        pages = [REPO / 'index.html', REPO / 'play.html', *REPO.glob('week-*.html'), *(REPO / 'decks').glob('*.html')]
+        pages = [REPO / 'index.html', REPO / 'play.html', *REPO.glob('week-*.html'), *(REPO / 'decks').glob('*.html'),
+                 *(REPO / ip['file'] for ip in cfg.get('info_pages', []))]
         bare = [p.relative_to(REPO).as_posix() for p in pages if 'assets/track.js' not in p.read_text(encoding='utf-8')]
         if bare:
             print(f'WARNING: statistics script missing in {len(bare)} page(s): {", ".join(bare)}')
