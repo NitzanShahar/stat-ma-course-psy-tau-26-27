@@ -559,32 +559,48 @@ class Site:
     def general_links(self):
         out = []
         labels = self.cfg.get('general_labels', {})
+        shown = self.cfg.get('header_general')  # which general items get a header link (None = all published)
         for g in self.data.get('general', []):
             code = g.get('code')
-            if not code or code not in self.published or not g.get('link'):
+            if not code or (shown is not None and code not in shown):
                 continue
-            h = self.copy_file(g['link'], 'files/' + code)
-            if code == 'G0':  # the staff page is an html page with its own images next to it
-                src_dir = (self.slides / g['link']).parent
-                for p in src_dir.iterdir():
-                    if p.is_file() and p.name != Path(g['link']).name:
-                        self.files.copy(p, f'files/{code}/{p.name}')
+            h = self.general_href(code)
             if h:
                 out.append((labels.get(code, g['title']), h, '' if h.endswith('.html') else ' target="_blank" rel="noopener"'))
-        for ip in self.cfg.get('info_pages', []):  # course admin pages written by this script (info_page)
-            out.append((ip.get('nav', ip['label']), ip['file'], ''))
+        ap = self.cfg.get('admin_page')
+        if ap:
+            out.append((ap['label'], ap['file'], ''))
         return out
 
-    def info_page(self, ip):
-        """A short course-admin page: a few lines of explanation, optional steps and an optional button to an outside form."""
-        intro = ip.get('intro', '')
-        paras = ''.join(f'<p>{esc(t)}</p>' for t in ([intro] if isinstance(intro, str) else intro) if t)
-        steps = ''.join(f'<li>{esc(s)}</li>' for s in ip.get('steps', []))
-        sub = f'<p class="fr sub">{esc(ip["sub"])}</p>' if ip.get('sub') else ''
-        btn = f'<a class="go" href="{esc(ip["url"])}" target="_blank" rel="noopener">{esc(ip.get("button", "לטופס"))}</a>' if ip.get('url') else ''
-        return (f'<article class="week"><header class="hero noimg"><div><p class="eyebrow">מנהלות הקורס</p>'
-                f'<h1 class="h1 fr">{esc(ip["label"])}</h1>{sub}</div></header>'
-                f'<div class="info">{paras}' + (f'<ol class="steps">{steps}</ol>' if steps else '') + f'{btn}</div></article>')
+    def general_href(self, code):
+        """Copy a published general item (G0 staff page, G2 syllabus...) into files/ and return its href, or None."""
+        g = next((x for x in self.data.get('general', []) if x.get('code') == code), None)
+        if not g or code not in self.published or not g.get('link'):
+            return None
+        h = self.copy_file(g['link'], 'files/' + code)
+        if code == 'G0':  # the staff page is an html page with its own images next to it
+            src_dir = (self.slides / g['link']).parent
+            for p in src_dir.iterdir():
+                if p.is_file() and p.name != Path(g['link']).name:
+                    self.files.copy(p, f'files/{code}/{p.name}')
+        return h
+
+    def admin_page(self, ap):
+        """'מנהלות הקורס': one page of short sections (syllabus, how to hand in the reading, office hours)."""
+        secs = ''
+        for s in ap.get('sections', []):
+            intro = s.get('intro', '')
+            paras = ''.join(f'<p>{esc(t)}</p>' for t in ([intro] if isinstance(intro, str) else intro) if t)
+            steps = ''.join(f'<li>{esc(t)}</li>' for t in s.get('steps', []))
+            url = self.general_href(s['general']) if s.get('general') else s.get('url')
+            if s.get('general') and not url:
+                continue  # not published in this version
+            btn = f'<a class="go" href="{esc(url)}" target="_blank" rel="noopener">{esc(s.get("button", "לטופס"))}</a>' if url else ''
+            pre = f'<p class="pre">{esc(s["button_intro"])}</p>' if url and s.get('button_intro') else ''
+            secs += (f'<section><h2 class="fr">{esc(s["title"])}</h2>{paras}'
+                     + (f'<ol class="steps">{steps}</ol>' if steps else '') + f'{pre}{btn}</section>')
+        return (f'<article class="week"><header class="hero noimg"><div>'
+                f'<h1 class="h1 fr">{esc(ap["label"])}</h1></div></header><div class="info adm">{secs}</div></article>')
 
     def menu(self, sel_n, cur_n, open_ns):
         # Desktop: all units in one row. Phone: one unit at a time, big arrows to page between units,
@@ -881,8 +897,9 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
             body = self.menu(None, None, []) + self.welcome()
             unit = '0'
         self.files.write(self.page(course, unit, body, tasks, cur), f'{pre}index.html')
-        for ip in self.cfg.get('info_pages', []):
-            self.files.write(self.page(f'{ip["label"]} · {course}', unit, self.info_page(ip), tasks), f'{pre}{ip["file"]}')
+        ap = self.cfg.get('admin_page')
+        if ap:
+            self.files.write(self.page(f'{ap["label"]} · {course}', unit, self.admin_page(ap), tasks), f'{pre}{ap["file"]}')
         print(f'{"full" if self.staff else "public"}: {len(opened)} week page(s) in /{self.folder}; current week: {cur}')
 
 
@@ -932,7 +949,7 @@ def main():
         print('warning:', x)
     if cfg.get('tracking', {}).get('on'):  # the statistics script must be on every public page, deck and the player
         pages = [REPO / 'index.html', REPO / 'play.html', *REPO.glob('week-*.html'), *(REPO / 'decks').glob('*.html'),
-                 *(REPO / ip['file'] for ip in cfg.get('info_pages', []))]
+                 *([REPO / cfg['admin_page']['file']] if cfg.get('admin_page') else [])]
         bare = [p.relative_to(REPO).as_posix() for p in pages if 'assets/track.js' not in p.read_text(encoding='utf-8')]
         if bare:
             print(f'WARNING: statistics script missing in {len(bare)} page(s): {", ".join(bare)}')
