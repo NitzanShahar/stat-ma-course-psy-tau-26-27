@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שעת קבלה עם המרצה · סטטיסטיקה ושיטות מחקר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&amp;family=Assistant:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>:root{--u-ink:#185fa5;--u-line:#9fbbd9;--u-tint:#eaf1f9}</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hdr"><a class="home" href="index.html" aria-label="לדף הבית"><img class="logo" src="assets/img/tau-logo.png" alt="אוניברסיטת תל אביב"></a><span class="sep"></span><a class="ttl home" href="index.html"><span class="fr ttl1">סטטיסטיקה ושיטות מחקר</span><span class="ttl2">תשפ״ז · פרופ&#x27; ניצן שחר</span></a><nav class="gen" aria-label="מידע כללי"><a href="files/G0/G0%20%D7%A6%D7%95%D7%95%D7%AA%20%D7%94%D7%A7%D7%95%D7%A8%D7%A1.html">צוות הקורס</a><a href="reading-submit.html">הגשת מטלת קריאה להרצאה</a><a href="office-hours.html">שעת קבלה</a></nav><details class="mmenu"><summary aria-label="צוות, סילבוס ומידע על הקורס"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1c2a31" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3.5 6h13M3.5 10h13M3.5 14h13"/></svg></summary><nav aria-label="מידע כללי"><a href="files/G0/G0%20%D7%A6%D7%95%D7%95%D7%AA%20%D7%94%D7%A7%D7%95%D7%A8%D7%A1.html">צוות הקורס</a><a href="reading-submit.html">הגשת מטלת קריאה להרצאה</a><a href="office-hours.html">שעת קבלה</a></nav></details></header>
+<div class="sheet card">
+<article class="week"><header class="hero noimg"><div><p class="eyebrow">מנהלות הקורס</p><h1 class="h1 fr">שעת קבלה עם המרצה</h1></div></header><div class="info"><p>בתיאום מראש באמצעות שליחת אימייל: ביום שני, שלישי או חמישי בשעה 18:00, חדר 217, בניין שרת.</p><p>מוזמנים!</p></div></article>
+</div>
+<section class="tasks card" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2><div class="ng"><div class="np"><div class="nph"><span class="nk">מטלת קריאה · לשיעור של שני 26.10</span><span class="dl" data-due="2026-10-26"><span></span><b>26.10</b></span></div><p class="ttext">קריאת דף ההיסטוריה והמקור בנושא יעקב ברנולי.</p><a class="go" href="https://socialtau.qualtrics.com/jfe/form/SV_bfKVUGUXurS3L4a" target="_blank" rel="noopener">להגשת מטלת הקריאה</a><p class="ms tnote">תאריך הגשה אחרון: יום שני 26.10 ב-10:00</p></div><div class="np"><div class="nph"><span class="nk">מטלת הגשה · הגשה ברביעי 28.10</span><span class="dl" data-due="2026-10-28"><span></span><b>28.10</b></span></div><p class="ttext">הגשת תרגיל מספר 1: נראות של אחוז ההצבעה ביישוב.</p><p class="ms tnote">הגשת צילום או סריקה דרך ה-Moodle</p></div></div></section>
+<footer class="foot"><img src="assets/img/tau-logo.png" alt="" class="flogo"><span>סטטיסטיקה ושיטות מחקר · תשפ״ז</span><span>חומרי הקורס ברישיון <a class="ln" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a></span><details class="tlog"><summary>כניסת מתרגלים</summary><form class="tlogf"><input type="password" autocomplete="off" aria-label="סיסמה" placeholder="סיסמה"><button type="submit">כניסה</button><span class="terr" hidden>סיסמה שגויה</span></form></details></footer>
+</div>
+<script>
+document.querySelectorAll('.menu').forEach(function(m){
+  var us=[].slice.call(m.querySelectorAll('.unit[data-i]'));
+  var pv=m.querySelector('.mprev'), nx=m.querySelector('.mnext'), pg=m.querySelector('.mpager');
+  var i=Math.max(0,us.findIndex(function(u){return u.classList.contains('on')}));
+  function show(j,dir){ if(j<0||j>=us.length) return; i=j;
+    us.forEach(function(u,k){u.classList.toggle('on',k===i); u.classList.remove('in-f','in-b')});
+    if(dir){ void us[i].offsetWidth; us[i].classList.add(dir>0?'in-f':'in-b'); }
+    pv.disabled=i===0; nx.disabled=i===us.length-1; }
+  pv.onclick=function(){show(i-1,-1)}; nx.onclick=function(){show(i+1,1)};
+  var x0=null,y0=0;
+  pg.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
+  pg.addEventListener('touchend',function(e){ if(x0===null) return;
+    var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null;
+    if(Math.abs(dx)>40&&Math.abs(dx)>1.5*Math.abs(dy)){ dx>0?show(i+1,1):show(i-1,-1); } },{passive:true});
+  show(i);
+});
+// Upcoming tasks: a large countdown to each deadline (computed in the reader's browser, so it is always current).
+document.querySelectorAll('.dl[data-due]').forEach(function(el){
+  var p=el.dataset.due.split('-'), due=new Date(+p[0],+p[1]-1,+p[2]), t=new Date(); t.setHours(0,0,0,0);
+  var n=Math.round((due-t)/864e5), b=el.querySelector('b'), s=el.querySelector('span');
+  if(n<0){ var c=el.closest('.np'); if(c) c.hidden=true; return; }
+  else if(n===0){ b.textContent='היום'; s.textContent=''; el.classList.add('soon'); }
+  else if(n===1){ b.textContent='מחר'; s.textContent=''; el.classList.add('soon'); }
+  else { s.textContent='עוד'; b.textContent=n+' ימים'; if(n<=3) el.classList.add('soon'); }
+});
+document.querySelectorAll('.tasks').forEach(function(t){ if(!t.querySelector('.np:not([hidden])')) t.hidden=true; });
+// A hidden toy: click the portrait. With probability p he sneezes (a Bernoulli trial, of course); otherwise he yawns and says something.
+document.querySelectorAll('.eng.egg').forEach(function(fig){
+  var cfg=JSON.parse(fig.dataset.egg), n=0, k=0, last=-1, timer=null, ft=[], bub=document.createElement('div');
+  var pic=fig.querySelector('.port>img'), orig=pic.getAttribute('src');
+  var all=(cfg.frames||[]).slice(); (cfg.gestures||[]).forEach(function(g){ all=all.concat(g.frames); });
+  all.forEach(function(f){ var i=new Image(); i.src=f; });   // preload
+  function play(fr,d){ ft.forEach(clearTimeout); ft=[]; fr=fr||cfg.frames||[]; d=d||[380,900]; var t=0;
+    fr.forEach(function(f,i){ ft.push(setTimeout(function(){ pic.src=f; },t)); t+=d[i]||500; });
+    ft.push(setTimeout(function(){ pic.src=orig; },t)); }
+  bub.className='bubble'; bub.setAttribute('role','status'); fig.appendChild(bub);
+  function go(){
+    n++; var sneeze=Math.random()<(cfg.p||0.3), html;
+    fig.classList.remove('sneezing','yawning'); void fig.offsetWidth;
+    if(sneeze){ k++; fig.classList.add('sneezing'); if(cfg.frames) play(); html='<b>'+cfg.sneeze+'</b><small>התעטשויות עד עכשיו: '+k+'/'+n+'</small>'; }
+    else { var opts=cfg.quotes.concat(cfg.gestures||[]), q; do { q=Math.floor(Math.random()*opts.length); } while(opts.length>1&&q===last); last=q;
+      var o=opts[q];
+      if(typeof o==='string'){ fig.classList.add('yawning'); html='<span>'+o+'</span>'; }
+      else { play(o.frames,[350,1300]); html='<span>'+o.text+'</span>'; } }
+    bub.innerHTML=html; bub.classList.add('on'); clearTimeout(timer); timer=setTimeout(function(){bub.classList.remove('on'); fig.classList.remove('sneezing','yawning');},(typeof o==='object'&&!sneeze)?2000:1700);
+  }
+  fig.addEventListener('click',function(e){ e.stopPropagation(); go(); });
+  document.addEventListener('click',function(){ bub.classList.remove('on'); fig.classList.remove('sneezing','yawning'); });
+  fig.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+});
+// Media buttons: tell the player which page to return to.
+document.querySelectorAll('a[href*="play.html?"]').forEach(function(a){
+  a.addEventListener('click',function(){ if(a.href.indexOf('&back=')<0) a.href+='&back='+encodeURIComponent(location.href); });
+});
+// TA sign-in: the password is the name of the full version's folder.
+document.querySelectorAll('.tlogf').forEach(function(f){
+  f.addEventListener('submit',function(e){ e.preventDefault();
+    var v=f.querySelector('input').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g,''), er=f.querySelector('.terr');
+    if(!v) return;
+    if(location.protocol==='file:'){ location.href=v+'/index.html'; return; }
+    fetch(v+'/index.html',{method:'HEAD',cache:'no-store'}).then(function(r){ if(r.ok) location.href=v+'/'; else er.hidden=false; }).catch(function(){er.hidden=false});
+  });
+});
+</script>
+<script src="assets/track.js" data-url="https://udyvcrzgjdjsctpzmfkl.supabase.co" data-key="sb_publishable_RP9f8bUiI86gdPrvnPQ7tg_jRxA9lyw" data-ctx="site" defer></script>
+</body>
+</html>

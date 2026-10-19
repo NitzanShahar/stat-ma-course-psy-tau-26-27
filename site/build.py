@@ -572,17 +572,19 @@ class Site:
             if h:
                 out.append((labels.get(code, g['title']), h, '' if h.endswith('.html') else ' target="_blank" rel="noopener"'))
         for ip in self.cfg.get('info_pages', []):  # course admin pages written by this script (info_page)
-            out.append((ip['label'], ip['file'], ''))
+            out.append((ip.get('nav', ip['label']), ip['file'], ''))
         return out
 
     def info_page(self, ip):
-        """A short course-admin page: a few lines of explanation and one button to an outside form."""
+        """A short course-admin page: a few lines of explanation, optional steps and an optional button to an outside form."""
+        intro = ip.get('intro', '')
+        paras = ''.join(f'<p>{esc(t)}</p>' for t in ([intro] if isinstance(intro, str) else intro) if t)
         steps = ''.join(f'<li>{esc(s)}</li>' for s in ip.get('steps', []))
         sub = f'<p class="fr sub">{esc(ip["sub"])}</p>' if ip.get('sub') else ''
+        btn = f'<a class="go" href="{esc(ip["url"])}" target="_blank" rel="noopener">{esc(ip.get("button", "לטופס"))}</a>' if ip.get('url') else ''
         return (f'<article class="week"><header class="hero noimg"><div><p class="eyebrow">מנהלות הקורס</p>'
                 f'<h1 class="h1 fr">{esc(ip["label"])}</h1>{sub}</div></header>'
-                f'<div class="info"><p>{esc(ip.get("intro", ""))}</p>' + (f'<ol class="steps">{steps}</ol>' if steps else '')
-                + f'<a class="go" href="{esc(ip["url"])}" target="_blank" rel="noopener">{esc(ip.get("button", "לטופס"))}</a></div></article>')
+                f'<div class="info">{paras}' + (f'<ol class="steps">{steps}</ol>' if steps else '') + f'{btn}</div></article>')
 
     def menu(self, sel_n, cur_n, open_ns):
         # Desktop: all units in one row. Phone: one unit at a time, big arrows to page between units,
