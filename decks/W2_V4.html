@@ -436,7 +436,7 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
 <div class="demo-panel" style="margin-inline:-28px;">
   <svg id="ev-svg" viewbox="-44 0 1044 452" style="width:100%; height:auto; display:block;" aria-label="מפת העולם עם הזריקות, ומתחתיה ה-prior, ה-likelihood וה-posterior, כעקומות וכווקטורים">
     <defs><clippath id="ev-clip"><rect x="500" y="2" width="360" height="180" rx="8"></rect></clippath></defs>
-    <image href="W2_V3 מפת עולם.jpg" x="500" y="2" width="360" height="180" preserveaspectratio="none" clip-path="url(#ev-clip)"></image>
+    <image href="W2_V4 מפת עולם.jpg" x="500" y="2" width="360" height="180" preserveaspectratio="none" clip-path="url(#ev-clip)"></image>
     <g id="ev-dyn"></g>
   </svg>
 </div>
@@ -715,7 +715,7 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
     const map = { x: 70, y: 4, w: 150, h: 75 };
     let s = `<svg viewBox="0 0 1000 328" style="width:100%; height:auto; display:block;" aria-label="ה-posterior של חלק המים אחרי ${M.n} זריקות">
       <defs><clipPath id="${root.id}-clip"><rect x="${map.x}" y="${map.y}" width="${map.w}" height="${map.h}" rx="5"/></clipPath></defs>
-      <image href="W2_V3 מפת עולם.jpg" x="${map.x}" y="${map.y}" width="${map.w}" height="${map.h}" preserveAspectRatio="none" clip-path="url(#${root.id}-clip)"/>`;
+      <image href="W2_V4 מפת עולם.jpg" x="${map.x}" y="${map.y}" width="${map.w}" height="${map.h}" preserveAspectRatio="none" clip-path="url(#${root.id}-clip)"/>`;
     M.T.forEach(t => {
       const cx = map.x + (t.lon + 180) / 360 * map.w, cy = map.y + (90 - t.lat) / 180 * map.h, r = 2.8;
       const d = `M${cx - r},${cy - r} L${cx + r},${cy + r} M${cx + r},${cy - r} L${cx - r},${cy + r}`;

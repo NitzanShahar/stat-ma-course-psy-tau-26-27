@@ -361,7 +361,7 @@
                     direction: ltr; text-align: right; unicode-bidi: isolate; }
   .reveal .example-slide .kq { font-size: .95em; margin-bottom: .5em; }
 </style>
-<div class="kq">
+<div class="kq" style="margin-top:100px;">
 <p>הסקה בייסיאנית (<span class="term">Bayesian inference</span>) היא חלוקה מחדש של אמינות בין אפשרויות.</p>
 <p><span class="kq-src">John K. Kruschke, <em>Doing Bayesian Data Analysis</em> (2015)</span></p>
 </div>
@@ -490,61 +490,6 @@
   <div class="gate-why">שני הכיוונים של הסתברות מותנית, והנוסחה שהופכת ביניהם. בסוף נפתור את החידה.</div>
 </div>
 </section>
-<section id="שני-כיוונים-שונים" class="slide level2">
-<h2>שני כיוונים שונים</h2>
-<p><span class="math inline">\(p(A \mid B)\)</span>: ההסתברות ל-<span class="math inline">\(A\)</span>, כשכבר ידוע ש-<span class="math inline">\(B\)</span> קרה.</p>
-<div>
-<ul>
-<li class="fragment"><span class="math inline">\(A\)</span>: סטודנט לפסיכולוגיה. <span class="math inline">\(B\)</span>: מסתכל על המצגת הזו.</li>
-<li class="fragment"><span class="math inline">\(p(A \mid B)\)</span>, ההסתברות שמי שמסתכל על המצגת הזו הוא סטודנט לפסיכולוגיה: <strong>גבוהה מאוד</strong>.</li>
-<li class="fragment"><span class="math inline">\(p(B \mid A)\)</span>, ההסתברות שסטודנט לפסיכולוגיה (בכל העולם) מסתכל על המצגת הזו: <strong>נמוכה מאוד</strong>.</li>
-<li class="fragment"><span class="math inline">\(p(A \mid B) \neq p(B \mid A)\)</span>. הבלבול בין השניים נקרא <span class="term">confusion of the inverse</span>, והוא נפוץ גם אצל מדענים.</li>
-<li class="fragment">בדרך כלל יודעים רק כיוון אחד. נוסחת Bayes <strong>הופכת</strong> אותו.</li>
-</ul>
-</div>
-</section>
-<section id="נוסחת-bayes" class="slide level2">
-<h2>נוסחת Bayes</h2>
-<style>
-  /* הנוסחה במרכז השקף. בלחיצה הראשונה עיגול סביב p(B|A), ובשנייה סביב p(A|B).
-     העיגולים בשכבה נפרדת מעל הנוסחה, כדי שהשבר של MathJax לא יחתוך אותם */
-  .reveal .bayes-big { position: relative; display: flex; justify-content: center; font-size: 1.6em; margin-top: 2em; }
-  .reveal .bz-ring { position: absolute; border: 3px solid var(--curve); border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity .4s; }
-  .reveal .bz-ring.on { opacity: 1; }
-</style>
-<div class="ltr bayes-big">
-<p><span class="math display">\[\cssId{bz-ab}{p(A \mid B)} = \frac{\cssId{bz-ba}{p(B \mid A)}\; p(A)}{p(B)}\]</span></p>
-</div>
-<p><span class="fragment"></span> <span class="fragment"></span></p>
-<script>
-  (function () {
-    const rings = {};
-    // אליפסה שעוברת דרך הפינות של המונח: פי √2 מהרוחב ומהגובה שלו, קצת יותר
-    function place(id) {
-      const term = document.getElementById(id), box = term && term.closest('.bayes-big');
-      if (!box) return null;
-      if (!rings[id]) { rings[id] = document.createElement('div'); rings[id].className = 'bz-ring'; box.appendChild(rings[id]); }
-      const k = Reveal.getScale ? Reveal.getScale() : 1, t = term.getBoundingClientRect(), b = box.getBoundingClientRect();
-      const w = t.width / k * 1.5, h = t.height / k * 1.55;
-      const cx = (t.left + t.right) / 2 - b.left, cy = (t.top + t.bottom) / 2 - b.top;
-      Object.assign(rings[id].style, { width: w + 'px', height: h + 'px', left: cx / k - w / 2 + 'px', top: cy / k - h / 2 + 'px' });
-      return rings[id];
-    }
-    function sync() {
-      const term = document.getElementById('bz-ba');
-      if (!term) return;
-      const sec = term.closest('section');
-      if (!sec.classList.contains('present')) return;
-      const n = sec.querySelectorAll('.fragment.visible').length;
-      const ba = place('bz-ba'), ab = place('bz-ab');
-      if (ba) ba.classList.toggle('on', n >= 1);
-      if (ab) ab.classList.toggle('on', n >= 2);
-    }
-    const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready', 'resize'].forEach(e => Reveal.on(e, sync)); sync(); };
-    if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
-  })();
-</script>
-</section>
 <section id="חזרה-לחידה" class="slide level2">
 <h2>חזרה לחידה</h2>
 <div class="soft-card riddle">
@@ -553,6 +498,10 @@
 </div>
 <div class="fragment" style="margin-top:1em;">
 <p>רוב התשובות אומרות, באופן אינטואיטיבי, שהסיכוי לגשם גבוה. אבל מה אומרת <strong>נוסחת Bayes</strong>?</p>
+</div>
+<div class="fragment" style="margin-top:1em;">
+<p><span class="math display">\[p(A \mid B) \neq p(B \mid A)\]</span></p>
+<p>הבלבול בין השניים נקרא <span class="term">confusion of the inverse</span>, והוא נפוץ גם אצל מדענים.</p>
 </div>
 </section>
 <section id="גשם-ומעילים" class="slide level2">
@@ -563,10 +512,10 @@
 <p><strong><span class="math inline">\(A\)</span> = יום גשם</strong>     <strong><span class="math inline">\(B\)</span> = מעיל</strong></p>
 <div>
 <ul>
-<li class="fragment"><span class="math inline">\(p(A) = 50/365 \approx 14\%\)</span>: בתל אביב יורד גשם בערך 50 ימים בשנה.</li>
-<li class="fragment"><span class="math inline">\(p(B) = 108/365 \approx 30\%\)</span>: כל הימים עם מעיל, 45 עם גשם ו-63 בלי גשם.</li>
-<li class="fragment"><span class="math inline">\(p(B \mid A) = 45/50 = 90\%\)</span>: ב-45 מתוך 50 ימי הגשם היא במעיל.</li>
-<li class="fragment"><span class="math inline">\(p(A \mid B) = 45/108 \approx 42\%\)</span>: מתוך 108 הימים עם מעיל, 45 הם ימי גשם.</li>
+<li class="fragment"><strong>ההסתברות לגשם</strong> <span class="eq"><span class="math inline">\(p(A) = 50/365 \approx 14\%\)</span></span></li>
+<li class="fragment"><strong>ההסתברות למעיל</strong> <span class="eq"><span class="math inline">\(p(B) = 108/365 \approx 30\%\)</span></span></li>
+<li class="fragment"><strong>ההסתברות למעיל בהינתן גשם</strong> <span class="eq"><span class="math inline">\(p(B \mid A) = 45/50 = 90\%\)</span></span></li>
+<li class="fragment"><strong>ההסתברות לגשם בהינתן מעיל</strong> <span class="eq"><span class="math inline">\(p(A \mid B) = 45/108 \approx 42\%\)</span></span></li>
 </ul>
 </div>
 <div class="fragment bf">
@@ -594,6 +543,8 @@
 <style>
   .reveal .rain-slide > div:first-child { font-size: .72em; }
   .reveal .rain-slide li { margin-bottom: .25em; }
+  /* השם בעברית מימין, הנוסחה מיושרת לשמאל באותה שורה */
+  .reveal .rain-slide li .eq { float: left; direction: ltr; margin-right: .8em; }
   .reveal .rain-slide p { margin: 0 0 .35em; }
   /* נוסחת Bayes מתמלאת: בכל משבצת שני מצבים באותו מקום, סימן ומספר */
   .reveal .bf { display: flex; justify-content: center; align-items: center; gap: .35em; direction: ltr; font-size: 1.1em; margin: .3em 0 .2em; }
@@ -724,6 +675,7 @@
 </section>
 <section id="שתי-טעויות" class="slide level2">
 <h2>שתי טעויות</h2>
+<p><span class="math display">\[p(A \mid B) = \frac{p(B \mid A)\; p(A)}{p(B)}\]</span></p>
 <div class="soft-card">
 <h3><span class="ltr">confusion of the inverse</span></h3>
 <p>בלבול בין <span class="math inline">\(p(A \mid B)\)</span> ל-<span class="math inline">\(p(B \mid A)\)</span>: מתייחסים להסתברות בכיוון אחד כאילו היא ההסתברות בכיוון ההפוך.</p>
@@ -746,12 +698,24 @@
 <style>
   .reveal .morph { position: relative; display: grid; direction: ltr; }
   .reveal .morph-layer { grid-area: 1 / 1; text-align: center; transition: opacity .5s; }
-  .reveal .morph-map { display: flex; justify-content: center; gap: 2.5em; font-size: .8em; margin: -.2em 0 .3em; }
+  .reveal .morph-map { display: flex; justify-content: center; gap: 2.5em; font-size: .8em; margin: -.2em 0 .3em; transition: opacity .4s; }
   .reveal [id^="nb-"] { color: transparent; transition: color .4s; }
   .reveal .morph.names [id^="nb-"] { color: inherit; }
   .reveal [id^="ni-"] { color: var(--ink); }
+  .reveal .bz-ring { position: absolute; border: 3px solid var(--curve); border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity .4s; }
+  .reveal .bz-ring.on { opacity: 1; }
+  /* פאנל הסבר לאיבר אחד: הנוסחה לא זזה (מוסטת מעט שמאלה מההתחלה, כדי שיהיה מקום), הפאנל נפתח מימין לה, וחץ מהעיגול אליו */
+  .reveal .bx-stage { position: relative; --bx-shift: -90px; }
+  .reveal .bx-stage .morph { transform: translateX(var(--bx-shift)); }
+  .reveal .bx-panel { position: absolute; right: 0; top: 50%; width: 400px; margin: 0; transform: translateY(-50%);
+                      font-size: .62em; line-height: 1.4; opacity: 0; transition: opacity .4s; pointer-events: none; }
+  .reveal .bx-panel.on { opacity: 1; }
+  .reveal .bx-panel p { margin: .3em 0; }
+  .reveal .bx-arrow { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; opacity: 0; transition: opacity .3s; }
+  .reveal .bx-arrow.on { opacity: 1; }
 </style>
 <p>אותה נוסחה נכונה גם כשכל אחד מהאיברים בה הוא התפלגות בפני עצמה.</p>
+<div class="bx-stage">
 <div class="morph">
 <div id="mx-ab" class="morph-layer">
 <p><span class="math display">\[
@@ -769,10 +733,25 @@
 \]</span></p>
 </div>
 </div>
+<div id="bxp-lik" class="soft-card bx-panel">
+<h3>נראות</h3>
+<p>בשיעור הקודם למדנו לחשב, למשל ב-Bernoulli:</p>
+<p><span class="math inline">\(p(y = (1, 0, 1) \mid \theta = 0.6) = 0.6^2 \times 0.4^1\)</span></p>
+</div>
+<div id="bxp-pri" class="soft-card bx-panel">
+<h3><span class="ltr">prior</span>: אמונה מקדימה</h3>
+<p>למשל ב-Bernoulli: <span class="math inline">\(p(\theta = 0.6)\)</span></p>
+</div>
+<div id="bxp-ev" class="soft-card bx-panel">
+<h3>מקדם נרמול</h3>
+<p>סכום מכפלות הנראות ב-prior: כל הדרכים שבהן הנתונים יכולים להופיע.</p>
+</div>
+<svg class="bx-arrow" aria-hidden="true"><defs><marker id="bx-head" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" style="fill: var(--curve)"></path></marker></defs><path id="bx-path" fill="none" style="stroke: var(--curve)" stroke-width="3" marker-end="url(#bx-head)"></path></svg>
+</div>
 <div class="morph-map">
 <p><span class="fragment"><span class="math inline">\(A \;\rightarrow\; \theta\)</span>: ערך אפשרי של הפרמטר</span> <span class="fragment"><span class="math inline">\(B \;\rightarrow\; y\)</span>: הנתונים שראינו</span></p>
 </div>
-<p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
+<p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
 <div class="fragment centered-table">
 <table>
 <colgroup>
@@ -806,8 +785,9 @@
 </table>
 </div>
 <script>
-  // A מתחלף ל-θ, אחר כך B ל-y, עיגול סביב p(y|θ), עיגול סביב p(θ|y), ואז השמות במקום העיגולים.
-  // הכול לפי מספר הצעדים שכבר הוצגו בשקף. העיגולים כמו בשקף "נוסחת Bayes" (.bz-ring)
+  // A מתחלף ל-θ, אחר כך B ל-y, עיגול סביב p(y|θ), פאנל הסבר עם חץ ל-likelihood, ל-prior ול-p(y),
+  // עיגולים סביב p(y|θ) ו-p(θ|y), ואז השמות במקום העיגולים.
+  // הכול לפי מספר הצעדים שכבר הוצגו בשקף. העיגולים: .bz-ring
   (function () {
     const rings = {};
     function ring(box, id, show) {
@@ -827,10 +807,35 @@
       const n = sec.querySelectorAll('.fragment.visible').length;
       const on = n >= 2 ? 'mx-ty' : n === 1 ? 'mx-tb' : 'mx-ab';
       box.querySelectorAll('.morph-layer').forEach(l => { l.style.opacity = l.id === on ? 1 : 0; });
-      box.classList.toggle('names', n >= 5);
+      box.classList.toggle('names', n >= 8);
+      // שורת A → θ, B → y נעלמת כשמתחילים לעבור על האיברים
+      sec.querySelector('.morph-map').style.opacity = n >= 3 ? 0 : 1;
+      const panel = { 4: 'lik', 5: 'pri', 6: 'ev' }[n];
+      const stage = box.closest('.bx-stage');
+      stage.classList.toggle('panel', !!panel);
+      stage.querySelectorAll('.bx-panel').forEach(el => el.classList.toggle('on', el.id === 'bxp-' + panel));
       if (!sec.classList.contains('present')) return;
-      ring(box, 'ni-lik', n >= 3 && n < 5);
-      ring(box, 'ni-post', n >= 4 && n < 5);
+      ring(box, 'ni-lik', n === 3 || n === 4 || n === 7);
+      ring(box, 'ni-pri', n === 5);
+      ring(box, 'ni-ev', n === 6);
+      ring(box, 'ni-post', n === 7);
+      arrow(stage, panel);
+    }
+    // החץ של p(y|θ) יוצא מראש העיגול ועובר מעל p(θ) אל החלק העליון של הפאנל; האחרים יוצאים מצד ימין של העיגול אל אמצע הפאנל
+    function arrow(stage, panel) {
+      const svg = stage.querySelector('.bx-arrow');
+      svg.classList.toggle('on', !!panel);
+      if (!panel) return;
+      const box = stage.querySelector('.morph'), r = rings['ni-' + panel].style, pe = document.getElementById('bxp-' + panel);
+      const ox = box.offsetLeft + parseFloat(getComputedStyle(stage).getPropertyValue('--bx-shift')), oy = box.offsetTop;
+      const L = parseFloat(r.left), T = parseFloat(r.top), W = parseFloat(r.width), H = parseFloat(r.height);
+      const top = panel === 'lik';
+      const sx = ox + L + (top ? W / 2 : W), sy = oy + T + (top ? 0 : H / 2);
+      // הפאנל ממורכז אנכית סביב offsetTop שלו (top: 50% ו-translateY(-50%))
+      const px = pe.offsetLeft - 10, py = top ? pe.offsetTop - pe.offsetHeight / 2 + 24 : pe.offsetTop;
+      const d = top ? `M${sx},${sy} C${sx},${sy - 70} ${px - 50},${py - 50} ${px},${py}`
+                    : `M${sx},${sy} C${(sx + px) / 2},${sy} ${px - 60},${py} ${px},${py}`;
+      svg.querySelector('#bx-path').setAttribute('d', d);
     }
     const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready', 'resize'].forEach(e => Reveal.on(e, sync)); sync(); };
     if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
@@ -840,12 +845,15 @@
 <section id="שולחן-הביליארד-כווקטור" class="slide level2 example-slide">
 <h2>שולחן הביליארד, כווקטור</h2>
 <div class="demo-panel">
-  <svg id="bv-svg" viewbox="0 0 1000 404" style="width:100%; height:auto; display:block;" aria-label="שולחן הביליארד מהצד, ומתחתיו ה-prior, ה-likelihood וה-posterior, כעקומות וכווקטורים"></svg>
+  <svg id="bv1-svg" viewbox="0 0 1060 412" style="width:100%; height:auto; display:block;" aria-label="שולחן הביליארד מהצד, ומתחתיו ה-prior, ה-likelihood וה-posterior של ערך אחד, θ = 0.6"></svg>
 </div>
 <script>
-  (function () {
-    const svg = document.getElementById('bv-svg');
+  // אותה הדגמה לשני שקפים: עם focus רק ערך אחד של θ פעיל (נקודות במקום עקומות, מספרים רק בעמודה שלו); בלי focus כל הערכים.
+  // עם focus: שני צעדים בלבד, בחץ של השקף (likelihood, ואז "?" ב-posterior); בלי focus: כל העדכונים, בכפתורים
+  window.bvDemo = function (svgId, focus) {
+    const svg = document.getElementById(svgId);
     if (!svg) return;
+    const active = t => focus === undefined || t === focus;
     // ציר אחד לשולחן, לעקומות ולתאים של הווקטורים: θ = המרחק של W מהדופן השמאלית
     const x0 = 200, x1 = 860, X = t => x0 + t * (x1 - x0);
     const railTop = 50, apronBot = 72, legBot = 96, cTop = 122, cBase = 252;
@@ -853,23 +861,33 @@
     const yHead = 282, rowY = { prior: 316, lik: 350, post: 384 }, cw = 54, ch = 28;
     const SKIN = '#f0cfa8';
     const LIGHT = 'rgb(167,148,216)', DARK = 'var(--hidden)', RED = 'var(--curve)';
-    // שלבים: 0 prior אחיד · 1 "משמאל ל-W" · 2 posterior · 3 ה-posterior הופך ל-prior · 4 "מימין ל-W" · 5 posterior
-    // ה-posterior הוא בדיוק prior × likelihood, בלי נרמול: כל תא אפשר לבדוק בכפל. כדור נעצר משמאל ל-W בהסתברות θ
+    // שלבים: prior אחיד · "משמאל ל-W" · p(y) · posterior · ה-posterior הופך ל-prior · "מימין ל-W" · p(y) · posterior · ...
+    // ה-prior מנורמל (1/11 לכל ערך), וה-posterior הוא prior × likelihood חלקי p(y), כך שגם הוא מסתכם ל-1.
+    // p(y) בשלושת העדכונים: 0.5, 0.3, 0.5. כדור נעצר משמאל ל-W בהסתברות θ
     const f = {
-      flat: t => 1, left: t => t, right: t => 1 - t,
-      post1: t => t, post2: t => t * (1 - t), post3: t => t * t * (1 - t)
+      flat: t => 1 / 11, left: t => t, right: t => 1 - t,
+      post1: t => t / 5.5, post2: t => t * (1 - t) / 1.65, post3: t => t * t * (1 - t) / .825
     };
     // לכל עקומה גובה מקסימלי ידוע, כדי לצייר אותה לפי הצורה שלה, על כל גובה הגרף
-    const PEAK = new Map([[f.flat, 1], [f.left, 1], [f.right, 1], [f.post1, 1], [f.post2, .25], [f.post3, 4 / 27]]);
-    function state(n) {
-      return {
-        prior: n >= 6 ? f.post2 : n >= 3 ? f.post1 : f.flat,
-        lik: n === 1 || n === 2 || n >= 7 ? f.left : n === 4 || n === 5 ? f.right : null,
-        post: n === 2 ? f.post1 : n === 5 ? f.post2 : n >= 8 ? f.post3 : null,
-        say: n === 1 || n === 2 || n >= 7 ? 'משמאל ל-W' : n === 4 || n === 5 ? 'מימין ל-W' : '',
-        swap: n === 3 || n === 6
-      };
-    }
+    const PEAK = new Map([[f.flat, 1 / 11], [f.left, 1], [f.right, 1], [f.post1, 1 / 5.5], [f.post2, .25 / 1.65], [f.post3, 4 / 27 / .825]]);
+    const L = 'משמאל ל-W', R = 'מימין ל-W';
+    const SEQ = [
+      { prior: f.flat },
+      { prior: f.flat, lik: f.left, say: L },
+      { prior: f.flat, lik: f.left, say: L, py: true },
+      { prior: f.flat, lik: f.left, say: L, py: true, post: f.post1 },
+      { prior: f.post1, swap: true },
+      { prior: f.post1, lik: f.right, say: R },
+      { prior: f.post1, lik: f.right, say: R, py: true },
+      { prior: f.post1, lik: f.right, say: R, py: true, post: f.post2 },
+      { prior: f.post2, swap: true },
+      { prior: f.post2, lik: f.left, say: L },
+      { prior: f.post2, lik: f.left, say: L, py: true },
+      { prior: f.post2, lik: f.left, say: L, py: true, post: f.post3 }
+    ];
+    const LAST = SEQ.length - 1;
+    // בשקף של ערך אחד הצעד השני הוא כבר ה-posterior (בלי p(y))
+    const state = n => ({ lik: null, post: null, say: '', ...SEQ[focus !== undefined && n === 2 ? 3 : n] });
     const Yf = fn => v => cBase - v / PEAK.get(fn) * .92 * (cBase - cTop);
     const path = fn => { const Y = Yf(fn); let d = ''; for (let k = 0; k <= 200; k++) { const t = k / 200; d += (k ? 'L' : 'M') + X(t).toFixed(1) + ',' + Y(fn(t)).toFixed(1); } return d; };
     // עד שלוש ספרות אחרי הנקודה, כדי שכל מכפלה תהיה ניתנת לבדיקה (0.21 × 0.3 = 0.063)
@@ -891,17 +909,23 @@
         <circle cx="118" cy="272" r="6" fill="${SKIN}"/>
       </g>`;
     }
+    // מימין לכל שם, קטן יותר, האיבר בנוסחת Bayes שהוא מייצג
+    const SYM = { prior: 'p(θ)', lik: 'p(y | θ)', post: 'p(θ | y)' };
+    const MATH = `font-style="italic" font-family="'Times New Roman', serif"`;
+    const ASK = 'ask';
     function row(name, fn, color, label) {
       const y = rowY[name];
-      let s = `<text x="${x1 + 40}" y="${y + 6}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="${color}">${label}</text>`;
+      let s = `<text x="${x1 + 40}" y="${y + 6}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="${color}">${label}<tspan dx="8" font-size="15" font-weight="400" ${MATH}>${SYM[name]}</tspan></text>`;
       grid.forEach(t => {
-        s += `<rect x="${X(t) - cw / 2}" y="${y - ch / 2}" width="${cw}" height="${ch}" rx="5" fill="${fn ? '#fff' : '#f6f7f8'}" stroke="${fn ? color : 'var(--rule)'}" stroke-width="${fn ? 1.6 : 1}"/>`;
-        if (fn) s += `<text x="${X(t)}" y="${y + 5}" text-anchor="middle" font-size="14" fill="var(--ink)">${fmt(fn(t))}</text>`;
+        const on = fn && active(t);
+        s += `<rect x="${X(t) - cw / 2}" y="${y - ch / 2}" width="${cw}" height="${ch}" rx="5" fill="${on ? '#fff' : '#f6f7f8'}" stroke="${on ? color : 'var(--rule)'}" stroke-width="${on ? 1.6 : 1}"/>`;
+        if (on) s += `<text x="${X(t)}" y="${y + 5}" text-anchor="middle" font-size="14" fill="var(--ink)">${fn === ASK ? '?' : fmt(fn(t))}</text>`;
       });
       return s;
     }
     function draw(n) {
       const st = state(n);
+      if (focus !== undefined && st.post) st.post = ASK;
       // השולחן מהצד: רואים רק את העץ, לא את המשטח ולא את הכדורים
       let s = `<line x1="20" y1="${legBot}" x2="980" y2="${legBot}" stroke="var(--rule)" stroke-width="2"/>
         <rect x="${x0 - 4}" y="${apronBot}" width="12" height="${legBot - apronBot}" fill="#6b4627"/>
@@ -914,8 +938,20 @@
         <path d="M130,24 L112,32 L132,32" fill="#fff" stroke="var(--ink-faint)" stroke-width="2"/>
         <text x="213" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">${st.say}</text>`;
       // קווי רשת דקים מכל ערך של θ אל התא שלו
-      grid.forEach(t => { s += `<line x1="${X(t)}" y1="${cTop - 4}" x2="${X(t)}" y2="${rowY.post + ch / 2}" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 4"/>`; });
+      grid.forEach(t => {
+        const hi = focus !== undefined && t === focus;
+        s += `<line x1="${X(t)}" y1="${cTop - 4}" x2="${X(t)}" y2="${rowY.post + ch / 2}" stroke="${hi ? 'var(--ink-faint)' : 'var(--rule)'}" stroke-width="${hi ? 1.5 : 1}" stroke-dasharray="2 4"/>`;
+      });
       s += `<line x1="${x0}" y1="${cBase}" x2="${x1}" y2="${cBase}" stroke="var(--ink)" stroke-width="2"/>`;
+      if (focus !== undefined) {
+        // ערך אחד: נקודה לכל איבר, באותו גובה שבו עוברת העקומה שלו בשקף של כל הערכים.
+        // התוויות של prior ו-likelihood משמאל לנקודה, של ה-posterior מימין, כי הנקודות לפעמים חופפות
+        const xf = X(focus), yOf = fn => Yf(fn)(fn(focus));
+        const lab = (y, color, text, right) => `<text x="${xf + (right ? 18 : -18)}" y="${y + 6}" text-anchor="${right ? 'start' : 'end'}" direction="ltr" font-size="17" font-weight="700" fill="${color}">${text}</text>`;
+        s += `<circle cx="${xf}" cy="${yOf(st.prior)}" r="9" fill="${LIGHT}"/>` + lab(yOf(st.prior), LIGHT, 'prior');
+        if (st.lik) s += `<circle cx="${xf}" cy="${yOf(st.lik)}" r="9" fill="#fff" stroke="${RED}" stroke-width="3"/>` + lab(yOf(st.lik), RED, 'likelihood');
+        if (st.post && st.post !== ASK) s += `<circle cx="${xf}" cy="${yOf(st.post)}" r="6.5" fill="${DARK}"/>` + lab(yOf(st.post), DARK, 'posterior', true);
+      } else {
       // העקומות
       s += `<path d="${path(st.prior)}" fill="none" stroke="${LIGHT}" stroke-width="4"/>`;
       if (st.lik) s += `<path d="${path(st.lik)}" fill="none" stroke="${RED}" stroke-width="3.5" stroke-dasharray="10 6"/>`;
@@ -929,30 +965,55 @@
         const one = st.post === f.post1, qt = one ? .72 : st.post === f.post2 ? .5 : .67;
         s += `<text x="${X(qt)}" y="${Yf(st.post)(st.post(qt)) + (one ? 26 : -10)}" text-anchor="middle" font-size="17" font-weight="700" fill="${DARK}">posterior</text>`;
       }
+      }
       if (st.swap) s += `<text x="${x1}" y="${cTop - 4}" text-anchor="start" direction="rtl" font-size="17" fill="var(--ink-soft)">ה-posterior הפך ל-prior</text>`;
       // הווקטורים: ערך אחד לכל θ
       s += `<text x="${x1 + 40}" y="${yHead + 6}" text-anchor="start" direction="ltr" font-size="17" font-style="italic" fill="var(--ink-soft)">θ</text>`;
-      grid.forEach(t => { s += `<text x="${X(t)}" y="${yHead + 6}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${fmt(t)}</text>`; });
+      grid.filter(active).forEach(t => { s += `<text x="${X(t)}" y="${yHead + 6}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${fmt(t)}</text>`; });
       s += row('prior', st.prior, LIGHT, 'prior');
       s += `<text x="${x0 - 46}" y="${rowY.lik + 7}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">×</text>`;
       s += row('lik', st.lik, RED, 'likelihood');
       s += `<text x="${x0 - 46}" y="${rowY.post + 7}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">∝</text>`;
       s += row('post', st.post, DARK, 'posterior');
+      // משמאל לשורת ה-posterior, בריבוע קטן ולחיצה אחת לפניה: p(y) = סכום prior × likelihood (המרצה מסביר בעל פה)
+      if (st.py && focus === undefined) s += `<rect x="24" y="${rowY.post - ch / 2}" width="108" height="${ch}" rx="5" fill="#fff" stroke="${DARK}" stroke-width="1.6"/>
+        <text x="78" y="${rowY.post + 5}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--ink)"><tspan ${MATH}>p(y)</tspan> = ${fmt(grid.reduce((a, t) => a + st.prior(t) * st.lik(t), 0))}</text>`;
       s += `<text x="${x0 - 22}" y="${legBot + 18}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">דופן שמאל</text>
             <text x="${x1 + 22}" y="${legBot + 18}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">דופן ימין</text>`;
       svg.innerHTML = s;
     }
-    function sync() {
-      const sec = svg.closest('section');
-      draw(Math.min(8, sec ? sec.querySelectorAll('.fragment.visible').length : 0));
+    const sec = svg.closest('section');
+    if (focus !== undefined) {
+      const sync = () => draw(Math.min(2, sec.querySelectorAll('.fragment.visible').length));
+      const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready'].forEach(e => Reveal.on(e, sync)); sync(); };
+      if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
+      return;
     }
-    const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready'].forEach(e => Reveal.on(e, sync)); sync(); };
-    if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
-  })();
+    // הצעדים בכפתורים שמתחת לפאנל ולא ב-fragments, כדי שהחץ יעביר רק שקפים.
+    // אחרי לחיצה הכפתור מאבד את הפוקוס, כדי שרווח או Enter של השלט לא ילחצו עליו שוב
+    const stepBtn = sec.querySelector('.bv-step'), resetBtn = sec.querySelector('.bv-reset');
+    let n = 0;
+    function go(k) {
+      n = k; draw(n);
+      stepBtn.disabled = n >= LAST; resetBtn.disabled = n === 0;
+    }
+    stepBtn.addEventListener('click', () => { stepBtn.blur(); go(Math.min(LAST, n + 1)); });
+    resetBtn.addEventListener('click', () => { resetBtn.blur(); go(0); });
+    go(0);
+  };
+  bvDemo('bv1-svg', .6);
 </script>
-<p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
+<p><span class="fragment"></span> <span class="fragment"></span></p>
+</section>
+<section id="שולחן-הביליארד-כווקטור-1" class="slide level2 example-slide">
+<h2>שולחן הביליארד, כווקטור</h2>
+<div class="demo-panel">
+  <svg id="bv-svg" viewbox="0 0 1060 412" style="width:100%; height:auto; display:block;" aria-label="שולחן הביליארד מהצד, ומתחתיו ה-prior, ה-likelihood וה-posterior, כעקומות וכווקטורים"></svg>
+</div>
+<div class="gen-demo-bar" style="justify-content:flex-end"><button class="demo-btn bv-step">צעד</button><button class="demo-btn ghost bv-reset">איפוס</button></div>
+<script>bvDemo('bv-svg');</script>
 <div class="fragment demo-note" style="font-size:.6em;">
-<p>את <span class="math inline">\(p(y)\)</span>, ה-normalization factor, לא חישבנו. הוא אותו מספר לכל ערך של <span class="math inline">\(\theta\)</span>, ולכן הוא לא משנה את צורת ה-posterior, רק דואג שהשטח מתחתיו יהיה 1. מספיק לכפול prior ב-likelihood ולנרמל: posterior ∝ likelihood × prior.</p>
+<p><span class="math inline">\(p(y)\)</span>, ה-normalization factor, הוא סכום המכפלות prior × likelihood. הוא אותו מספר לכל ערך של <span class="math inline">\(\theta\)</span>, ולכן הוא לא משנה את צורת ה-posterior, רק דואג שהסכום שלו יהיה 1: posterior = likelihood × prior / <span class="math inline">\(p(y)\)</span>.</p>
 </div>
 </section>
 <section id="סיכום" class="slide level2 summary-slide">
