@@ -28,70 +28,6 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="_libs/56b47b736e/revealjs/dist/theme/quarto.css" id="theme">
   <link href="_libs/56b47b736e/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -434,9 +370,9 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
 <section id="כדור-הארץ-כווקטור" class="slide level2 example-slide">
 <h2>כדור הארץ, כווקטור</h2>
 <div class="demo-panel" style="margin-inline:-28px;">
-  <svg id="ev-svg" viewbox="-44 0 1044 452" style="width:100%; height:auto; display:block;" aria-label="מפת העולם עם הזריקות, ומתחתיה ה-prior, ה-likelihood וה-posterior, כעקומות וכווקטורים">
+  <svg id="ev-svg" viewbox="-44 0 1124 486" style="width:100%; height:auto; display:block;" aria-label="מפת העולם עם הזריקות, ומתחתיה ה-prior, ה-likelihood וה-posterior, כעקומות וכווקטורים">
     <defs><clippath id="ev-clip"><rect x="500" y="2" width="360" height="180" rx="8"></rect></clippath></defs>
-    <image href="W2_V4 מפת עולם.jpg" x="500" y="2" width="360" height="180" preserveaspectratio="none" clip-path="url(#ev-clip)"></image>
+    <image href="W2_V3 מפת עולם.jpg" x="500" y="2" width="360" height="180" preserveaspectratio="none" clip-path="url(#ev-clip)"></image>
     <g id="ev-dyn"></g>
   </svg>
 </div>
@@ -462,10 +398,10 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
     const map = { x: 500, y: 2, w: 360, h: 180 };
     const tokY = 199, cTop = 222, cPeak = 244, cBase = 312;
     const grid = Array.from({ length: 11 }, (_, i) => i / 10);
-    const yHead = 336, rowY = { prior: 366, lik: 401, post: 436 }, cw = 56, ch = 28;
+    const yHead = 336, rowY = { prior: 366, lik: 401, norm: 436, post: 471 }, cw = 56, ch = 28;
     const SKIN = '#f0cfa8';
     const LIGHT = 'rgb(167,148,216)', DARK = 'var(--hidden)', RED = 'var(--curve)';
-    // stage: 0 ניסוי חדש, עוד בלי דגימה · 1 נלקחה דגימה (ואפשר להוסיף לה) · 2 חושבה הנראות · 3 חושב ה-posterior
+    // stage: 0 ניסוי חדש, עוד בלי דגימה · 1 נלקחה דגימה (ואפשר להוסיף לה) · 2 חושבה הנראות · 3 חושב P(D) · 4 חושב ה-posterior
     // הזריקות של הניסוי הנוכחי הן start..done. "ניסוי חדש" מנקה את המפה, וה-posterior הופך ל-prior
     const SIZES = [1, 10, 50];
     // סרגל הצד: מוזז שמאלה, וקבוצת הדגימה (II) באמצע הגובה בין I ל-III
@@ -473,15 +409,19 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
     let done = 0, start = 0, stage = 0, size = 1;
 
     const count = (a, b) => { let w = 0; for (let i = a; i < b; i++) w += THROWS[i].o === 'W'; return { w, l: b - a - w }; };
-    // בלי נרמול: ה-posterior הוא בדיוק prior × likelihood, וכל תא אפשר לבדוק בכפל
     const fn = c => t => Math.pow(t, c.w) * Math.pow(1 - t, c.l);
+    // ה-prior על הרשת מנורמל לסכום 1 (בהתחלה 1/11 לכל ערך). ה-posterior = prior × likelihood ÷ P(D),
+    // ולכן ה-posterior המנורמל של ניסוי אחד הוא בדיוק ה-prior של הבא
+    const vec = c => { const v = grid.map(fn(c)), s = v.reduce((a, b) => a + b, 0); return v.map(x => x / s); };
     const sup = n => n === 1 ? '' : String(n).replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);
     const formula = c => (c.w ? 'θ' + sup(c.w) : '') + (c.l ? '(1−θ)' + sup(c.l) : '') || '1';
     const fmt = v => {
       if (v === 0) return '0';
       if (v >= .01) { const t = (Math.round(v * 1000) / 1000).toFixed(3).replace(/0+$/, ''); return t.endsWith('.') ? t + '0' : t; }
       if (v >= 1e-4) return String(+v.toPrecision(2));
-      const e = Math.floor(Math.log10(v)), m = (v / Math.pow(10, e)).toFixed(1);
+      // 9.99·10⁻⁶ מתעגל ל-1.0·10⁻⁵, ולא ל-10.0·10⁻⁶
+      let e = Math.floor(Math.log10(v)), m = (v / Math.pow(10, e)).toFixed(1);
+      if (+m >= 10) { e++; m = (v / Math.pow(10, e)).toFixed(1); }
       return `${m}·10<tspan dy="-6" font-size="10">−${-e}</tspan>`;
     };
     // כל עקומה מצוירת לפי הצורה שלה, כך שהשיא שלה תמיד באותו גובה
@@ -529,12 +469,13 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
         <text x="${x + w / 2}" y="${y + 20.5}" text-anchor="middle" direction="rtl" font-size="16" font-weight="700" fill="${filled ? '#fff' : color}">${label}</text>
       </g>`;
     }
-    function row(name, f, color, label) {
+    // שורה של ערך אחד לכל θ. השם, ובסוגריים ההסתברות שהשורה מבטאת
+    function row(name, v, color, label, prob, show = fmt) {
       const y = rowY[name];
-      let s = `<text x="${x1 + 40}" y="${y + 6}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="${color}">${label}</text>`;
-      grid.forEach(t => {
-        s += `<rect x="${X(t) - cw / 2}" y="${y - ch / 2}" width="${cw}" height="${ch}" rx="5" fill="${f ? '#fff' : '#f6f7f8'}" stroke="${f ? color : 'var(--rule)'}" stroke-width="${f ? 1.6 : 1}"/>`;
-        if (f) s += `<text x="${X(t)}" y="${y + 5}" text-anchor="middle" direction="ltr" font-size="${fmt(f(t)).length > 6 ? 12.5 : 14}" fill="var(--ink)">${fmt(f(t))}</text>`;
+      let s = `<text x="${x1 + 40}" y="${y + 6}" text-anchor="start" direction="ltr" font-size="17" fill="${color}"><tspan font-weight="700">${label}</tspan> (${prob})</text>`;
+      grid.forEach((t, i) => {
+        s += `<rect x="${X(t) - cw / 2}" y="${y - ch / 2}" width="${cw}" height="${ch}" rx="5" fill="${v ? '#fff' : '#f6f7f8'}" stroke="${v ? color : 'var(--rule)'}" stroke-width="${v ? 1.6 : 1}"/>`;
+        if (v) s += `<text x="${X(t)}" y="${y + 5}" text-anchor="middle" direction="ltr" font-size="${show(v[i]).length > 6 ? 12.5 : 14}" fill="var(--ink)">${show(v[i])}</text>`;
       });
       return s;
     }
@@ -572,7 +513,8 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
     // added: כמה זריקות נוספו בלחיצה הזו. רק הן מונפשות
     function draw(added = 0) {
       const batch = done - start, before = count(0, start), now = count(start, done), all = count(0, done);
-      const prior = fn(before), lik = stage >= 2 ? fn(now) : null, post = stage >= 3 ? fn(all) : null;
+      const prior = vec(before), lik = stage >= 2 ? grid.map(fn(now)) : null;
+      const pD = stage >= 3 ? prior.reduce((a, p, i) => a + p * lik[i], 0) : null, post = stage >= 4 ? prior.map((p, i) => p * lik[i] / pD) : null;
       let s = '';
 
       // הזריקות של הניסוי הנוכחי על המפה. הן נוחתות בזו אחר זו, תוך שנייה לכל היותר
@@ -609,8 +551,8 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
       // אפשר לקחת כמה דגימות ברצף. הן מצטרפות לאותה דגימה, עד שמחשבים את הנראות שלה
       const canThrow = stage <= 1 && done + size <= THROWS.length;
       // שלושה שלבים, ומספר רומי קטן בפינה הימנית העליונה של כל אחד: I מחקר חדש · II דגימה · III חישוב
-      s += `<line x1="${SIDE + 140}" y1="6" x2="${SIDE + 140}" y2="446" stroke="var(--rule)" stroke-width="1.2" stroke-dasharray="3 6"/>`;
-      s += `<g transform="translate(${SIDE},0)">` + badge(1, 10) + button('next', 14, 20, 118, 'מחקר חדש', 'var(--ink)', stage === 3, false);
+      s += `<line x1="${SIDE + 140}" y1="6" x2="${SIDE + 140}" y2="${rowY.post + 10}" stroke="var(--rule)" stroke-width="1.2" stroke-dasharray="3 6"/>`;
+      s += `<g transform="translate(${SIDE},0)">` + badge(1, 10) + button('next', 14, 20, 118, 'מחקר חדש', 'var(--ink)', stage === 4, false);
       s += `<g transform="translate(0,${MID})">` + badge(2, 88) + `<text x="73" y="100" text-anchor="middle" font-size="13" fill="var(--ink-faint)">גודל הדגימה</text>
         <rect x="14" y="107" width="118" height="26" rx="13" fill="#fff" stroke="var(--rule)" stroke-width="1.4"/>`;
       SIZES.forEach((n, k) => {
@@ -626,14 +568,15 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
       // העקומות
       grid.forEach(t => { s += `<line x1="${X(t)}" y1="${cTop}" x2="${X(t)}" y2="${rowY.post + ch / 2}" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 4"/>`; });
       s += `<line x1="${x0}" y1="${cBase}" x2="${x1}" y2="${cBase}" stroke="var(--ink)" stroke-width="2"/>`;
-      const Yp = curveY(prior), Yl = lik && curveY(lik), Yq = post && curveY(post);
+      const Yp = curveY(fn(before)), Yl = lik && curveY(fn(now)), Yq = post && curveY(fn(all));
       s += `<path d="${path(Yp)}" fill="none" stroke="${LIGHT}" stroke-width="4"/>`;
       if (lik) s += `<path d="${path(Yl)}" fill="none" stroke="${RED}" stroke-width="3.5" stroke-dasharray="10 6"/>`;
       if (post) s += `<path d="${path(Yq)}" fill="none" stroke="${DARK}" stroke-width="4"/>`;
       const curves = [];
       if (post) curves.push({ Y: Yq, color: DARK, text: `<tspan font-weight="700">posterior</tspan> ∝ ${formula(all)}`, len: 13 + formula(all).length });
       if (lik) curves.push({ Y: Yl, color: RED, text: `<tspan font-weight="700">likelihood</tspan> = ${formula(now)}`, len: 14 + formula(now).length });
-      curves.push({ Y: Yp, color: LIGHT, text: `<tspan font-weight="700">prior</tspan> ${start ? '∝' : '='} ${formula(before)}`, len: 9 + formula(before).length });
+      const priorF = start ? '∝ ' + formula(before) : '= 1/11';
+      curves.push({ Y: Yp, color: LIGHT, text: `<tspan font-weight="700">prior</tspan> ${priorF}`, len: 7 + priorF.length });
       // ההודעה על ה-prior החדש תופסת את הפינה השמאלית העליונה של הגרף
       const swap = stage <= 1 && start > 0;
       s += labels(curves, swap ? [{ l: x0, r: x0 + 200, t: cTop - 22, b: cTop - 2 }] : []);
@@ -642,13 +585,19 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
       // הווקטורים: ערך אחד לכל θ, וכפתור החישוב ליד השורה שהוא ממלא
       s += `<text x="${x1 + 40}" y="${yHead + 6}" text-anchor="start" direction="ltr" font-size="17" font-style="italic" fill="var(--ink-soft)">θ</text>`;
       grid.forEach(t => { s += `<text x="${X(t)}" y="${yHead + 6}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${fmt(t)}</text>`; });
-      s += row('prior', prior, LIGHT, 'prior');
-      s += `<text x="${x0 - 46}" y="${rowY.lik + 7}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">×</text>`;
-      s += row('lik', lik, RED, 'likelihood');
-      s += `<text x="${x0 - 46}" y="${rowY.post + 7}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">∝</text>`;
-      s += row('post', post, DARK, 'posterior');
+      const op = (name, c) => `<text x="${x0 - 46}" y="${rowY[name] + 7}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">${c}</text>`;
+      // ה-prior הראשון אחיד: בדיוק 1/11 לכל אחד מ-11 הערכים
+      s += row('prior', prior, LIGHT, 'prior', 'P(θ)', start ? fmt : () => '1/11');
+      s += op('lik', '×') + row('lik', lik, RED, 'likelihood', 'P(D|θ)');
+      // מקדם הנרמול: מספר אחד, סכום המכפלות prior × likelihood על כל ערכי θ
+      const yN = rowY.norm, nx = X(0) - cw / 2, nw = X(1) - X(0) + cw;
+      s += op('norm', '÷') + `<text x="${x1 + 40}" y="${yN + 6}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="var(--ink)">P(D)</text>
+        <rect x="${nx}" y="${yN - ch / 2}" width="${nw}" height="${ch}" rx="5" fill="${pD !== null ? '#fff' : '#f6f7f8'}" stroke="${pD !== null ? 'var(--ink)' : 'var(--rule)'}" stroke-width="${pD !== null ? 1.6 : 1}"/>`;
+      if (pD !== null) s += `<text x="${nx + nw / 2}" y="${yN + 5}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--ink)">Σ P(θ) · P(D|θ) = ${fmt(pD)}</text>`;
+      s += op('post', '=') + row('post', post, DARK, 'posterior', 'P(θ|D)');
       s += `<g transform="translate(${SIDE},0)">` + badge(3, rowY.lik - 26) + button('lik', 14, rowY.lik - 15, 118, 'חשב נראות', RED, stage === 1);
-      s += button('post', 14, rowY.post - 15, 118, 'חשב posterior', DARK, stage === 2) + '</g>';
+      s += button('norm', 14, rowY.norm - 15, 118, 'חשב ⁦P(D)⁩', 'var(--ink)', stage === 2);
+      s += button('post', 14, rowY.post - 15, 118, 'חשב posterior', DARK, stage === 3) + '</g>';
       dyn.innerHTML = s;
     }
 
@@ -659,7 +608,8 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
       if (a === 'size') { size = +b.dataset.n; draw(); return; }
       if (a === 'throw') { done += size; stage = 1; draw(size); return; }
       if (a === 'lik') stage = 2;
-      if (a === 'post') stage = 3;
+      if (a === 'norm') stage = 3;
+      if (a === 'post') stage = 4;
       if (a === 'next') { start = done; stage = 0; }
       if (a === 'reset') { done = 0; start = 0; stage = 0; }
       draw();
@@ -676,9 +626,22 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
   <div class="gate-why">איך מסכמים עקומה שלמה בכמה מדדים.</div>
 </div>
 </section>
-<section id="ה-posterior-אחרי-20-זריקות" class="slide level2 example-slide">
-<h2>ה-posterior אחרי 20 זריקות</h2>
-<div class="demo-panel" id="pv-base"></div>
+<section id="דיווח-סטטיסטי-בייסיאני" class="slide level2 example-slide">
+<h2>דיווח סטטיסטי בייסיאני</h2>
+<div class="demo-panel" id="pv-general"></div>
+<div class="rep-step">
+  <h3>מידע כללי</h3>
+  <div class="r-stack rep-text">
+    <p class="fragment fade-in-then-out">ה-posterior הוא התוצאה הסטטיסטית שעליה נדווח. השטח שמתחתיו הוא 1, ולכן הוא מבטא בדיוק את הסיכוי לכל טווח של ערכי הפרמטר, בהינתן התוצאות.</p>
+    <p class="fragment fade-in"><b>אין גודל מדגם מינימלי.</b> גם אחרי זריקה אחת יש posterior. הוא פשוט רחב. למען האמת, גם בלי תצפיות יש הסקה סטטיסטית: בלי תצפיות, ה-posterior הוא ה-prior.</p>
+  </div>
+</div>
+<style>
+  /* שקפי הדיווח: כותרת משנה מתחת לגרף, וטקסט שמתחלף באותו מקום בכל לחיצה */
+  .reveal .rep-step h3 { margin: .45em 0 .15em; }
+  .reveal .rep-text { font-size: .84em; line-height: 1.45; }
+  .reveal .rep-text > p { margin: 0 !important; justify-self: stretch; text-align: start; }
+</style>
 <script>
   // ── שקפי הדיווח: posterior קבוע אחד, וכל שקף מצייר עליו רכיב אחר ──
   // PostModel: ה-posterior של n הזריקות הראשונות (prior אחיד), על רשת, עם המדדים שמדווחים עליהם
@@ -698,7 +661,9 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
       return [ps[Math.min(...inn)], ps[Math.max(...inn)]];
     }
     const pd = ref => 1 - cdf[Math.round(ref * G)];
-    return { T, n: T.length, w, l, G, ps, pm, dens, q, mode, hdi, pd };
+    // החלק של ה-posterior בין a ל-b
+    const mass = (a, b) => pm.reduce((s, v, i) => s + (ps[i] >= a - 1e-9 && ps[i] <= b + 1e-9 ? v : 0), 0);
+    return { T, n: T.length, w, l, G, ps, pm, dens, q, mode, hdi, pd, mass };
   };
 
   // PostView: מפה קטנה עם הזריקות, וה-posterior במיקום ובקנה מידה קבועים. מתחת לציר יש מקום לפסים (רווחים)
@@ -715,7 +680,7 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
     const map = { x: 70, y: 4, w: 150, h: 75 };
     let s = `<svg viewBox="0 0 1000 328" style="width:100%; height:auto; display:block;" aria-label="ה-posterior של חלק המים אחרי ${M.n} זריקות">
       <defs><clipPath id="${root.id}-clip"><rect x="${map.x}" y="${map.y}" width="${map.w}" height="${map.h}" rx="5"/></clipPath></defs>
-      <image href="W2_V4 מפת עולם.jpg" x="${map.x}" y="${map.y}" width="${map.w}" height="${map.h}" preserveAspectRatio="none" clip-path="url(#${root.id}-clip)"/>`;
+      <image href="W2_V3 מפת עולם.jpg" x="${map.x}" y="${map.y}" width="${map.w}" height="${map.h}" preserveAspectRatio="none" clip-path="url(#${root.id}-clip)"/>`;
     M.T.forEach(t => {
       const cx = map.x + (t.lon + 180) / 360 * map.w, cy = map.y + (90 - t.lat) / 180 * map.h, r = 2.8;
       const d = `M${cx - r},${cy - r} L${cx + r},${cy + r} M${cx + r},${cy - r} L${cx - r},${cy + r}`;
@@ -757,109 +722,88 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
   // פס מתחת לציר: רווח [a, b] עם תווית
   window.PostBar = (v, a, b, y, color, label) => `<line x1="${v.X(a)}" y1="${y}" x2="${v.X(b)}" y2="${y}" stroke="${color}" stroke-width="6" stroke-linecap="round"/>
     <text x="${v.X(b) + 12}" y="${y + 5}" text-anchor="start" direction="ltr" font-size="15" fill="${color}">${label}</text>`;
-  window.PostView(document.getElementById('pv-base'));
+
+  window.PostSteps('pv-general', (v, k) => {
+    // צעד 1: השטח הוא 1
+    if (k === 1) v.over.innerHTML += `<text x="${v.X(v.mode)}" y="${v.Y(v.top * .35)}" text-anchor="middle" direction="rtl" font-size="20" font-weight="700" fill="var(--hidden)">שטח = 1</text>`;
+  });
 </script>
 </section>
-<section id="גובה-ההתפלגות" class="slide level2 example-slide">
-<h2>גובה ההתפלגות</h2>
-<div class="demo-panel" id="pv-height"></div>
+<section id="דיווח-סטטיסטי-בייסיאני-1" class="slide level2 example-slide">
+<h2>דיווח סטטיסטי בייסיאני</h2>
+<div class="demo-panel" id="pv-point"></div>
+<div class="rep-step">
+  <h3>point estimation</h3>
+  <div class="r-stack rep-text">
+    <p class="fragment fade-in-then-out"><b>גובה ההתפלגות מסמן את הסבירות:</b> ערכים שמעליהם ההתפלגות גבוהה יותר סבירים יותר.</p>
+    <p class="fragment fade-in">הערך שמעליו העקומה הכי גבוהה (<b>השכיח</b>, mode) הוא גם הערך הסביר ביותר לייצג את חלק פני כדור הארץ שמכוסה מים.</p>
+  </div>
+</div>
 <script>
-  window.PostSteps('pv-height', (v, k) => {
-    // צעד 2: שני ערכים של θ, וגובה ההתפלגות מעל כל אחד. צעד 3: השכיח
-    if (k === 2) [[.5, 'פחות סביר'], [.75, 'יותר סביר']].forEach(([t, lab]) => {
+  window.PostSteps('pv-point', (v, k) => {
+    // צעד 1: שני ערכים של θ, וגובה ההתפלגות מעל כל אחד. צעד 2: השכיח
+    if (k === 1) [[.5, 'פחות סביר'], [.75, 'יותר סביר']].forEach(([t, lab]) => {
       const i = Math.round(t * v.G), y = v.Y(v.dens[i]);
       v.over.innerHTML += `<line x1="${v.X(t)}" y1="${v.yb}" x2="${v.X(t)}" y2="${y}" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="5 4"/>
         <circle cx="${v.X(t)}" cy="${y}" r="6" fill="var(--ink)"/>
         <text x="${v.X(t)}" y="${v.yb + 46}" text-anchor="middle" direction="rtl" font-size="16" font-weight="700" fill="var(--ink)">${lab}</text>`;
     });
-    if (k >= 3) v.over.innerHTML += `<line x1="${v.X(v.mode)}" y1="${v.yb}" x2="${v.X(v.mode)}" y2="${v.yt}" stroke="var(--ink)" stroke-width="3"/>
+    if (k >= 2) v.over.innerHTML += `<line x1="${v.X(v.mode)}" y1="${v.yb}" x2="${v.X(v.mode)}" y2="${v.yt}" stroke="var(--ink)" stroke-width="3"/>
       <text x="${v.X(v.mode)}" y="${v.yb + 46}" text-anchor="middle" direction="rtl" font-size="17" font-weight="700" fill="var(--ink)">שכיח = ${v.mode.toFixed(2)}</text>`;
   });
 </script>
-<div style="font-size:1.05em;">
-<ul>
-<li class="fragment"><strong>אין גודל מדגם מינימלי.</strong> גם אחרי זריקה אחת יש posterior. הוא פשוט רחב.</li>
-<li class="fragment"><strong>גובה ההתפלגות מסמן את הסבירות:</strong> ערכים שמעליהם ההתפלגות גבוהה יותר, סבירים יותר.</li>
-<li class="fragment"><strong>השכיח</strong> (mode) מבטא את הערך הסביר ביותר.</li>
-</ul>
-</div>
 </section>
-<section id="רוחב-ההתפלגות" class="slide level2 example-slide">
-<h2>רוחב ההתפלגות</h2>
-<div class="demo-panel" id="pv-width"></div>
-<script>
-  window.PostSteps('pv-width', (v, k) => {
-    // צעד 1: הרוחב בחצי הגובה. צעד 2: ה-posterior אחרי 5 זריקות בלבד, על אותו קנה מידה: רחב ונמוך
-    if (k >= 1) {
-      const half = v.top / 2, inn = v.ps.filter((p, i) => v.dens[i] >= half), a = Math.min(...inn), b = Math.max(...inn), y = v.Y(half);
-      v.over.innerHTML += `<line x1="${v.X(a)}" y1="${y}" x2="${v.X(b)}" y2="${y}" stroke="var(--ink)" stroke-width="2.5" marker-start="url(#pw-arr)" marker-end="url(#pw-arr)"/>
-        <defs><marker id="pw-arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="var(--ink)"/></marker></defs>
-        <text x="${v.X((a + b) / 2)}" y="${y - 10}" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">רוחב</text>`;
-    }
-    if (k >= 2) {
-      const g = window.PostModel(5);
-      v.under.innerHTML += `<path d="${v.pathOf(g.dens)}" fill="none" stroke="var(--ink-faint)" stroke-width="3" stroke-dasharray="8 6"/>
-        <text x="${v.X(.2)}" y="${v.Y(g.dens[Math.round(.2 * g.G)]) - 16}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)">אחרי 5 זריקות</text>`;
-    }
-  });
-</script>
-<div style="font-size:1.05em;">
-<ul>
-<li class="fragment"><strong>רוחב ההתפלגות מבטא את הוודאות.</strong> צרה: אנחנו די בטוחים איפה θ נמצא. רחבה: עוד לא.</li>
-<li class="fragment">הקו המקווקו הוא ה-posterior אחרי 5 זריקות בלבד: רחב יותר, ולכן פחות ודאי.</li>
-</ul>
+<section id="דיווח-סטטיסטי-בייסיאני-2" class="slide level2 example-slide">
+<h2>דיווח סטטיסטי בייסיאני</h2>
+<div class="demo-panel" id="pv-cert"></div>
+<div class="rep-step">
+  <h3>הערכת ודאות</h3>
+  <div class="r-stack rep-text">
+    <p class="fragment fade-in-then-out"><b>רוחב ההתפלגות מבטא את הוודאות.</b> צרה: אנחנו די בטוחים איפה θ נמצא. רחבה: עוד לא.</p>
+    <p class="fragment fade-in-then-out"><b>את הוודאות מודדים בשטח.</b> השטח שמעל טווח של ערכים הוא הסיכוי ש-θ נמצא בטווח הזה.</p>
+    <p class="fragment fade-in-then-out"><b>רווח אמינות</b> (credible interval, CI): טווח שמכיל 90% מה-posterior. הדרך הפשוטה לבנות אותו: לחתוך 5% מכל צד.</p>
+    <p class="fragment fade-in"><b>HDI</b> (highest density interval): סוג מסוים של credible interval, שבו נמצא <b>הטווח הצר ביותר</b> שמכיל את אחוז הוודאות המבוקש. כל ערך בפנים סביר יותר מכל ערך בחוץ (הקו המקווקו: שני הקצוות באותו גובה).</p>
+  </div>
 </div>
-</section>
-<section id="רווח-אמינות-credible-interval" class="slide level2 example-slide">
-<h2>רווח אמינות (credible interval)</h2>
-<div class="demo-panel" id="pv-ci"></div>
 <script>
-  window.PostSteps('pv-ci', (v, k) => {
-    // צעד 1: 95% האמצעיים של ה-posterior. צעד 2: מה נחתך משני הצדדים
-    const a = v.q(.025), b = v.q(.975);
-    if (k >= 1) {
+  window.PostSteps('pv-cert', (v, k) => {
+    // 1: הרוחב (טקסט בלבד) · 2: שטח מעל טווח · 3: CI · 4: HDI
+    if (k === 2) {
+      // האחוז גדול באמצע השטח, והטווח קטן ובמרכז מתחת לפס
+      const a = .6, b = .8, mid = v.X((a + b) / 2), y = v.yb + 40;
       v.under.innerHTML += `<path d="${v.area(v.dens, a, b)}" fill="var(--hidden)" opacity=".3"/>`;
-      v.over.innerHTML += window.PostBar(v, a, b, v.yb + 44, 'var(--hidden)', `95% CI [${a.toFixed(2)}, ${b.toFixed(2)}]`);
+      v.over.innerHTML += `<text x="${mid}" y="${v.Y(v.top * .45)}" text-anchor="middle" font-size="40" font-weight="700" fill="var(--hidden)">${Math.round(v.mass(a, b) * 100)}%</text>
+        <line x1="${v.X(a)}" y1="${y}" x2="${v.X(b)}" y2="${y}" stroke="var(--hidden)" stroke-width="6" stroke-linecap="round"/>
+        <text x="${mid}" y="${y + 24}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--hidden)">p(0.6 &lt; θ &lt; 0.8)</text>`;
     }
-    if (k >= 2) [v.q(.0125), v.q(.9875)].forEach(t => {
-      v.over.innerHTML += `<text x="${v.X(t)}" y="${v.Y(v.dens[Math.round(t * v.G)]) - 12}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink-soft)">2.5%</text>`;
-    });
-  });
-</script>
-<div style="font-size:1.05em;">
-<ul>
-<li class="fragment"><strong>רווח אמינות:</strong> טווח שמכיל 95% מה-posterior. בהסתברות 95%, θ נמצא בתוכו.</li>
-<li class="fragment">הדרך הפשוטה לבנות אותו: לחתוך 2.5% מכל צד של ההתפלגות.</li>
-</ul>
-</div>
-</section>
-<section id="hdi" class="slide level2 example-slide">
-<h2>HDI</h2>
-<div class="demo-panel" id="pv-hdi"></div>
-<script>
-  window.PostSteps('pv-hdi', (v, k) => {
-    // צעד 1: ה-HDI. צעד 2: הרווח מהשקף הקודם, להשוואה
-    const [a, b] = v.hdi(.95);
-    if (k >= 1) {
+    if (k === 3) {
+      const a = v.q(.05), b = v.q(.95);
       v.under.innerHTML += `<path d="${v.area(v.dens, a, b)}" fill="var(--hidden)" opacity=".3"/>`;
-      v.over.innerHTML += window.PostBar(v, a, b, v.yb + 44, 'var(--hidden)', `95% HDI [${a.toFixed(2)}, ${b.toFixed(2)}]`) +
+      v.over.innerHTML += window.PostBar(v, a, b, v.yb + 44, 'var(--hidden)', `90% CI [${a.toFixed(2)}, ${b.toFixed(2)}]`);
+      [v.q(.025), v.q(.975)].forEach(t => {
+        v.over.innerHTML += `<text x="${v.X(t)}" y="${v.Y(v.dens[Math.round(t * v.G)]) - 12}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink-soft)">5%</text>`;
+      });
+    }
+    if (k >= 4) {
+      const [a, b] = v.hdi(.9);
+      v.under.innerHTML += `<path d="${v.area(v.dens, a, b)}" fill="var(--hidden)" opacity=".3"/>`;
+      v.over.innerHTML += window.PostBar(v, a, b, v.yb + 44, 'var(--hidden)', `90% HDI [${a.toFixed(2)}, ${b.toFixed(2)}]`) +
         `<line x1="${v.X(a) - 40}" y1="${v.Y(v.dens[Math.round(a * v.G)])}" x2="${v.X(b) + 40}" y2="${v.Y(v.dens[Math.round(a * v.G)])}" stroke="var(--ink-faint)" stroke-width="1.5" stroke-dasharray="4 4"/>`;
     }
-    if (k >= 2) v.over.innerHTML += window.PostBar(v, v.q(.025), v.q(.975), v.yb + 66, 'var(--ink-faint)', `95% CI [${v.q(.025).toFixed(2)}, ${v.q(.975).toFixed(2)}]`);
   });
 </script>
-<div style="font-size:1.05em;">
-<ul>
-<li class="fragment"><strong>HDI</strong> (highest density interval): הטווח <strong>הצר ביותר</strong> שמכיל 95%. כל ערך בפנים סביר יותר מכל ערך בחוץ (הקו המקווקו: שני הקצוות באותו גובה).</li>
-<li class="fragment">כשה-posterior לא סימטרי, ה-HDI וחיתוך הזנבות שונים מעט. 95% היא מוסכמה, לא חוק.</li>
-</ul>
-</div>
 </section>
-<section id="pd-באיזה-צד" class="slide level2 example-slide">
-<h2>PD: באיזה צד?</h2>
-<div class="demo-panel" id="pv-pd"></div>
+<section id="דיווח-סטטיסטי-בייסיאני-3" class="slide level2 example-slide">
+<h2>דיווח סטטיסטי בייסיאני</h2>
+<div class="demo-panel" id="pv-dir"></div>
+<div class="rep-step">
+  <h3>הערכת כיוון</h3>
+  <div class="r-stack rep-text">
+    <p class="fragment fade-in"><b>PD</b> (probability of direction): כמה מה-posterior נמצא בצד אחד של ערך ייחוס.</p>
+  </div>
+</div>
 <script>
-  window.PostSteps('pv-pd', (v, k) => {
+  window.PostSteps('pv-dir', (v, k) => {
     // צעד 1: ערך ייחוס 0.5, והחלק של ה-posterior שמעליו
     if (k >= 1) {
       const ref = .5, pd = v.pd(ref);
@@ -870,76 +814,109 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
     }
   });
 </script>
-<div style="font-size:1.05em;">
-<ul>
-<li class="fragment"><strong>PD</strong> (probability of direction): כמה מה-posterior נמצא בצד אחד של ערך ייחוס. כאן: <strong>האם רוב כדור הארץ מכוסה מים?</strong></li>
-<li class="fragment">ה-PD עונה על הכיוון, והרווח על הגודל. כדאי לדווח את שניהם.</li>
-</ul>
-</div>
 </section>
-<section id="כך-זה-נראה-במאמר" class="slide level2 example-slide">
-<h2>כך זה נראה במאמר</h2>
-<div class="demo-panel rp" id="rp">
-  <svg id="rp-fig" viewbox="0 0 1000 250" style="width:100%; height:auto; display:block;" aria-label="איור: ה-posterior ותוצאות הזריקות"></svg>
-  <p class="rp-cap"><b>איור 1.</b> (א) ההתפלגות הפוסטריורית של θ, חלק פני כדור הארץ המכוסה מים, אחרי 20 זריקות ועם prior אחיד. האזור הכהה: 95% HDI; הקו: השכיח. (ב) תוצאות הזריקות.</p>
-  <div class="rp-text">
-    <p><b>תוצאות.</b> <span class="rp-s" data-k="2">מתוך <span id="rp-n"></span> זריקות, <span id="rp-w"></span> נחתו על ים</span>. <span class="rp-s" data-k="3">עם prior אחיד</span>, <span class="rp-s" data-k="4">הערך הסביר ביותר של חלק המים היה <span class="ltr" id="rp-mode"></span> (שכיח)</span>, <span class="rp-s" data-k="5">עם 95% HDI בין <span class="ltr" id="rp-a"></span> ל-<span class="ltr" id="rp-b"></span></span>. <span class="rp-s" data-k="6">ההסתברות שרוב פני כדור הארץ מכוסים מים (<span class="ltr">θ &gt; 0.5</span>) היא <span class="ltr" id="rp-pd"></span></span>.</p>
+<section id="דיווח-סטטיסטי-בייסיאני-4" class="slide level2 example-slide">
+<h2>דיווח סטטיסטי בייסיאני</h2>
+<div class="demo-panel" id="pv-rope"></div>
+<div class="rep-step">
+  <h3>הערכת זניחות</h3>
+  <div class="r-stack rep-text">
+    <p class="fragment fade-in"><b>ROPE</b> (region of practical equivalence): טווח שהחוקרים קובעים, שבתוכו ערך הפרמטר זניח באופן מעשי. כאן: θ בין 0 ל-0.05, ובתוכו <span class="rope-in"></span> מה-posterior.</p>
+  </div>
+</div>
+<script>
+  window.PostSteps('pv-rope', (v, k) => {
+    // צעד 1: ה-ROPE, בין 0 ל-0.05, והחלק של ה-posterior שבתוכו
+    const a = 0, b = .05, m = v.mass(a, b), inside = m < .005 ? '< 1%' : Math.round(m * 100) + '%';
+    document.querySelectorAll('.rope-in').forEach(el => { el.textContent = m < .005 ? 'פחות מ-1%' : inside; });
+    if (k >= 1) {
+      v.under.innerHTML += `<rect x="${v.X(a)}" y="${v.yt}" width="${v.X(b) - v.X(a)}" height="${v.yb - v.yt}" fill="var(--ink)" opacity=".07"/>
+        <line x1="${v.X(a)}" y1="${v.yt}" x2="${v.X(a)}" y2="${v.yb}" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <line x1="${v.X(b)}" y1="${v.yt}" x2="${v.X(b)}" y2="${v.yb}" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+      v.over.innerHTML += `<text x="${v.X((a + b) / 2)}" y="${v.yt + 24}" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink-soft)">ROPE</text>`;
+      v.under.innerHTML += `<path d="${v.area(v.dens, a, b)}" fill="var(--hidden)" opacity=".45"/>`;
+      v.over.innerHTML += window.PostBar(v, a, b, v.yb + 44, 'var(--hidden)', `${inside} in ROPE [0, 0.05]`);
+    }
+  });
+</script>
+</section>
+<section id="דיווח-סטטיסטי-בייסיאני-5" class="slide level2 example-slide">
+<h2>דיווח סטטיסטי בייסיאני</h2>
+<h3 class="paper-kicker">כך זה נראה במאמר</h3>
+<div class="paper" id="rp">
+  <div class="paper-head"><span>BAYESIAN ESTIMATION OF THE PROPORTION OF WATER</span><span>7</span></div>
+  <svg id="rp-fig" viewbox="0 0 1000 236" style="width:100%; height:auto; display:block;" aria-label="Figure 1: the posterior distribution and the outcomes of the tosses"></svg>
+  <p class="paper-cap"><b>Figure 1.</b> (A) Posterior distribution of θ, the proportion of the Earth's surface covered by water, after 20 tosses with a uniform prior. Shaded area: 90% HDI; solid line: posterior mode; dashed band: ROPE. (B) Outcomes of the tosses.</p>
+  <p class="paper-h">Results</p>
+  <div class="paper-text">
+    <p><span class="rp-s" data-k="2">Of the <span id="rp-n"></span> tosses, <span id="rp-w"></span> landed on water</span>. <span class="rp-s" data-k="3">Using a uniform prior</span>, <span class="rp-s" data-k="4">the most probable proportion of water was θ = <span id="rp-mode"></span> (posterior mode)</span>, <span class="rp-s" data-k="5">90% HDI <span class="nw">[<span id="rp-a"></span>, <span id="rp-b"></span>]</span></span>. <span class="rp-s" data-k="6">The probability that most of the Earth's surface is covered by water (θ &gt; 0.5) was <span id="rp-pd"></span> (PD)</span>, <span class="rp-s" data-k="7">and <span id="rp-rope"></span> of the posterior fell within the ROPE <span class="nw">[0, 0.05]</span></span>.</p>
     <div class="rp-arrow" id="rp-arrow">▲</div>
   </div>
-  <div class="rp-note" id="rp-note"></div>
 </div>
+<div class="rp-note" id="rp-note"></div>
 <style>
-  .reveal .rp { padding-bottom: 4px; }
-  .reveal .rp-cap { font-size: .48em; color: var(--ink-soft); margin: .2em 0 .5em; line-height: 1.4; }
-  .reveal .rp-text { position: relative; }
-  .reveal .rp-text p { font-size: .6em; line-height: 2.25; margin: 0; }
-  .reveal .rp-s { border-radius: 4px; transition: background .2s; }
+  /* עמוד מתוך PDF של מאמר: נייר לבן, גופן סריף, טקסט מיושר לשני הצדדים */
+  .reveal .paper-kicker { margin: 0 0 .25em; }
+  .reveal .paper { direction: ltr; text-align: left; background: #fff; color: var(--ink); font-family: "Times New Roman", Times, serif;
+    box-shadow: 0 1px 3px rgba(27,32,40,.12), 0 6px 22px rgba(27,32,40,.1); padding: 14px 44px 16px; }
+  .reveal .paper-head { display: flex; justify-content: space-between; font-size: .36em; letter-spacing: .06em; color: var(--ink-soft); margin-bottom: 6px; }
+  .reveal .paper-cap { font-size: .48em; line-height: 1.35; margin: .3em 0 .5em; text-align: justify; }
+  .reveal .paper-h { font-size: .56em; font-weight: 700; text-align: center; margin: 0 0 .15em; }
+  .reveal .paper-text { position: relative; }
+  .reveal .paper .nw { white-space: nowrap; }
+  .reveal .paper-text p { font-size: .56em; line-height: 1.9; margin: 0; text-align: justify; text-indent: 2em; }
+  .reveal .rp-s { border-radius: 3px; transition: background .2s; }
   .reveal .rp-s.on { background: var(--hidden-bg); box-shadow: 0 0 0 3px var(--hidden-bg); }
-  .reveal .rp-arrow { position: absolute; font-size: .42em; color: var(--hidden); line-height: 1; display: none; transform: translateX(-50%); }
-  .reveal .rp-note { min-height: 1.5em; margin-top: .55em; font-size: .52em; font-weight: 700; color: var(--hidden); text-align: center; }
+  .reveal .rp-arrow { position: absolute; font-size: .4em; color: var(--hidden); line-height: 1; display: none; transform: translateX(-50%); }
+  .reveal .rp-note { min-height: 1.5em; margin-top: .5em; font-size: .52em; font-weight: 700; color: var(--hidden); text-align: center; }
 </style>
 <script>
   (function () {
     const root = document.getElementById('rp');
     if (!root || !window.PostModel) return;
-    const M = window.PostModel(20), [ha, hb] = M.hdi(.95), $ = id => document.getElementById(id);
+    const M = window.PostModel(20), [ha, hb] = M.hdi(.9), $ = id => document.getElementById(id);
+    const pct = v => Math.round(v * 100) + '%';
     $('rp-n').textContent = M.n; $('rp-w').textContent = M.w;
-    $('rp-mode').textContent = 'θ = ' + M.mode.toFixed(2); $('rp-a').textContent = ha.toFixed(2); $('rp-b').textContent = hb.toFixed(2);
-    $('rp-pd').textContent = Math.round(M.pd(.5) * 100) + '%';
-    // הצעדים: 1 האיור · 2-6 כל רכיב במשפט
+    $('rp-mode').textContent = M.mode.toFixed(2); $('rp-a').textContent = ha.toFixed(2); $('rp-b').textContent = hb.toFixed(2);
+    $('rp-pd').textContent = pct(M.pd(.5)); const rope = M.mass(0, .05); $('rp-rope').textContent = rope < .005 ? 'less than 1%' : 'only ' + pct(rope);
+    // הצעדים: 1 האיור · 2-7 כל רכיב במשפט
     const notes = ['', 'ציר ה-X רחב: כל הערכים האפשריים, מ-0 עד 1. ציר ה-Y פחות חשוב, ולכן בלי מספרים.',
       'הנתונים: כמה תצפיות היו, ומה יצא.', 'ה-prior: חלק מהמודל, ולכן מדווחים עליו.',
-      'אומד נקודתי: הערך הסביר ביותר.', 'רווח אמינות: כמה אנחנו בטוחים.', 'PD: באיזה צד של ערך מסוים.'];
+      'point estimation: הערך הסביר ביותר.', 'הערכת ודאות: רווח אמינות.', 'הערכת כיוון: PD.', 'הערכת זניחות: כמה מה-posterior בתוך ה-ROPE.'];
 
-    // האיור: (א) ה-posterior מימין, (ב) הזריקות משמאל
-    const ax0 = 400, ax1 = 950, yt = 30, yb = 190, top = Math.max(...M.dens);
+    // האיור, כמו במאמר: (A) ה-posterior משמאל, (B) הזריקות מימין
+    const ax0 = 90, ax1 = 620, yt = 30, yb = 176, top = Math.max(...M.dens);
     const X = t => ax0 + t * (ax1 - ax0), Y = d => yb - d / top * (yb - yt);
     const curve = M.dens.map((d, i) => (i ? 'L' : 'M') + X(M.ps[i]).toFixed(1) + ',' + Y(d).toFixed(1)).join('');
     let hd = ''; M.ps.forEach((p, i) => { if (p >= ha && p <= hb) hd += (hd ? 'L' : 'M') + X(p).toFixed(1) + ',' + Y(M.dens[i]).toFixed(1); });
+    const F = `font-family="Arial, Helvetica, sans-serif"`;
     function fig(k) {
-      let s = `<path d="${hd} L${X(hb)},${yb} L${X(ha)},${yb} Z" fill="var(--hidden)" opacity=".3"/>
-        <path d="${curve}" fill="none" stroke="var(--hidden)" stroke-width="3.5"/>
-        <line x1="${X(M.mode)}" y1="${yb}" x2="${X(M.mode)}" y2="${Y(Math.max(...M.dens))}" stroke="var(--ink)" stroke-width="2"/>
-        <line x1="${ax0}" y1="${yb}" x2="${ax1}" y2="${yb}" stroke="var(--ink)" stroke-width="1.5"/>
-        <line x1="${ax0}" y1="${yt - 10}" x2="${ax0}" y2="${yb}" stroke="var(--ink)" stroke-width="1.5"/>
-        <text x="${ax0 - 14}" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)" transform="rotate(-90 ${ax0 - 14} ${(yt + yb) / 2})">צפיפות</text>
-        <text x="${(ax0 + ax1) / 2}" y="${yb + 44}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)">θ (חלק השטח המכוסה מים)</text>
-        <text x="${ax1}" y="${yt - 8}" text-anchor="end" font-size="18" font-weight="700" fill="var(--ink)">א</text>`;
-      [0, .25, .5, .75, 1].forEach(t => { s += `<text x="${X(t)}" y="${yb + 20}" text-anchor="middle" font-size="14" fill="var(--ink-soft)">${t}</text>`; });
-      // (ב): מספר הזריקות שנחתו על ים ועל יבשה
-      const bx = [120, 230], by = c => yb - c / M.n * (yb - yt) * 1.15;
-      [[M.w, 'ים', 'water'], [M.l, 'יבשה', 'land']].forEach(([c, lab, col], i) => {
+      let s = `<g ${F}><rect x="${X(0)}" y="${yt - 6}" width="${X(.05) - X(0)}" height="${yb - yt + 6}" fill="var(--ink)" opacity=".06"/>
+        <path d="M${X(.05)},${yt - 6} V${yb}" stroke="var(--ink-faint)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <path d="${hd} L${X(hb)},${yb} L${X(ha)},${yb} Z" fill="var(--hidden)" opacity=".3"/>
+        <path d="${curve}" fill="none" stroke="var(--hidden)" stroke-width="3"/>
+        <line x1="${X(M.mode)}" y1="${yb}" x2="${X(M.mode)}" y2="${Y(Math.max(...M.dens))}" stroke="var(--ink)" stroke-width="1.8"/>
+        <line x1="${ax0}" y1="${yb}" x2="${ax1}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>
+        <line x1="${ax0}" y1="${yt - 10}" x2="${ax0}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>
+        <text x="${ax0 - 16}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="15" fill="var(--ink)" transform="rotate(-90 ${ax0 - 16} ${(yt + yb) / 2})">Density</text>
+        <text x="${(ax0 + ax1) / 2}" y="${yb + 42}" text-anchor="middle" font-size="15" fill="var(--ink)">θ (proportion of water)</text>
+        <text x="${ax0 - 50}" y="${yt - 10}" font-size="18" font-weight="700" fill="var(--ink)">A</text>`;
+      [0, .25, .5, .75, 1].forEach(t => { s += `<line x1="${X(t)}" y1="${yb}" x2="${X(t)}" y2="${yb + 5}" stroke="var(--ink)" stroke-width="1.3"/>
+        <text x="${X(t)}" y="${yb + 21}" text-anchor="middle" font-size="14" fill="var(--ink)">${t.toFixed(2)}</text>`; });
+      // (B): מספר הזריקות שנחתו על ים ועל יבשה
+      const bx = [790, 900], by = c => yb - c / M.n * (yb - yt) * 1.15;
+      [[M.w, 'Water', 'water'], [M.l, 'Land', 'land']].forEach(([c, lab, col], i) => {
         s += `<rect x="${bx[i] - 34}" y="${by(c)}" width="68" height="${yb - by(c)}" fill="var(--${col})"/>
-          <text x="${bx[i]}" y="${by(c) - 8}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink)">${c}</text>
-          <text x="${bx[i]}" y="${yb + 20}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${lab}</text>`;
+          <text x="${bx[i]}" y="${by(c) - 7}" text-anchor="middle" font-size="15" fill="var(--ink)">${c}</text>
+          <text x="${bx[i]}" y="${yb + 21}" text-anchor="middle" font-size="14" fill="var(--ink)">${lab}</text>`;
       });
-      s += `<line x1="60" y1="${yb}" x2="290" y2="${yb}" stroke="var(--ink)" stroke-width="1.5"/>
-        <text x="290" y="${yt - 8}" text-anchor="end" font-size="18" font-weight="700" fill="var(--ink)">ב</text>
-        <text x="175" y="${yb + 44}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)">מספר זריקות (N = ${M.n})</text>`;
+      s += `<line x1="730" y1="${yb}" x2="960" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>
+        <text x="700" y="${yt - 10}" font-size="18" font-weight="700" fill="var(--ink)">B</text>
+        <text x="845" y="${yb + 42}" text-anchor="middle" font-size="15" fill="var(--ink)">Number of tosses (N = ${M.n})</text></g>`;
       // צעד 1: חיצים אל הצירים
       if (k === 1) s += `<defs><marker id="rp-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="var(--hidden)"/></marker></defs>
-        <path d="M${(ax0 + ax1) / 2 + 150},${yb + 70} Q${(ax0 + ax1) / 2 + 120},${yb + 40} ${(ax0 + ax1) / 2 + 70},${yb + 8}" fill="none" stroke="var(--hidden)" stroke-width="3" marker-end="url(#rp-ah)"/>
-        <path d="M${ax0 - 60},${yt + 6} Q${ax0 - 40},${yt + 30} ${ax0 - 6},${yt + 40}" fill="none" stroke="var(--hidden)" stroke-width="3" marker-end="url(#rp-ah)"/>`;
+        <path d="M${(ax0 + ax1) / 2 + 190},${yb + 52} Q${(ax0 + ax1) / 2 + 160},${yb + 20} ${(ax0 + ax1) / 2 + 105},${yb + 6}" fill="none" stroke="var(--hidden)" stroke-width="3" marker-end="url(#rp-ah)"/>
+        <path d="M${ax0 + 60},${yt - 22} Q${ax0 + 30},${yt - 18} ${ax0 + 6},${yt + 6}" fill="none" stroke="var(--hidden)" stroke-width="3" marker-end="url(#rp-ah)"/>`;
       $('rp-fig').innerHTML = s;
     }
     function sync() {
@@ -949,10 +926,10 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
       root.querySelectorAll('.rp-s').forEach(sp => { const hit = +sp.dataset.k === k; sp.classList.toggle('on', hit); if (hit) on = sp; });
       const ar = $('rp-arrow');
       if (on) {
-        // החץ מתחת לאמצע החלק המודגש (offsetLeft/Top לא מושפעים מהקנה מידה של reveal)
-        const r = on.getClientRects(), first = r[r.length - 1], box = on.parentNode.getBoundingClientRect(), sc = box.width / on.parentNode.offsetWidth;
-        ar.style.left = ((first.left + first.right) / 2 - box.left) / sc + 'px';
-        ar.style.top = (first.bottom - box.top) / sc - 1 + 'px';
+        // החץ מתחת לאמצע השורה האחרונה של החלק המודגש (offsetLeft/Top לא מושפעים מהקנה מידה של reveal)
+        const r = on.getClientRects(), last = r[r.length - 1], box = on.parentNode.parentNode.getBoundingClientRect(), sc = box.width / on.parentNode.parentNode.offsetWidth;
+        ar.style.left = ((last.left + last.right) / 2 - box.left) / sc + 'px';
+        ar.style.top = (last.bottom - box.top) / sc - 1 + 'px';
         ar.style.display = 'block';
       } else ar.style.display = 'none';
       $('rp-note').textContent = notes[k] || '';
@@ -961,18 +938,32 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
     if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
   })();
 </script>
-<p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
+<p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
 </section>
-<section id="הגדרת-המודל" class="slide level2 part-gate">
-<h2>הגדרת המודל</h2>
+<section id="נקודות-ודגשים" class="slide level2 part-gate">
+<h2>נקודות ודגשים</h2>
 <div class="gate">
   <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span></div>
-  <div class="gate-title">הגדרת המודל</div>
-  <div class="gate-why">הנוסחה של המודל, ובחירת ה-prior.</div>
+  <div class="gate-title">נקודות ודגשים</div>
+  <div class="gate-why">בחירת ה-prior, ושאלות נוספות.</div>
 </div>
 </section>
-<section id="איזה-prior" class="slide level2">
-<h2>איזה prior?</h2>
+<section id="נקודות-ודגשים-1" class="slide level2">
+<h2>נקודות ודגשים</h2>
+<h3 class="pf-h">רמת הוודאות</h3>
+<div>
+<ul>
+<li class="fragment"><strong>95% היא מוסכמה, לא חוק.</strong> היא הגיעה מהמסורת של <span class="ltr">p &lt; .05</span>, ואין לה מעמד מיוחד בהסקה Bayesian.</li>
+<li class="fragment"><strong>McElreath בוחר 89% בכוונה</strong>, כדי להזכיר שהבחירה שרירותית: <span class="ltr">“95% is obvious superstition. Nothing magical happens at the boundary.”</span></li>
+<li class="fragment"><strong>רווח לא נועד להכריע.</strong> הוא נועד לתאר את צורת ה-posterior: כמה הוא רחב, ולאיזה צד הוא נוטה.</li>
+<li class="fragment"><strong>ערך שנמצא ממש מחוץ לרווח אינו “נפסל”.</strong> הוא רק קצת פחות סביר מערך שנמצא ממש בפנים.</li>
+<li class="fragment"><strong>מה כן חשוב:</strong> לכתוב באיזה אחוז בחרנו (בדוגמאות שלנו, 90%), ולבחור אותו לפני שמסתכלים בתוצאות.</li>
+</ul>
+</div>
+</section>
+<section id="נקודות-ודגשים-2" class="slide level2">
+<h2>נקודות ודגשים</h2>
+<h3 class="pf-h">איזה prior?</h3>
 <div class="prior-cards">
 <div class="soft-card fragment">
 <svg viewbox="0 0 200 70" aria-hidden="true">
@@ -1003,417 +994,114 @@ y &amp;\sim \text{Bernoulli}(\theta) &amp;&amp; \text{likelihood} \\
 </div>
 <div class="fragment">
 <ul>
-<li>עם הרבה נתונים, ה-likelihood גובר ו-prior-ים סבירים מגיעים לאותו posterior. נראה את זה בהדגמה “איפה המרכז?”.</li>
+<li>עם הרבה נתונים, ה-likelihood גובר ו-prior-ים סבירים מגיעים לאותו posterior. נראה את זה בשקף הבא.</li>
 </ul>
 </div>
 </section>
-<section id="ה-posterior-הוא-תמיד-פשרה" class="slide level2 example-slide">
-<h2>ה-posterior הוא תמיד פשרה</h2>
-<p>ה-posterior תמיד נופל <strong>בין</strong> ה-prior ל-likelihood, וקרוב יותר למי שצר יותר.</p>
+<section id="נקודות-ודגשים-3" class="slide level2 example-slide">
+<h2>נקודות ודגשים</h2>
+<h3 class="pf-h">ה-posterior הוא תמיד פשרה</h3>
+<p class="pf-lead">ה-posterior תמיד נופל <b>בין</b> ה-prior ל-likelihood, וקרוב יותר למי שצר יותר.</p>
 <div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center; font-size:.56em; gap:8px 30px;">
-    <label><b style="color:rgb(140,118,204)">prior</b> מרכז <input type="range" id="pf-m" min="0.05" max="0.95" step="0.05" value="0.5"></label>
-    <label>משקל <input type="range" id="pf-k" min="0" max="40" step="1" value="0"> <span class="ltr demo-readout" id="pf-kv"></span></label>
-    <label><b style="color:var(--curve)">likelihood</b> ים <input type="range" id="pf-w" min="0" max="40" step="1" value="7"> <span class="ltr demo-readout" id="pf-wv"></span></label>
-    <label>יבשה <input type="range" id="pf-l" min="0" max="40" step="1" value="3"> <span class="ltr demo-readout" id="pf-lv"></span></label>
+  <div class="pf-controls">
+    <div class="pf-group" style="--c: rgb(140,118,204)">
+      <b>prior</b>
+      <label>width <input type="range" id="pf-ps" min="0.03" max="0.29" step="0.01" value="0.15"> <span class="ltr demo-readout" id="pf-psv"></span></label>
+    </div>
+    <div class="pf-group" style="--c: var(--curve)">
+      <b>likelihood</b>
+      <label>center <input type="range" id="pf-lm" min="0.05" max="0.95" step="0.01" value="0.8"> <span class="ltr demo-readout" id="pf-lmv"></span></label>
+      <label>width <input type="range" id="pf-ls" min="0.03" max="0.2" step="0.01" value="0.08"> <span class="ltr demo-readout" id="pf-lsv"></span></label>
+    </div>
   </div>
-  <svg id="pf-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="prior, likelihood ו-posterior של חלק המים, על אותו ציר"></svg>
+  <svg id="pf-svg" viewbox="0 0 1000 290" style="width:100%; height:auto; display:block;" aria-label="prior, likelihood ו-posterior של חלק המים, על אותו ציר"></svg>
 </div>
+<p class="pf-note"><b>width מרבי</b> = prior שטוח, וה-posterior זהה ל-likelihood. ככל שה-prior צר יותר, הוא מושך אליו את ה-posterior. ככל שה-likelihood צר יותר (יותר זריקות), הוא מושך חזרה.</p>
+<style>
+  .reveal .pf-h { margin: 0 0 .1em; }
+  .reveal .pf-lead { font-size: .78em; margin: 0 0 .35em; }
+  /* קבוצת סליידרים לכל עקומה, בצבע שלה: ל-prior רק רוחב (המרכז קבוע ב-0.5), ל-likelihood מרכז ורוחב */
+  .reveal .pf-controls { display: flex; justify-content: center; gap: 14px 56px; font-size: .58em; direction: rtl; }
+  .reveal .pf-group { display: flex; align-items: center; gap: 18px; padding: 4px 14px; border-inline-start: 4px solid var(--c); }
+  .reveal .pf-group > b { color: var(--c); direction: ltr; }
+  .reveal .pf-group label { display: flex; align-items: center; gap: 8px; direction: ltr; }
+  .reveal .pf-group input[type="range"] { width: 150px; accent-color: var(--c); }
+  .reveal .pf-group .demo-readout { min-width: 3.2em; text-align: left; }
+  .reveal .pf-note { font-size: .5em; color: var(--ink-soft); text-align: center; margin: .45em 0 0; }
+</style>
 <script>
   (function () {
     const svg = document.getElementById('pf-svg');
     if (!svg) return;
     const $ = id => document.getElementById(id);
     // אותו ציר θ כמו בהדגמה של כדור הארץ, ואותם צבעים וסגנונות קו
-    const x0 = 120, x1 = 900, X = t => x0 + t * (x1 - x0), cTop = 70, cBase = 250;
+    const x0 = 120, x1 = 900, X = t => x0 + t * (x1 - x0), cTop = 76, cBase = 240;
     const LIGHT = 'rgb(167,148,216)', DARK = 'var(--hidden)', RED = 'var(--curve)';
-    const sup = n => String(n).replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);
-    // כל התפלגות היא θ^a (1−θ)^b. ה-prior הוא "זריקות דמיוניות": משקל k, מתוכן חלק "מרכז" ים
-    const fn = (a, b) => t => Math.pow(t, a) * Math.pow(1 - t, b);
-    // כל עקומה מצוירת לפי הצורה שלה, כך שהשיא שלה תמיד באותו גובה, כמו בהדגמה
-    function curveY(f) {
-      let peak = 0, at = 0; for (let k = 0; k <= 400; k++) { const v = f(k / 400); if (v > peak) { peak = v; at = k / 400; } }
-      return { Y: t => cBase - f(t) / peak * (cBase - cTop), at };
+    const G = 400, ts = Array.from({ length: G + 1 }, (_, i) => i / G);
+    // כל עקומה היא θ^a (1−θ)^b, מנורמלת לשטח 1. כך ה-posterior הוא בדיוק prior × likelihood ÷ P(D)
+    const dens = (a, b) => { const v = ts.map(t => Math.pow(t, a) * Math.pow(1 - t, b)), s = v.reduce((x, y) => x + y, 0) / G; return v.map(x => x / s); };
+    // מרכז (השיא) ורוחב (בערך סטיית התקן) → המעריכים a, b, כך שהשיא בדיוק במרכז.
+    // ברוחב המרבי של ה-prior המעריכים הם 0: prior שטוח
+    function exps(m, sd) {
+      const n = Math.max(m * (1 - m) / (sd * sd) - 3, 0);
+      return [m * n, (1 - m) * n];
     }
-    const path = Y => { let d = ''; for (let k = 0; k <= 300; k++) { const t = k / 300; d += (k ? 'L' : 'M') + X(t).toFixed(1) + ',' + Y(t).toFixed(1); } return d; };
+    const path = (v, Y) => v.map((d, i) => (i ? 'L' : 'M') + X(ts[i]).toFixed(1) + ',' + Y(d).toFixed(1)).join('');
     function draw() {
-      const m = +$('pf-m').value, k = +$('pf-k').value, w = +$('pf-w').value, l = +$('pf-l').value;
-      $('pf-kv').textContent = k; $('pf-wv').textContent = w; $('pf-lv').textContent = l;
-      const pa = m * k, pb = (1 - m) * k;
+      const ps = +$('pf-ps').value, lm = +$('pf-lm').value, ls = +$('pf-ls').value;
+      $('pf-psv').textContent = ps >= .29 ? 'flat' : ps.toFixed(2); $('pf-lmv').textContent = lm.toFixed(2); $('pf-lsv').textContent = ls.toFixed(2);
+      const [pa, pb] = exps(.5, ps), [la, lb] = exps(lm, ls);
       const curves = [
-        { c: curveY(fn(w + pa, l + pb)), color: DARK, name: 'posterior', width: 4.5, dash: '' },
-        { c: curveY(fn(w, l)), color: RED, name: 'likelihood', width: 3.5, dash: 'stroke-dasharray="10 6"' },
-        { c: curveY(fn(pa, pb)), color: LIGHT, name: 'prior', width: 4, dash: '' }
+        { v: dens(la + pa, lb + pb), color: DARK, name: 'posterior', width: 4.5, dash: '' },
+        { v: dens(la, lb), color: RED, name: 'likelihood', width: 3.5, dash: 'stroke-dasharray="10 6"' },
+        { v: dens(pa, pb), color: LIGHT, name: 'prior', width: 4, dash: '' }
       ];
+      // ציר צפיפות משותף: עקומה צרה יותר היא גם גבוהה יותר
+      const top = Math.max(...curves.map(c => Math.max(...c.v))), Y = d => cBase - d / top * (cBase - cTop);
       let s = '';
       for (let i = 0; i <= 10; i++) s += `<line x1="${X(i / 10)}" y1="${cTop - 4}" x2="${X(i / 10)}" y2="${cBase}" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 4"/>
         <text x="${X(i / 10)}" y="${cBase + 28}" text-anchor="middle" font-size="16" fill="var(--ink-soft)">${i === 0 ? '0' : (i / 10).toFixed(1)}</text>`;
       s += `<text x="${x1 + 36}" y="${cBase + 28}" text-anchor="middle" font-size="18" font-style="italic" fill="var(--ink-soft)">θ</text>
         <line x1="${x0}" y1="${cBase}" x2="${x1}" y2="${cBase}" stroke="var(--ink)" stroke-width="2"/>`;
-      [...curves].reverse().forEach(({ c, color, width, dash }) => { s += `<path d="${path(c.Y)}" fill="none" stroke="${color}" stroke-width="${width}" ${dash}/>`; });
+      [...curves].reverse().forEach(({ v, color, width, dash }) => { s += `<path d="${path(v, Y)}" fill="none" stroke="${color}" stroke-width="${width}" ${dash}/>`; });
       // התוויות מעל השיא של כל עקומה, בשורות שלא חופפות
-      const lanes = [];
-      curves.forEach(({ c, color, name }) => {
-        const w2 = name.length * 5.2 + 8, cx = Math.min(Math.max(X(c.at), x0 + w2), x1 - w2);
-        let lane = 0; while ((lanes[lane] || []).some(([a, b]) => cx - w2 < b && a < cx + w2)) lane++;
-        (lanes[lane] = lanes[lane] || []).push([cx - w2, cx + w2]);
-        s += `<text x="${cx}" y="${cTop - 12 - lane * 22}" text-anchor="middle" font-size="17" font-weight="700" fill="${color}">${name}</text>`;
+      const boxes = [];
+      curves.forEach(({ v, color, name }) => {
+        const i = v.indexOf(Math.max(...v)), w2 = name.length * 5.2 + 8, cx = Math.min(Math.max(X(ts[i]), x0 + w2), x1 - w2);
+        let y = Y(v[i]) - 12;
+        while (boxes.some(b => cx - w2 < b.r && b.l < cx + w2 && Math.abs(b.y - y) < 20)) y -= 22;
+        boxes.push({ l: cx - w2, r: cx + w2, y });
+        s += `<text x="${cx}" y="${y}" text-anchor="middle" font-size="17" font-weight="700" fill="${color}">${name}</text>`;
       });
       svg.innerHTML = s;
     }
-    ['pf-m', 'pf-k', 'pf-w', 'pf-l'].forEach(id => $(id).addEventListener('input', draw));
+    ['pf-ps', 'pf-lm', 'pf-ls'].forEach(id => $(id).addEventListener('input', draw));
     draw();
   })();
 </script>
-<div class="demo-note">
-<p><strong>משקל 0</strong> = prior שטוח, וה-posterior זהה ל-likelihood. ככל שה-prior כבד יותר, הוא מושך את ה-posterior אליו. ככל שיש יותר זריקות, ה-likelihood מושך חזרה.</p>
-</div>
-</section>
-<section id="איפה-המרכז" class="slide level2 example-slide">
-<h2>איפה המרכז?</h2>
-<div class="demo-panel" id="pi-point"></div>
-<script>
-  // מכשיר משותף לשלושת שקפי המדדים: posterior על רשת, עם אומדנים, רווחים והסתברות כיוון
-  window.PostInst = window.PostInst || function (root, mode) {
-    if (!root) return;
-    const G = 1000, uid = root.id;
-    const priors = { flat: p => 1, mid: p => Math.exp(-.5 * ((p - .5) / .15) ** 2), land: p => Math.exp(-.5 * ((p - .3) / .15) ** 2) };
-    let html = `<div class="demo-controls" style="justify-content:center; font-size:.62em;">
-      <label>ים: <input type="range" id="${uid}-w" min="0" max="40" value="6"> <span class="ltr demo-readout" id="${uid}-wv"></span></label>
-      <label>יבשה: <input type="range" id="${uid}-l" min="0" max="40" value="3"> <span class="ltr demo-readout" id="${uid}-lv"></span></label>
-      <label>prior: <select id="${uid}-p"><option value="flat">uniform</option><option value="mid">מרוכז סביב 0.5</option><option value="land">"רוב העולם יבשה"</option></select></label>`;
-    if (mode === 'interval') html += `
-      <label>סוג: <select id="${uid}-t"><option value="pi">אחוזונים (PI)</option><option value="hdi">HDI</option></select></label>
-      <label>מסה: <select id="${uid}-m"><option>0.5</option><option selected>0.89</option><option>0.95</option></select></label>`;
-    if (mode === 'pd') html += `
-      <label>ערך ייחוס: <input type="range" id="${uid}-r" min="0.05" max="0.95" step="0.01" value="0.5"> <span class="ltr demo-readout" id="${uid}-rv"></span></label>`;
-    html += `</div><svg id="${uid}-svg" viewBox="0 0 1000 250" style="width:100%; height:auto; display:block;"></svg>
-      <div class="demo-readout" id="${uid}-out" style="text-align:center; font-size:.62em; margin-top:6px; min-height:1.4em;"></div>`;
-    root.innerHTML = html;
-    const $ = s => document.getElementById(uid + '-' + s);
-    const x0 = 70, x1 = 960, yb = 205, yt = 10, X = p => x0 + p * (x1 - x0);
-
-    function draw() {
-      const w = +$('w').value, l = +$('l').value, pr = priors[$('p').value];
-      $('wv').textContent = w; $('lv').textContent = l;
-      const ps = [], d = [];
-      for (let i = 0; i <= G; i++) { const p = i / G; ps.push(p); d.push(Math.pow(p, w) * Math.pow(1 - p, l) * pr(p)); }
-      const tot = d.reduce((a, b) => a + b, 0), pm = d.map(v => v / tot), dens = pm.map(v => v * G);
-      const cdf = []; pm.reduce((a, v, i) => (cdf[i] = a + v), 0);
-      const q = a => ps[cdf.findIndex(c => c >= a)];
-      const top = Math.max(...dens) * 1.1;
-      const Y = v => yb - v / top * (yb - yt);
-      const curve = dens.map((v, i) => (i ? 'L' : 'M') + X(ps[i]).toFixed(1) + ',' + Y(v).toFixed(1)).join('');
-      const area = (a, b) => { let s = ''; for (let i = 0; i <= G; i++) if (ps[i] >= a - 1e-9 && ps[i] <= b + 1e-9) s += (s ? 'L' : 'M') + X(ps[i]).toFixed(1) + ',' + Y(dens[i]).toFixed(1); return s ? s + `L${X(b)},${yb} L${X(a)},${yb} Z` : ''; };
-      let s = '', out = '';
-
-      if (mode === 'interval') {
-        const m = +$('m').value; let a, b;
-        if ($('t').value === 'pi') { a = q((1 - m) / 2); b = q(1 - (1 - m) / 2); }
-        else {
-          const idx = pm.map((v, i) => i).sort((i, j) => pm[j] - pm[i]); let acc = 0, inn = [];
-          for (const i of idx) { inn.push(i); acc += pm[i]; if (acc >= m) break; }
-          a = ps[Math.min(...inn)]; b = ps[Math.max(...inn)];
-        }
-        s += `<path d="${area(a, b)}" fill="var(--hidden)" opacity=".28"/>`;
-        s += `<line x1="${X(a)}" y1="${yb + 8}" x2="${X(b)}" y2="${yb + 8}" stroke="var(--hidden)" stroke-width="6"/>`;
-        out = `${$('t').value === 'pi' ? 'PI' : 'HDI'} של <span class="ltr">${Math.round(m * 100)}%</span>: <span class="ltr">[${a.toFixed(2)}, ${b.toFixed(2)}]</span> · רוחב <span class="ltr">${(b - a).toFixed(2)}</span>`;
-      }
-      if (mode === 'pd') {
-        const r = +$('r').value; $('rv').textContent = r.toFixed(2);
-        const above = 1 - cdf[Math.round(r * G)];
-        s += `<path d="${area(r, 1)}" fill="var(--ok)" opacity=".3"/><path d="${area(0, r)}" fill="var(--warn)" opacity=".22"/>
-              <line x1="${X(r)}" y1="${yt}" x2="${X(r)}" y2="${yb}" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="6 5"/>`;
-        out = `<span dir="ltr" style="unicode-bidi:isolate; display:inline-block">p(p &gt; ${r.toFixed(2)} | data) = ${(100 * above).toFixed(1)}%</span>`;
-      }
-      s += `<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
-            <path d="${curve}" fill="none" stroke="var(--hidden)" stroke-width="4"/>`;
-      [0, .25, .5, .75, 1].forEach(p => { s += `<text x="${X(p)}" y="${yb + 32}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${p}</text>`; });
-      if (mode === 'point') {
-        const mean = ps.reduce((a, p, i) => a + p * pm[i], 0), med = q(.5), map = ps[pm.indexOf(Math.max(...pm))];
-        [[map, 'MAP', 'var(--curve)', 0], [med, 'חציון', 'var(--seen)', 1], [mean, 'ממוצע', 'var(--warn)', 2]].forEach(([v, lab, c, k]) => {
-          s += `<line x1="${X(v)}" y1="${yt + 26 + k * 22}" x2="${X(v)}" y2="${yb}" stroke="${c}" stroke-width="3"/>
-                <text x="${X(v) + (k === 1 ? 0 : k === 0 ? 8 : -8)}" y="${yt + 20 + k * 22}" text-anchor="${k === 0 ? 'start' : k === 2 ? 'end' : 'middle'}" font-size="18" font-weight="700" fill="${c}">${lab}</text>`;
-        });
-        out = `MAP <span class="ltr">${map.toFixed(3)}</span> · חציון <span class="ltr">${med.toFixed(3)}</span> · ממוצע <span class="ltr">${mean.toFixed(3)}</span>`;
-      }
-      $('svg').innerHTML = s;
-      $('out').innerHTML = out;
-    }
-    root.querySelectorAll('input, select').forEach(e => e.addEventListener('input', draw));
-    draw();
-  };
-  window.PostInst(document.getElementById('pi-point'), 'point');
-</script>
-<div>
-<ul>
-<li class="fragment"><strong>MAP:</strong> השיא. עם uniform prior הוא <span class="math inline">\(W/N\)</span>. <strong>חציון:</strong> חצי מהאמונה מכל צד. <strong>ממוצע:</strong> מרכז הכובד.</li>
-<li class="fragment">בעקומה סימטרית שלושתם כמעט זהים. נסו 10 ים ו-0 יבשה.</li>
-</ul>
-</div>
-</section>
-<section id="כמה-הוא-רחב" class="slide level2 example-slide">
-<h2>כמה הוא רחב?</h2>
-<div class="demo-panel" id="pi-int"></div>
-<script>window.PostInst && window.PostInst(document.getElementById('pi-int'), 'interval');</script>
-<div>
-<ul>
-<li class="fragment"><span class="term">credible interval</span>: טווח עם מסה מסוימת של ה-posterior. “בהסתברות 89%, <span class="math inline">\(p\)</span> נמצא כאן.”</li>
-<li class="fragment"><strong>PI:</strong> אותה מסה נחתכת משני הזנבות. <strong>HDI:</strong> הטווח הצר ביותר; כל ערך בפנים סביר יותר מכל ערך בחוץ.</li>
-<li class="fragment">נסו 10 ים ו-0 יבשה: ה-PI מוציא דווקא את הערכים הסבירים ביותר, ליד 1.</li>
-</ul>
-</div>
-</section>
-<section id="אין-רווח-נכון-אחד" class="slide level2">
-<h2>אין רווח “נכון” אחד</h2>
-<div>
-<ul>
-<li class="fragment">למה 89% ולא 95%? McElreath בוחר 89% בכוונה, כדי להזכיר שהבחירה <strong>שרירותית</strong>.</li>
-<li class="fragment">“95% is obvious superstition. Nothing magical happens at the boundary.”</li>
-<li class="fragment">רווח לא נועד להכריע. הוא נועד <strong>לתאר את צורת ה-posterior</strong>: כמה הוא רחב, ולאיזה צד הוא נוטה.</li>
-<li class="fragment">ערך שנמצא ממש מחוץ לרווח אינו “נפסל”. הוא רק קצת פחות סביר מערך שנמצא ממש בפנים.</li>
-</ul>
-</div>
-</section>
-<section id="באיזה-צד" class="slide level2 example-slide">
-<h2>באיזה צד?</h2>
-<div class="demo-panel" id="pi-pd"></div>
-<script>window.PostInst && window.PostInst(document.getElementById('pi-pd'), 'pd');</script>
-<div>
-<ul>
-<li class="fragment"><strong>PD</strong> (<span class="term">probability of direction</span>): כמה מה-posterior בצד אחד של ערך ייחוס. “האם רוב העולם מים?”</li>
-<li class="fragment">ה-PD עונה על <strong>הכיוון</strong>, הרווח על <strong>הגודל</strong>. כדאי לדווח את שניהם.</li>
-</ul>
-</div>
-</section>
-<section id="לדגום-מה-posterior" class="slide level2">
-<h2>לדגום מה-posterior</h2>
-<div>
-<ul>
-<li class="fragment">כל מדד שראינו דורש חישוב על כל העקומה: שטחים, אינטגרלים.</li>
-<li class="fragment">הטריק של McElreath: <strong>לשלוף</strong> אלפי ערכים מה-posterior, לפי הסבירות של כל ערך, ולסכם אותם כמו נתונים רגילים.</li>
-<li class="fragment">ממוצע של הדגימות ≈ ממוצע ה-posterior. האחוזון ה-5.5 וה-94.5 ≈ רווח של 89%.</li>
-<li class="fragment">בעיה של חשבון אינטגרלי הופכת לבעיה של <strong>סיכום נתונים</strong>. וכשנגיע למודלים מורכבים, המחשב ייתן לנו בדיוק את זה: דגימות.</li>
-</ul>
-</div>
-<div class="fragment">
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">sample</span>(p_grid, <span class="at">prob =</span> posterior, <span class="at">size =</span> <span class="fl">1e4</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="דגימות-מה-posterior" class="slide level2 example-slide">
-<h2>דגימות מה-posterior</h2>
-
-<div class="demo-panel">
-  <div class="gen-demo-bar" style="margin:0 0 6px;">
-    <button class="demo-btn" data-n="10">10 דגימות</button>
-    <button class="demo-btn" data-n="100">100</button>
-    <button class="demo-btn" data-n="1000">1,000</button>
-    <button class="demo-btn" data-n="10000">10,000</button>
-  </div>
-  <svg id="smp-svg" viewbox="0 0 1000 320" style="width:100%; height:auto; display:block;" aria-label="היסטוגרמה של דגימות"></svg>
-  <table style="margin:6px auto 0; font-size:.55em;">
-    <thead><tr><th></th><th>ממוצע</th><th>89% PI</th></tr></thead>
-    <tbody>
-      <tr><td>מהעקומה (מדויק)</td><td class="ltr" id="smp-em"></td><td class="ltr" id="smp-ei"></td></tr>
-      <tr><td>מהדגימות</td><td class="ltr" id="smp-sm"></td><td class="ltr" id="smp-si"></td></tr>
-    </tbody>
-  </table>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('smp-svg');
-    if (!svg) return;
-    const G = 1000, w = 6, l = 3, ps = [], pm = [];
-    for (let i = 0; i <= G; i++) { ps.push(i / G); pm.push(Math.pow(i / G, w) * Math.pow(1 - i / G, l)); }
-    const tot = pm.reduce((a, b) => a + b, 0); for (let i = 0; i <= G; i++) pm[i] /= tot;
-    const cdf = []; pm.reduce((a, v, i) => (cdf[i] = a + v), 0);
-    const draw1 = () => { const u = Math.random(); let lo = 0, hi = G; while (lo < hi) { const m = (lo + hi) >> 1; if (cdf[m] < u) lo = m + 1; else hi = m; } return ps[lo]; };
-    const x0 = 70, x1 = 960, yb = 270, yt = 15, X = p => x0 + p * (x1 - x0), B = 40;
-    const exactMean = ps.reduce((a, p, i) => a + p * pm[i], 0), qx = a => ps[cdf.findIndex(c => c >= a)];
-    const f3 = v => v.toFixed(3);
-    document.getElementById('smp-em').textContent = f3(exactMean);
-    document.getElementById('smp-ei').textContent = `[${f3(qx(.055))}, ${f3(qx(.945))}]`;
-
-    function draw(sm) {
-      const counts = Array(B).fill(0); sm.forEach(v => counts[Math.min(B - 1, Math.floor(v * B))]++);
-      const dmax = Math.max(...pm) * G * 1.1, Y = d => yb - d / dmax * (yb - yt);
-      let s = '';
-      if (sm.length) counts.forEach((c, i) => {
-        const d = c / sm.length * B;
-        s += `<rect x="${X(i / B) + 1}" y="${Y(d)}" width="${(x1 - x0) / B - 2}" height="${yb - Y(d)}" fill="var(--seen)" opacity=".75"/>`;
-      });
-      s += `<path d="${pm.map((v, i) => (i ? 'L' : 'M') + X(ps[i]).toFixed(1) + ',' + Y(v * G).toFixed(1)).join('')}" fill="none" stroke="var(--hidden)" stroke-width="3.5"/>
-            <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      [0, .25, .5, .75, 1].forEach(p => { s += `<text x="${X(p)}" y="${yb + 30}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${p}</text>`; });
-      s += `<text x="${x1}" y="${yt + 18}" text-anchor="end" font-size="18" fill="var(--ink-soft)" direction="rtl">6 ים, 3 יבשה · uniform prior</text>`;
-      svg.innerHTML = s;
-      if (sm.length) {
-        const sorted = sm.slice().sort((a, b) => a - b), qs = a => sorted[Math.min(sorted.length - 1, Math.floor(a * sorted.length))];
-        document.getElementById('smp-sm').textContent = f3(sm.reduce((a, b) => a + b, 0) / sm.length);
-        document.getElementById('smp-si').textContent = `[${f3(qs(.055))}, ${f3(qs(.945))}]`;
-      } else { document.getElementById('smp-sm').textContent = '—'; document.getElementById('smp-si').textContent = '—'; }
-    }
-    svg.closest('.demo-panel').querySelectorAll('[data-n]').forEach(b => b.addEventListener('click', () => {
-      draw(Array.from({ length: +b.dataset.n }, draw1));
-    }));
-    draw([]);
-  })();
-</script>
-</section>
-<section id="מה-תראה-הזריקה-הבאה" class="slide level2 example-slide">
-<h2>מה תראה הזריקה הבאה?</h2>
-<div class="demo-panel">
-  <svg id="ppd-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="ניבוי של 9 זריקות חדשות"></svg>
-  <div class="gen-demo-bar">
-    <button id="ppd-toggle" class="demo-btn">להוסיף את אי-הוודאות על p</button>
-    <span class="demo-readout" id="ppd-leg" style="flex-basis:24em;"></span>
-  </div>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('ppd-svg');
-    if (!svg) return;
-    const N = 9, w = 6, l = 3, G = 1000;
-    const choose = (n, k) => { let r = 1; for (let i = 1; i <= k; i++) r = r * (n - k + i) / i; return r; };
-    const binom = (k, p) => choose(N, k) * Math.pow(p, k) * Math.pow(1 - p, N - k);
-    const pm = []; for (let i = 0; i <= G; i++) pm.push(Math.pow(i / G, w) * Math.pow(1 - i / G, l));
-    const t = pm.reduce((a, b) => a + b, 0);
-    const fixed = [], ppd = [];
-    for (let k = 0; k <= N; k++) { fixed.push(binom(k, w / (w + l))); ppd.push(pm.reduce((a, v, i) => a + v / t * binom(k, i / G), 0)); }
-    let both = false;
-    const x0 = 80, x1 = 960, yb = 235, yt = 20, X = k => x0 + (k + .5) * (x1 - x0) / (N + 1), bw = (x1 - x0) / (N + 1);
-    const Y = v => yb - v / .3 * (yb - yt);
-
-    function draw() {
-      let s = `<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      for (let k = 0; k <= N; k++) {
-        s += `<rect x="${X(k) - bw * .38}" y="${Y(fixed[k])}" width="${bw * (both ? .36 : .76)}" height="${yb - Y(fixed[k])}" fill="var(--ink-faint)"/>`;
-        if (both) s += `<rect x="${X(k) + bw * .02}" y="${Y(ppd[k])}" width="${bw * .36}" height="${yb - Y(ppd[k])}" fill="var(--hidden)"/>`;
-        s += `<text x="${X(k)}" y="${yb + 28}" text-anchor="middle" font-size="19" fill="${k === w ? 'var(--ink)' : 'var(--ink-soft)'}" font-weight="${k === w ? 700 : 400}">${k}</text>`;
-      }
-      s += `<text x="${(x0 + x1) / 2}" y="${yb + 56}" text-anchor="middle" font-size="18" fill="var(--ink-soft)" direction="rtl">כמה פעמים ייצא ים ב-9 זריקות חדשות</text>`;
-      svg.innerHTML = s;
-      document.getElementById('ppd-toggle').textContent = both ? 'רק ערך אחד של p' : 'להוסיף את אי-הוודאות על p';
-      document.getElementById('ppd-leg').innerHTML = '<span style="color:var(--ink-faint)">■</span> אם <span class="ltr">p = 0.67</span> בדיוק' +
-        (both ? ' &nbsp; <span style="color:var(--hidden)">■</span> ממוצע על כל ה-posterior' : '');
-    }
-    document.getElementById('ppd-toggle').onclick = () => { both = !both; draw(); };
-    draw();
-  })();
-</script>
-<div>
-<ul>
-<li class="fragment"><span class="term">posterior predictive</span>: לכל ערך של <span class="math inline">\(p\)</span>, מה הוא מנבא, משוקלל לפי האמונה שלנו בו.</li>
-<li class="fragment">הניבוי <strong>רחב יותר</strong> מניבוי עם <span class="math inline">\(p\)</span> אחד: הוא כולל גם את הרעש של הזריקות וגם את מה שאנחנו לא יודעים על <span class="math inline">\(p\)</span>.</li>
-<li class="fragment">להשתמש רק בנקודה אחת זה להעמיד פנים שאנחנו יודעים יותר ממה שאנחנו יודעים.</li>
-</ul>
-</div>
 </section>
 <section id="הדרך-כולה" class="slide level2">
 <h2>הדרך כולה</h2>
-<div>
-<ul>
-<li class="fragment"><strong>Bayes ולפלס:</strong> כל תצפית מעבירה אמינות בין ערכים אפשריים של הפרמטר. השכל הישר, מתורגם לחשבון.</li>
-<li class="fragment"><strong>Kruschke:</strong> הסקה Bayesian היא חלוקה מחדש של אמינות. האפשרויות הן ערכים של פרמטר במודל.</li>
-<li class="fragment"><strong>McElreath:</strong> לספור את הדרכים שבהן הנתונים יכולים לקרות. ה-posterior הוא האומדן, וכל מדד הוא רק תיאור שלו.</li>
-</ul>
-</div>
-<div class="fragment">
-<blockquote>
-<p>“No guarantees except logical. Probability theory is a method of logically deducing implications of data under assumptions that you must choose.”</p>
-<p>— Richard McElreath</p>
+<blockquote class="mc-quote" dir="ltr" lang="en">
+  <p>“No guarantees except logical. Probability theory is a method of logically deducing implications of data under assumptions that you must choose.”</p>
+  <p class="mc-src">— Richard McElreath</p>
 </blockquote>
-</div>
+<style>
+  /* ציטוט באנגלית: מיושר לשמאל, והפס בצד שבו הטקסט מתחיל */
+  .reveal blockquote.mc-quote { direction: ltr; text-align: left; width: 88%; margin: 2.2em auto 0; padding: .2em 1em; border-left: 4px solid var(--ink-faint); border-right: 0; box-shadow: none; background: none; font-style: normal; color: var(--ink-soft); }
+  .reveal blockquote.mc-quote p { margin: 0 0 .5em; }
+  .reveal blockquote.mc-quote .mc-src { font-size: .85em; }
+</style>
 </section>
 <section id="סיכום" class="slide level2 summary-slide">
 <h2>סיכום</h2>
 <div>
 <ul>
-<li class="fragment"><strong>המודל:</strong> <span class="math inline">\(W \sim \text{Binomial}(N, p)\)</span>, ו-<span class="math inline">\(p\)</span> מקבל prior. posterior ∝ likelihood × prior.</li>
-<li class="fragment"><strong>עדכון רציף:</strong> ה-posterior אחרי כל זריקה הוא ה-prior של הבאה. הסדר לא משנה.</li>
-<li class="fragment"><strong>אין גודל מדגם מינימלי</strong>, והצורה של ה-posterior כבר מגלמת את גודל המדגם.</li>
-<li class="fragment"><strong>אומדנים נקודתיים:</strong> MAP, חציון, ממוצע. כולם מתארים את המרכז.</li>
-<li class="fragment"><strong>רווח אמינות:</strong> PI או HDI. אין רווח קדוש. הרווח מתאר את הצורה.</li>
-<li class="fragment"><strong>PD:</strong> כמה מה-posterior נמצא בצד אחד של ערך ייחוס.</li>
-<li class="fragment"><strong>דגימות:</strong> במקום אינטגרלים, שולפים אלפי ערכים ומסכמים אותם כמו נתונים.</li>
-<li class="fragment"><strong>posterior predictive:</strong> ניבוי שכולל גם את אי-הוודאות על הפרמטר.</li>
-</ul>
-</div>
-</section>
-<section id="ה-posterior-הוא-פשרה" class="slide level2 example-slide">
-<h2>ה-posterior הוא פשרה</h2>
-<p>ה-posterior תמיד נופל <strong>בין</strong> ה-prior ל-likelihood, וקרוב יותר למי שצר יותר.</p>
-<div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center; font-size:.56em; gap:10px 28px;">
-    <label><b style="color:rgb(140,118,204)">prior</b> מיקום <input type="range" id="cp-pm" min="0.05" max="0.95" step="0.01" value="0.3"></label>
-    <label>רוחב <input type="range" id="cp-ps" min="0.06" max="0.3" step="0.01" value="0.12"></label>
-    <label><b style="color:var(--curve)">likelihood</b> מיקום <input type="range" id="cp-lm" min="0.05" max="0.95" step="0.01" value="0.7"></label>
-    <label>רוחב <input type="range" id="cp-ls" min="0.06" max="0.3" step="0.01" value="0.12"></label>
-  </div>
-  <svg id="cp-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="prior, likelihood ו-posterior על אותו ציר"></svg>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('cp-svg');
-    if (!svg) return;
-    const $ = id => document.getElementById(id);
-    const G = 400, ts = Array.from({ length: G + 1 }, (_, i) => i / G);
-    const x0 = 90, x1 = 930, X = t => x0 + t * (x1 - x0), yb = 270, yt = 40;
-    const norm = v => { const a = v.reduce((s, x) => s + x, 0) / G; return v.map(x => x / a); };
-    const bell = (m, sd) => norm(ts.map(t => Math.exp(-.5 * ((t - m) / sd) ** 2)));
-    const mean = v => v.reduce((s, x, i) => s + x * ts[i], 0) / v.reduce((s, x) => s + x, 0);
-    function draw() {
-      const pr = bell(+$('cp-pm').value, +$('cp-ps').value), lk = bell(+$('cp-lm').value, +$('cp-ls').value);
-      const po = norm(pr.map((v, i) => v * lk[i]));
-      // ציר קבוע: כשמשנים עקומה אחת, האחרות לא "זזות". ה-posterior הצר ביותר האפשרי מגיע לבערך 9.4
-      const top = 10;
-      const Y = v => yb - v / top * (yb - yt);
-      const path = v => v.map((y, i) => (i ? 'L' : 'M') + X(ts[i]).toFixed(1) + ',' + Y(y).toFixed(1)).join('');
-      const curves = [[pr, 'rgb(167,148,216)', 'prior', '', 'p(θ)'], [lk, 'var(--curve)', 'likelihood', 'stroke-dasharray="10 6"', 'p(y | θ)'], [po, 'var(--hidden)', 'posterior', '', 'p(θ | y)']];
-      let s = `<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      [0, .25, .5, .75, 1].forEach(t => { s += `<text x="${X(t)}" y="${yb + 24}" text-anchor="middle" font-size="16" fill="var(--ink-soft)">${t}</text>`; });
-      s += `<text x="${(x0 + x1) / 2}" y="${yb + 52}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">θ</text>`;
-      s += `<path d="${path(po)} L${x1},${yb} L${x0},${yb} Z" fill="var(--hidden-bg)" opacity=".7"/>`;
-      curves.forEach(([v, c, name, dash, sym]) => {
-        const m = mean(v), im = v.indexOf(Math.max(...v)), lx = Math.min(Math.max(X(ts[im]), x0 + 50), x1 - 50);
-        s += `<line x1="${X(m)}" y1="${yb}" x2="${X(m)}" y2="${Y(v[Math.round(m * G)])}" stroke="${c}" stroke-width="1.5" stroke-dasharray="3 4"/>
-              <path d="${path(v)}" fill="none" stroke="${c}" stroke-width="${name === 'posterior' ? 4.5 : 3.5}" ${dash}/>
-              <text x="${lx}" y="${Y(v[im]) - 10}" text-anchor="middle" font-size="18" font-weight="700" fill="${c}">${name}</text>
-              <text x="${lx}" y="${Y(v[im]) - 34}" text-anchor="middle" direction="ltr" font-family="'Times New Roman', serif" font-style="italic" font-size="19" fill="${c}">${sym}</text>`;
-      });
-      svg.innerHTML = s;
-    }
-    ['cp-pm', 'cp-ps', 'cp-lm', 'cp-ls'].forEach(id => $(id).addEventListener('input', draw));
-    draw();
-  })();
-</script>
-<div class="demo-note">
-<p>prior צר: אמונה חזקה מראש. likelihood צר: הרבה נתונים. הקווים המקווקווים מסמנים את המרכז של כל עקומה.</p>
-</div>
-</section>
-<section id="אבל-צריך-לדווח-משהו" class="slide level2">
-<h2>אבל צריך לדווח משהו</h2>
-<div>
-<ul>
-<li class="fragment">מאמר, דוח, החלטה קלינית: אי אפשר לצרף עקומה לכל משפט.</li>
-<li class="fragment">לכן מסכמים את ה-posterior בכמה מדדים. כל מדד עונה על שאלה אחרת:
-<ul>
-<li class="fragment"><strong>איפה המרכז?</strong> אומדים נקודתיים.</li>
-<li class="fragment"><strong>כמה הוא רחב?</strong> רווח אמינות.</li>
-<li class="fragment"><strong>באיזה צד של ערך מסוים?</strong> הסתברות הכיוון.</li>
-</ul></li>
-<li class="fragment"><strong>כל המדדים הם תיאור של אותה עקומה.</strong> אף אחד מהם לא מחליף אותה.</li>
-</ul>
-</div>
-</section>
-<section id="מה-הזריקות-מלמדות" class="slide level2">
-<h2>מה הזריקות מלמדות</h2>
-<div>
-<ul>
-<li class="fragment"><strong>אין גודל מדגם מינימלי.</strong> גם אחרי זריקה אחת יש posterior תקף. הוא פשוט רחב.</li>
-<li class="fragment"><strong>הנתונים הם הנתונים.</strong> עם נתונים ברורים יותר העקומה צרה יותר. הוודאות לא באה רק מגודל המדגם, אלא מהנתונים עצמם.</li>
-<li class="fragment"><strong>סדר המחקרים לא משנה.</strong> לעדכן מחקר אחר מחקר או את כולם בבת אחת: אותו posterior בסוף.</li>
-<li class="fragment"><strong>ה-posterior הוא האומדן.</strong> לא מספר אחד, אלא כל ההתפלגות.</li>
+<li class="fragment"><strong>המודל:</strong> <span class="ltr">posterior = prior × likelihood ÷ P(D)</span></li>
+<li class="fragment"><strong>עדכון רציף:</strong> ה-posterior של היום הוא ה-prior של מחר.</li>
+<li class="fragment"><strong>אין גודל מדגם מינימלי.</strong></li>
+<li class="fragment"><strong>מדווחים על ה-posterior:</strong> שכיח, HDI, PD ו-ROPE.</li>
+<li class="fragment"><strong>ה-posterior הוא פשרה</strong> בין ה-prior ל-likelihood.</li>
 </ul>
 </div>
 <div class="footer footer-default">

@@ -94,24 +94,32 @@ def weeks_json(data):
     return json.dumps({'weeks': weeks, 'exam': data['course'].get('exam')}, ensure_ascii=False) + '\n'
 
 
-def pill_icon(h):
+PILL_SURVEY = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3.5" width="12" height="14" rx="2"/><path d="M7.5 3.5v-1h5v1M7.5 9l1.3 1.3L11.5 7.5M7.5 14h5"/></svg>'
+PILL_GAME = '<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="16" height="9" rx="4.5"/><path d="M6 10.5h3M7.5 9v3"/><circle cx="12.8" cy="9.8" r=".6"/><circle cx="14.8" cy="11.2" r=".6"/></svg>'
+PILL_AI = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7z"/></svg>'
+LABEL_ICONS = {'סקר': PILL_SURVEY, 'משחק': PILL_GAME, 'Gemini': PILL_AI}  # extra links shown as a round button by their label
+
+
+def pill_icon(h, lbl=''):
     h = h.lower()
+    if lbl in LABEL_ICONS:
+        return LABEL_ICONS[lbl]
     return PILL_PLAY if (h.endswith(('.mp4', '.webm', '.mov')) or 'youtu' in h or 'vimeo' in h) else PILL_AUDIO if h.endswith(('.mp3', '.m4a', '.wav', '.ogg')) else PILL_DOC
 
 
-def is_media(h):
+def is_media(h, lbl=''):
     """Audio/video (local or YouTube/Vimeo) -> a round button; anything else (a PDF...) gets a row of its own."""
-    return pill_icon(h) != PILL_DOC
+    return pill_icon(h, lbl) != PILL_DOC
 
 
 def split_more(more, aliases=None):
     """Extra links -> (media buttons for the item's own row, [(doc label, doc link, its media buttons)]).
     Media whose label names a document goes on that document's row: 'הקראה: Laplace' -> the 'Laplace 1814' row.
     aliases (site.json more_attach) maps a name to a document: {"Price": "Bayes 1763"}."""
-    docs = [(lbl, h, []) for lbl, h in more if not is_media(h)]
+    docs = [(lbl, h, []) for lbl, h in more if not is_media(h, lbl)]
     own = []
     for lbl, h in more:
-        if is_media(h):
+        if is_media(h, lbl):
             rest = lbl.split(':', 1)[1].split() if ':' in lbl else []
             w = rest[0] if rest else ''
             w = (aliases or {}).get(w, w)
@@ -130,6 +138,9 @@ def pill(lbl, h, ctx='', p='', tone=''):
     """A round icon-only media button (the label goes into the tooltip / screen reader).
     Local audio/video opens in the site's own player page, in the same tab; external links open in a new tab.
     tone: a colour for the button (site.json doc_tones colours the read-alouds of an original text)."""
+    if lbl in LABEL_ICONS:  # survey / game / AI helper: opens in a new tab
+        h = h if re.match(r'https?://', h) else h
+        return f'<a class="pill" href="{h}" target="_blank" rel="noopener" title="{esc(lbl)}" aria-label="{esc(lbl)}">{LABEL_ICONS[lbl]}</a>'
     tone = ' ' + tone if tone else ' purple' if 'סגול' in lbl else ' yellow' if 'צהוב' in lbl else ''
     if re.match(r'https?://', h):
         return f'<a class="pill{tone}" href="{h}" target="_blank" rel="noopener" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h)}</a>'

@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>משימה ל-Kepler-62f</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Rubik:wght@500;700;800&display=swap" rel="stylesheet">
+<!--
+W2.K2 · המשחק של דף העבודה: גשושיות ל-Kepler-62f.
+שלושה מסכי תדריך, ואז שלוש משימות. בין משימה למשימה הזוגות מחליפים את דף העבודה (W2_K2 דף עבודה.pdf).
+בכל משימה משוגרות 8 גשושיות. כל אחת מתרסקת בהסתברות 1-RETURN_RATE (ואז אין ממנה מידע), ואם כולן התרסקו מגרילים מחדש, כך שחוזרות בין 1 ל-8;
+כל גשושית שחוזרת מדווחת מים בהסתברות TRUE_WATER.
+ניווט: חץ שמאלה / רווח / PageDown = הכפתור הראשי (קדימה), חץ ימינה / PageUp = אחורה.
+תמונות (ליד הקובץ): W2_K2 Kepler-62f.jpg, W2_K2 Lyra.jpg, W2_K2 גלקסיה.jpg. בלעדיהן המשחק עובד עם כוכב לכת מצויר.
+-->
+<style>
+:root {
+  --space: #03050b;
+  --glass: rgba(9, 15, 30, .74);
+  --line: rgba(130, 175, 255, .24);
+  --text: #e9eefb;
+  --soft: #9eadc9;
+  --amber: #ffb054;
+  --cyan: #6cd4ff;
+  --water: #4fb2ff;
+  --land: #e7a456;
+  --lost: #66728c;
+  --crash: #ff6a4d;
+  --body: "Assistant", "Segoe UI", Arial, sans-serif;
+  --display: "Rubik", "Assistant", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--space);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: clamp(16px, 1.45vw, 30px);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: inherit; }
+bdi { unicode-bidi: isolate; }
+
+/* ── space: nebula, background photo, stars ───────────────── */
+.nebula {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(60vw 45vh at 18% 30%, rgba(92, 60, 170, .22), transparent 70%),
+    radial-gradient(50vw 40vh at 85% 80%, rgba(20, 110, 160, .18), transparent 70%),
+    radial-gradient(40vw 30vh at 70% 10%, rgba(170, 90, 40, .10), transparent 70%);
+}
+.photo-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: url("W2_K2 גלקסיה.jpg") no-repeat 12% 40% / auto 95vh;
+  opacity: 0; transition: opacity 1.2s ease;
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent);
+          mask-image: radial-gradient(closest-side, #000 55%, transparent);
+}
+body.bg-galaxy .photo-bg { opacity: .55; }
+#stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; display: block; }
+
+/* ── HUD ──────────────────────────────────────────────────── */
+.hud, .foot {
+  position: fixed; inset-inline: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1em 2em;
+}
+.hud { top: 0; font-size: .7em; letter-spacing: .04em; color: var(--soft); }
+.hud .log-name { display: flex; align-items: center; gap: .6em; }
+.hud .log-name::before {
+  content: ""; width: .6em; height: .6em; border-radius: 50%; background: var(--amber);
+  box-shadow: 0 0 10px var(--amber); animation: blink 2.4s infinite;
+}
+.hud-left { display: flex; align-items: center; gap: 1.4em; }
+.pips { display: flex; gap: .55em; align-items: center; }
+.pips i {
+  width: .8em; height: .8em; transform: rotate(45deg); display: block;
+  border: 1.5px solid var(--soft); opacity: .6;
+}
+.pips i.now { border-color: var(--amber); box-shadow: 0 0 10px var(--amber); opacity: 1; }
+.pips i.done { background: var(--amber); border-color: var(--amber); opacity: .85; }
+.icon-btn {
+  background: none; border: 1px solid var(--line); color: var(--soft);
+  width: 2.2em; height: 2.2em; border-radius: 50%; cursor: pointer; font-size: 1em;
+}
+.icon-btn:hover { color: var(--text); border-color: var(--cyan); }
+
+.foot { bottom: 0; padding: 1.3em 2.2em; }
+.btn {
+  border: none; cursor: pointer; font-weight: 700; letter-spacing: .02em;
+  font-size: 1em; padding: .65em 2.1em; border-radius: 999px;
+  transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease;
+}
+.btn.primary {
+  background: linear-gradient(180deg, #ffc477, var(--amber));
+  color: #1d1205;
+  box-shadow: 0 0 0 1px rgba(255, 176, 84, .5), 0 0 26px rgba(255, 176, 84, .35);
+}
+.btn.primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(255,176,84,.7), 0 0 38px rgba(255,176,84,.55); }
+.btn.primary.launch { animation: pulse 1.6s ease-in-out infinite; }
+.btn.primary:disabled { opacity: .45; cursor: default; animation: none; }
+.btn.ghost { background: none; color: var(--soft); border: 1px solid var(--line); font-weight: 600; padding: .5em 1.4em; font-size: .8em; }
+.btn.ghost:hover { color: var(--text); border-color: var(--cyan); }
+.btn:focus-visible, .icon-btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+/* ── screens ──────────────────────────────────────────────── */
+main { position: fixed; inset: 0; z-index: 3; }
+.screen {
+  position: absolute; inset: 0;
+  padding: 5.2em 3.4em 6em;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden;
+  transition: opacity .45s ease, transform .6s ease, visibility 0s .6s;
+  transform: scale(.96);
+}
+.screen.active { opacity: 1; visibility: visible; transform: none; transition: opacity .6s ease .1s, transform .8s cubic-bezier(.2,.8,.2,1); }
+.screen.leaving { opacity: 0; transform: scale(1.06); transition: opacity .35s ease, transform .5s ease; visibility: visible; }
+
+.kicker {
+  font-family: var(--display); font-weight: 500; color: var(--amber);
+  font-size: .75em; letter-spacing: .14em; margin: 0 0 .5em;
+  display: flex; align-items: center; gap: .6em;
+}
+.kicker::before { content: ""; width: 2.2em; height: 2px; background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+h1, h2 { font-family: var(--display); margin: 0; line-height: 1.1; }
+h1 { font-size: 3.6em; font-weight: 800; letter-spacing: .01em; text-shadow: 0 0 40px rgba(108, 212, 255, .35); }
+h2 { font-size: 2em; font-weight: 700; margin-bottom: .6em; }
+
+.center { text-align: center; max-width: 34em; }
+.center .kicker { justify-content: center; }
+.center .kicker::after { content: ""; width: 2.2em; height: 2px; background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+.center .sub { font-size: 1.35em; color: var(--soft); margin: .7em 0 0; }
+.center p { font-size: 1.15em; line-height: 1.55; margin: .3em 0; }
+
+.steps {
+  text-align: start; margin: 1.4em auto 0; padding: 0; list-style: none; counter-reset: step;
+  max-width: 30em; font-size: 1.05em;
+}
+.steps li {
+  counter-increment: step; position: relative; padding-inline-start: 2.4em; margin: 0 0 .8em; line-height: 1.5;
+}
+.steps li::before {
+  content: counter(step); position: absolute; inset-inline-start: 0; top: .05em;
+  width: 1.6em; height: 1.6em; border-radius: 50%; border: 1.5px solid var(--amber); color: var(--amber);
+  font-family: var(--display); font-weight: 700; font-size: .85em; display: grid; place-items: center;
+}
+
+.split { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3em; align-items: center; width: min(100%, 72em); }
+.text ul { list-style: none; margin: 0; padding: 0; }
+.text li { position: relative; padding-inline-start: 1.5em; margin: 0 0 .9em; line-height: 1.5; font-size: 1.12em; }
+.text li::before {
+  content: ""; position: absolute; inset-inline-start: 0; top: .55em;
+  width: .5em; height: .5em; border: 2px solid var(--cyan); transform: rotate(45deg);
+}
+.text b { color: #fff; }
+
+/* items rise in one after the other when a screen opens */
+.screen.active .rise > * { animation: rise .7s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--i, 0) * 140ms + 250ms); }
+
+/* ── scanner frame (Lyra) ─────────────────────────────────── */
+.scanner { position: relative; margin: 0; padding: .7em; }
+.scanner img { display: block; width: 100%; max-height: 64vh; object-fit: cover; border-radius: 4px; filter: saturate(1.1) contrast(1.05); }
+.scanner .frame { position: absolute; inset: 0; pointer-events: none; }
+.scanner .frame::before, .scanner .frame::after {
+  content: ""; position: absolute; width: 2.2em; height: 2.2em; border: 2px solid var(--cyan);
+}
+.scanner .frame::before { top: 0; right: 0; border-left: none; border-bottom: none; }
+.scanner .frame::after { bottom: 0; left: 0; border-right: none; border-top: none; }
+.scanner .sweep {
+  position: absolute; inset-inline: .7em; height: 18%; top: .7em; pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(108, 212, 255, .22), transparent);
+  border-bottom: 1px solid rgba(108, 212, 255, .7);
+  animation: sweep 4.5s linear infinite;
+}
+.caption { font-size: .62em; color: var(--soft); margin-top: .6em; letter-spacing: .05em; }
+
+/* ── planet ───────────────────────────────────────────────── */
+.planet-box { position: relative; display: flex; flex-direction: column; align-items: center; }
+.planet { width: min(100%, 64vh); height: auto; overflow: visible; display: block; }
+.planet .halo { animation: breathe 6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.planet .ripple { fill: none; stroke-width: 3; transform-box: fill-box; transform-origin: center; animation: ripple 1s ease-out forwards; }
+.planet .mark circle { stroke: #fff; stroke-width: 2.5; }
+.planet .mark text { font: 700 17px var(--display); fill: #fff; text-anchor: middle; paint-order: stroke; stroke: rgba(0,0,0,.6); stroke-width: 4; }
+.planet .crash line { animation: burst .9s ease-out forwards; }
+.planet .mark { animation: pop .4s cubic-bezier(.3,1.6,.5,1) both; transform-box: fill-box; transform-origin: center; }
+.planet .head { filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 12px var(--cyan)); }
+
+/* ── data console ─────────────────────────────────────────── */
+.data { width: min(100%, 68em); }
+.data .note { color: var(--soft); font-size: .85em; margin: -.3em 0 1.3em; }
+.cells { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; }
+.cell {
+  background: var(--glass); border: 1px solid var(--line); border-radius: 14px;
+  padding: .9em 1.1em; position: relative; overflow: hidden;
+}
+.cell::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: 4px; background: var(--cyan); opacity: .7; }
+.cell .k { font-size: .7em; color: var(--soft); letter-spacing: .08em; }
+.cell .v { font-family: var(--display); font-weight: 700; font-size: 1.6em; margin: .15em 0 .1em; font-variant-numeric: tabular-nums; }
+.cell .d { font-size: .78em; color: var(--soft); line-height: 1.4; }
+.cell.key { border-color: rgba(79, 178, 255, .6); box-shadow: 0 0 30px rgba(79, 178, 255, .18); }
+.cell.key::before { background: var(--water); opacity: 1; }
+.cell.key .v { color: var(--water); }
+
+/* ── mission ──────────────────────────────────────────────── */
+.mission { display: grid; grid-template-columns: 1fr 1.15fr; gap: 3em; align-items: center; width: min(100%, 74em); }
+.console {
+  background: var(--glass); border: 1px solid var(--line); border-radius: 18px;
+  padding: 1.4em 1.6em; backdrop-filter: blur(4px);
+}
+.console h2 { margin-bottom: .3em; }
+.orders { color: var(--soft); font-size: .85em; line-height: 1.5; margin: 0 0 1em; }
+.log { list-style: none; margin: 0; padding: 0; font-size: .88em; display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.4em; grid-auto-flow: column; grid-template-rows: repeat(4, auto); }
+.log li {
+  display: grid; grid-template-columns: 6.5em 1.1em 1fr; align-items: center; gap: .5em;
+  padding: .35em 0; border-top: 1px solid rgba(130, 175, 255, .12); color: var(--soft);
+}
+.log li i { width: .8em; height: .8em; border-radius: 50%; background: var(--soft); display: block; }
+.log li.flying i { background: var(--cyan); animation: blink .5s infinite; }
+.log li.water i { background: var(--water); box-shadow: 0 0 10px var(--water); }
+.log li.land i { background: var(--land); box-shadow: 0 0 10px var(--land); }
+.log li.lost i { background: transparent; border: 1.5px solid var(--crash); }
+.log li.water b { color: var(--water); }
+.log li.land b { color: var(--land); }
+.log li.lost b { color: var(--crash); font-weight: 400; opacity: .85; }
+.log li.flying b { color: var(--cyan); font-weight: 400; }
+.result { margin-top: 1em; padding-top: 1em; border-top: 1px solid var(--line); animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+.tally { font-family: var(--display); font-weight: 800; font-size: 1.9em; margin: 0; }
+.tally .w { color: var(--water); }
+.tally .l { color: var(--land); }
+.tally .sep { color: var(--soft); font-weight: 400; margin: 0 .3em; }
+.returned { color: var(--soft); font-size: .8em; margin: .2em 0 .9em; }
+.todo {
+  margin: 0; line-height: 1.5; font-size: .95em;
+  background: rgba(255, 176, 84, .1); border-inline-start: 3px solid var(--amber);
+  padding: .6em .9em; border-radius: 6px;
+}
+
+/* ── keyframes ────────────────────────────────────────────── */
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes blink { 50% { opacity: .25; } }
+@keyframes pulse { 50% { box-shadow: 0 0 0 1px rgba(255,176,84,.8), 0 0 46px rgba(255,176,84,.7); } }
+@keyframes sweep { from { top: .7em; } to { top: calc(100% - 18% - .7em); } }
+@keyframes breathe { 50% { opacity: .7; transform: scale(1.015); } }
+@keyframes ripple { from { transform: scale(.2); opacity: 1; } to { transform: scale(3.2); opacity: 0; } }
+@keyframes pop { from { transform: scale(0); } }
+@keyframes burst { from { opacity: 1; } to { opacity: 0; } }
+
+@media (max-width: 900px) {
+  body { font-size: 15px; overflow-y: auto; }
+  .split, .mission { grid-template-columns: 1fr; gap: 1.2em; }
+  .cells { grid-template-columns: 1fr 1fr; }
+  .screen { padding: 4.5em 1.2em 5.5em; overflow-y: auto; align-items: flex-start; }
+  h1 { font-size: 2.4em; }
+}
+</style>
+</head>
+<body class="bg-galaxy">
+<div class="nebula"></div>
+<div class="photo-bg"></div>
+<canvas id="stars"></canvas>
+
+<header class="hud">
+  <span class="log-name">יומן משימה · <bdi>Kepler-62f</bdi></span>
+  <div class="hud-left">
+    <div class="pips" id="pips" aria-label="משימות"><i></i><i></i><i></i></div>
+    <button class="icon-btn" id="fullscreen" type="button" title="מסך מלא" aria-label="מסך מלא">⛶</button>
+  </div>
+</header>
+
+<main>
+  <section class="screen" data-kind="start" data-bg="galaxy">
+    <div class="center rise">
+      <p class="kicker">תדריך משימה</p>
+      <h1>משימה ל-<bdi>Kepler-62f</bdi></h1>
+      <p class="sub">כמה מים יש על פני הכוכב?</p>
+    </div>
+  </section>
+
+  <section class="screen" data-kind="brief">
+    <div class="split">
+      <div class="text rise">
+        <p class="kicker">תדריך 1 מתוך 3</p>
+        <h2>מערכת שמש בקבוצת נבל</h2>
+        <ul>
+          <li>ב-2013 גילה טלסקופ החלל <bdi>Kepler</bdi> של <bdi>NASA</bdi> מערכת שמש במרחק של כ-<b>1,200 שנות אור</b> מאיתנו, בקבוצת הכוכבים נבל (<bdi>Lyra</bdi>).</li>
+          <li>חמישה כוכבי לכת מקיפים בה שמש מסוג <b>ננס כתום</b>: כוכב קטן, קריר וזקן יותר מהשמש שלנו, שמפיץ אור כתום וחמים.</li>
+        </ul>
+      </div>
+      <figure class="scanner">
+        <img src="W2_K2 Lyra.jpg" alt="קבוצת הכוכבים נבל" onerror="this.closest('figure').hidden = true">
+        <div class="sweep"></div><div class="frame"></div>
+        <div class="caption">סריקה · קבוצת הכוכבים נבל (<bdi>Lyra</bdi>)</div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="screen" data-kind="brief">
+    <div class="split">
+      <div class="text rise">
+        <p class="kicker">תדריך 2 מתוך 3</p>
+        <h2><bdi>Kepler-62f</bdi></h2>
+        <ul>
+          <li>הכוכב החיצוני ביותר במערכת, עמוק בתוך <b>"האזור הישיב"</b>.</li>
+          <li>הוא מקבל מהשמש שלו בערך <b>41%</b> מהאנרגיה ומהאור שכדור הארץ מקבל מהשמש שלנו.</li>
+          <li>כדי שהמים עליו לא יקפאו, הוא צריך אטמוספירה עבה במיוחד, עשירה בפחמן דו-חמצני (<bdi>CO₂</bdi>), שיוצרת אפקט חממה עוצמתי.</li>
+        </ul>
+      </div>
+      <div class="planet-box" data-planet>
+        <div class="caption">איור: <bdi>NASA Ames / JPL-Caltech</bdi></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" data-kind="brief">
+    <div class="data">
+      <p class="kicker">תדריך 3 מתוך 3</p>
+      <h2>נתוני הסריקה</h2>
+      <p class="note">הכוכב רחוק מדי לצילום ישיר, ולכן אלה הערכות של מודלים אסטרופיזיקליים וגיאולוגיים.</p>
+      <div class="cells rise">
+        <div class="cell"><div class="k">רדיוס</div><div class="v">פי <span data-count="1.41">1.41</span></div><div class="d">מהרדיוס של כדור הארץ</div></div>
+        <div class="cell"><div class="k">מסה</div><div class="v">פי <span data-count="2.8">2.8</span></div><div class="d">ממסת כדור הארץ, ולכן כוח משיכה חזק משלנו בהרבה</div></div>
+        <div class="cell"><div class="k">אורך השנה</div><div class="v"><span data-count="267">267</span> ימים</div><div class="d">הקפה אחת סביב השמש שלו</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" data-kind="gate" data-bg="galaxy">
+    <div class="center rise">
+      <p class="kicker">יציאה למשימה</p>
+      <h2>יוצאים למשימה I</h2>
+      <p class="sub">הערכת אחוז המים על פני <bdi>Kepler-62f</bdi></p>
+      <ol class="steps">
+        <li>הדף שלכם הוא יומן המשימה. הוא נשאר אצלכם לאורך כל המשימה.</li>
+        <li>במשימה שולחים 8 גשושיות לכוכב. חלק מהן מתרסקות, וכל גשושית ששורדת מדווחת אם פגשה מים או יבשה.</li>
+        <li>אחרי המשימה, עדכנו את הדף לפי מה שהגשושיות דיווחו.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="screen" data-kind="mission" data-name="משימה I"></section>
+
+  <section class="screen" data-kind="pass" data-bg="galaxy" data-next="למשימה II"></section>
+
+  <section class="screen" data-kind="mission" data-name="משימה II"></section>
+
+  <section class="screen" data-kind="pass" data-bg="galaxy" data-next="למשימה III"></section>
+
+  <section class="screen" data-kind="mission" data-name="משימה III"></section>
+
+  <section class="screen" data-kind="end" data-bg="galaxy">
+    <div class="center rise">
+      <p class="kicker">סוף המשימות</p>
+      <h2>המשימות הסתיימו</h2>
+      <p>השלימו בדף את השרטוט: ה-<bdi>posterior</bdi> של שלושת הסבבים על צירים אחד.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <button class="btn ghost" id="back" type="button">חזרה</button>
+  <button class="btn primary" id="primary" type="button"></button>
+</footer>
+
+<script>
+(function () {
+  var TRUE_WATER = 0.60;   // the true share of water on the surface; students estimate it and never see it
+  var PROBES = 8;          // launched per mission
+  var RETURN_RATE = 0.6;   // each probe survives the landing with this probability, redrawn if none does, so 1 to 8 return data
+  var NS = 'http://www.w3.org/2000/svg';
+  var $ = function (s, root) { return (root || document).querySelector(s); };
+  var $$ = function (s, root) { return Array.prototype.slice.call((root || document).querySelectorAll(s)); };
+
+  // ── starfield: stars fly toward the viewer; speed rises for the jump between screens ──
+  var canvas = $('#stars'), ctx = canvas.getContext('2d');
+  var W, H, stars = [], speed = 0.025, target = 0.025;
+  function resize() {
+    var dpr = window.devicePixelRatio || 1;
+    W = innerWidth; H = innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function star(z) {
+    var tints = ['255,255,255', '200,220,255', '255,230,200', '180,200,255'];
+    return { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1, z: z, pz: z, t: tints[Math.floor(Math.random() * tints.length)], tw: Math.random() * 6.28 };
+  }
+  for (var s = 0; s < 900; s++) stars.push(star(Math.random()));
+  function project(x, z) { return x * 0.5 * Math.max(W, H) / z; }
+  var last = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    speed += (target - speed) * Math.min(1, dt * 3.2);
+    ctx.clearRect(0, 0, W, H);
+    var cx = W / 2, cy = H / 2, warp = Math.abs(speed) > 0.15;
+    for (var i = 0; i < stars.length; i++) {
+      var st = stars[i];
+      st.pz = st.z;
+      st.z -= speed * dt;
+      if (st.z <= 0.02) { stars[i] = st = star(1); }
+      else if (st.z > 1) { stars[i] = st = star(0.03 + Math.random() * 0.1); }
+      var sx = cx + project(st.x, st.z), sy = cy + project(st.y, st.z);
+      if (sx < -50 || sx > W + 50 || sy < -50 || sy > H + 50) { if (speed > 0) stars[i] = star(1); continue; }
+      var depth = 1 - st.z;
+      st.tw += dt * 2;
+      var alpha = Math.min(1, 0.25 + depth * 0.9) * (warp ? 1 : 0.75 + 0.25 * Math.sin(st.tw));
+      var size = 0.4 + depth * 2.1;
+      if (warp) {
+        var px = cx + project(st.x, st.pz), py = cy + project(st.y, st.pz);
+        ctx.strokeStyle = 'rgba(' + st.t + ',' + alpha + ')';
+        ctx.lineWidth = size;
+        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(sx, sy); ctx.stroke();
+      } else {
+        ctx.fillStyle = 'rgba(' + st.t + ',' + alpha + ')';
+        ctx.beginPath(); ctx.arc(sx, sy, size / 2, 0, 6.283); ctx.fill();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  resize(); addEventListener('resize', resize);
+  requestAnimationFrame(frame);
+
+  // ── planet: the NASA illustration clipped to its disc, over a painted fallback ──
+  var planetId = 0;
+  function planetSVG() {
+    var n = ++planetId;
+    // In the 1200×675 illustration the planet is centred at (600, 338) with radius ≈ 252; here it is r = 230 at (300, 300).
+    var k = 230 / 252;
+    return '<svg class="planet" viewBox="0 0 600 600" aria-hidden="true">' +
+      '<defs>' +
+        '<radialGradient id="pf' + n + '" cx="38%" cy="35%" r="70%"><stop offset="0" stop-color="#d9d2c0"/><stop offset=".45" stop-color="#8f8a7a"/><stop offset=".75" stop-color="#46607a"/><stop offset="1" stop-color="#0d1420"/></radialGradient>' +
+        '<radialGradient id="ph' + n + '"><stop offset=".86" stop-color="#7fc4ff" stop-opacity="0"/><stop offset=".885" stop-color="#7fc4ff" stop-opacity=".55"/><stop offset="1" stop-color="#7fc4ff" stop-opacity="0"/></radialGradient>' +
+        '<clipPath id="pc' + n + '"><circle cx="300" cy="300" r="231"/></clipPath>' +
+      '</defs>' +
+      '<circle class="halo" cx="300" cy="300" r="262" fill="url(#ph' + n + ')"/>' +
+      '<circle cx="300" cy="300" r="230" fill="url(#pf' + n + ')"/>' +
+      '<image href="W2_K2 Kepler-62f.jpg" x="' + (300 - 600 * k).toFixed(1) + '" y="' + (300 - 338 * k).toFixed(1) + '" width="' + (1200 * k).toFixed(1) + '" height="' + (675 * k).toFixed(1) + '" clip-path="url(#pc' + n + ')" preserveAspectRatio="none" onerror="this.remove()"/>' +
+      '<g class="marks"></g><g class="flights"></g>' +
+    '</svg>';
+  }
+  $$('[data-planet]').forEach(function (box) { box.insertAdjacentHTML('afterbegin', planetSVG()); });
+
+  // ── missions ──
+  $$('.screen[data-kind="mission"]').forEach(function (sc) {
+    sc.innerHTML =
+      '<div class="mission">' +
+        '<div class="console">' +
+          '<p class="kicker">' + sc.dataset.name + '</p>' +
+          '<h2>שיגור גשושיות</h2>' +
+          '<p class="orders">משגרים ' + PROBES + ' גשושיות לנקודות אקראיות על פני הכוכב. חלק מהן מתרסקות בנחיתה ולא מדווחות דבר; כל גשושית ששורדת מדווחת: מים או יבשה.</p>' +
+          '<ol class="log"></ol>' +
+          '<div class="result" hidden></div>' +
+        '</div>' +
+        '<div class="planet-box">' + planetSVG() + '</div>' +
+      '</div>';
+    sc.state = 'ready';
+  });
+  $$('.screen[data-kind="pass"]').forEach(function (sc) {
+    sc.innerHTML =
+      '<div class="center rise">' +
+        '<p class="kicker">החלפת משמרת</p>' +
+        '<h2>העבירו את הדף לזוג אחר</h2>' +
+        '<p>והמשיכו עם הדף שקיבלתם.</p>' +
+        '<p>לחצו המשך כשתהיו מוכנים ' + sc.dataset.next + '.</p>' +
+      '</div>';
+  });
+
+  function el(tag, attrs, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var a in attrs) n.setAttribute(a, attrs[a]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function ease(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+
+  // One probe: a glowing head with a short trail along a curve from off-screen right to its landing point.
+  function fly(svg, i, outcome, done) {
+    var r = 205 * Math.sqrt(Math.random()), a = Math.random() * 6.283;
+    var tx = 300 + r * Math.cos(a), ty = 300 + r * Math.sin(a);
+    var sx = 760 + Math.random() * 60, sy = 560 + Math.random() * 120;
+    var mx = (sx + tx) / 2 + 60, my = Math.min(sy, ty) - 140 - Math.random() * 80;
+    var flights = $('.flights', svg);
+    var path = el('path', { d: 'M' + sx + ',' + sy + ' Q' + mx + ',' + my + ' ' + tx + ',' + ty, fill: 'none', stroke: 'rgba(160,220,255,.75)', 'stroke-width': 3, 'stroke-linecap': 'round' }, flights);
+    var head = el('circle', { r: 5, fill: '#fff', class: 'head' }, flights);
+    var len = path.getTotalLength(), trail = 90;
+    var dur = 1300, start = performance.now();
+    (function step(now) {
+      var t = Math.min(1, (now - start) / dur), e = ease(t), at = e * len;
+      var p = path.getPointAtLength(at);
+      head.setAttribute('cx', p.x); head.setAttribute('cy', p.y);
+      path.setAttribute('stroke-dasharray', Math.min(trail, at) + ' ' + len);
+      path.setAttribute('stroke-dashoffset', -Math.max(0, at - trail));
+      if (t < 1) { requestAnimationFrame(step); return; }
+      flights.removeChild(path); flights.removeChild(head);
+      var marks = $('.marks', svg);
+      if (outcome === 'lost') {
+        // Crash: a short burst on the surface, and no data.
+        var burst = el('g', { class: 'crash' }, marks);
+        el('circle', { cx: tx, cy: ty, r: 14, class: 'ripple', stroke: 'var(--crash)' }, burst);
+        for (var k = 0; k < 6; k++) {
+          var ang = k * 1.047 + Math.random() * .5;
+          el('line', { x1: tx, y1: ty, x2: tx + 22 * Math.cos(ang), y2: ty + 22 * Math.sin(ang), stroke: 'var(--crash)', 'stroke-width': 3, 'stroke-linecap': 'round' }, burst);
+        }
+        setTimeout(function () { marks.removeChild(burst); }, 900);
+        done(); return;
+      }
+      var color = outcome === 'water' ? 'var(--water)' : 'var(--land)';
+      el('circle', { cx: tx, cy: ty, r: 12, class: 'ripple', stroke: color }, marks);
+      var g = el('g', { class: 'mark' }, marks);
+      el('circle', { cx: tx, cy: ty, r: 10, fill: color }, g);
+      el('text', { x: tx, y: ty - 18 }, g).textContent = i + 1;
+      done();
+    })(start);
+  }
+
+  function launch(sc) {
+    sc.state = 'flying';
+    var survived;
+    do {
+      survived = [];
+      for (var i = 0; i < PROBES; i++) survived.push(Math.random() < RETURN_RATE);
+    } while (survived.indexOf(true) < 0);
+    var outcomes = survived.map(function (ok) { return !ok ? 'lost' : Math.random() < TRUE_WATER ? 'water' : 'land'; });
+    var log = $('.log', sc), svg = $('.planet', sc), left = PROBES;
+    var words = { water: 'מים', land: 'יבשה', lost: 'התרסקה' };
+    outcomes.forEach(function (o, i) {
+      var li = document.createElement('li');
+      li.innerHTML = '<span>גשושית ' + (i + 1) + '</span><i></i><b></b>';
+      setTimeout(function () {
+        li.className = 'flying'; $('b', li).textContent = 'בדרך…';
+        log.appendChild(li);
+        fly(svg, i, o, function () {
+          li.className = o; $('b', li).textContent = words[o];
+          if (--left === 0) setTimeout(function () { finish(sc, outcomes); }, 600);
+        });
+      }, i * 380);
+    });
+    update();
+  }
+
+  function finish(sc, outcomes) {
+    var w = outcomes.filter(function (o) { return o === 'water'; }).length;
+    var l = outcomes.filter(function (o) { return o === 'land'; }).length;
+    var res = $('.result', sc);
+    var n = w + l;
+    res.innerHTML =
+      '<p class="tally"><span class="w">מים ' + w + '</span><span class="sep">·</span><span class="l">יבשה ' + l + '</span></p>' +
+      '<p class="returned">' + (n === 1 ? 'חזרה גשושית אחת' : 'חזרו ' + n + ' גשושיות') + ' מתוך ' + PROBES + '</p>' +
+      '<p class="todo">עדכנו את הדף כדי לקבל את ההתפלגות הפוסטריורית לאחוז המים על <bdi>Kepler-62f</bdi>. כשתסיימו, לחצו המשך.</p>';
+    res.hidden = false;
+    sc.state = 'done';
+    update();
+  }
+
+  // ── navigation ──
+  var screens = $$('.screen'), missions = $$('.screen[data-kind="mission"]');
+  var current = 0, busy = false;
+  var primary = $('#primary'), back = $('#back');
+
+  function update() {
+    var sc = screens[current], kind = sc.dataset.kind;
+    back.hidden = current === 0;
+    primary.hidden = kind === 'end';
+    primary.classList.toggle('launch', kind === 'mission' && sc.state === 'ready');
+    primary.disabled = kind === 'mission' && sc.state === 'flying';
+    primary.textContent =
+      kind === 'start' ? 'התחילו את המשימה' :
+      kind === 'gate' ? 'התחל' :
+      kind === 'mission' ? (sc.state === 'ready' ? 'שגרו גשושיות' : sc.state === 'flying' ? 'הגשושיות בדרך…' : 'המשך') :
+      'המשך';
+    document.body.classList.toggle('bg-galaxy', sc.dataset.bg === 'galaxy');
+    var m = missions.indexOf(sc), passed = screens.slice(0, current + 1).filter(function (s) { return s.dataset.kind === 'mission'; }).length;
+    $$('#pips i').forEach(function (pip, i) {
+      pip.className = i === m ? 'now' : i < passed && missions[i].state === 'done' ? 'done' : '';
+    });
+  }
+
+  function countUp(sc) {
+    $$('[data-count]', sc).forEach(function (n) {
+      var to = parseFloat(n.dataset.count), dec = (n.dataset.count.split('.')[1] || '').length, t0 = performance.now();
+      (function tick(now) {
+        var t = Math.min(1, (now - t0 - 500) / 1100);
+        n.textContent = (to * ease(Math.max(0, t))).toFixed(dec);
+        if (t < 1) requestAnimationFrame(tick);
+      })(t0);
+    });
+  }
+
+  function show(i) {
+    screens.forEach(function (sc, j) { sc.classList.toggle('active', j === i); });
+    $$('.rise', screens[i]).forEach(function (r) { Array.prototype.forEach.call(r.children, function (c, k) { c.style.setProperty('--i', k); }); });
+    countUp(screens[i]);
+    current = i;
+    update();
+  }
+
+  // The jump between screens: the old one falls behind, stars stretch into warp, the new one arrives.
+  function go(i) {
+    if (busy || i < 0 || i >= screens.length || i === current) return;
+    busy = true;
+    var forward = i > current, old = screens[current];
+    old.classList.add('leaving');
+    target = forward ? 1.9 : -1.2;
+    setTimeout(function () {
+      old.classList.remove('leaving');
+      show(i);
+      target = 0.025;
+      busy = false;
+    }, 750);
+  }
+
+  function next() {
+    var sc = screens[current];
+    if (sc.dataset.kind === 'mission' && sc.state === 'ready') { launch(sc); return; }
+    if (sc.dataset.kind === 'mission' && sc.state === 'flying') return;
+    go(current + 1);
+  }
+
+  primary.addEventListener('click', function () { primary.blur(); next(); });
+  back.addEventListener('click', function () { back.blur(); go(current - 1); });
+  $('#fullscreen').addEventListener('click', function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+  });
+  // RTL, as in the course decks: left = forward, right = back (also PageDown/PageUp of a presentation clicker).
+  addEventListener('keydown', function (e) {
+    var k = e.key;
+    if (k === 'ArrowLeft' || k === 'PageDown' || k === 'Enter' || (k === ' ' && !e.shiftKey)) { e.preventDefault(); if (!primary.hidden) next(); }
+    else if (k === 'ArrowRight' || k === 'PageUp' || (k === ' ' && e.shiftKey)) { e.preventDefault(); go(current - 1); }
+  });
+
+  show(0);
+})();
+</script>
+</body>
+</html>
