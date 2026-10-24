@@ -31,7 +31,8 @@
     "הקראה",
     "סקר",
     "משחק",
-    "Gemini"
+    "Gemini",
+    "הקלטה"
   ],
   "weeks": {
     "1": {
@@ -66,6 +67,7 @@
       "sub": "Conjectures"
     },
     "2": {
+      "sub": "Bayesian inferences",
       "image": "cameo-laplace.svg",
       "caption": "Pierre-Simon Laplace, 1749–1827"
     },
