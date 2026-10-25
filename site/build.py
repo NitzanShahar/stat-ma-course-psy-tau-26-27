@@ -804,15 +804,14 @@ class Site:
 
     def tasks(self, w, mode='cur'):
         """'מטלות קרובות': what is due next, taken from the current week — the same on every page, outside the week sheet.
-        Staff version: one card per week page; mode 'cur' (white), 'past' (grey), 'future' (not yet given)."""
+        Staff version: one card per week page, heading 'מטלות לשבוע N'; mode 'future' = week whose tasks are not yet given."""
         if not w or (not self.staff and not self.cfg.get('tasks_public', True)):
             return ''
         if mode == 'future':
             labels = ['מטלת קריאה שבועית', 'מטלת תרגול שבועית']
-            cards = ''.join(f'<div class="np"><div class="nph"><span class="nk">{l}</span></div><p class="ttext soonp">תינתן בקרוב</p></div>' for l in labels)
+            cards = ''.join(f'<div class="np"><div class="nph"><span class="nk">{l}</span></div><p class="ttext soonp">פרטים בקרוב</p></div>' for l in labels)
             return (f'<section class="tasks card future" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
                     f'<div class="ng">{cards}</div></section>')
-        past = mode == 'past'
         _l, _p, reading, hw, _n, _gl, _gp = self.split(w)
         nl = self.next_lecture(w)
         cards = []
@@ -842,7 +841,7 @@ class Site:
             note = [esc(due)] if due else []
             if url:
                 note.append(f'הגשה מקוונת: <a class="ln" href="{esc(url)}" target="_blank" rel="noopener">טופס ההגשה</a>')
-            cards.append(self.task_card('מטלת קריאה שבועית', '', text, note, nl, past=past))
+            cards.append(self.task_card('מטלת קריאה שבועית', '', text, note, nl))
         for it in hw:
             m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
             text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)}: {m.group(2)}.' if m else f'{self.clean_title(it)}.')
@@ -853,22 +852,19 @@ class Site:
             if y:
                 hw_note.append(esc(f'תאריך אחרון להגשה: יום {DAYS[y.weekday()]} {y.day}.{y.month}' + (f' ב-{hw_at}' if hw_at else '')))
             hw_note.append(esc(self.cfg.get('task_notes', {}).get('hw', 'הגשה מקוונת: צילום או סריקה דרך ה-Moodle')))
-            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s, past=past))
+            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s))
         if not cards:
             return ''
-        if self.staff:  # staff: per-week heading, never hidden; grey once the deadlines have passed
-            return (f'<section class="tasks card{" past" if past else ""}" data-keep aria-label="מטלות לשבוע {w["n"]}">'
+        if self.staff:  # staff: per-week heading, never hidden (a passed deadline says so instead of the countdown)
+            return (f'<section class="tasks card" data-keep aria-label="מטלות לשבוע {w["n"]}">'
                     f'<h2 class="fr tasksh">מטלות לשבוע {w["n"]}</h2><div class="ng">{"".join(cards)}</div></section>')
         return (f'<section class="tasks card" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
                 f'<div class="ng">{"".join(cards)}</div></section>')
 
-    def task_card(self, label, when, text, note, due, go='', past=False):
+    def task_card(self, label, when, text, note, due, go=''):
         """One upcoming task: label and date, a large countdown (filled in by the page's script), one sentence."""
         x = d(due)
-        if past:
-            dl = f'<span class="dl"><b>{x.day}.{x.month}</b></span>' if x else ''
-        else:
-            dl = f'<span class="dl" data-due="{x.isoformat()}"><span></span><b>{x.day}.{x.month}</b></span>' if x else ''
+        dl = f'<span class="dl" data-due="{x.isoformat()}"><span></span><b>{x.day}.{x.month}</b></span>' if x else ''
         lines = [esc(note)] if isinstance(note, str) else note  # a list holds lines that are already html
         note_html = f'<p class="ms tnote">{"<br>".join(lines)}</p>' if lines and any(lines) else ''
         return (f'<div class="np"><div class="nph"><span class="nk">{esc(label)}{" · " + esc(when) if when else ""}</span>{dl}</div>'
@@ -900,10 +896,10 @@ class Site:
         # statistics: public pages only; a staff page marks its tab so the decks and player opened from it are not counted
         track = ("<script>try{sessionStorage.setItem('cv_staff','1')}catch(e){}</script>" if self.staff
                  else track_tag(self.cfg, self.p, 'site', week))
-        # staff: the tasks card stays on a past week (greyed); the public script hides a card after its deadline
+        # staff: a passed deadline says so (the card stays); the public script hides a card after its deadline
         if self.staff:
-            tjs1 = "if(n<0){ var c=el.closest('.np'); if(c&&el.closest('.tasks[data-keep]')){ c.classList.add('past'); el.querySelector('span').remove(); } return; }"
-            tjs2 = "document.querySelectorAll('.tasks[data-keep]').forEach(function(t){ if(!t.querySelector('.np:not(.past)')) t.classList.add('past'); });"
+            tjs1 = "if(n<0){ b.textContent='תאריך ההגשה עבר'; s.textContent=''; el.classList.add('over'); return; }"
+            tjs2 = ""
         else:
             tjs1 = "if(n<0){ var c=el.closest('.np'); if(c) c.hidden=true; return; }"
             tjs2 = "document.querySelectorAll('.tasks').forEach(function(t){ if(!t.querySelector('.np:not([hidden])')) t.hidden=true; });"
@@ -1013,7 +1009,7 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
             body = self.menu(w['n'], cur, open_ns) + self.week_article(w, open_ns)
             wt = tasks
             if self.staff and cur:  # staff: the tasks of the week being viewed
-                wt = self.tasks(w, 'cur' if w['n'] == cur else 'past' if w['n'] < cur else 'future')
+                wt = self.tasks(w, 'future' if w['n'] > cur else 'cur')
             self.files.write(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body, wt, w['n']), f'{pre}week-{w["n"]}.html')
         if cur:
             w = next(x for x in opened if x['n'] == cur)

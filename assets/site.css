@@ -125,13 +125,8 @@ a.mt:hover{color:#b3541e}
 .tasks .ttext{font-size:20px}
 .tasks .tnote{font-size:16px;color:#5f6d73;line-height:1.7}
 .tasks .tnote .ln{color:var(--u-ink);border-bottom-color:currentColor;font-weight:600}
-/* staff: past week = quiet grey; future week = placeholder */
-.tasks.past{background:#e6eaea;box-shadow:none}
-.tasks.past .tasksh,.np.past .nk,.np.past .dl,.np.past .dl b,.np.past .ttext{color:#6f7c82}
-.np.past{background:#eef1f1;border-color:#dde3e5}
-.tasks.past .np{background:#eef1f1;border-color:#dde3e5}
-.tasks.past .nk,.tasks.past .dl,.tasks.past .dl b,.tasks.past .ttext{color:#6f7c82}
-.tasks.past .dl b{font-size:24px}
+/* staff: a card whose deadline has passed, and one not yet given */
+.tasks .dl.over b{font-size:20px;font-weight:600}
 .tasks .soonp{color:#7a878d;font-size:18px}
 
 /* week navigation */

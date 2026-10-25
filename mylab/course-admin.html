@@ -41,12 +41,12 @@ document.querySelectorAll('.menu').forEach(function(m){
 document.querySelectorAll('.dl[data-due]').forEach(function(el){
   var p=el.dataset.due.split('-'), due=new Date(+p[0],+p[1]-1,+p[2]), t=new Date(); t.setHours(0,0,0,0);
   var n=Math.round((due-t)/864e5), b=el.querySelector('b'), s=el.querySelector('span');
-  if(n<0){ var c=el.closest('.np'); if(c&&el.closest('.tasks[data-keep]')){ c.classList.add('past'); el.querySelector('span').remove(); } return; }
+  if(n<0){ b.textContent='תאריך ההגשה עבר'; s.textContent=''; el.classList.add('over'); return; }
   else if(n===0){ b.textContent='היום'; s.textContent=''; el.classList.add('soon'); }
   else if(n===1){ b.textContent='מחר'; s.textContent=''; el.classList.add('soon'); }
   else { s.textContent='עוד'; b.textContent=n+' ימים'; if(n<=3) el.classList.add('soon'); }
 });
-document.querySelectorAll('.tasks[data-keep]').forEach(function(t){ if(!t.querySelector('.np:not(.past)')) t.classList.add('past'); });
+
 // A hidden toy: click the portrait. With probability p he sneezes (a Bernoulli trial, of course); otherwise he yawns and says something.
 document.querySelectorAll('.eng.egg').forEach(function(fig){
   var cfg=JSON.parse(fig.dataset.egg), n=0, k=0, last=-1, timer=null, ft=[], bub=document.createElement('div');
