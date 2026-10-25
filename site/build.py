@@ -270,6 +270,7 @@ PLAYER = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon.png">
 <title>נגן</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&amp;family=Assistant:wght@400;500;600;700&amp;display=swap">
 <link rel="stylesheet" href="assets/site.css">
@@ -801,10 +802,17 @@ class Site:
                 nav += f'<span>שבוע {q["n"]} ייפתח ב-{dm(q["lecture"])}{CHEV_FWD}</span>'
         return f'<article class="week">{hero}{cols}{nxt}<nav class="nav" aria-label="מעבר בין שבועות">{nav}</nav></article>'
 
-    def tasks(self, w):
-        """'מטלות קרובות': what is due next, taken from the current week — the same on every page, outside the week sheet."""
+    def tasks(self, w, mode='cur'):
+        """'מטלות קרובות': what is due next, taken from the current week — the same on every page, outside the week sheet.
+        Staff version: one card per week page; mode 'cur' (white), 'past' (grey), 'future' (not yet given)."""
         if not w or (not self.staff and not self.cfg.get('tasks_public', True)):
             return ''
+        if mode == 'future':
+            labels = ['מטלת קריאה שבועית', 'מטלת תרגול שבועית']
+            cards = ''.join(f'<div class="np"><div class="nph"><span class="nk">{l}</span></div><p class="ttext soonp">תינתן בקרוב</p></div>' for l in labels)
+            return (f'<section class="tasks card future" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
+                    f'<div class="ng">{cards}</div></section>')
+        past = mode == 'past'
         _l, _p, reading, hw, _n, _gl, _gp = self.split(w)
         nl = self.next_lecture(w)
         cards = []
@@ -834,7 +842,7 @@ class Site:
             note = [esc(due)] if due else []
             if url:
                 note.append(f'הגשה מקוונת: <a class="ln" href="{esc(url)}" target="_blank" rel="noopener">טופס ההגשה</a>')
-            cards.append(self.task_card('מטלת קריאה שבועית', '', text, note, nl))
+            cards.append(self.task_card('מטלת קריאה שבועית', '', text, note, nl, past=past))
         for it in hw:
             m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
             text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)}: {m.group(2)}.' if m else f'{self.clean_title(it)}.')
@@ -845,16 +853,22 @@ class Site:
             if y:
                 hw_note.append(esc(f'תאריך אחרון להגשה: יום {DAYS[y.weekday()]} {y.day}.{y.month}' + (f' ב-{hw_at}' if hw_at else '')))
             hw_note.append(esc(self.cfg.get('task_notes', {}).get('hw', 'הגשה מקוונת: צילום או סריקה דרך ה-Moodle')))
-            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s))
+            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s, past=past))
         if not cards:
             return ''
+        if self.staff:  # staff: per-week heading, never hidden; grey once the deadlines have passed
+            return (f'<section class="tasks card{" past" if past else ""}" data-keep aria-label="מטלות לשבוע {w["n"]}">'
+                    f'<h2 class="fr tasksh">מטלות לשבוע {w["n"]}</h2><div class="ng">{"".join(cards)}</div></section>')
         return (f'<section class="tasks card" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
                 f'<div class="ng">{"".join(cards)}</div></section>')
 
-    def task_card(self, label, when, text, note, due, go=''):
+    def task_card(self, label, when, text, note, due, go='', past=False):
         """One upcoming task: label and date, a large countdown (filled in by the page's script), one sentence."""
         x = d(due)
-        dl = f'<span class="dl" data-due="{x.isoformat()}"><span></span><b>{x.day}.{x.month}</b></span>' if x else ''
+        if past:
+            dl = f'<span class="dl"><b>{x.day}.{x.month}</b></span>' if x else ''
+        else:
+            dl = f'<span class="dl" data-due="{x.isoformat()}"><span></span><b>{x.day}.{x.month}</b></span>' if x else ''
         lines = [esc(note)] if isinstance(note, str) else note  # a list holds lines that are already html
         note_html = f'<p class="ms tnote">{"<br>".join(lines)}</p>' if lines and any(lines) else ''
         return (f'<div class="np"><div class="nph"><span class="nk">{esc(label)}{" · " + esc(when) if when else ""}</span>{dl}</div>'
@@ -886,12 +900,20 @@ class Site:
         # statistics: public pages only; a staff page marks its tab so the decks and player opened from it are not counted
         track = ("<script>try{sessionStorage.setItem('cv_staff','1')}catch(e){}</script>" if self.staff
                  else track_tag(self.cfg, self.p, 'site', week))
+        # staff: the tasks card stays on a past week (greyed); the public script hides a card after its deadline
+        if self.staff:
+            tjs1 = "if(n<0){ var c=el.closest('.np'); if(c&&el.closest('.tasks[data-keep]')){ c.classList.add('past'); el.querySelector('span').remove(); } return; }"
+            tjs2 = "document.querySelectorAll('.tasks[data-keep]').forEach(function(t){ if(!t.querySelector('.np:not(.past)')) t.classList.add('past'); });"
+        else:
+            tjs1 = "if(n<0){ var c=el.closest('.np'); if(c) c.hidden=true; return; }"
+            tjs2 = "document.querySelectorAll('.tasks').forEach(function(t){ if(!t.querySelector('.np:not([hidden])')) t.hidden=true; });"
         lic = 'חומרי הקורס ברישיון <a class="ln" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a>'
         return f'''<!doctype html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" sizes="32x32" href="{self.p}assets/img/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="{self.p}assets/img/favicon.png">
 <title>{esc(title)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&amp;family=Assistant:wght@400;500;600;700&amp;display=swap">
@@ -928,12 +950,12 @@ document.querySelectorAll('.menu').forEach(function(m){{
 document.querySelectorAll('.dl[data-due]').forEach(function(el){{
   var p=el.dataset.due.split('-'), due=new Date(+p[0],+p[1]-1,+p[2]), t=new Date(); t.setHours(0,0,0,0);
   var n=Math.round((due-t)/864e5), b=el.querySelector('b'), s=el.querySelector('span');
-  if(n<0){{ var c=el.closest('.np'); if(c) c.hidden=true; return; }}
+  {tjs1}
   else if(n===0){{ b.textContent='היום'; s.textContent=''; el.classList.add('soon'); }}
   else if(n===1){{ b.textContent='מחר'; s.textContent=''; el.classList.add('soon'); }}
   else {{ s.textContent='עוד'; b.textContent=n+' ימים'; if(n<=3) el.classList.add('soon'); }}
 }});
-document.querySelectorAll('.tasks').forEach(function(t){{ if(!t.querySelector('.np:not([hidden])')) t.hidden=true; }});
+{tjs2}
 // A hidden toy: click the portrait. With probability p he sneezes (a Bernoulli trial, of course); otherwise he yawns and says something.
 document.querySelectorAll('.eng.egg').forEach(function(fig){{
   var cfg=JSON.parse(fig.dataset.egg), n=0, k=0, last=-1, timer=null, ft=[], bub=document.createElement('div');
@@ -989,7 +1011,10 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
         tasks = self.tasks(next((x for x in opened if x['n'] == cur), None))
         for w in opened:
             body = self.menu(w['n'], cur, open_ns) + self.week_article(w, open_ns)
-            self.files.write(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body, tasks, w['n']), f'{pre}week-{w["n"]}.html')
+            wt = tasks
+            if self.staff and cur:  # staff: the tasks of the week being viewed
+                wt = self.tasks(w, 'cur' if w['n'] == cur else 'past' if w['n'] < cur else 'future')
+            self.files.write(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body, wt, w['n']), f'{pre}week-{w["n"]}.html')
         if cur:
             w = next(x for x in opened if x['n'] == cur)
             body = self.menu(cur, cur, open_ns) + self.week_article(w, open_ns)
