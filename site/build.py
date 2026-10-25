@@ -784,6 +784,10 @@ class Site:
         if practice:
             cols += (f'<section class="mcard" aria-label="תרגול"><div class="mh"><h2 class="fr">תרגול</h2><span>{day_dm(w.get("practice"))}</span></div>'
                      f'{pdecks}{gp}</section>')
+        elif w.get('practice') and any(self.kind(it) in ('T', 'B') and it['code'] not in self.published for it in w.get('items', [])):
+            # the practice session's materials are not published yet: keep its place
+            cols += (f'<section class="mcard" aria-label="תרגול"><div class="mh"><h2 class="fr">תרגול</h2><span>{day_dm(w.get("practice"))}</span></div>'
+                     f'<p class="ms soonp">החומרים יפורסמו בקרוב</p></section>')
         cols = f'<div class="cols">{cols}</div>' if cols else ''
         nxt = ''
         prev = [x for x in self.weeks if x['n'] < n and x['n'] in open_ns]
@@ -853,13 +857,17 @@ class Site:
                 hw_note.append(esc(f'תאריך אחרון להגשה: יום {DAYS[y.weekday()]} {y.day}.{y.month}' + (f' ב-{hw_at}' if hw_at else '')))
             hw_note.append(esc(self.cfg.get('task_notes', {}).get('hw', 'הגשה מקוונת: צילום או סריקה דרך ה-Moodle')))
             cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s))
+        # a task that exists in the week but is not published yet: "details soon" (hw is handed out in the practice session)
+        live = [it for it in w.get('items', []) if it['code'] != 'TO.DO' and self.kind(it) not in NEVER_KINDS]
+        soon_card = lambda label: (f'<div class="np"><div class="nph"><span class="nk">{label}</span></div><p class="ttext soonp">פרטים בקרוב</p></div>')
+        if not reading and any(self.kind(it) in ('H', 'R') for it in live):
+            cards.insert(0, soon_card('מטלת קריאה שבועית'))
+        if not hw and any(self.kind(it) == 'B' for it in live):
+            cards.append(soon_card('מטלת תרגול שבועית'))
         if not cards:
             return ''
-        if self.staff:  # staff: per-week heading, never hidden (a passed deadline says so instead of the countdown)
-            return (f'<section class="tasks card" data-keep aria-label="מטלות לשבוע {w["n"]}">'
-                    f'<h2 class="fr tasksh">מטלות לשבוע {w["n"]}</h2><div class="ng">{"".join(cards)}</div></section>')
-        return (f'<section class="tasks card" aria-label="מטלות קרובות"><h2 class="fr tasksh">מטלות קרובות</h2>'
-                f'<div class="ng">{"".join(cards)}</div></section>')
+        return (f'<section class="tasks card" aria-label="מטלות לשבוע {w["n"]}">'
+                f'<h2 class="fr tasksh">מטלות לשבוע {w["n"]}</h2><div class="ng">{"".join(cards)}</div></section>')
 
     def task_card(self, label, when, text, note, due, go=''):
         """One upcoming task: label and date, a large countdown (filled in by the page's script), one sentence."""
@@ -896,13 +904,8 @@ class Site:
         # statistics: public pages only; a staff page marks its tab so the decks and player opened from it are not counted
         track = ("<script>try{sessionStorage.setItem('cv_staff','1')}catch(e){}</script>" if self.staff
                  else track_tag(self.cfg, self.p, 'site', week))
-        # staff: a passed deadline says so (the card stays); the public script hides a card after its deadline
-        if self.staff:
-            tjs1 = "if(n<0){ b.textContent='תאריך ההגשה עבר'; s.textContent=''; el.classList.add('over'); return; }"
-            tjs2 = ""
-        else:
-            tjs1 = "if(n<0){ var c=el.closest('.np'); if(c) c.hidden=true; return; }"
-            tjs2 = "document.querySelectorAll('.tasks').forEach(function(t){ if(!t.querySelector('.np:not([hidden])')) t.hidden=true; });"
+        # a passed deadline says so (the card stays) instead of the countdown
+        tjs1 = "if(n<0){ b.textContent='תאריך ההגשה עבר'; s.textContent=''; el.classList.add('over'); return; }"
         lic = 'חומרי הקורס ברישיון <a class="ln" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a>'
         return f'''<!doctype html>
 <html lang="he" dir="rtl">
@@ -951,7 +954,6 @@ document.querySelectorAll('.dl[data-due]').forEach(function(el){{
   else if(n===1){{ b.textContent='מחר'; s.textContent=''; el.classList.add('soon'); }}
   else {{ s.textContent='עוד'; b.textContent=n+' ימים'; if(n<=3) el.classList.add('soon'); }}
 }});
-{tjs2}
 // A hidden toy: click the portrait. With probability p he sneezes (a Bernoulli trial, of course); otherwise he yawns and says something.
 document.querySelectorAll('.eng.egg').forEach(function(fig){{
   var cfg=JSON.parse(fig.dataset.egg), n=0, k=0, last=-1, timer=null, ft=[], bub=document.createElement('div');
@@ -1008,7 +1010,7 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
         for w in opened:
             body = self.menu(w['n'], cur, open_ns) + self.week_article(w, open_ns)
             wt = tasks
-            if self.staff and cur:  # staff: the tasks of the week being viewed
+            if cur:  # the tasks of the week being viewed
                 wt = self.tasks(w, 'future' if w['n'] > cur else 'cur')
             self.files.write(self.page(f'שבוע {w["n"]} · {course}', w['unit'], body, wt, w['n']), f'{pre}week-{w["n"]}.html')
         if cur:

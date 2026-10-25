@@ -12,7 +12,8 @@ W2.K2 · המשחק של דף העבודה: גשושיות ל-Kepler-62f.
 בכל משימה משוגרות 8 גשושיות. כל אחת מתרסקת בהסתברות 1-RETURN_RATE (ואז אין ממנה מידע), ואם כולן התרסקו מגרילים מחדש, כך שחוזרות בין 1 ל-8;
 כל גשושית שחוזרת מדווחת מים בהסתברות TRUE_WATER.
 ניווט: חץ שמאלה / רווח / PageDown = הכפתור הראשי (קדימה), חץ ימינה / PageUp = אחורה.
-תמונות (ליד הקובץ): W2_K2 Kepler-62f.jpg, W2_K2 Lyra.jpg, W2_K2 גלקסיה.jpg. בלעדיהן המשחק עובד עם כוכב לכת מצויר.
+תמונות (ליד הקובץ): W2_K2 Kepler-62f.jpg, W2_K2 Lyra.jpg, W2_K2 גלקסיה.jpg, ו-W2_K2 דוח משימה.png
+(המסגרת "משימה I" חתוכה מהעמוד הראשון של ה-PDF; כשהדף משתנה, חותכים אותה מחדש). בלעדיהן המשחק עובד עם כוכב לכת מצויר.
 -->
 <style>
 :root {
@@ -148,6 +149,40 @@ h2 { font-size: 2em; font-weight: 700; margin-bottom: .6em; }
   font-family: var(--display); font-weight: 700; font-size: .85em; display: grid; place-items: center;
 }
 
+.prep { width: min(100%, 56em); max-width: none; }
+.sheet { margin: 1.2em auto 0; padding: 0; }
+.sheet img {
+  display: block; width: 100%; max-height: 46vh; object-fit: contain; border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 18px 50px rgba(0,0,0,.6), 0 0 40px rgba(108,212,255,.15);
+}
+
+.foot-go { display: flex; align-items: center; gap: .9em; }
+.guide { display: grid; grid-template-columns: 1fr 1.45fr; gap: 2.6em; align-items: center; width: min(100%, 78em); }
+.guide h2 { font-size: 1.7em; margin-bottom: .5em; }
+.guide p { line-height: 1.5; margin: 0 0 .7em; }
+.guide .note { color: var(--soft); font-size: .88em; }
+.guide .big { font-family: var(--display); font-weight: 800; font-size: 1.8em; margin: .2em 0 .5em; }
+.guide .big .w { color: var(--water); }
+.guide .big .l { color: var(--land); }
+.gstep > * { animation: rise .55s cubic-bezier(.2,.8,.2,1) both; }
+.gstep > :nth-child(2) { animation-delay: .06s; }
+.gstep > :nth-child(3) { animation-delay: .12s; }
+.gstep > :nth-child(n+4) { animation-delay: .18s; }
+.formula {
+  font-family: "Cambria Math", "Times New Roman", serif; font-size: 1.3em; text-align: center;
+  background: var(--glass); border: 1px solid var(--line); border-radius: 12px; padding: .5em .8em; margin: .2em 0 .8em;
+}
+.pw sup { font-family: var(--body); font-size: .72em; color: var(--amber); font-weight: 700; margin-inline-start: .1em; }
+.guide .sheet { margin: 0; }
+.sheet-in { position: relative; }
+.sheet-in img { display: block; width: 100%; border-radius: 6px; box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 18px 50px rgba(0,0,0,.6); }
+.hl {
+  position: absolute; border: 3px solid var(--amber); border-radius: 8px;
+  box-shadow: 0 0 18px rgba(255, 176, 84, .75), inset 0 0 0 9999px rgba(255, 176, 84, .08);
+  animation: hl 1.6s ease-in-out infinite;
+}
+@keyframes hl { 50% { box-shadow: 0 0 6px rgba(255, 176, 84, .4), inset 0 0 0 9999px rgba(255, 176, 84, .03); } }
+
 .split { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3em; align-items: center; width: min(100%, 72em); }
 .text ul { list-style: none; margin: 0; padding: 0; }
 .text li { position: relative; padding-inline-start: 1.5em; margin: 0 0 .9em; line-height: 1.5; font-size: 1.12em; }
@@ -250,7 +285,7 @@ h2 { font-size: 2em; font-weight: 700; margin-bottom: .6em; }
 
 @media (max-width: 900px) {
   body { font-size: 15px; overflow-y: auto; }
-  .split, .mission { grid-template-columns: 1fr; gap: 1.2em; }
+  .split, .mission, .guide { grid-template-columns: 1fr; gap: 1.2em; }
   .cells { grid-template-columns: 1fr 1fr; }
   .screen { padding: 4.5em 1.2em 5.5em; overflow-y: auto; align-items: flex-start; }
   h1 { font-size: 2.4em; }
@@ -340,15 +375,30 @@ h2 { font-size: 2em; font-weight: 700; margin-bottom: .6em; }
     </div>
   </section>
 
+  <section class="screen" data-kind="prep" data-bg="galaxy">
+    <div class="center prep rise">
+      <p class="kicker">דוח משימה</p>
+      <h2>הכינו את דוח המשימה הראשונה</h2>
+      <p>מצאו בדף את המסגרת "משימה I" והניחו אותה לפניכם. תמלאו אותה בזמן שהגשושיות מדווחות.</p>
+      <figure class="sheet"><img src="W2_K2 דוח משימה.png" alt="המסגרת משימה I בדף העבודה" onerror="this.closest('figure').hidden = true"></figure>
+    </div>
+  </section>
+
   <section class="screen" data-kind="mission" data-name="משימה I"></section>
+
+  <section class="screen" data-kind="guide"></section>
 
   <section class="screen" data-kind="pass" data-bg="galaxy" data-next="למשימה II"></section>
 
   <section class="screen" data-kind="mission" data-name="משימה II"></section>
 
+  <section class="screen" data-kind="guide"></section>
+
   <section class="screen" data-kind="pass" data-bg="galaxy" data-next="למשימה III"></section>
 
   <section class="screen" data-kind="mission" data-name="משימה III"></section>
+
+  <section class="screen" data-kind="guide"></section>
 
   <section class="screen" data-kind="end" data-bg="galaxy">
     <div class="center rise">
@@ -361,7 +411,10 @@ h2 { font-size: 2em; font-weight: 700; margin-bottom: .6em; }
 
 <footer class="foot">
   <button class="btn ghost" id="back" type="button">חזרה</button>
-  <button class="btn primary" id="primary" type="button"></button>
+  <div class="foot-go">
+    <button class="btn ghost" id="skip" type="button">דלגו על ההסבר</button>
+    <button class="btn primary" id="primary" type="button"></button>
+  </div>
 </footer>
 
 <script>
@@ -547,26 +600,87 @@ h2 { font-size: 2em; font-weight: 700; margin-bottom: .6em; }
     res.innerHTML =
       '<p class="tally"><span class="w">מים ' + w + '</span><span class="sep">·</span><span class="l">יבשה ' + l + '</span></p>' +
       '<p class="returned">' + (n === 1 ? 'חזרה גשושית אחת' : 'חזרו ' + n + ' גשושיות') + ' מתוך ' + PROBES + '</p>' +
-      '<p class="todo">עדכנו את הדף כדי לקבל את ההתפלגות הפוסטריורית לאחוז המים על <bdi>Kepler-62f</bdi>. כשתסיימו, לחצו המשך.</p>';
+      '<p class="todo">רשמו בדף, במסגרת "' + sc.dataset.name + '": <b>מים ' + w + '</b>, <b>יבשה ' + l + '</b>. ' +
+      'אחר כך לחצו המשך, ונעבור צעד אחר צעד על עדכון ה-posterior לאחוז המים על <bdi>Kepler-62f</bdi>.</p>';
     res.hidden = false;
+    sc.counts = { w: w, l: l };
     sc.state = 'done';
     update();
+  }
+
+  // ── how to fill the page: six steps after each mission, on the mission's own numbers ──
+  // Boxes are [left, top, right, bottom] in % of "W2_K2 דוח משימה.png" (the "משימה I" frame of the PDF).
+  var BOX = {
+    names: [3, 5, 38.5, 19], data: [53, 17.5, 96.8, 28.5],
+    prior: [18.5, 38.3, 96.8, 55], likelihood: [18.5, 54.6, 96.8, 71], posterior: [18.5, 70.6, 96.8, 87.5],
+    evidence: [3, 43, 18, 81.5]
+  };
+  var GUIDE_STEPS = 6;
+  function pow(b, e) { return '<span class="pw">' + b + '<sup>' + e + '</sup></span>'; }
+  function formula(html) { return '<div class="formula" dir="ltr">' + html + '</div>'; }
+
+  // No worked numbers from here on: students work out the likelihood, Evidence and posterior themselves.
+  function guideSteps(m, R, w, l) {
+    return [
+      { title: 'שמות הזוג', box: ['names'],
+        html: '<p>כתבו את השמות שלכם בראש המסגרת "' + R + '".</p>' },
+      { title: 'מים ויבשה', box: ['data'],
+        html: '<p>רשמו מה דיווחו הגשושיות שחזרו:</p><p class="big"><span class="w">מים ' + w + '</span> · <span class="l">יבשה ' + l + '</span></p>' +
+              '<p class="note">גשושיות שהתרסקו לא נכנסות לחישוב.</p>' },
+      { title: '<bdi dir="ltr">prior · P(θ)</bdi>', box: ['prior'],
+        html: '<p>מה חשבנו על כל ערך של אחוז המים לפני הנתונים של המשימה הזו.</p>' +
+              '<p class="note">' + (m === 1
+                ? 'במשימה I עוד אין לנו שום מידע, ולכן לכל ערך אותו סיכוי. זה כבר מודפס בדף.'
+                : 'כאן זה ה-posterior של הזוג שלפניכם: מה שהוא למד הוא נקודת הפתיחה שלכם.') + '</p>' },
+      { title: '<bdi dir="ltr">likelihood · P(y | θ)</bdi>', box: ['likelihood'],
+        html: '<p>בכל עמודה: עד כמה הנתונים שלכם צפויים, אילו זה היה אחוז המים האמיתי.</p>' +
+              formula('P(y | θ) = ' + pow('θ', 'מים') + ' × ' + pow('(1 − θ)', 'יבשה')) +
+              '<p class="note">מים ויבשה הם המספרים שרשמתם בדף. מספר בחזקת 0 שווה 1.</p>' },
+      { title: 'מקדם נורמליזציה · <bdi dir="ltr">Evidence</bdi>', box: ['prior', 'likelihood', 'evidence'],
+        html: '<p>בכל עמודה הכפילו prior × likelihood, וחברו את שש המכפלות. את הסכום כתבו בריבוע ה-<bdi dir="ltr">Evidence</bdi>.</p>' +
+              formula('Evidence = Σ P(θ) · P(y | θ)') +
+              '<p class="note">המשמעות: עד כמה הנתונים שלכם צפויים בסך הכול, כשמביאים בחשבון את כל ערכי θ לפי ה-prior.</p>' },
+      { title: '<bdi dir="ltr">posterior · P(θ | y)</bdi>', box: ['posterior'],
+        html: '<p>בכל עמודה: המכפלה של העמודה, חלקי ה-<bdi dir="ltr">Evidence</bdi>.</p>' +
+              formula('P(θ | y) = P(θ) · P(y | θ) / Evidence') +
+              '<p class="note">בדיקה: ששת ה-posterior יחד צריכים לצאת 1.</p>' }
+    ];
+  }
+
+  function renderGuide(sc, step) {
+    var ms = missions[$$('.screen[data-kind="guide"]').indexOf(sc)];
+    var m = missions.indexOf(ms) + 1, c = ms.counts || { w: 0, l: 0 };
+    var st = guideSteps(m, ms.dataset.name, c.w, c.l)[step];
+    sc.step = step;
+    sc.innerHTML =
+      '<div class="guide">' +
+        '<div class="gstep">' +
+          '<p class="kicker">איך ממלאים את הדף · צעד ' + (step + 1) + ' מתוך ' + GUIDE_STEPS + '</p>' +
+          '<h2>' + st.title + '</h2>' + st.html +
+        '</div>' +
+        '<figure class="sheet"><div class="sheet-in"><img src="W2_K2 דוח משימה.png" alt="המסגרת ' + ms.dataset.name + ' בדף העבודה">' +
+          st.box.map(function (k) { var b = BOX[k]; return '<span class="hl" style="left:' + b[0] + '%;top:' + b[1] + '%;width:' + (b[2] - b[0]) + '%;height:' + (b[3] - b[1]) + '%"></span>'; }).join('') +
+        '</div></figure>' +
+      '</div>';
   }
 
   // ── navigation ──
   var screens = $$('.screen'), missions = $$('.screen[data-kind="mission"]');
   var current = 0, busy = false;
-  var primary = $('#primary'), back = $('#back');
+  var primary = $('#primary'), back = $('#back'), skip = $('#skip');
 
   function update() {
     var sc = screens[current], kind = sc.dataset.kind;
     back.hidden = current === 0;
     primary.hidden = kind === 'end';
+    skip.hidden = !(kind === 'guide' && sc.step < GUIDE_STEPS - 1);
     primary.classList.toggle('launch', kind === 'mission' && sc.state === 'ready');
     primary.disabled = kind === 'mission' && sc.state === 'flying';
     primary.textContent =
       kind === 'start' ? 'התחילו את המשימה' :
       kind === 'gate' ? 'התחל' :
+      kind === 'prep' ? 'מוכנים' :
+      kind === 'guide' ? (sc.step < GUIDE_STEPS - 1 ? 'הצעד הבא' : 'סיימנו, המשך') :
       kind === 'mission' ? (sc.state === 'ready' ? 'שגרו גשושיות' : sc.state === 'flying' ? 'הגשושיות בדרך…' : 'המשך') :
       'המשך';
     document.body.classList.toggle('bg-galaxy', sc.dataset.bg === 'galaxy');
@@ -591,6 +705,7 @@ h2 { font-size: 2em; font-weight: 700; margin-bottom: .6em; }
     screens.forEach(function (sc, j) { sc.classList.toggle('active', j === i); });
     $$('.rise', screens[i]).forEach(function (r) { Array.prototype.forEach.call(r.children, function (c, k) { c.style.setProperty('--i', k); }); });
     countUp(screens[i]);
+    if (screens[i].dataset.kind === 'guide') renderGuide(screens[i], 0);
     current = i;
     update();
   }
@@ -614,11 +729,19 @@ h2 { font-size: 2em; font-weight: 700; margin-bottom: .6em; }
     var sc = screens[current];
     if (sc.dataset.kind === 'mission' && sc.state === 'ready') { launch(sc); return; }
     if (sc.dataset.kind === 'mission' && sc.state === 'flying') return;
+    if (sc.dataset.kind === 'guide' && sc.step < GUIDE_STEPS - 1) { renderGuide(sc, sc.step + 1); update(); return; }
     go(current + 1);
   }
 
+  function prev() {
+    var sc = screens[current];
+    if (sc.dataset.kind === 'guide' && sc.step > 0) { renderGuide(sc, sc.step - 1); update(); return; }
+    go(current - 1);
+  }
+
   primary.addEventListener('click', function () { primary.blur(); next(); });
-  back.addEventListener('click', function () { back.blur(); go(current - 1); });
+  back.addEventListener('click', function () { back.blur(); prev(); });
+  skip.addEventListener('click', function () { skip.blur(); go(current + 1); });
   $('#fullscreen').addEventListener('click', function () {
     if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
   });
@@ -626,7 +749,7 @@ h2 { font-size: 2em; font-weight: 700; margin-bottom: .6em; }
   addEventListener('keydown', function (e) {
     var k = e.key;
     if (k === 'ArrowLeft' || k === 'PageDown' || k === 'Enter' || (k === ' ' && !e.shiftKey)) { e.preventDefault(); if (!primary.hidden) next(); }
-    else if (k === 'ArrowRight' || k === 'PageUp' || (k === ' ' && e.shiftKey)) { e.preventDefault(); go(current - 1); }
+    else if (k === 'ArrowRight' || k === 'PageUp' || (k === ' ' && e.shiftKey)) { e.preventDefault(); prev(); }
   });
 
   show(0);
