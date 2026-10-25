@@ -395,6 +395,7 @@ class Site:
         self.folder = folder                      # '' = repo root (public) or the staff folder
         self.p = '../' if folder else ''          # prefix from a page to the shared assets/, decks/, files/
         self.staff = staff
+        self.cur = None
         self.decks_dir = slides / 'כלים' / 'צפייה'
         self.weeks = [w for w in self.data['weeks'] if w.get('lecture')]
         self.units = {u['id']: u for u in self.data['units']}
@@ -470,10 +471,10 @@ class Site:
         return link, grab(r'<h1 class="title"[^>]*>(.*?)</h1>'), grab(r'<p class="subtitle"[^>]*>(.*?)</p>')
 
     def deck_pdf(self, code):
-        """For the weeks in site.json deck_pdf_weeks (both versions): a PDF of the deck, printed from the copy in the repo.
+        """Every deck (not a class activity) of the current and earlier weeks gets a PDF, in both versions: printed from the copy in the repo.
         Redone only when the deck in the slides folder changes (the PDF carries its time). Returns the href, or None."""
         m = re.match(r'W(\d+)\.', code)
-        if not (m and int(m.group(1)) in self.cfg.get('deck_pdf_weeks', [])):
+        if not m or int(m.group(1)) > (self.cur or 0):  # weeks not yet current get theirs when they become current
             return None
         src = self.deck_for(code)
         name = code.replace('.', '_')
@@ -1011,6 +1012,7 @@ document.querySelectorAll('.tlogf').forEach(function(f){{
         # "This week": the latest open week whose lecture is at most 6 days away; before that, the first open week.
         soon = [w['n'] for w in opened if d(w['lecture']) <= self.today + dt.timedelta(days=6)]
         cur = soon[-1] if soon else (open_ns[0] if open_ns else None)
+        self.cur = cur
         course = self.data['course']['title']
         tasks = self.tasks(next((x for x in opened if x['n'] == cur), None))
         for w in opened:
