@@ -845,7 +845,7 @@ class Site:
             note = [esc(due)] if due else []
             if url:
                 note.append(f'הגשה מקוונת: <a class="ln" href="{esc(url)}" target="_blank" rel="noopener">טופס ההגשה</a>')
-            cards.append(self.task_card('מטלת קריאה שבועית', '', text, note, nl))
+            cards.append(self.task_card('מטלת קריאה שבועית', '', text, note, nl, frm=w.get('lecture')))
         for it in hw:
             m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
             text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)}: {m.group(2)}.' if m else f'{self.clean_title(it)}.')
@@ -856,7 +856,7 @@ class Site:
             if y:
                 hw_note.append(esc(f'תאריך אחרון להגשה: יום {DAYS[y.weekday()]} {y.day}.{y.month}' + (f' ב-{hw_at}' if hw_at else '')))
             hw_note.append(esc(self.cfg.get('task_notes', {}).get('hw', 'הגשה מקוונת: צילום או סריקה דרך ה-Moodle')))
-            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s))
+            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s, frm=w.get('practice') or w.get('lecture')))
         # a task that exists in the week but is not published yet: "details soon" (hw is handed out in the practice session)
         live = [it for it in w.get('items', []) if it['code'] != 'TO.DO' and self.kind(it) not in NEVER_KINDS]
         soon_card = lambda label: (f'<div class="np"><div class="nph"><span class="nk">{label}</span></div><p class="ttext soonp">פרטים בקרוב</p></div>')
@@ -869,13 +869,14 @@ class Site:
         return (f'<section class="tasks card" aria-label="מטלות לשבוע {w["n"]}">'
                 f'<h2 class="fr tasksh">מטלות לשבוע {w["n"]}</h2><div class="ng">{"".join(cards)}</div></section>')
 
-    def task_card(self, label, when, text, note, due, go=''):
+    def task_card(self, label, when, text, note, due, go='', frm=None):
         """One upcoming task: label and date, a large countdown (filled in by the page's script), one sentence."""
         x = d(due)
         dl = f'<span class="dl" data-due="{x.isoformat()}"><span></span><b>{x.day}.{x.month}</b></span>' if x else ''
         lines = [esc(note)] if isinstance(note, str) else note  # a list holds lines that are already html
         note_html = f'<p class="ms tnote">{"<br>".join(lines)}</p>' if lines and any(lines) else ''
-        return (f'<div class="np"><div class="nph"><span class="nk">{esc(label)}{" · " + esc(when) if when else ""}</span>{dl}</div>'
+        fa = f' data-from="{frm}"' if frm else ''  # not handed out before this date: the page shows "details soon"
+        return (f'<div class="np"{fa}><div class="nph"><span class="nk">{esc(label)}{" · " + esc(when) if when else ""}</span>{dl}</div>'
                 f'<p class="ttext">{esc(text)}</p>{go}{note_html}</div>')
 
     def np_card(self, link, pic, label, title, sub, when):
@@ -944,6 +945,11 @@ document.querySelectorAll('.menu').forEach(function(m){{
     var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null;
     if(Math.abs(dx)>40&&Math.abs(dx)>1.5*Math.abs(dy)){{ dx>0?show(i+1,1):show(i-1,-1); }} }},{{passive:true}});
   show(i);
+}});
+// A task is handed out on its session's day (reading: the lecture, homework: the practice); before that, "details soon".
+document.querySelectorAll('.np[data-from]').forEach(function(c){{
+  var p=c.dataset.from.split('-'), t=new Date(); t.setHours(0,0,0,0);
+  if(t<new Date(+p[0],+p[1]-1,+p[2])) c.innerHTML='<div class="nph"><span class="nk">'+c.querySelector('.nk').textContent+'</span></div><p class="ttext soonp">פרטים בקרוב</p>';
 }});
 // Upcoming tasks: a large countdown to each deadline (computed in the reader's browser, so it is always current).
 document.querySelectorAll('.dl[data-due]').forEach(function(el){{

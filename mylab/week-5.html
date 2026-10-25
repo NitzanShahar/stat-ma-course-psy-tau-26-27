@@ -37,6 +37,11 @@ document.querySelectorAll('.menu').forEach(function(m){
     if(Math.abs(dx)>40&&Math.abs(dx)>1.5*Math.abs(dy)){ dx>0?show(i+1,1):show(i-1,-1); } },{passive:true});
   show(i);
 });
+// A task is handed out on its session's day (reading: the lecture, homework: the practice); before that, "details soon".
+document.querySelectorAll('.np[data-from]').forEach(function(c){
+  var p=c.dataset.from.split('-'), t=new Date(); t.setHours(0,0,0,0);
+  if(t<new Date(+p[0],+p[1]-1,+p[2])) c.innerHTML='<div class="nph"><span class="nk">'+c.querySelector('.nk').textContent+'</span></div><p class="ttext soonp">פרטים בקרוב</p>';
+});
 // Upcoming tasks: a large countdown to each deadline (computed in the reader's browser, so it is always current).
 document.querySelectorAll('.dl[data-due]').forEach(function(el){
   var p=el.dataset.due.split('-'), due=new Date(+p[0],+p[1]-1,+p[2]), t=new Date(); t.setHours(0,0,0,0);
