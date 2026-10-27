@@ -453,7 +453,7 @@ class Site:
                         out = out.replace(f'{name}/libs/', f'_libs/{sig}/')
             self.files.write(out, f'decks/{deck.name}')
             # Shared resources the deck refers to by name (images, the design folder).
-            refs = {unquote(v) for v in re.findall(r'(?:src|href|data-background-image|data-src)="([^"#?]+)', text)}
+            refs = {unquote(v) for v in re.findall(r'(?:src|href|data-background-image|data-src|data-audio)="([^"#?]+)', text)}
             refs |= {unquote(v) for v in re.findall(r'url\(["\']?([^"\')]+)', text)}
             for p in self.decks_dir.iterdir():
                 if p.suffix == '.html' or p.name.endswith('_files'):
