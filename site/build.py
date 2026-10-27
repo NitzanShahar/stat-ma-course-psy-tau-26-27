@@ -541,6 +541,8 @@ class Site:
         sub = self.cfg.get('subtitles', {}).get(it['code'], sub)
         more = []
         public_more = set(self.cfg.get('more_public', []))
+        if self.staff:  # labels listed in more_staff reach the staff version only
+            public_more |= set(self.cfg.get('more_staff', []))
         for m in it.get('more', []):
             lbl = m.get('label') or ''
             if m.get('href') and (lbl in public_more or lbl.split(':')[0].strip() in public_more):  # 'הקראה: ...' counts as 'הקראה'  # extra links are private unless their label is listed
