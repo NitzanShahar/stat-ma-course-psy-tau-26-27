@@ -859,7 +859,7 @@ class Site:
             if y:
                 hw_note.append(esc(f'תאריך אחרון להגשה: יום {DAYS[y.weekday()]} {y.day}.{y.month}' + (f' ב-{hw_at}' if hw_at else '')))
             hw_note.append(esc(self.cfg.get('task_notes', {}).get('hw', 'הגשה מקוונת: צילום או סריקה דרך ה-Moodle')))
-            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s, frm=w.get('practice') or w.get('lecture')))
+            cards.append(self.task_card('מטלת תרגול שבועית', '', text, hw_note, due_s, frm=self.cfg.get('task_from', {}).get(str(w['n']), {}).get('hw') or w.get('practice') or w.get('lecture')))
         # a task that exists in the week but is not published yet: "details soon" (hw is handed out in the practice session)
         live = [it for it in w.get('items', []) if it['code'] != 'TO.DO' and self.kind(it) not in NEVER_KINDS]
         soon_card = lambda label: (f'<div class="np"><div class="nph"><span class="nk">{label}</span></div><p class="ttext soonp">פרטים בקרוב</p></div>')
