@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="he"><head>
-<script src="_libs/8970b549a3/clipboard/clipboard.min.js"></script>
-<script src="_libs/8970b549a3/quarto-html/tabby.min.js"></script>
-<script src="_libs/8970b549a3/quarto-html/popper.min.js"></script>
-<script src="_libs/8970b549a3/quarto-html/tippy.umd.min.js"></script>
-<link href="_libs/8970b549a3/quarto-html/tippy.css" rel="stylesheet">
-<link href="_libs/8970b549a3/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="_libs/8970b549a3/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="_libs/15dac1806b/clipboard/clipboard.min.js"></script>
+<script src="_libs/15dac1806b/quarto-html/tabby.min.js"></script>
+<script src="_libs/15dac1806b/quarto-html/popper.min.js"></script>
+<script src="_libs/15dac1806b/quarto-html/tippy.umd.min.js"></script>
+<link href="_libs/15dac1806b/quarto-html/tippy.css" rel="stylesheet">
+<link href="_libs/15dac1806b/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="_libs/15dac1806b/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>מ-Laplace ל-Fisher ול-Neyman</title>
+  <title>הרקע ההיסטורי לתחילתה של הסטטיסטיקה השכיחותנית</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="_libs/8970b549a3/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="_libs/8970b549a3/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="_libs/15dac1806b/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="_libs/15dac1806b/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,11 +29,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="_libs/8970b549a3/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="_libs/8970b549a3/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="_libs/8970b549a3/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="_libs/8970b549a3/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="_libs/8970b549a3/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="_libs/15dac1806b/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="_libs/15dac1806b/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="_libs/15dac1806b/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="_libs/15dac1806b/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="_libs/15dac1806b/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -325,8 +325,8 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">מ-Laplace ל-Fisher ול-Neyman</h1>
-  <p class="subtitle">הקיר החישובי, משפט הגבול המרכזי והמהפכה השכיחותנית</p>
+  <h1 class="title">הרקע ההיסטורי לתחילתה של הסטטיסטיקה השכיחותנית</h1>
+  <p class="subtitle">משפט הגבול המרכזי, Fisher והגישה השכיחותנית, והגברת הטועמת תה</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="איפה-עצרנו" class="slide level2">
@@ -334,162 +334,150 @@
 <div>
 <ul>
 <li class="fragment">Bayes ו-Laplace הפכו את החץ של Bernoulli: מהנתונים אל הפרמטר.</li>
-<li class="fragment"><span class="term">posterior</span> ∝ <span class="term">likelihood</span> × <span class="term">prior</span>. כל תצפית מעבירה אמינות בין ערכים אפשריים של <span class="math inline">\(\theta\)</span>.</li>
-<li class="fragment">על הגלובוס קיבלנו <strong>עקומה שלמה</strong> על <span class="math inline">\(p\)</span>, וסיכמנו אותה ב-MAP, ברווח אמינות וב-PD.</li>
-<li class="fragment">היום: מה קרה לרעיון הזה ב-150 השנים שאחרי Laplace. ולמה רוב המאמרים שתקראו כתובים בשפה אחרת.</li>
+<li class="fragment"><span class="term">posterior</span> ∝ <span class="term">likelihood</span> × <span class="term">prior</span>: כל תצפית מזיזה אמינות בין ערכי <span class="math inline">\(\theta\)</span>.</li>
+<li class="fragment">היום: מה קרה לרעיון הזה ב-150 השנים שאחרי Laplace.</li>
 </ul>
 </div>
 </section>
-<section id="laplace-מול-הלידות-של-פריז" class="slide level2">
-<h2>Laplace מול הלידות של פריז</h2>
-<p>בפריז נרשמו <strong>251,527</strong> בנים ו-<strong>241,945</strong> בנות. העדפה של הטבע, או מקרה?</p>
-<div class="fragment ltr">
-<p><span class="math display">\[
-p\left(\theta \le \tfrac12 \;\middle|\; y\right)
-=
-\frac{\int_0^{1/2} \theta^{251527}\,(1-\theta)^{241945}\,d\theta}
-{\int_0^{1} \theta^{251527}\,(1-\theta)^{241945}\,d\theta}
-\]</span></p>
+<section id="laplace-ומשפט-הגבול-המרכזי" class="slide level2 part-gate">
+<h2>Laplace ומשפט הגבול המרכזי</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-title">Laplace ומשפט הגבול המרכזי</div>
+  <div class="gate-why">איך עוקפים חישוב בלתי אפשרי, ומה יצא מזה</div>
+</div>
+</section>
+<section id="laplace-ומשפט-הגבול-המרכזי-1" class="slide level2">
+<h2>Laplace ומשפט הגבול המרכזי</h2>
+<div class="centered-content">
+<p>בפריז נרשמו <strong>251,527</strong> בנים ו-<strong>241,945</strong> בנות (<span class="math inline">\(50.97\%\)</span> בנים). העדפה של הטבע, או מקרה?</p>
+<div class="fragment" style="display:flex; align-items:center; justify-content:center; gap:.6em; margin:.6em 0; font-size:.9em;">
+  <span>הסיכוי שהטבע <b>לא</b> מעדיף בנים</span>
+  <span>=</span>
+  <span style="display:inline-flex; flex-direction:column; align-items:center; text-align:center;">
+    <span style="padding:0 .5em .15em;">השטח מתחת לגבעה, משמאל ל-½</span>
+    <span style="border-top:2px solid var(--ink); padding:.15em .5em 0; align-self:stretch;">כל השטח מתחת לגבעה</span>
+  </span>
 </div>
 <div>
 <ul>
-<li class="fragment">זו נוסחת Bayes עם <span class="term">prior</span> אחיד. השאלה ברורה, והחשבון בלתי אפשרי.</li>
-<li class="fragment">למכנה יש פתרון מדויק, עם עצרות: המספר <span class="math inline">\(251527!\)</span> לבדו הוא בן <strong>1,249,160 ספרות</strong>.</li>
-<li class="fragment">בלי מחשב, בעיפרון. Laplace כתב ב-1774 שתורת הסיכויים היא מהחלקים הקשים ביותר באנליזה, “בשל הקושי להכפיף אותה לחישוב”.</li>
+<li class="fragment">זו נוסחת Bayes עם <span class="term">prior</span> אחיד: על כל בן כופלים ב-<span class="math inline">\(\theta\)</span>, ועל כל בת ב-<span class="math inline">\((1-\theta)\)</span>. חצי מיליון פעמים.</li>
+<li class="fragment">החשבון הישיר בלתי אפשרי: <span class="math inline">\(251527!\)</span> לבדו הוא בן <strong>1,249,160 ספרות</strong>.</li>
 </ul>
 </div>
-</section>
-<section id="הטריק-ליד-הפסגה-הכול-פעמון" class="slide level2">
-<h2>הטריק: ליד הפסגה הכול פעמון</h2>
-<div class="demo-panel">
-  <svg id="lap-svg" viewbox="0 0 1000 250" style="width:100%; height:auto; display:block;" aria-label="הגבעה של ה-likelihood והפעמון שמקרב אותה"></svg>
 </div>
+</section>
+<section id="laplace-ומשפט-הגבול-המרכזי-2" class="slide level2">
+<h2>Laplace ומשפט הגבול המרכזי</h2>
+<div class="centered-content">
+<div class="side-figure">
+<div>
+<div>
+<ul>
+<li class="fragment"><strong>1810:</strong> סכום או ממוצע של הרבה תרומות קטנות ובלתי תלויות מתפלג כפעמון, <strong>בלי קשר</strong> לצורה של כל תרומה.</li>
+<li class="fragment">שיעור הבנים הוא ממוצע: בן = 1, בת = 0. לכן <span class="math inline">\(\bar{X} = 50.97\%\)</span>.</li>
+<li class="fragment">המשפט: <span class="math inline">\(\bar{X}\)</span> מתפלג כפעמון סביב <span class="math inline">\(\theta\)</span>. Laplace הפך: <span class="math inline">\(\theta\)</span> מתפלג כפעמון סביב <span class="math inline">\(\bar{X}\)</span>.</li>
+<li class="fragment">פעמון הוא שני מספרים: <strong>הפסגה</strong>, <span class="math inline">\(\bar{X} = 50.97\%\)</span>, ו<strong>הרוחב</strong>, לפי <span class="math inline">\(1/\sqrt{n}\)</span>. בפריז: <span class="math inline">\(0.07\%\)</span>.</li>
+<li class="fragment">החצי רחוק מהפסגה 13.6 רוחבי פעמון. התשובה של Laplace (1781): הסיכוי שהטבע <strong>לא</strong> מעדיף בנים הוא בערך <span class="math inline">\(10^{-42}\)</span>.</li>
+</ul>
+</div>
+</div>
+<div>
+<svg id="lap-svg" viewbox="0 0 440 240" style="width:240px; height:auto; display:block;" aria-label="הגבעה והפעמון שמקרב אותה, עם הרבה נתונים"></svg>
 <script>
   (function () {
     const svg = document.getElementById('lap-svg');
     if (!svg) return;
-    // שני מקרים זה לצד זה: 6 מתוך 9, ו-600 מתוך 900. קו מלא: הגבעה המדויקת. מקווקו: הפעמון של Laplace.
-    function panel(x0, w, a, b, title) {
-      const n = a + b, m = a / n, s = Math.sqrt(m * (1 - m) / n), yb = 205, h = 150, G = 400;
-      const X = t => x0 + t * w;
-      const lf = t => a * Math.log(t) + b * Math.log(1 - t), top = lf(m);
-      let d = '', g = '';
-      for (let i = 1; i < G; i++) {
-        const t = i / G, f = Math.exp(lf(t) - top), q = Math.exp(-.5 * ((t - m) / s) ** 2);
-        d += (d ? 'L' : 'M') + X(t).toFixed(1) + ',' + (yb - f * h).toFixed(1);
-        g += (g ? 'L' : 'M') + X(t).toFixed(1) + ',' + (yb - q * h).toFixed(1);
-      }
-      return `<text x="${x0 + w / 2}" y="26" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ink)">${title}</text>
-        <line x1="${x0}" y1="${yb}" x2="${x0 + w}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
-        <path d="${d}" fill="none" stroke="var(--curve)" stroke-width="4"/>
-        <path d="${g}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="7 6"/>
-        <text x="${x0}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">0</text>
-        <text x="${x0 + w}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">1</text>
-        <text x="${x0 + w / 2}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">θ</text>`;
+    // 600 מתוך 900. קו מלא: הגבעה המדויקת. מקווקו: הפעמון של Laplace.
+    const a = 600, b = 300, n = a + b, m = a / n, s = Math.sqrt(m * (1 - m) / n), x0 = 20, w = 400, yb = 205, h = 185, G = 400;
+    const X = t => x0 + t * w;
+    const lf = t => a * Math.log(t) + b * Math.log(1 - t), top = lf(m);
+    let d = '', g = '';
+    for (let i = 1; i < G; i++) {
+      const t = i / G, f = Math.exp(lf(t) - top), q = Math.exp(-.5 * ((t - m) / s) ** 2);
+      d += (d ? 'L' : 'M') + X(t).toFixed(1) + ',' + (yb - f * h).toFixed(1);
+      g += (g ? 'L' : 'M') + X(t).toFixed(1) + ',' + (yb - q * h).toFixed(1);
     }
-    svg.innerHTML = panel(560, 400, 6, 3, 'מעט נתונים') + panel(40, 400, 600, 300, 'הרבה נתונים');
+    svg.innerHTML = `<line x1="${x0}" y1="${yb}" x2="${x0 + w}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+      <path d="${d}" fill="none" stroke="var(--curve)" stroke-width="5"/>
+      <path d="${g}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="8 7"/>
+      <text x="${x0}" y="${yb + 30}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">0</text>
+      <text x="${x0 + w}" y="${yb + 30}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">1</text>
+      <text x="${x0 + w / 2}" y="${yb + 30}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">θ</text>`;
   })();
 </script>
-<div>
-<ul>
-<li class="fragment">עם הרבה נתונים, הגבעה (אדום) צרה מאוד, ובקרבת הפסגה היא כמעט זהה לפעמון (מקווקו).</li>
-<li class="fragment">את השטח מתחת לפעמון יודעים לחשב. מספיקים שני מספרים: <strong>איפה הפסגה</strong> ו<strong>כמה היא רחבה</strong>.</li>
-<li class="fragment">כך הגיע Laplace לתשובה: הסיכוי שהטבע <strong>לא</strong> מעדיף בנים הוא בערך <span class="math inline">\(10^{-42}\)</span>.</li>
-</ul>
-</div>
-</section>
-<section id="משפט-הגבול-המרכזי" class="slide level2">
-<h2>1810: משפט הגבול המרכזי</h2>
-<div class="side-figure">
-<div>
-<div>
-<ul>
-<li class="fragment">Laplace הבין שהפעמון לא שייך רק לאינטגרל הזה.</li>
-<li class="fragment">בכל פעם שגודל הוא <strong>סכום של הרבה תרומות קטנות ובלתי תלויות</strong>, הוא מתפלג בקירוב כפעמון.</li>
-<li class="fragment">זה נכון <strong>בלי קשר</strong> לצורת ההתפלגות של כל תרומה בנפרד.</li>
-<li class="fragment">ממוצע הוא סכום מחולק ב-<span class="math inline">\(n\)</span>. גם שיעור ההצלחות הוא ממוצע: של אפסים ואחדים.</li>
-</ul>
-</div>
-</div>
-<div>
-<p><img data-src="W3_V1%20Laplace%201814%20עמ%2080.png" width="430"></p>
 <div class="fig-caption">
-<p>Laplace, <em>A Philosophical Essay on Probabilities</em>, 1814, עמ’ 80</p>
+<p>אדום: הגבעה. מקווקו: פעמון.</p>
 </div>
 </div>
 </div>
-<div class="fragment">
-<blockquote>
-<p>[…] אפשר לקבוע את ההסתברות שהשגיאה של התוצאה נמצאת בגבולות שנקבעו, <strong>יהא אשר יהא חוק ההסתברות של השגיאות החלקיות</strong>.</p>
-</blockquote>
 </div>
 </section>
-<section id="מה-המשפט-אומר" class="slide level2">
-<h2>מה המשפט אומר</h2>
-<p>נדמיין שחוזרים על אותו מחקר שוב ושוב, ובכל פעם מחשבים ממוצע.</p>
+<section id="laplace-ומשפט-הגבול-המרכזי-3" class="slide level2">
+<h2>Laplace ומשפט הגבול המרכזי</h2>
+<div class="centered-content">
 <div>
 <ul>
-<li class="fragment"><strong>הצורה:</strong> הממוצעים מסתדרים בפעמון.</li>
-<li class="fragment"><strong>המרכז:</strong> הפעמון יושב על הערך האמיתי.</li>
-<li class="fragment"><strong>הרוחב:</strong> הפעמון צר יותר ככל ש-<span class="math inline">\(n\)</span> גדל, לפי <span class="math inline">\(1/\sqrt{n}\)</span>. פי ארבעה נתונים, חצי רוחב.</li>
-<li class="fragment">Bernoulli אמר <strong>שנגיע</strong> ליעד. המשפט של Laplace אומר <strong>איך נראות השגיאות</strong> בדרך אליו.</li>
+<li class="fragment">עם הרבה נתונים, ה-<span class="term">posterior</span> הוא פעמון צר, וה-<span class="term">prior</span> כמעט לא משנה.</li>
+<li class="fragment">אותו פעמון מתאר גם איך שיעור הבנים היה <strong>משתנה בין מדגמים חוזרים</strong>.</li>
+<li class="fragment">Laplace עצמו שם לב שבמדגמים גדולים אפשר לוותר על ה-<span class="term">prior</span>.</li>
+<li class="fragment"><strong>האירוניה: הכלי שנבנה לשרת את Bayes הפך לנשק העיקרי נגדו.</strong></li>
 </ul>
 </div>
-<div class="fragment soft-card">
-<p>הכד של Bernoulli (3 לבנים ל-2 שחורים, ודאות מוסרית של 1,000 ל-1): Bernoulli חישב <strong>25,550</strong> שליפות. עם הפעמון מספיקות בערך <strong>6,500</strong>.</p>
 </div>
 </section>
-<section id="האירוניה" class="slide level2">
-<h2>האירוניה</h2>
+<section id="fisher-והגישה-השכיחותנית" class="slide level2 part-gate">
+<h2>Fisher והגישה השכיחותנית</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span></div>
+  <div class="gate-title">Fisher והגישה השכיחותנית</div>
+  <div class="gate-why">סטטיסטיקה בלי prior</div>
+</div>
+</section>
+<section id="fisher-והגישה-השכיחותנית-1" class="slide level2">
+<h2>Fisher והגישה השכיחותנית</h2>
+<div class="centered-content">
 <div>
 <ul>
-<li class="fragment">עם הרבה נתונים, ה-<span class="term">posterior</span> הוא פעמון צר סביב הפסגה, וה-<span class="term">prior</span> כמעט לא משנה.</li>
-<li class="fragment">ואותו פעמון, עם אותה פסגה ואותו רוחב, מתאר גם איך שיעור הבנים היה <strong>משתנה בין מדגמים חוזרים</strong>.</li>
-<li class="fragment">שני המספרים עונים על שתי השאלות. Laplace עצמו שם לב שבמדגמים גדולים אפשר לוותר על ה-<span class="term">prior</span>.</li>
-<li class="fragment"><strong>הכלי שנבנה לשרת את Bayes הפך לנשק העיקרי נגדו.</strong></li>
+<li class="fragment">במאה ה-19 (George Boole, ‏John Venn) ובתחילת המאה ה-20 רצו סטטיסטיקה <strong>אובייקטיבית</strong>: אותם נתונים, אותה מסקנה, לכל חוקר.</li>
+<li class="fragment"><strong>טענה ראשונה:</strong> ה-<span class="term">prior</span> הוא דעה אישית, ואין לו מקום במדע.</li>
+<li class="fragment"><strong>טענה שנייה:</strong> גם <span class="term">prior</span> אחיד הוא בחירה. אחיד על הצלע של ריבוע <strong>אינו</strong> אחיד על השטח שלו.</li>
+<li class="fragment">אז מהו “חוסר ידיעה”? התשובה של Venn: להגדיר הסתברות מחדש.</li>
 </ul>
 </div>
-</section>
-<section id="הביקורת-על-bayes" class="slide level2">
-<h2>הביקורת על Bayes</h2>
-<div>
-<ul>
-<li class="fragment">במאה ה-19 (George Boole, ‏John Venn) וביתר שאת בתחילת המאה ה-20, הסטטיסטיקה רצתה להיות מדע <strong>אובייקטיבי</strong>: אותם נתונים, אותה מסקנה, לכל חוקר.</li>
-<li class="fragment"><strong>טענה ראשונה:</strong> ה-<span class="term">prior</span> הוא דעה אישית. אין לו מקום במדע.</li>
-<li class="fragment"><strong>טענה שנייה:</strong> גם ה-<span class="term">prior</span> האחיד של Laplace הוא בחירה. אם אין לי מושג מה אורך הצלע של ריבוע, אין לי מושג גם מה שטחו. אבל <span class="term">prior</span> אחיד על הצלע <strong>אינו</strong> אחיד על השטח.</li>
-<li class="fragment">אז מהי בכלל “חוסר ידיעה”? התשובה של Venn: להגדיר הסתברות מחדש.</li>
-</ul>
 </div>
 </section>
-<section id="היפוך-העולמות" class="slide level2 stacked-cards">
-<h2>היפוך העולמות</h2>
+<section id="fisher-והגישה-השכיחותנית-2" class="slide level2 stacked-cards">
+<h2>Fisher והגישה השכיחותנית</h2>
+<div class="centered-content">
 <div class="compare-card bayes fragment">
-<!-- -->
-<h3 id="bayesian">Bayesian</h3>
+<h3>
+Bayesian
+</h3>
 <ul>
-<li><span class="math inline">\(\theta\)</span> לא ידוע <strong>לנו</strong>, ולכן מותר לתאר את הידע עליו בהתפלגות.</li>
-<li>הסתברות = מידת ודאות.</li>
-<li>הנתונים שראינו קבועים. מה שמתעדכן הוא האמונה.</li>
+<li><span class="math inline">\(\theta\)</span> לא ידוע <strong>לנו</strong>, ולכן מתארים את הידע עליו בהתפלגות.</li>
+<li>הסתברות = מידת ודאות. הנתונים קבועים, והאמונה מתעדכנת.</li>
 </ul>
 </div>
 <div class="compare-card freq fragment">
-<!-- -->
-<h3 id="frequentist-שכיחותני">Frequentist (שכיחותני)</h3>
+<h3>
+Frequentist (שכיחותני)
+</h3>
 <ul>
-<li><span class="math inline">\(\theta\)</span> הוא עובדה אחת וקבועה. אין לו התפלגות, ואין משמעות לשאלה “מה הסיכוי ש-<span class="math inline">\(\theta = 0.5\)</span>”.</li>
-<li>הסתברות = <strong>שכיחות לאורך זמן</strong> של אירוע שחוזר על עצמו.</li>
-<li>מה שאקראי הוא <strong>המדגם</strong>: הגרלה אחת מתוך אינסוף מדגמים שיכולנו לקבל.</li>
+<li><span class="math inline">\(\theta\)</span> קבוע. אין לו התפלגות, ואין משמעות לשאלה “מה הסיכוי ש-<span class="math inline">\(\theta = 0.5\)</span>”.</li>
+<li>הסתברות = <strong>שכיחות לאורך זמן</strong>. מה שאקראי הוא <strong>המדגם</strong>: אחד מתוך אינסוף שיכולנו לקבל.</li>
 </ul>
 </div>
+</div>
 </section>
-<section id="ronald-fisher" class="slide level2">
-<h2>Ronald Fisher</h2>
+<section id="fisher-והגישה-השכיחותנית-3" class="slide level2">
+<h2>Fisher והגישה השכיחותנית</h2>
 <div class="side-figure">
 <div>
 <div>
 <ul>
-<li class="fragment">גנטיקאי ומתמטיקאי (1890–1962). בתחנת המחקר החקלאית Rothamsted, ‏1919–1933, המציא את תכנון הניסויים, ה-<span class="term">randomization</span> וה-<span class="term">ANOVA</span>.</li>
-<li class="fragment">עוקצני ועקשן. ניהל מלחמות אגו עם רוב עמיתיו.</li>
+<li class="fragment">Ronald Fisher, גנטיקאי ומתמטיקאי (1890–1962). ב-Rothamsted, ‏1919–1933, המציא את תכנון הניסויים, ה-<span class="term">randomization</span> וה-<span class="term">ANOVA</span>.</li>
+<li class="fragment">עוקצני ועקשן, במלחמה עם רוב עמיתיו.</li>
 <li class="fragment">המטרה שלו: הסקה מהנתונים <strong>בלי prior</strong>.</li>
 </ul>
 </div>
@@ -505,8 +493,8 @@ p\left(\theta \le \tfrac12 \;\middle|\; y\right)
 </div>
 </div>
 </section>
-<section id="mle-העיקרון" class="slide level2">
-<h2>MLE: העיקרון</h2>
+<section id="fisher-והגישה-השכיחותנית-4" class="slide level2">
+<h2>Fisher והגישה השכיחותנית</h2>
 <div class="demo-panel" style="max-width:640px; margin:0 auto; padding:6px 12px;">
   <svg viewbox="0 0 800 230" style="width:100%; height:auto; display:block;" aria-label="עקומת likelihood ושיא שלה">
     <line x1="40" y1="190" x2="760" y2="190" stroke="var(--ink)" stroke-width="2"></line>
@@ -520,207 +508,344 @@ p\left(\theta \le \tfrac12 \;\middle|\; y\right)
 </div>
 <div>
 <ul>
-<li class="fragment">Fisher לקח את מה שבניתם בשבוע הראשון: לכל ערך של <span class="math inline">\(\theta\)</span>, כמה הנתונים שראינו צפויים.</li>
-<li class="fragment">הוא נתן לזה את השם <span class="term">likelihood</span>, בכוונה: “כדי להבדיל אותה מהסתברות”.</li>
-<li class="fragment"><span class="term">Maximum Likelihood Estimate</span>: בוחרים את הערך שתחתיו <strong>הנתונים שראינו הכי צפויים</strong>. הפסגה, <span class="math inline">\(\hat\theta\)</span>.</li>
-<li class="fragment">Fisher התעקש שלא מחשבים את השטח מתחת לעקומה. היא לא התפלגות על <span class="math inline">\(\theta\)</span>. מסתכלים רק על <strong>איפה הפסגה</strong> ו<strong>כמה היא חדה</strong>.</li>
+<li class="fragment">Fisher לקח את מה שבניתם בשבוע הראשון: לכל ערך של <span class="math inline">\(\theta\)</span>, כמה הנתונים שראינו צפויים. הוא קרא לזה <span class="term">likelihood</span>, “כדי להבדיל אותה מהסתברות”.</li>
+<li class="fragment"><span class="term">Maximum Likelihood Estimate</span>: הערך שתחתיו <strong>הנתונים שראינו הכי צפויים</strong>. הפסגה, <span class="math inline">\(\hat\theta\)</span>.</li>
+<li class="fragment">לא מחשבים שטח: העקומה אינה התפלגות על <span class="math inline">\(\theta\)</span>. מסתכלים רק על <strong>הפסגה</strong> ועל <strong>החדות</strong>.</li>
 </ul>
 </div>
 </section>
-<section id="אותה-עקומה-שני-שימושים" class="slide level2">
-<h2>אותה עקומה, שני שימושים</h2>
+<section id="fisher-והגישה-השכיחותנית-5" class="slide level2">
+<h2>Fisher והגישה השכיחותנית</h2>
+<div class="centered-content">
 <div>
 <ul>
-<li class="fragment"><strong>Bayes:</strong> <span class="term">likelihood</span> × <span class="term">prior</span>, ואז מנרמלים. מקבלים התפלגות על <span class="math inline">\(\theta\)</span>.</li>
+<li class="fragment"><strong>Bayes:</strong> <span class="term">likelihood</span> × <span class="term">prior</span>, ומנרמלים. מקבלים התפלגות על <span class="math inline">\(\theta\)</span>.</li>
 <li class="fragment"><strong>Fisher:</strong> <span class="term">likelihood</span> בלבד. מחפשים את השיא.</li>
-<li class="fragment">עם <span class="term">prior</span> אחיד, ה-MAP מהגלובוס וה-MLE הם <strong>אותו מספר</strong>. ההבדל הוא במשמעות:
-<ul>
-<li class="fragment">MAP: הערך <strong>הסביר ביותר של <span class="math inline">\(\theta\)</span></strong>. משפט על הפרמטר.</li>
-<li class="fragment">MLE: הערך שתחתיו <strong>הנתונים</strong> הכי צפויים. משפט על הנתונים.</li>
-</ul></li>
-<li class="fragment">ויש גם הבדל מעשי: למצוא שיא זה לגזור ולהשוות לאפס. אלגברה של שורה. ה-<span class="term">posterior</span> דורש את האינטגרל ש-Laplace נתקע מולו.</li>
+<li class="fragment">עם <span class="term">prior</span> אחיד, MAP ו-MLE הם <strong>אותו מספר</strong>, במשמעות שונה: MAP הוא משפט על <strong>הפרמטר</strong>, MLE משפט על <strong>הנתונים</strong>.</li>
+<li class="fragment">ובמעשה: שיא מוצאים בשורת אלגברה. ה-<span class="term">posterior</span> דורש את האינטגרל ש-Laplace נתקע מולו.</li>
 </ul>
 </div>
+</div>
 </section>
-<section id="נקודה-אחת-לא-מספיקה" class="slide level2">
-<h2>נקודה אחת לא מספיקה</h2>
-<p>ה-MLE הוא מספר אחד. כמה אפשר לסמוך עליו? בלי <span class="term">prior</span> אין <span class="term">posterior</span>, ואין רוחב לתאר.</p>
-<div class="fragment">
-<div class="demo-panel" style="padding:6px 14px; max-width:820px; margin:0 auto;">
-  <svg viewbox="0 0 1000 260" style="width:100%; height:auto; display:block;" aria-label="התפלגות דגימה: θ קבוע, מדגמים רבים, אומדנים רבים">
-    <rect x="410" y="8" width="180" height="50" rx="12" fill="var(--hidden-bg)" stroke="var(--hidden)" stroke-width="2"></rect>
-    <text x="500" y="41" text-anchor="middle" font-size="22" font-weight="700" fill="var(--hidden)">θ קבוע</text>
-    <g font-size="17" fill="var(--seen)" text-anchor="middle">
-      <line x1="440" y1="58" x2="150" y2="104" stroke="var(--ink-faint)" stroke-width="2"></line>
-      <line x1="470" y1="58" x2="350" y2="104" stroke="var(--ink-faint)" stroke-width="2"></line>
-      <line x1="530" y1="58" x2="650" y2="104" stroke="var(--ink-faint)" stroke-width="2"></line>
-      <line x1="560" y1="58" x2="850" y2="104" stroke="var(--ink-faint)" stroke-width="2"></line>
-      <rect x="95" y="104" width="110" height="34" rx="8" fill="var(--seen-bg)" stroke="var(--seen)"></rect><text x="150" y="127">מדגם 1</text>
-      <rect x="295" y="104" width="110" height="34" rx="8" fill="var(--seen-bg)" stroke="var(--seen)"></rect><text x="350" y="127">מדגם 2</text>
-      <text x="500" y="127" fill="var(--ink-faint)" font-size="26">· · ·</text>
-      <rect x="595" y="104" width="110" height="34" rx="8" fill="var(--seen-bg)" stroke="var(--seen)"></rect><text x="650" y="127">מדגם 3</text>
-      <rect x="795" y="104" width="110" height="34" rx="8" fill="var(--seen-bg)" stroke="var(--seen)"></rect><text x="850" y="127">מדגם ∞</text>
-    </g>
-    <line x1="150" y1="138" x2="430" y2="176" stroke="var(--ink-faint)" stroke-width="1.5"></line>
-    <line x1="350" y1="138" x2="470" y2="176" stroke="var(--ink-faint)" stroke-width="1.5"></line>
-    <line x1="650" y1="138" x2="530" y2="176" stroke="var(--ink-faint)" stroke-width="1.5"></line>
-    <line x1="850" y1="138" x2="570" y2="176" stroke="var(--ink-faint)" stroke-width="1.5"></line>
-    <path d="M340,250 C430,250 450,180 500,180 C550,180 570,250 660,250 Z" fill="var(--curve-bg)" stroke="var(--curve)" stroke-width="3"></path>
-    <text x="780" y="236" text-anchor="middle" font-size="19" fill="var(--curve)" direction="rtl">האומדנים מכל המדגמים</text>
-  </svg>
-</div>
-</div>
+<section id="fisher-והגישה-השכיחותנית-6" class="slide level2">
+<h2>Fisher והגישה השכיחותנית</h2>
+<div class="centered-content">
+<p>ה-MLE הוא מספר אחד. כמה אפשר לסמוך עליו? בלי <span class="term">prior</span> אין <span class="term">posterior</span>.</p>
 <div>
 <ul>
-<li class="fragment">הפתרון השכיחותני: ניסוי מחשבה. <span class="math inline">\(\theta\)</span> קבוע, וחוזרים על הניסוי <strong>אינסוף פעמים</strong>. בכל פעם יוצא <span class="math inline">\(\hat\theta\)</span> אחר.</li>
-<li class="fragment">הפיזור של כל ה-<span class="math inline">\(\hat\theta\)</span> האלה הוא <span class="term">sampling distribution</span>. הצורה שלו ידועה בלי לחזור אף פעם: <strong>הפעמון של Laplace</strong>.</li>
+<li class="fragment"><strong>ניסוי מחשבה:</strong> <span class="math inline">\(\theta\)</span> קבוע, וחוזרים על הניסוי <strong>אינסוף פעמים</strong>. בכל פעם יוצא <span class="math inline">\(\hat\theta\)</span> אחר.</li>
+<li class="fragment">הפיזור של כל ה-<span class="math inline">\(\hat\theta\)</span> האלה הוא <span class="term">sampling distribution</span>. הצורה שלו ידועה בלי לחזור אף פעם: הפעמון של Laplace.</li>
+<li class="fragment"><strong>ערך p (Fisher):</strong> אם <span class="term">השערת האפס</span> נכונה, באיזה חלק מהחזרות נקבל נתונים קיצוניים לפחות כמו שלנו?</li>
+<li class="fragment">אצל Fisher זו ראיה רציפה, ו-0.05 הוא רק נקודת ייחוס נוחה.</li>
 </ul>
 </div>
+</div>
 </section>
-<section id="fisher-ערך-ה-p" class="slide level2">
-<h2>Fisher: ערך ה-p</h2>
+<section id="fisher-והגישה-השכיחותנית-7" class="slide level2">
+<h2>Fisher והגישה השכיחותנית</h2>
+<div class="centered-content">
 <div>
 <ul>
-<li class="fragment">מתחילים מ<span class="term">השערת אפס</span> (<span class="math inline">\(H_0\)</span>): למשל, אין העדפה, <span class="math inline">\(\theta = 0.5\)</span>.</li>
-<li class="fragment">שואלים: <strong>אם <span class="math inline">\(H_0\)</span> נכונה</strong>, עד כמה הנתונים שלנו מפתיעים?</li>
-<li class="fragment"><span class="term">p-value</span>: ההסתברות, בהנחה ש-<span class="math inline">\(H_0\)</span> נכונה, לקבל נתונים <strong>קיצוניים לפחות כמו</strong> אלה שראינו.</li>
-<li class="fragment">p קטן: או שקרה משהו נדיר, או ש-<span class="math inline">\(H_0\)</span> שגויה.</li>
-<li class="fragment">אצל Fisher זו <strong>ראיה רציפה</strong> שהחוקר שוקל, לא כלל החלטה.</li>
+<li class="fragment">Fisher שאל מה <strong>המדגם הזה</strong> מלמד אותנו. Neyman ו-Pearson (1933) שאלו איזה <strong>כלל החלטה</strong> יטעה הכי מעט <strong>לאורך זמן</strong>.</li>
+<li class="fragment">ספרי הלימוד של שנות ה-40 וה-50 תפרו את שתי הגישות ל-<span class="term">NHST</span>: ה-p של Fisher, עם סף 0.05 והחלטה בינארית של Neyman ו-Pearson, בלי <span class="math inline">\(H_1\)</span> ובלי <span class="term">power</span>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="הגברת-הטועמת-תה" class="slide level2 part-gate">
+<h2>הגברת הטועמת תה</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span></div>
+  <div class="gate-title">הגברת הטועמת תה</div>
+  <div class="gate-why">ניסוי של שמונה כוסות, וכל המושגים של היום בתוכו</div>
+</div>
+</section>
+<section id="הגברת-הטועמת-תה-1" class="slide level2">
+<h2>הגברת הטועמת תה</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment">Rothamsted, תחילת שנות ה-20. בהפסקת התה Fisher מגיש כוס לחוקרת האצות Muriel Bristol.</li>
+<li class="fragment">היא מסרבת: היא שותה רק כוס שבה <strong>החלב נמזג ראשון</strong>, ומרגישה את ההבדל בטעם.</li>
+<li class="fragment">איך בודקים טענה כזו, כך שכל חוקר יגיע מאותם נתונים <strong>לאותה מסקנה</strong>, בלי <span class="term">prior</span>?</li>
+<li class="fragment">Fisher הפך את הסיפור לפרק השני של <em>The Design of Experiments</em> (1935). תקראו אותו בדף ההיסטוריה.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="הגברת-הטועמת-תה-2" class="slide level2 example-slide">
+<h2>הגברת הטועמת תה</h2>
+<div>
+<ul>
+<li class="fragment">8 כוסות: ב-4 נמזג קודם החלב (M), וב-4 קודם התה (T). בכל השאר הן זהות.</li>
+<li class="fragment">הסדר נקבע <strong>בהגרלה</strong>. הגברת יודעת שיש 4 מכל סוג, ובוחרת את 4 כוסות ה-M.</li>
+<li class="fragment">התוצאה היא מספר אחד: כמה כוסות M היא זיהתה, מ-0 עד 4.</li>
+</ul>
+</div>
+<div class="demo-panel">
+  <svg id="tea-cups" viewbox="0 0 1000 182" style="width:100%; height:auto; display:block;" aria-label="שמונה כוסות תה בסדר אקראי, ארבע M וארבע T"></svg>
+  <div class="gen-demo-bar"><button class="demo-btn" id="tea-shuffle">הגרלה חדשה</button></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('tea-cups'), btn = document.getElementById('tea-shuffle');
+    if (!svg) return;
+    // כל הכוסות נראות אותו דבר. רק התווית שמתחת אומרת מה נמזג קודם.
+    function draw(order) {
+      svg.innerHTML = order.map((m, i) => {
+        const c = 80 + i * 120;
+        return `<ellipse cx="${c}" cy="134" rx="50" ry="7" fill="none" stroke="var(--ink-faint)" stroke-width="2"/>
+          <path d="M${c + 34},52 C${c + 62},52 ${c + 62},96 ${c + 28},100" fill="none" stroke="var(--ink)" stroke-width="5"/>
+          <path d="M${c - 40},34 L${c + 40},34 L${c + 31},114 Q${c + 29},128 ${c + 15},128 L${c - 15},128 Q${c - 29},128 ${c - 31},114 Z" fill="var(--land)" fill-opacity=".28" stroke="var(--ink)" stroke-width="2.5"/>
+          <text x="${c}" y="172" text-anchor="middle" font-size="24" font-weight="700" fill="var(--ink)">${m}</text>`;
+      }).join('');
+    }
+    function shuffle() {
+      const a = ['M', 'M', 'M', 'M', 'T', 'T', 'T', 'T'];
+      for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+      return a;
+    }
+    draw(['M', 'T', 'T', 'M', 'T', 'M', 'M', 'T']);
+    btn.addEventListener('click', () => draw(shuffle()));
+  })();
+</script>
+</section>
+<section id="הגברת-הטועמת-תה-3" class="slide level2">
+<h2>הגברת הטועמת תה</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><strong>ההגרלה</strong> היא מקור המקריות. אם הגברת מנחשת, שום רמז (סדר ההגשה, חום הכוס) לא עוזר לה, וכל בחירה סבירה באותה מידה.</li>
+<li class="fragment"><strong>4 מכל סוג, והיא יודעת זאת:</strong> מספר הבחירות סופי וידוע מראש. אפשר לספור אותן.</li>
+<li class="fragment"><strong>מספר אחד בסוף:</strong> כמה כוסות M זוהו. עד כמה הוא מפתיע?</li>
+<li class="fragment">כך הניסוי עצמו בונה את המודל ההסתברותי, בלי <span class="term">prior</span> ובלי הפעמון של Laplace.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="הגברת-הטועמת-תה-4" class="slide level2">
+<h2>הגברת הטועמת תה</h2>
+<div class="compare-card bayes fragment">
+  <h3>Bayes ו-Laplace היו שואלים</h3>
+  <ul>
+    <li>היכולת של הגברת לא ידועה לנו, ולכן מתארים אותה בהתפלגות.</li>
+    <li>"בהינתן מה שראינו, מה ההסתברות שהיא מבחינה?" לשם כך צריך <span class="term">prior</span> על היכולת שלה.</li>
+  </ul>
+</div>
+<div class="compare-card freq fragment">
+  <h3>Fisher שואל</h3>
+  <ul>
+    <li>היכולת שלה, \(\theta\), קבועה, ואין לה התפלגות. אקראי רק <b>סדר הכוסות</b>, שאנחנו הגרלנו.</li>
+    <li>"<b>אם</b> אין לה שום יכולת, מה הסיכוי לנתונים כאלה?" את זה מחשבים בלי <span class="term">prior</span>.</li>
+  </ul>
+</div>
+</section>
+<section id="הגברת-הטועמת-תה-5" class="slide level2">
+<h2>הגברת הטועמת תה</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><span class="term">השערת אפס</span> (<span class="math inline">\(H_0\)</span>): לגברת אין שום יכולת להבחין. כל בחירה שלה היא ניחוש.</li>
+<li class="fragment">“היא מבחינה” היא טענה מעורפלת: 60% הצלחה? 80%? 100%? אי אפשר לחשב ממנה הסתברות אחת.</li>
+<li class="fragment">“היא מנחשת” היא טענה <strong>חדה</strong>: ממנה מחשבים בדיוק את הסיכוי לכל תוצאה.</li>
+<li class="fragment">ואם היא טעתה? זו לא הוכחה שאין לה יכולת. השערת האפס <strong>לא מוכחת אף פעם</strong>, אפשר רק להפריך אותה.</li>
 </ul>
 </div>
 <div class="fragment">
 <blockquote>
-<p>הערך שעבורו <span class="math inline">\(P = .05\)</span>, או 1 מתוך 20, הוא 1.96, או כמעט 2. נוח לקחת את הנקודה הזו כגבול כדי לשפוט אם סטייה תיחשב מובהקת או לא.</p>
-<p>— R. A. Fisher, 1925, עמ’ 47</p>
+<p>כל ניסוי קיים רק כדי לתת לעובדות הזדמנות להפריך את השערת האפס.</p>
+<p>— R. A. Fisher, <em>The Design of Experiments</em>, 1935</p>
 </blockquote>
 </div>
+</div>
 </section>
-<section id="neyman-ו-pearson-כללים-להתנהגות" class="slide level2">
-<h2>Neyman ו-Pearson: כללים להתנהגות</h2>
+<section id="הגברת-הטועמת-תה-6" class="slide level2">
+<h2>הגברת הטועמת תה</h2>
+<div class="centered-content">
 <div>
 <ul>
-<li class="fragment">Jerzy Neyman, מתמטיקאי פולני, ו-Egon Pearson, בנו של Karl Pearson. מאמר משותף ב-1933.</li>
-<li class="fragment">Fisher שאל: מה <strong>המדגם הזה</strong> מלמד אותנו?</li>
-<li class="fragment">הם שאלו שאלה אחרת: איזה <strong>כלל החלטה</strong> יגרום לנו לטעות כמה שפחות <strong>לאורך זמן</strong>?</li>
+<li class="fragment"><strong>נקודת המוצא:</strong> Fisher רצה להראות שמניסוי מתוכנן היטב אפשר להסיק מסקנות תקפות “בלי להשתמש באקסיומה השנויה במחלוקת”, כלומר בלי <span class="term">prior</span>.</li>
+<li class="fragment"><strong>אז מאיפה באה ההסתברות?</strong> מההגרלה שהחוקר עשה בעצמו, ומהשערה <strong>מדויקת</strong> שנותנת התפלגות אחת ויחידה.</li>
+<li class="fragment"><strong>האפס עצמו לא היה העיקר.</strong> גם “היא אף פעם לא טועה” מדויקת: מפריכים אותה בטעות אחת, ולא מוכיחים בשום מספר כוסות. “אין לה יכולת” היא הנקודה המדויקת הטבעית: כל עוד לא שללנו מקרה, אין לנו תופעה.</li>
 </ul>
 </div>
 <div class="fragment">
 <blockquote>
-<p>בלי לקוות לדעת אם כל השערה בנפרד נכונה או שגויה, אפשר לחפש כללים שינחו את התנהגותנו כלפיהן, כך שאם נפעל לפיהם, נבטיח שבטווח הארוך של הניסיון לא נטעה לעתים קרובות מדי.</p>
-<p>— Neyman &amp; Pearson, 1933, עמ’ 291</p>
+<p>השערת האפס חייבת להיות מדויקת, כלומר נקייה מעמימות ומדו-משמעות, כי היא צריכה לספק את הבסיס ל”בעיית ההתפלגות”, שמבחן המובהקות הוא הפתרון שלה.</p>
+<p>— R. A. Fisher, <em>The Design of Experiments</em>, 1935, עמ’ 16</p>
 </blockquote>
 </div>
+</div>
 </section>
-<section id="מה-neyman-ו-pearson-הוסיפו" class="slide level2">
-<h2>מה Neyman ו-Pearson הוסיפו</h2>
+<section id="הגברת-הטועמת-תה-7" class="slide level2 example-slide">
+<h2>הגברת הטועמת תה</h2>
 <div>
 <ul>
-<li class="fragment"><span class="term">השערה חלופית</span> (<span class="math inline">\(H_1\)</span>) מוגדרת, לצד השערת האפס.</li>
-<li class="fragment">סף <span class="math inline">\(\alpha\)</span> שנקבע <strong>מראש</strong>, ואחריו החלטה בינארית: דוחים או לא דוחים. אין “כמעט מובהק”.</li>
-<li class="fragment">שני סוגי טעות, ולא אחד:</li>
+<li class="fragment">יש <span class="math inline">\(\binom{8}{4} = 70\)</span> דרכים לבחור 4 כוסות מתוך 8. אם היא מנחשת, כולן סבירות באותה מידה.</li>
+<li class="fragment">כל נקודה היא בחירה אחת, לפי מספר כוסות ה-M שזוהו. למשל 3: שלוש מארבע כוסות ה-M (4 דרכים) וכוס T אחת (4 דרכים), <span class="math inline">\(4 \times 4 = 16\)</span>.</li>
+<li class="fragment">זו ה-<span class="term">sampling distribution</span> של מנחשת. כאן לא צריך לדמיין אינסוף חזרות: מספיק לספור.</li>
+</ul>
+</div>
+<div class="demo-panel">
+  <svg class="tea-dist" viewbox="0 0 1000 326" style="width:100%; max-height:300px; display:block;" aria-label="70 הבחירות האפשריות לפי מספר ההצלחות: 1, 16, 36, 16, 1"></svg>
+</div>
+</section>
+<section id="הגברת-הטועמת-תה-8" class="slide level2 example-slide">
+<h2>הגברת הטועמת תה</h2>
+<div class="demo-panel">
+  <svg class="tea-dist" data-hl="4" data-p="p = 1/70 ≈ 0.014" viewbox="0 0 1000 326" style="width:100%; max-height:300px; display:block;" aria-label="התפלגות הדגימה, והזנב של 4 הצלחות"></svg>
+</div>
+<div>
+<ul>
+<li class="fragment">היא זיהתה את כל הארבע. <span class="term">p-value</span>: הסיכוי, אם <span class="math inline">\(H_0\)</span> נכונה, לקבל את מה שראינו <strong>או משהו קיצוני ממנו</strong>. כאן <span class="math inline">\(p = 1/70 \approx 0.014\)</span>.</li>
+<li class="fragment">לפי נקודת הייחוס של Fisher: <span class="math inline">\(0.014 &lt; 0.05\)</span>.</li>
+<li class="fragment">או שקרה צירוף מקרים של 1 ל-70, או שהיא באמת מבחינה. דוחים את <span class="math inline">\(H_0\)</span>. לפי העדויות, Bristol אכן זיהתה את כל הכוסות.</li>
+</ul>
+</div>
+</section>
+<section id="הגברת-הטועמת-תה-9" class="slide level2 example-slide">
+<h2>הגברת הטועמת תה</h2>
+<div class="demo-panel">
+  <svg class="tea-dist" data-hl="34" data-p="p = 17/70 ≈ 0.24" viewbox="0 0 1000 326" style="width:100%; max-height:300px; display:block;" aria-label="התפלגות הדגימה, והזנב של 3 ו-4 הצלחות"></svg>
+</div>
+<div>
+<ul>
+<li class="fragment">ואם היא טעתה בכוס אחת? מחברים את כל מה שקיצוני לפחות כמו 3 מתוך 4: <span class="math inline">\(p = \frac{16+1}{70} \approx 0.24\)</span>.</li>
+<li class="fragment">כי השאלה היא כמה סביר שמנחשת תגיע להישג <strong>טוב לפחות כמו</strong> שלה.</li>
+<li class="fragment"><span class="math inline">\(p = 0.24\)</span> אינו הוכחה שהיא מנחשת. הניסוי פשוט לא הצליח להפריך את <span class="math inline">\(H_0\)</span>.</li>
+</ul>
+</div>
+<script>
+  (function () {
+    // 70 הבחירות של מנחשת, נקודה לכל בחירה, לפי מספר כוסות ה-M שזוהו. data-hl: העמודות של הזנב; data-p: התווית מעליו.
+    const counts = [1, 16, 36, 16, 1], s = 22, r = 8.5, yb = 250;
+    const colX = k => 140 + k * 180, topY = k => yb - 11 - Math.ceil(counts[k] / 4) * s;
+    document.querySelectorAll('svg.tea-dist').forEach(svg => {
+      const hl = (svg.dataset.hl || '').split('').filter(Boolean).map(Number);
+      let out = `<line x1="60" y1="${yb}" x2="940" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      counts.forEach((c, k) => {
+        const cx = colX(k), on = !hl.length || hl.includes(k);
+        let dots = '';
+        for (let i = 0; i < c; i++) {
+          const row = Math.floor(i / 4), inRow = Math.min(4, c - row * 4);
+          dots += `<circle cx="${cx + (i % 4 - (inRow - 1) / 2) * s}" cy="${yb - 11 - row * s}" r="${r}"/>`;
+        }
+        out += `<g fill="var(--seen)" opacity="${on ? 1 : .18}">${dots}</g>
+          <text x="${cx}" y="${topY(k) - 6}" text-anchor="middle" direction="ltr" font-size="24" font-weight="${hl.includes(k) ? 700 : 400}" fill="var(${on ? '--ink' : '--ink-faint'})">${c}/70</text>
+          <text x="${cx}" y="${yb + 32}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--ink)">${k}</text>`;
+      });
+      out += `<text x="500" y="${yb + 64}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">כמה כוסות M זוהו נכון</text>`;
+      if (svg.dataset.p && hl.length) {
+        const x1 = colX(Math.min(...hl)) - 48, x2 = colX(Math.max(...hl)) + 48, y = Math.min(...hl.map(topY)) - 46;
+        out += `<path d="M${x1},${y + 9} L${x1},${y} L${x2},${y} L${x2},${y + 9}" fill="none" stroke="var(--ink)" stroke-width="2"/>
+          <text x="${(x1 + x2) / 2}" y="${y - 12}" text-anchor="middle" direction="ltr" font-size="26" font-weight="700" fill="var(--ink)">${svg.dataset.p}</text>`;
+      }
+      svg.innerHTML = out;
+    });
+  })();
+</script>
+</section>
+<section id="הגברת-הטועמת-תה-10" class="slide level2">
+<h2>הגברת הטועמת תה</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment">ב-8 כוסות, טעות אחת מעבירה את p מ-0.014 ל-0.24. כדי לעבור את 0.05 הגברת חייבת להצליח בכולן.</li>
+<li class="fragment">כדי להרשות לה טעות, צריך יותר כוסות. למשל 12, שש מכל סוג:</li>
 </ul>
 </div>
 <div class="fragment centered-table">
 <table>
+<thead>
+<tr class="header">
+<th></th>
+<th>8 כוסות</th>
+<th>12 כוסות</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>בחירות אפשריות</td>
+<td>70</td>
+<td>924</td>
+</tr>
+<tr class="even">
+<td>בלי טעות</td>
+<td><span class="math inline">\(1/70 \approx 0.014\)</span></td>
+<td><span class="math inline">\(1/924 \approx 0.001\)</span></td>
+</tr>
+<tr class="odd">
+<td>טעות אחת</td>
+<td><span class="math inline">\(17/70 \approx 0.24\)</span></td>
+<td><span class="math inline">\(37/924 \approx 0.04\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<ul>
+<li class="fragment"><strong>כך ערך ה-p נכנס לתכנון:</strong> את מספר הכוסות קובעים מראש, לפי כמה טעויות רוצים להרשות לה.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="הגברת-הטועמת-תה-11" class="slide level2 summary-slide">
+<h2>הגברת הטועמת תה</h2>
+<div class="centered-table">
+<table>
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
-<th></th>
-<th><span class="math inline">\(H_0\)</span> נכונה</th>
-<th><span class="math inline">\(H_0\)</span> שגויה</th>
+<th>מושג</th>
+<th>בניסוי התה</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>דוחים את <span class="math inline">\(H_0\)</span></strong></td>
-<td>טעות מסוג I (<span class="math inline">\(\alpha\)</span>)</td>
-<td>החלטה נכונה: <span class="term">power</span>, <span class="math inline">\(1-\beta\)</span></td>
+<td>פרמטר (<span class="math inline">\(\theta\)</span>)</td>
+<td>היכולת של הגברת להבחין. קבועה, ולא ידועה לנו.</td>
 </tr>
 <tr class="even">
-<td><strong>לא דוחים</strong></td>
-<td>החלטה נכונה</td>
-<td>טעות מסוג II (<span class="math inline">\(\beta\)</span>)</td>
+<td>נתונים</td>
+<td>4 הכוסות שבחרה. אקראיים, בזכות ההגרלה.</td>
+</tr>
+<tr class="odd">
+<td><span class="term">randomization</span></td>
+<td>ההגרלה של סדר הכוסות: מקור המקריות שהחישוב נשען עליה.</td>
+</tr>
+<tr class="even">
+<td>השערת האפס (<span class="math inline">\(H_0\)</span>)</td>
+<td>היא מנחשת. טענה חדה, שאפשר לחשב ממנה הסתברויות.</td>
+</tr>
+<tr class="odd">
+<td><span class="term">sampling distribution</span></td>
+<td>70 הבחירות של מנחשת, לפי מספר ההצלחות.</td>
+</tr>
+<tr class="even">
+<td><span class="term">p-value</span></td>
+<td>הסיכוי שמנחשת תצליח לפחות כמוה: <span class="math inline">\(1/70\)</span>, או <span class="math inline">\(17/70\)</span> עם טעות אחת.</td>
+</tr>
+<tr class="odd">
+<td>0.05</td>
+<td>נקודת ייחוס נוחה. ב-8 כוסות רק זיהוי מושלם עובר אותה.</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div>
-<ul>
-<li class="fragment"><span class="term">power</span> מחשבים <strong>לפני</strong> הניסוי, כדי לקבוע כמה נבדקים צריך. זו השאלה של Bernoulli על הכד, בגלגול חדש.</li>
-</ul>
-</div>
-</section>
-<section id="רווח-הסמך-neyman-1937" class="slide level2">
-<h2>רווח הסמך · Neyman, 1937</h2>
-<div>
-<ul>
-<li class="fragment">אותו היגיון, על אומדן: <strong>שיטה</strong> שמייצרת רווח מכל מדגם.</li>
-<li class="fragment">“רווח סמך של 95%” הוא תכונה של <strong>השיטה</strong>: אם נחזור על הניסוי אינסוף פעמים, 95% מהרווחים יכסו את <span class="math inline">\(\theta\)</span>.</li>
-<li class="fragment">לרווח <strong>הספציפי</strong> שחישבנו אין 95%. <span class="math inline">\(\theta\)</span> קבוע, והוא בפנים או בחוץ.</li>
-<li class="fragment">השוו לרווח האמינות מהגלובוס: “בהסתברות 89%, <span class="math inline">\(p\)</span> נמצא כאן”. שם ההסתברות היא על <span class="math inline">\(\theta\)</span>, וכאן היא על השיטה.</li>
-</ul>
-</div>
-</section>
-<section id="שתי-גישות-וכלאיים-אחד" class="slide level2">
-<h2>שתי גישות, וכלאיים אחד</h2>
-<div class="centered-table fragment">
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th>Fisher</th>
-<th>Neyman ו-Pearson</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>השאלה</td>
-<td>מה המדגם הזה אומר</td>
-<td>איך לא לטעות לאורך זמן</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(H_1\)</span></td>
-<td>אין</td>
-<td>מוגדרת</td>
-</tr>
-<tr class="odd">
-<td>הסף</td>
-<td>נקודת ייחוס נוחה</td>
-<td><span class="math inline">\(\alpha\)</span> קבוע מראש</td>
-</tr>
-<tr class="even">
-<td>התוצאה</td>
-<td>p, ראיה לשקילה</td>
-<td>דוחים / לא דוחים</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div>
-<ul>
-<li class="fragment">הם לא השלימו עד מותו של Fisher. Fisher השווה את השיטה שלהם לבקרת איכות במפעל. Neyman ענה שמבחן בלי שליטה בטעויות אינו מבחן.</li>
-<li class="fragment">ספרי הלימוד בשנות ה-40 וה-50 תפרו את שתיהן יחד ל-<span class="term">NHST</span>: p מדויק של Fisher, סף 0.05 והחלטה בינארית של Neyman ו-Pearson, בלי <span class="math inline">\(H_1\)</span> ובלי <span class="term">power</span>.</li>
-<li class="fragment">Gerd Gigerenzer קרא לזה “ריטואל”. נחזור אליו כשנדבר על משבר הרפליקציה.</li>
-</ul>
 </div>
 </section>
 <section id="סיכום" class="slide level2 summary-slide">
 <h2>סיכום</h2>
 <div>
 <ul>
-<li class="fragment"><strong>הקיר החישובי:</strong> ה-<span class="term">posterior</span> של Laplace דרש אינטגרלים של מספרים בני מיליון ספרות.</li>
-<li class="fragment"><strong>הקירוב:</strong> עם הרבה נתונים, הגבעה היא פעמון. מספיקים פסגה ורוחב.</li>
-<li class="fragment"><strong>משפט הגבול המרכזי (1810):</strong> סכום של הרבה תרומות בלתי תלויות מתפלג כפעמון, יהא אשר יהא החוק של כל תרומה. מרכז: הערך האמיתי. רוחב: <span class="math inline">\(1/\sqrt{n}\)</span>.</li>
-<li class="fragment"><strong>האירוניה:</strong> הפעמון שנבנה בשביל Bayes אפשר לוותר על ה-<span class="term">prior</span>.</li>
-<li class="fragment"><strong>שכיחותני:</strong> <span class="math inline">\(\theta\)</span> קבוע, הנתונים אקראיים, הסתברות היא שכיחות לאורך זמן.</li>
+<li class="fragment"><strong>Laplace ומשפט הגבול המרכזי:</strong> ממוצע של הרבה תצפיות מתפלג כפעמון. מספיקים פסגה ורוחב (<span class="math inline">\(1/\sqrt{n}\)</span>), ועם הרבה נתונים ה-<span class="term">prior</span> כמעט לא משנה.</li>
+<li class="fragment"><strong>שכיחותני:</strong> <span class="math inline">\(\theta\)</span> קבוע, המדגם אקראי, והסתברות היא שכיחות לאורך זמן.</li>
 <li class="fragment"><strong>MLE:</strong> הערך שתחתיו הנתונים הכי צפויים. עם <span class="term">prior</span> אחיד הוא שווה ל-MAP, אבל המשמעות אחרת.</li>
-<li class="fragment"><strong>sampling distribution:</strong> איך <span class="math inline">\(\hat\theta\)</span> היה מתפזר במדגמים חוזרים.</li>
-<li class="fragment"><strong>Fisher:</strong> ערך p כראיה רציפה. <strong>Neyman ו-Pearson:</strong> <span class="math inline">\(H_1\)</span>, <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, <span class="term">power</span>, החלטה בינארית, ורווח סמך.</li>
-<li class="fragment"><strong>NHST:</strong> הכלאיים שנכנס לספרי הלימוד.</li>
+<li class="fragment"><strong>הפתרון השכיחותני:</strong> חוזרים על הניסוי בדמיון אינסוף פעמים. ערך p: אם <span class="math inline">\(H_0\)</span> נכונה, באיזה חלק מהחזרות נקבל נתונים קיצוניים לפחות כמו שלנו.</li>
+<li class="fragment"><strong>NHST:</strong> הכלאיים של Fisher ושל Neyman ו-Pearson, שנכנס לספרי הלימוד.</li>
+<li class="fragment"><strong>הגברת הטועמת תה:</strong> הגרלה והשערת אפס מדויקת נותנות התפלגות דגימה שאפשר לספור, בלי <span class="term">prior</span>.</li>
 </ul>
 </div>
 <div class="footer footer-default">
@@ -731,19 +856,19 @@ p\left(\theta \le \tfrac12 \;\middle|\; y\right)
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="_libs/8970b549a3/revealjs/dist/reveal.js"></script>
+  <script src="_libs/15dac1806b/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="_libs/8970b549a3/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="_libs/8970b549a3/revealjs/plugin/notes/notes.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/search/search.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/math/math.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/notes/notes.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/search/search.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

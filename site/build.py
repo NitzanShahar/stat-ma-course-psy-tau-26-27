@@ -316,6 +316,7 @@ class Files:
         self.changed = 0
         self.libs = {}
         self.squeezed = []
+        self.placed = {}  # source file -> where it went: a file linked from two items (Laplace 1814 in W2.H1 and W3.H1) is uploaded once
 
     def _mark(self, rel):
         if rel in self.need:
@@ -410,8 +411,9 @@ class Site:
         if not src.is_file():
             self.warnings.append(f'missing file: {src_rel}')
             return None
-        self.files.copy(src, f'{dest_dir}/{src.name}')
-        return self.p + href(f'{dest_dir}/{src.name}')
+        rel = self.files.placed.setdefault(src, f'{dest_dir}/{src.name}')
+        self.files.copy(src, rel)
+        return self.p + href(rel)
 
     def deck_for(self, code):
         p = self.decks_dir / (code.replace('.', '_') + '.html')

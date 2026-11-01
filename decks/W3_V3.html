@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="he"><head>
-<script src="_libs/8970b549a3/clipboard/clipboard.min.js"></script>
-<script src="_libs/8970b549a3/quarto-html/tabby.min.js"></script>
-<script src="_libs/8970b549a3/quarto-html/popper.min.js"></script>
-<script src="_libs/8970b549a3/quarto-html/tippy.umd.min.js"></script>
-<link href="_libs/8970b549a3/quarto-html/tippy.css" rel="stylesheet">
-<link href="_libs/8970b549a3/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="_libs/8970b549a3/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="_libs/15dac1806b/clipboard/clipboard.min.js"></script>
+<script src="_libs/15dac1806b/quarto-html/tabby.min.js"></script>
+<script src="_libs/15dac1806b/quarto-html/popper.min.js"></script>
+<script src="_libs/15dac1806b/quarto-html/tippy.umd.min.js"></script>
+<link href="_libs/15dac1806b/quarto-html/tippy.css" rel="stylesheet">
+<link href="_libs/15dac1806b/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="_libs/15dac1806b/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="_libs/8970b549a3/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="_libs/8970b549a3/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="_libs/15dac1806b/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="_libs/15dac1806b/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,11 +29,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="_libs/8970b549a3/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="_libs/8970b549a3/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="_libs/8970b549a3/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="_libs/8970b549a3/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="_libs/8970b549a3/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="_libs/15dac1806b/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="_libs/15dac1806b/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="_libs/15dac1806b/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="_libs/15dac1806b/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="_libs/15dac1806b/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -385,10 +385,8 @@
         '<b>MLE</b> (Fisher): הערך שתחתיו הנתונים הכי צפויים. ב-Bernoulli ' + L('θ̂ = k/n') + '. לא מנרמלים ולא מחשבים שטח. מתכנס ל-' + L('θ') + ' (<b>consistent</b>). עם prior אחיד הוא שווה ל-MAP, אבל המשמעות אחרת: משפט על הנתונים, לא על ' + L('θ') + '.'],
       ['smp', 240, 274, 290, 'התפלגות דגימה', 'משפט הגבול המרכזי · SE', 'W3', 'frq', 2,
         '<b>sampling distribution:</b> איך ' + L('θ̂') + ' היה מתפזר בניסויים חוזרים, כש-' + L('θ') + ' קבוע. <b>CLT</b> (Laplace, 1810): פעמון סביב ' + L('θ') + '. <b>standard error</b>: ' + L('√(θ(1−θ)/n)') + ', ובמעשה מציבים ' + L('θ̂') + '.'],
-      ['ci', 240, 352, 290, 'רווח סמך · ערך p', 'Neyman 1937 · Fisher 1925', 'W3', 'frq', 2,
-        '<b>confidence interval:</b> ' + L('θ̂ ± 1.96·SE') + '. ה-95% שייך לשיטה, לא לרווח אחד. <b>p-value:</b> ' + L('P(data at least this extreme | H₀)') + '. לא ' + L('P(H₀ | data)') + '.'],
-      ['np', 240, 430, 290, 'α, β, power · Student', 'Neyman ו-Pearson 1933 · t, 1908', 'W3', 'frq', 2,
-        '<b>Neyman ו-Pearson:</b> ' + L('H₁') + ', ' + L('α') + ' קבוע מראש (טעות מסוג I), ' + L('β') + ' (טעות מסוג II), <b>power</b> ' + L('= 1 − β') + ' קובע כמה נבדקים. <b>NHST</b>: הכלאיים של ספרי הלימוד. <b>Student:</b> במדגם קטן, להציב ' + L('s') + ' במקום ' + L('σ') + ' דורש התפלגות ' + L('t') + '.']
+      ['ci', 240, 352, 290, 'רווח סמך · ערך p', 'α, β, power · Neyman ו-Fisher', 'W3', 'frq', 2,
+        '<b>confidence interval:</b> ' + L('θ̂ ± 1.96·SE') + '. ה-95% שייך לשיטה, לא לרווח אחד. <b>p-value</b> (Fisher): ' + L('P(data at least this extreme | H₀)') + '. לא ' + L('P(H₀ | data)') + '. <b>Neyman ו-Pearson:</b> ' + L('H₁') + ', ' + L('α') + ' קבוע מראש (טעות מסוג I), ' + L('β') + ' (טעות מסוג II), <b>power</b> ' + L('= 1 − β') + ' קובע כמה נבדקים. <b>NHST</b>: הכלאיים של ספרי הלימוד.']
     ];
     const C = { hid: ['var(--hidden)', 'var(--hidden-bg)'], lik: ['var(--curve)', 'var(--curve-bg)'], bay: ['var(--ok)', 'var(--ok-bg)'], frq: ['var(--seen)', 'var(--seen-bg)'] };
     const H = 56, at = id => N.find(n => n[0] === id);
@@ -397,31 +395,23 @@
       return `<path d="M${A[1]},${y1} C${A[1]},${(y1 + y2) / 2} ${B[1]},${(y1 + y2) / 2} ${B[1]},${y2 - 6}" fill="none" stroke="${col}" stroke-width="2.5" marker-end="url(#mh-${g})"/>`;
     };
     let s = `<defs>${['0', '1', '2'].map(g => `<marker id="mh-${g}" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="${['var(--ink-soft)', 'var(--ok)', 'var(--seen)'][g]}"/></marker>`).join('')}</defs>`;
-    const groups = { 0: '', 1: '', 2: '', 3: '' };
+    const groups = { 0: '', 1: '', 2: '' };
     groups[0] += arrow('gen', 'lik', 0, 'var(--ink-soft)');
     groups[1] += `<text x="860" y="155" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ok)">Bayesian</text>`;
     // ה-likelihood נכנס ל-posterior מהצד, כדי לא לעבור דרך ה-prior
     groups[1] += `<path d="M640,${108 + H / 2} C640,274 680,274 ${715 - 8},274" fill="none" stroke="var(--ok)" stroke-width="2.5" marker-end="url(#mh-1)"/>` + arrow('pri', 'pos', 1, 'var(--ok)') + arrow('pos', 'sum', 1, 'var(--ok)') + arrow('sum', 'pre', 1, 'var(--ok)');
     groups[2] += `<text x="240" y="155" text-anchor="middle" font-size="22" font-weight="700" fill="var(--seen)">Frequentist</text>`;
-    groups[2] += `<path d="M460,${108 + H / 2} C460,196 420,196 ${385 + 8},196" fill="none" stroke="var(--seen)" stroke-width="2.5" marker-end="url(#mh-2)"/>` + arrow('mle', 'smp', 2, 'var(--seen)') + arrow('smp', 'ci', 2, 'var(--seen)') + arrow('ci', 'np', 2, 'var(--seen)');
-    // איפה הן נפגשות: קווים מקווקווים בין העמודות
-    const link = (y, txt, c, dash) => `<line x1="385" y1="${y}" x2="715" y2="${y}" stroke="${c}" stroke-width="2" stroke-dasharray="${dash}"/>
-      <rect x="400" y="${y - 15}" width="300" height="30" rx="6" fill="#fff"/>
-      <text x="550" y="${y + 6}" text-anchor="middle" font-size="16.5" fill="${c}" direction="rtl">${txt}</text>`;
-    groups[3] += link(274, 'n גדול: אותו פעמון (Laplace)', 'var(--ink)', '6 6') +
-      link(352, 'prior אחיד, n גדול: אותם מספרים', 'var(--ink)', '6 6') +
-      link(430, 'n קטן: הדרכים נפרדות', 'var(--curve)', '3 6');
+    groups[2] += `<path d="M460,${108 + H / 2} C460,196 420,196 ${385 + 8},196" fill="none" stroke="var(--seen)" stroke-width="2.5" marker-end="url(#mh-2)"/>` + arrow('mle', 'smp', 2, 'var(--seen)') + arrow('smp', 'ci', 2, 'var(--seen)');
     N.forEach(([id, x, y, w, t, sub, les, kind, g]) => {
       const [st, bg] = C[kind];
       groups[g] += `<g class="node" data-id="${id}">
         <rect x="${x - w / 2}" y="${y - H / 2}" width="${w}" height="${H}" rx="12" fill="${bg}" stroke="${st}" stroke-width="2"/>
         <text x="${x}" y="${y - 3}" text-anchor="middle" font-size="20" font-weight="700" fill="${st}" direction="rtl">${t}</text>
         <text x="${x}" y="${y + 19}" text-anchor="middle" font-size="16" fill="var(--ink-soft)" direction="rtl">${sub}</text>
-        <text x="${x - w / 2 + 8}" y="${y - H / 2 + 17}" text-anchor="start" direction="ltr" font-size="13" font-weight="700" fill="${st}" opacity=".75">${les}</text>
       </g>`;
     });
     s += `<g>${groups[0]}</g>`;
-    [1, 2, 3].forEach(g => { s += `<g class="fragment" data-fragment-index="${g - 1}">${groups[g]}</g>`; });
+    [1, 2].forEach(g => { s += `<g class="fragment" data-fragment-index="${g - 1}">${groups[g]}</g>`; });
     svg.innerHTML = s;
     const info = document.getElementById('map-info');
     svg.querySelectorAll('.node').forEach(el => el.addEventListener('click', () => {
@@ -523,36 +513,31 @@
 </thead>
 <tbody>
 <tr class="odd">
+<td>מטרת הסטטיסטיקה</td>
+<td>הערכת פרמטרים חבויים בטבע</td>
+<td>הערכת פרמטרים חבויים בטבע</td>
+</tr>
+<tr class="even">
 <td>הסתברות היא</td>
 <td>מידת ודאות</td>
 <td>שכיחות לאורך זמן</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>מה אקראי</td>
 <td>הידע שלנו על <span class="math inline">\(\theta\)</span></td>
 <td>המדגם</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>מה מצטרף ל-likelihood</td>
 <td><span class="term">prior</span></td>
 <td>התפלגות דגימה</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>התשובה</td>
 <td>התפלגות על <span class="math inline">\(\theta\)</span></td>
 <td><span class="math inline">\(\hat\theta\)</span> ו-SE</td>
 </tr>
-<tr class="odd">
-<td>“95%”</td>
-<td>בהסתברות 95%, <span class="math inline">\(\theta\)</span> כאן</td>
-<td>95% מהרווחים של השיטה מכסים את <span class="math inline">\(\theta\)</span></td>
-</tr>
 <tr class="even">
-<td>השערות</td>
-<td><span class="math inline">\(P(H \mid y)\)</span>, PD</td>
-<td><span class="math inline">\(P(y ext{ קיצוני} \mid H_0)\)</span></td>
-</tr>
-<tr class="odd">
 <td>מדגם קטן</td>
 <td>עובד, וה-prior משפיע יותר</td>
 <td>הקירובים נשברים</td>
@@ -561,76 +546,17 @@
 </table>
 </div>
 </section>
-<section id="אותם-נתונים-שתי-תשובות" class="slide level2 example-slide">
-<h2>אותם נתונים, שתי תשובות</h2>
-<div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center; font-size:.5em;">
-    <label>n: <input type="range" id="tw-n" min="1" max="200" value="9"> <span class="ltr demo-readout" id="tw-nv"></span></label>
-    <label>k: <input type="range" id="tw-k" min="0" max="9" value="6"> <span class="ltr demo-readout" id="tw-kv"></span></label>
-    <button class="demo-btn ghost" data-pre="9,6">6 מתוך 9</button>
-    <button class="demo-btn ghost" data-pre="10,10">10 מתוך 10</button>
-    <button class="demo-btn ghost" data-pre="16,14">14 מתוך 16</button>
-    <button class="demo-btn ghost" data-pre="200,102">102 מתוך 200</button>
-  </div>
-  <svg id="tw-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="posterior ורווח אמינות מול MLE ורווח סמך"></svg>
-  <div class="demo-readout" id="tw-out" style="text-align:center; font-size:.52em; margin-top:4px; line-height:1.6;"></div>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('tw-svg');
-    if (!svg) return;
-    const $ = id => document.getElementById(id);
-    const G = 2000, x0 = 60, x1 = 960, X = v => x0 + Math.min(1.04, Math.max(-.04, v)) * (x1 - x0);
-    function draw() {
-      const n = +$('tw-n').value; $('tw-k').max = n; if (+$('tw-k').value > n) $('tw-k').value = n;
-      const k = +$('tw-k').value; $('tw-nv').textContent = n; $('tw-kv').textContent = k;
-      // posterior עם prior אחיד, על רשת
-      const ps = [], d = [];
-      for (let i = 0; i <= G; i++) { const p = i / G; ps.push(p); d.push(Math.exp(k * Math.log(Math.max(p, 1e-300)) + (n - k) * Math.log(Math.max(1 - p, 1e-300)))); }
-      const tot = d.reduce((a, b) => a + b, 0), pm = d.map(v => v / tot), dens = pm.map(v => v * G);
-      const cdf = []; pm.reduce((a, v, i) => (cdf[i] = a + v), 0);
-      const q = a => ps[cdf.findIndex(c => c >= a)];
-      const lo = q(.025), hi = q(.975), map = k / n;
-      const se = Math.sqrt(map * (1 - map) / n), wl = map - 1.96 * se, wh = map + 1.96 * se;
-      const yb = 200, yt = 14, top = Math.max(...dens) * 1.08, Y = v => yb - v / top * (yb - yt);
-      const curve = dens.map((v, i) => (i ? 'L' : 'M') + X(ps[i]).toFixed(1) + ',' + Y(v).toFixed(1)).join('');
-      let area = ''; for (let i = 0; i <= G; i++) if (ps[i] >= lo && ps[i] <= hi) area += (area ? 'L' : 'M') + X(ps[i]).toFixed(1) + ',' + Y(dens[i]).toFixed(1);
-      let s = `<path d="${area} L${X(hi)},${yb} L${X(lo)},${yb} Z" fill="var(--ok)" opacity=".18"/>
-        <path d="${curve}" fill="none" stroke="var(--ok)" stroke-width="3.5"/>
-        <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
-        <line x1="${X(lo)}" y1="238" x2="${X(hi)}" y2="238" stroke="var(--ok)" stroke-width="9" stroke-linecap="round"/>
-        <text x="${x0 - 8}" y="244" text-anchor="end" direction="ltr" font-size="15" font-weight="700" fill="var(--ok)">Bayes</text>`;
-      if (wh - wl < 1e-9) s += `<circle cx="${X(map)}" cy="272" r="7" fill="var(--curve)"/>`;
-      else s += `<line x1="${X(wl)}" y1="272" x2="${X(wh)}" y2="272" stroke="var(--seen)" stroke-width="9" stroke-linecap="round"/>`;
-      s += `<circle cx="${X(map)}" cy="272" r="6" fill="#fff" stroke="var(--seen)" stroke-width="3"/>
-        <text x="${x0 - 8}" y="278" text-anchor="end" direction="ltr" font-size="15" font-weight="700" fill="var(--seen)">Wald</text>`;
-      [0, .25, .5, .75, 1].forEach(v => { s += `<text x="${X(v)}" y="${yb + 20}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
-      s += `<text x="${(x0 + x1) / 2}" y="318" text-anchor="middle" font-size="16" fill="var(--ink-soft)" direction="rtl">θ · ירוק: posterior עם prior אחיד ורווח אמינות 95% · כחול: MLE ורווח סמך 95%</text>`;
-      svg.innerHTML = s;
-      const f = v => v.toFixed(3);
-      $('tw-out').innerHTML = `<span style="color:var(--ok)">Bayes:</span> MAP <span class="ltr">${f(map)}</span> · רווח אמינות <span class="ltr">[${f(lo)}, ${f(hi)}]</span>` +
-        ` &nbsp;&nbsp; <span style="color:var(--seen)">Frequentist:</span> MLE <span class="ltr">${f(map)}</span> · רווח סמך <span class="ltr">[${f(wl)}, ${f(wh)}]</span>`;
-    }
-    ['tw-n', 'tw-k'].forEach(id => $(id).addEventListener('input', draw));
-    svg.closest('.demo-panel').querySelectorAll('[data-pre]').forEach(b => b.onclick = () => { const [n, k] = b.dataset.pre.split(','); $('tw-n').value = n; draw(); $('tw-k').value = k; draw(); });
-    draw();
-  })();
-</script>
-<div class="demo-note">
-<p>עם הרבה נתונים שני הרווחים כמעט זהים: זו האירוניה של Laplace, במספרים. עם מעט נתונים, ובמיוחד ב-10 מתוך 10, הם נפרדים.</p>
-</div>
-</section>
-<section id="אותו-95-שני-משפטים" class="slide level2 stacked-cards">
-<h2>אותו 95%, שני משפטים</h2>
+<section id="אותה-הערכת-ודאות-שני-משפטים" class="slide level2 stacked-cards">
+<h2>אותה הערכת ודאות, שני משפטים</h2>
 <div class="compare-card bayes fragment">
 <!-- -->
-<h3 id="רווח-אמינות">רווח אמינות</h3>
+<h3 id="רווח-אמינות-credible-interval">רווח אמינות (<span class="ltr">Credible Interval</span>)</h3>
 <p>“בהינתן הנתונים, בהסתברות 95%, <span class="math inline">\(\theta\)</span> נמצא בין 0.35 ל-0.88.” משפט על <span class="math inline">\(\theta\)</span>.</p>
 </div>
 <div class="compare-card freq fragment">
 <!-- -->
-<h3 id="רווח-סמך">רווח סמך</h3>
-<p>“שיטה שבה 95% מהרווחים, על פני ניסויים חוזרים, מכסים את <span class="math inline">\(\theta\)</span>, נתנה הפעם <span class="math inline">\([0.36,\ 0.97]\)</span>.” משפט על השיטה.</p>
+<h3 id="רווח-סמך-confidence-interval">רווח סמך (<span class="ltr">Confidence Interval</span>)</h3>
+<p>“שיטה שבה X אחוז מהרווחים, על פני ניסויים חוזרים, מכסים את <span class="math inline">\(\theta\)</span>, נתנה הפעם <span class="math inline">\([0.36,\ 0.97]\)</span>.” משפט על השיטה.</p>
 </div>
 <div>
 <ul>
@@ -667,29 +593,6 @@
 <p>לחצו על ציטוט כדי לגלות מי אמר אותו. הצבע מראה לאיזו דרך הוא שייך.</p>
 </div>
 </section>
-<section id="שאלות-שמחברות" class="slide level2">
-<h2>שאלות שמחברות</h2>
-<div>
-<ol type="1">
-<li class="fragment">ב-6 מתוך 9, ה-MAP וה-MLE הם אותו מספר. מה בכל זאת שונה ביניהם?</li>
-<li class="fragment">למה 10 מתוך 10 מפיל את רווח Wald, אבל לא את ה-<span class="term">posterior</span>?</li>
-<li class="fragment">הסבירו בשלושה משפטים את האירוניה של משפט הגבול המרכזי.</li>
-<li class="fragment">“p = 0.03, ולכן יש 3% סיכוי שהשערת האפס נכונה.” מה הטעות, ואיפה פגשנו אותה כבר?</li>
-<li class="fragment">Bernoulli שאל כמה שליפות צריך כדי להגיע לוודאות מוסרית. איפה השאלה הזו מופיעה אצל Neyman ו-Pearson?</li>
-<li class="fragment">רווח Wald ב-Bernoulli ורווח עם 1.96 במדגם קטן של מדידות סובלים מאותה בעיה. מהי, ומה Student עשה איתה?</li>
-</ol>
-</div>
-</section>
-<section id="מה-הלאה" class="slide level2">
-<h2>מה הלאה</h2>
-<div>
-<ul>
-<li class="fragment">בשבוע הבא: מדידות רציפות, והתפלגות Gaussian. לה שני פרמטרים, <span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span>.</li>
-<li class="fragment"><strong>המפה לא משתנה.</strong> מודל מייצר, <span class="term">likelihood</span>, ואז שתי הדרכים: <span class="term">posterior</span> על שני הפרמטרים, או MLE, SE ו-<span class="math inline">\(t\)</span>.</li>
-<li class="fragment">כל שבוע בקורס יחליף את המודל המייצר. השלד יישאר.</li>
-</ul>
-</div>
-</section>
 <section id="סיכום" class="slide level2 summary-slide">
 <h2>סיכום</h2>
 <div>
@@ -710,19 +613,19 @@
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="_libs/8970b549a3/revealjs/dist/reveal.js"></script>
+  <script src="_libs/15dac1806b/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="_libs/8970b549a3/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="_libs/8970b549a3/revealjs/plugin/notes/notes.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/search/search.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="_libs/8970b549a3/revealjs/plugin/math/math.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/notes/notes.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/search/search.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="_libs/15dac1806b/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
