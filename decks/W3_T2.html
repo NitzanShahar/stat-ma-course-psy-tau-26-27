@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="he"><head>
-<script src="_libs/fc605f9aab/clipboard/clipboard.min.js"></script>
-<script src="_libs/fc605f9aab/quarto-html/tabby.min.js"></script>
-<script src="_libs/fc605f9aab/quarto-html/popper.min.js"></script>
-<script src="_libs/fc605f9aab/quarto-html/tippy.umd.min.js"></script>
-<link href="_libs/fc605f9aab/quarto-html/tippy.css" rel="stylesheet">
-<link href="_libs/fc605f9aab/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="_libs/fc605f9aab/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="_libs/747e483d74/clipboard/clipboard.min.js"></script>
+<script src="_libs/747e483d74/quarto-html/tabby.min.js"></script>
+<script src="_libs/747e483d74/quarto-html/popper.min.js"></script>
+<script src="_libs/747e483d74/quarto-html/tippy.umd.min.js"></script>
+<link href="_libs/747e483d74/quarto-html/tippy.css" rel="stylesheet">
+<link href="_libs/747e483d74/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="_libs/747e483d74/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="_libs/fc605f9aab/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="_libs/fc605f9aab/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="_libs/747e483d74/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="_libs/747e483d74/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,11 +29,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="_libs/fc605f9aab/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="_libs/fc605f9aab/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="_libs/fc605f9aab/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="_libs/fc605f9aab/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="_libs/fc605f9aab/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="_libs/747e483d74/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="_libs/747e483d74/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="_libs/747e483d74/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="_libs/747e483d74/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="_libs/747e483d74/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -329,6 +329,35 @@
   <p class="subtitle">הערכה Bayesian והערכה Frequentist של פרמטר ברנולי חבוי</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
+<section id="שתי-דרכים-להסקה-לאחור" class="slide level2">
+<h2>שתי דרכים להסקה לאחור</h2>
+<div class="two-ways">
+  <h3 class="bay">Bayesian</h3>
+  <h3 class="frq">Frequentist</h3>
+
+  <p class="bay fragment" data-fragment-index="1"><b>איך מסיקים:</b> מחלקים אמינות בין כל ערכי הפרמטר, ומעדכנים אותה לפי הנתונים. התוצאה: התפלגות, ה-<span class="term">posterior</span>.</p>
+  <p class="frq fragment" data-fragment-index="5"><b>איך מסיקים:</b> מניחים ערך יחיד לפרמטר, ושואלים כמה צפויים נתונים כמו שלנו, או קיצוניים יותר. התוצאה: אומדן (<span class="ltr">\(\hat\theta\)</span>) וערך p.</p>
+
+  <p class="bay fragment" data-fragment-index="2"><b>מה דורשת:</b> <span class="term">prior</span>: כמה כל ערך אמין עוד לפני הנתונים.</p>
+  <p class="frq fragment" data-fragment-index="6"><b>מה דורשת:</b> השערה ברת-הפרכה: ערך אחד (לרוב "אין אפקט") שמנסים להפריך. בלי <span class="term">prior</span>.</p>
+
+  <p class="bay fragment" data-fragment-index="3"><b>מהי אי-ודאות:</b> הבורות שלנו. הפרמטר ודאי, והידע שלנו עליו חלקי.</p>
+  <p class="frq fragment" data-fragment-index="7"><b>מהי אי-ודאות:</b> הרעש בנתונים. הפרמטר קבוע, וכל מדגם יוצא קצת אחרת.</p>
+
+  <p class="bay fragment" data-fragment-index="4"><b>חישוב:</b> כבד. במודלים אמיתיים, רק במחשב.</p>
+  <p class="frq fragment" data-fragment-index="8"><b>חישוב:</b> קל. נוסחה סגורה, ביד או במחשבון.</p>
+</div>
+<style>
+  .two-ways { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.2em; margin-top: .3em; font-size: .7em; line-height: 1.5; }
+  .reveal .two-ways > * { margin: 0; padding: .45em .9em; background: #fff; border: 1px solid var(--rule); border-block-width: 0; border-inline-start: 6px solid; }
+  .two-ways .bay { border-inline-start-color: var(--ok); }
+  .two-ways .frq { border-inline-start-color: var(--seen); }
+  .two-ways h3 { font-size: 1.4em; padding-top: .5em; border-top-width: 1px; border-radius: 0 10px 0 0; }
+  .two-ways h3.bay { color: var(--ok); }
+  .two-ways h3.frq { color: var(--seen); }
+  .two-ways p:nth-last-child(-n+2) { border-bottom-width: 1px; border-radius: 0 0 10px 0; padding-bottom: .7em; }
+</style>
+</section>
 <section id="סלט-בראש" class="slide level2">
 <h2>סלט בראש?</h2>
 <div class="salad" id="salad">
@@ -498,36 +527,6 @@
 })();
 </script>
 </section>
-<section id="שתי-דרכים-להסקה-לאחור" class="slide level2">
-<h2>שתי דרכים להסקה לאחור</h2>
-<div class="two-ways">
-  <h3 class="bay">Bayesian</h3>
-  <h3 class="frq">Frequentist</h3>
-
-  <p class="bay fragment" data-fragment-index="1"><b>איך מסיקים:</b> מחלקים אמינות בין כל הערכים האפשריים של הפרמטר, ומעדכנים את החלוקה לאור הנתונים. התוצאה היא התפלגות: ה-<span class="term">posterior</span>.</p>
-  <p class="frq fragment" data-fragment-index="5"><b>איך מסיקים:</b> מניחים ערך יחיד לפרמטר, ובודקים עד כמה נתונים כמו שלנו, או קיצוניים מהם, צפויים אם זה הערך. התוצאה היא אומדן (<span class="ltr">\(\hat\theta\)</span>) וערך p.</p>
-
-  <p class="bay fragment" data-fragment-index="2"><b>מה דורשת:</b> <span class="term">prior</span> לכל ערך אפשרי של הפרמטר: כמה הוא אמין עוד לפני הנתונים.</p>
-  <p class="frq fragment" data-fragment-index="6"><b>מה דורשת:</b> ערך אחד בעל משמעות מיוחדת, ההשערה ברת-ההפרכה (לרוב "אין אפקט"), שאותו מנסים להפריך. בלי <span class="term">prior</span>.<span class="src">Fisher, 1935: ניסוי קיים רק כדי לתת לעובדות הזדמנות להפריך את ה-null hypothesis.</span></p>
-
-  <p class="bay fragment" data-fragment-index="3"><b>מהי אי-ודאות:</b> הבורות שלנו. הטבע עצמו ודאי, ורק הידע שלנו עליו חלקי; ההסתברות מודדת את הידע הזה.<span class="src">Laplace, 1814: ההסתברות נוגעת בחלקה לבורות הזו, ובחלקה לידיעותינו.</span></p>
-  <p class="frq fragment" data-fragment-index="7"><b>מהי אי-ודאות:</b> הרעש בתהליך שמייצר את הנתונים. הפרמטר קבוע, כל מדגם יוצא קצת אחרת, והאומדן מתכנס לפרמטר ככל שהמדגם גדל.<span class="src">Fisher, 1922: הנתונים הם מדגם מקרי מתוך אוכלוסייה היפותטית אינסופית.</span></p>
-
-  <p class="bay fragment" data-fragment-index="4"><b>חישוב:</b> כבד. ה-<span class="term">posterior</span> הוא שטח מתחת לעקומה, ובמודלים אמיתיים מחשבים אותו רק במחשב.</p>
-  <p class="frq fragment" data-fragment-index="8"><b>חישוב:</b> קלה לחישוב. נוסחה סגורה, ביד או במחשבון.</p>
-</div>
-<style>
-  .two-ways { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.2em; margin-top: .3em; font-size: .7em; line-height: 1.5; }
-  .reveal .two-ways > * { margin: 0; padding: .45em .9em; background: #fff; border: 1px solid var(--rule); border-block-width: 0; border-inline-start: 6px solid; }
-  .two-ways .bay { border-inline-start-color: var(--ok); }
-  .two-ways .frq { border-inline-start-color: var(--seen); }
-  .two-ways h3 { font-size: 1.4em; padding-top: .5em; border-top-width: 1px; border-radius: 0 10px 0 0; }
-  .two-ways h3.bay { color: var(--ok); }
-  .two-ways h3.frq { color: var(--seen); }
-  .two-ways p:nth-last-child(-n+2) { border-bottom-width: 1px; border-radius: 0 0 10px 0; padding-bottom: .7em; }
-  .two-ways .src { display: block; margin-top: .3em; font-size: .85em; color: var(--ink-soft); }
-</style>
-</section>
 <section id="המפה" class="slide level2 map-slide">
 <h2>המפה</h2>
 <div class="demo-panel" style="padding:4px 10px 8px;">
@@ -674,11 +673,11 @@
 <div class="sig"><img src="W3_T2 Bayes חתימה.png" alt="Bayes"><img src="W3_T2 Laplace חתימה.png" alt="Laplace"></div>
 <div class="est" id="bay-est">
   <div class="est-side">
-    <div class="thinker"><span class="fig"></span><div class="thought">מממ... בהינתן התצפיות האלו, מה הסיכוי של כל ערך של θ להיות הערך האמיתי בטבע?</div></div>
     <div class="theta-box"><span>θ =</span><span class="blk"></span></div>
     <div class="gen-arrow">↓ Bernoulli(θ)</div>
     <div class="sample"></div>
     <div class="sample-label">14 הצלחות · 2 כישלונות</div>
+    <div class="thought">מממ... בהינתן התצפיות האלו, מה הסיכוי של כל ערך של θ להיות הערך האמיתי בטבע?</div>
     <div class="chat"></div>
   </div>
   <svg class="plot" viewbox="0 0 840 540" aria-label="likelihood, prior ו-posterior"></svg>
@@ -688,14 +687,13 @@
 <style>
   .reveal .est { display: grid; grid-template-columns: 350px 1fr; gap: 24px; align-items: stretch; height: 590px; margin-top: .2em; }
   .reveal .est > svg { align-self: start; }
-  /* A young researcher thinking the question of the approach */
-  .reveal .thinker { display: flex; align-items: flex-end; gap: 4px; margin-bottom: 6px; }
-  .reveal .thinker .fig svg { width: 62px; height: 62px; display: block; }
-  .reveal .thought { position: relative; flex: 1; margin: 0 6px 30px 0; padding: 7px 14px; background: #fff; border: 2px solid var(--ink-faint);
+  /* The question of the approach, thought after seeing the observations */
+  .reveal .thought { position: relative; margin: 30px 4px 0; padding: 8px 16px; background: #fff; border: 2px solid var(--ink-faint);
     border-radius: 26px; font-size: 19px; line-height: 1.35; text-align: right; color: var(--ink); }
   .reveal .thought::before, .reveal .thought::after { content: ""; position: absolute; border: 2px solid var(--ink-faint); border-radius: 50%; background: #fff; }
-  .reveal .thought::before { width: 13px; height: 13px; right: 2px; bottom: -19px; }
-  .reveal .thought::after { width: 7px; height: 7px; right: -8px; bottom: -30px; }
+  .reveal .thought::before { width: 13px; height: 13px; left: 50%; top: -19px; }
+  .reveal .thought::after { width: 7px; height: 7px; left: calc(50% + 10px); top: -30px; }
+  .reveal .thought.late { animation: t2fade .6s 1.4s both; }
   .reveal .est-side { font-size: .62em; text-align: center; line-height: 1.4; display: flex; flex-direction: column; }
   .reveal .theta-box { align-self: center; display: inline-flex; gap: .35em; align-items: center; direction: ltr; font-size: 1.6em; font-weight: 700; color: var(--hidden); background: var(--hidden-bg); border: 2px solid var(--hidden); border-radius: 12px; padding: .1em .8em; }
   .reveal .theta-box .blk { display: inline-block; width: .8em; height: .8em; background: #000; border-radius: 3px; }
@@ -705,20 +703,14 @@
   .reveal .sample i.one { background: var(--seen); }
   .reveal .sample i.pop { animation: t2pop .3s both; animation-delay: var(--d); }
   .reveal .est-side .off { visibility: hidden; }
-  /* The researchers chat: one message at a time, replacing the one before */
-  .reveal .chat { flex: 1; margin-top: 12px; background: #fff; border: 1px solid var(--rule); border-radius: 16px; padding: 12px 10px;
-    display: flex; flex-direction: column; justify-content: flex-end; text-align: right; font-size: 25px; line-height: 1.4; }
-  .reveal .chat .msg { display: flex; align-items: flex-end; gap: 8px; }
-  .reveal .chat .msg.b { flex-direction: row-reverse; }
-  .reveal .chat .msg svg { width: 56px; height: 56px; flex: none; }
-  .reveal .chat .bubble { flex: 1; background: var(--panel); border-radius: 16px; padding: 10px 14px; }
-  .reveal .chat .msg.a .bubble { border-bottom-right-radius: 4px; }
-  .reveal .chat .msg.b .bubble { background: #fff; border: 1px solid var(--rule); border-bottom-left-radius: 4px; }
-  .reveal .chat .bubble p { margin: 0 0 .15em; }
+  /* The message board: one message at a time, in place, replacing the one before */
+  .reveal .chat { flex: 1; margin-top: 12px; background: #fff; border: 1px solid var(--rule); border-top: 4px solid var(--ink-faint); border-radius: 6px;
+    padding: 16px 18px; text-align: right; font-size: 25px; line-height: 1.4; }
+  .reveal .chat p { margin: 0 0 .3em; }
   .reveal .chat .eq { direction: ltr; text-align: center; white-space: nowrap; }
   .reveal .chat .h { direction: ltr; text-align: center; font-size: .78em; color: var(--ink-soft); }
   .reveal .chat .note { font-size: .82em; color: var(--ink-soft); }
-  .reveal .chat .msg.in { animation: t2pop .35s both; }
+  .reveal .chat .msg.in { animation: t2fade .4s both; }
   .reveal .est svg, .reveal .t2-svg { width: 100%; height: auto; display: block; overflow: visible; }
   .t2-pop { animation: t2pop .4s both; animation-delay: var(--d, 0s); transform-box: fill-box; transform-origin: center; }
   .t2-grow { animation: t2grow .5s both; animation-delay: var(--d, 0s); transform-box: fill-box; transform-origin: 50% 100%; }
@@ -797,21 +789,11 @@ window.T2 = (function () {
     }
     return s;
   }
-  // Two young researchers, line drawings: a = her (long hair), b = him (glasses)
-  var face = '<circle cx="25.5" cy="28" r="1.5" fill="var(--ink)"/><circle cx="34.5" cy="28" r="1.5" fill="var(--ink)"/><path d="M26,33 Q30,36.5 34,33" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round"/>';
-  var body = '<path d="M8,60 C10,45 50,45 52,60 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>';
-  var AV = {
-    a: '<svg viewBox="0 0 60 60" aria-label="חוקרת"><path d="M15,30 C12,9 48,9 45,30 L47,44 C40,41 20,41 13,44 Z" fill="var(--ink)"/>' + body +
-       '<circle cx="30" cy="26" r="12" fill="#fff" stroke="var(--ink)" stroke-width="2"/><path d="M18,25 C19,13 41,13 42,25 C36,18 25,18 18,25 Z" fill="var(--ink)"/>' + face + '</svg>',
-    b: '<svg viewBox="0 0 60 60" aria-label="חוקר">' + body +
-       '<circle cx="30" cy="27" r="12" fill="#fff" stroke="var(--ink)" stroke-width="2"/><path d="M18,25 C17,12 43,12 42,25 C38,18 24,17 18,25 Z" fill="var(--ink)"/>' + face +
-       '<circle cx="25.5" cy="28" r="3.8" fill="none" stroke="var(--ink)" stroke-width="1.4"/><circle cx="34.5" cy="28" r="3.8" fill="none" stroke="var(--ink)" stroke-width="1.4"/><line x1="29.3" y1="28" x2="30.7" y2="28" stroke="var(--ink)" stroke-width="1.4"/></svg>'
-  };
   // msg = [who, html]: shows only this message, in place of the one before
   function say(chat, msg, anim) {
     if (!msg) { chat.innerHTML = ''; return; }
     var html = typeof msg[1] === 'function' ? msg[1]() : msg[1];
-    chat.innerHTML = '<div class="msg ' + msg[0] + (anim ? ' in' : '') + '">' + AV[msg[0]] + '<div class="bubble">' + html + '</div></div>';
+    chat.innerHTML = '<div class="msg' + (anim ? ' in' : '') + '">' + html + '</div>';
   }
   // A thought bubble with a hypothesis inside, trailing down to the parameter below it.
   function cloud (text, size) {
@@ -822,14 +804,13 @@ window.T2 = (function () {
       '<circle cx="170" cy="224" r="6" fill="#fff" stroke="var(--hidden)" stroke-width="3"/>' +
       '<text x="172" y="' + (100 + size / 3) + '" text-anchor="middle" font-size="' + size + '" font-weight="700" fill="var(--hidden)" direction="ltr">' + text + '</text>';
   }
-  return { G: G, lik: lik, prior: prior, norm: norm, panel: panel, axis: axis, line: line, area: area, cls: cls, steps: steps, sample: sample, likBars: likBars, say: say, cloud: cloud, AV: AV };
+  return { G: G, lik: lik, prior: prior, norm: norm, panel: panel, axis: axis, line: line, area: area, cls: cls, steps: steps, sample: sample, likBars: likBars, say: say, cloud: cloud };
 })();
 
 (function () {
   var root = document.getElementById('bay-est'), sec = root.closest('section');
   var svg = root.querySelector('svg.plot'), side = root.querySelector('.est-side');
-  root.querySelector('.thinker .fig').innerHTML = T2.AV.a;
-  var smp = side.querySelector('.sample'), lab = side.querySelector('.sample-label'), arrow = side.querySelector('.gen-arrow'), chat = side.querySelector('.chat');
+  var smp = side.querySelector('.sample'), lab = side.querySelector('.sample-label'), arrow = side.querySelector('.gen-arrow'), chat = side.querySelector('.chat'), thought = side.querySelector('.thought');
   var G = T2.G, L = T2.norm(G.map(T2.lik)), P = T2.norm(G.map(T2.prior));
   var post = T2.norm(G.map(function (t, i) { return L[i] * P[i]; }));
   var p1 = T2.panel(70, 810, 140, 110), p2 = T2.panel(70, 810, 320, 110), p3 = T2.panel(70, 810, 500, 110);
@@ -853,7 +834,8 @@ window.T2 = (function () {
   T2.steps(sec, function (n, anim) {
     if (n === 0) smp.innerHTML = '';
     else if (n === 1 || smp.children.length === 0) T2.sample(smp, anim && n === 1);
-    [smp, lab, arrow].forEach(function (e) { e.classList.toggle('off', n < 1); });
+    [smp, lab, arrow, thought].forEach(function (e) { e.classList.toggle('off', n < 1); });
+    thought.classList.toggle('late', anim && n === 1);
     T2.say(chat, MSG[Math.min(n, MSG.length - 1)], anim);
     var s = '';
     if (n >= 2) s += '<g' + T2.cls(anim && n === 2, 't2-fade') + '>' + T2.axis(p1) + lbl(p1, 'likelihood', 'var(--curve)') + '</g>' + T2.likBars(p1, Math.min(n - 1, 5), n >= 7, anim && n <= 7, 0, 'var(--curve)');
@@ -886,11 +868,11 @@ window.T2 = (function () {
 <div class="sig"><span class="sig-name">R. A. Fisher</span></div>
 <div class="est" id="frq-est">
   <div class="est-side">
-    <div class="thinker"><span class="fig"></span><div class="thought">מממ... בהינתן ש-θ הוא בדיוק 0.5, והנתונים רועשים, מה הסיכוי לצפות דווקא בנתונים האלו?</div></div>
     <div class="theta-box"><span>θ =</span><span class="blk"></span></div>
     <div class="gen-arrow">↓ Bernoulli(θ)</div>
     <div class="sample"></div>
     <div class="sample-label">14 הצלחות · 2 כישלונות</div>
+    <div class="thought">מממ... בהינתן ש-θ הוא בדיוק 0.5, והנתונים רועשים, מה הסיכוי לצפות דווקא בנתונים האלו?</div>
     <div class="chat"></div>
   </div>
   <svg class="plot" viewbox="0 0 840 540" aria-label="MLE, התפלגות דגימה וערך p"></svg>
@@ -904,52 +886,31 @@ window.T2 = (function () {
 (function () {
   var root = document.getElementById('frq-est'), sec = root.closest('section');
   var svg = root.querySelector('svg.plot'), side = root.querySelector('.est-side');
-  root.querySelector('.thinker .fig').innerHTML = T2.AV.a;
-  var smp = side.querySelector('.sample'), lab = side.querySelector('.sample-label'), arrow = side.querySelector('.gen-arrow'), chat = side.querySelector('.chat');
-  var N = 16, TOTAL = 2000;
+  var smp = side.querySelector('.sample'), lab = side.querySelector('.sample-label'), arrow = side.querySelector('.gen-arrow'), chat = side.querySelector('.chat'), thought = side.querySelector('.thought');
+  var N = 16;
   var p1 = T2.panel(70, 810, 140, 110), p2 = T2.panel(70, 810, 320, 110), p3 = T2.panel(70, 810, 500, 110);
   var B = [1]; for (var k = 1; k <= N; k++) B.push(B[k - 1] * (N - k + 1) / k);
-  var pmf = B.map(function (c) { return c / 65536; }), w = (p1.x1 - p1.x0) / N * 0.7;
-  var counts, done, current, token = 0;
-  function reset() { counts = []; for (var k = 0; k <= N; k++) counts.push(0); done = 0; current = null; }
-  function study() { var d = [], k = 0; for (var i = 0; i < N; i++) { var v = Math.random() < 0.5 ? 1 : 0; d.push(v); k += v; } return { d: d, k: k }; }
-  function fill() { if (!done) reset(); while (done < TOTAL) { var st = study(); counts[st.k]++; done++; current = st; } }
+  var pmf = B.map(function (c) { return c / 65536; }), w = (p1.x1 - p1.x0) / N * 0.92;
   var MSG = [
     ['b', '<p>אותו θ חבוי, אותם נתונים. הפעם בלי prior.</p>'],
     ['a', '<p>16 תינוקות: 14 בחרו בדמות העוזרת, ו-2 בדמות המפריעה.</p>'],
     ['b', '<p><b>MLE בעזרת ממוצע:</b></p><p class="eq">θ̂ = ȳ</p><p class="eq">= (1 + 1 + … + 0 + 0) / 16</p><p class="eq">= 14 / 16 = 0.875</p>'],
-    ['a', '<p>ומאחוריו, אותה likelihood בדיוק כמו ב-Bayesian.</p><p class="note">ה-MLE הוא השיא שלה: הערך שתחתיו הנתונים הכי צפויים. הממוצע מוצא אותו בלי לחשב את כל העקומה.</p>'],
+    ['a', '<p>ה-MLE: הערך של θ שתחתיו הנתונים שלנו הכי צפויים.</p><p class="note">ב-Bernoulli זה פשוט הממוצע.</p>'],
     ['b', '<p><b>ההשערה ברת-ההפרכה:</b> θ = 0.5, לתינוקות אין העדפה.</p><p class="note">null, מלשון to nullify: לא מציבים אותה כדי להאמין בה, אלא כדי שהנתונים יקבלו הזדמנות להפיל אותה.</p>'],
     ['a', '<p class="q">“the null hypothesis is never proved or established, but is possibly disproved”</p><p class="note">R. A. Fisher, 1935</p>'],
-    ['b', '<p>אם θ = 0.5: מחקר ועוד מחקר, בכל אחד 16 תינוקות.</p><p class="note">כך מתפזר אחוז ההצלחות בין מחקרים: זו התפלגות הדגימה.</p>'],
-    ['a', function () { return '<p>מה שראינו: 14 מתוך 16.</p><p>רק ' + (counts[14] + counts[15] + counts[16]) + ' מתוך ' + done + ' מחקרים הגיעו לשם, או רחוק יותר.</p>'; }],
-    ['b', '<p>בספירה מדויקת, בלי סימולציה:</p><p class="eq">P(k ≥ 14 | θ = 0.5) = 0.002</p>'],
+    ['b', '<p>אם θ = 0.5, ונערוך עוד ועוד מחקרים של 16 תינוקות:</p><p class="note">כך יתפזר אחוז ההצלחות בין המחקרים. זו התפלגות הדגימה.</p>'],
+    ['a', '<p>ומה שראינו: θ̂ = 0.875.</p><p>כמה מההתפלגות נמצא שם, או רחוק יותר?</p>'],
+    ['b', '<p>מעט מאוד:</p><p class="eq">P(k ≥ 14 | θ = 0.5) = 0.002</p>'],
     ['a', '<p>ובשני הכיוונים, כי לא קבענו כיוון מראש:</p><p class="eq">p = 0.002 + 0.002 = 0.004</p>'],
     ['b', '<p class="eq">θ̂ = 0.875</p><p class="eq">90% CI [0.656, 0.977]</p><p class="eq">p = .004</p><p>p קטן מ-.05: דוחים את ההשערה ברת-ההפרכה.</p><p class="note">זה הסיכוי לנתונים בהינתן ההשערה, ולא הסיכוי שההשערה נכונה.</p>']
   ];
   function lbl(p, t, c) { return '<text x="' + p.x0 + '" y="' + (p.base - p.h - 8) + '" text-anchor="end" font-size="20" font-weight="700" fill="' + c + '">' + t + '</text>'; }
-  function obs(p, top) { return '<line x1="' + p.X(14 / N) + '" y1="' + p.base + '" x2="' + p.X(14 / N) + '" y2="' + top + '" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="7 5"/>'; }
-  function bar(p, k, h, color, op) { return '<rect x="' + (p.X(k / N) - w / 2) + '" y="' + (p.base - h) + '" width="' + w + '" height="' + h + '" fill="' + color + '" opacity="' + op + '"/>'; }
-  // Panel 2: the studies so far, and the study being drawn (its 16 babies, one by one)
-  function hist(dots) {
-    var s = '', max = Math.max.apply(null, counts), px = Math.min(16, p2.h / Math.max(max, 1));
-    counts.forEach(function (c, k) {
-      if (px >= 6) for (var j = 0; j < c; j++) s += '<rect x="' + (p2.X(k / N) - w / 2) + '" y="' + (p2.base - (j + 1) * px + 1) + '" width="' + w + '" height="' + (px - 2) + '" rx="2" fill="var(--seen)" opacity=".75"/>';
-      else if (c) s += bar(p2, k, c * px, 'var(--seen)', .75);
-    });
-    if (current) {
-      for (var i = 0; i < N; i++) {
-        var on = i < dots;
-        s += '<circle cx="' + (345 + i * 15) + '" cy="196" r="5.5" fill="' + (on && current.d[i] ? 'var(--seen)' : '#fff') + '" stroke="var(--seen)" stroke-width="2" opacity="' + (on ? 1 : .3) + '"/>';
-      }
-      s += '<text x="590" y="201" text-anchor="end" font-size="16" fill="var(--ink-soft)">מחקר ' + done + (dots >= N ? ': ' + current.k + ' מתוך 16' : '') + '</text>';
-    }
-    return s;
-  }
-  function render(n, anim, dots) {
+  // A dashed line at an observed proportion, from the p panel up through the sampling distribution
+  function obs(t) { var x = p3.X(t); return '<line x1="' + x + '" y1="' + p3.base + '" x2="' + x + '" y2="' + (p2.base - p2.h) + '" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="7 5"/><circle cx="' + x + '" cy="' + p3.base + '" r="6" fill="var(--ink)"/>'; }
+  function note(t, txt, size, c, dx) { return '<text x="' + (p3.X(t) + (dx || 0)) + '" y="' + (p3.base - 40) + '" text-anchor="middle" font-size="' + size + '" font-weight="700" fill="' + c + '" direction="ltr">' + txt + '</text>'; }
+  function render(n, anim) {
     var s = '';
-    // 1. MLE, and behind it the same likelihood as in the Bayesian slide
-    if (n >= 3) s += '<g opacity=".4">' + T2.likBars(p1, 5, true, anim && n === 3, 0.2, 'var(--curve)', true) + '</g>';
+    // 1. MLE
     if (n >= 2) {
       var x = p1.X(0.875);
       s += '<g' + T2.cls(anim && n === 2, 't2-fade') + '>' + T2.axis(p1) + lbl(p1, 'MLE', 'var(--ink)') +
@@ -957,59 +918,29 @@ window.T2 = (function () {
         '<circle cx="' + x + '" cy="' + p1.base + '" r="7" fill="var(--ink)"/>' +
         '<text x="' + x + '" y="' + (p1.base - p1.h - 8) + '" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)" direction="ltr">θ̂ = 0.875</text></g>';
     }
-    // 2. The sampling distribution, if the falsifiable hypothesis (θ = 0.5) were true
+    // 2. The sampling distribution, if the falsifiable hypothesis (θ = 0.5) were true; its extreme tails light up later
     if (n >= 4) s += '<g' + T2.cls(anim && n === 4, 't2-fade') + '>' + T2.axis(p2) + lbl(p2, 'התפלגות דגימה', 'var(--seen)') +
-      '<g transform="translate(195,140) scale(.36)">' + T2.cloud('θ = 0.5', 44) + '</g></g>';
-    if (n >= 6) s += hist(dots == null ? N : dots) + '<text x="' + p2.x0 + '" y="232" text-anchor="end" font-size="16" fill="var(--ink-soft)">' + done + ' מחקרים</text>';
-    if (n >= 7) s += obs(p2, p2.base - p2.h);
-    // 3. p: the exact distribution, and how much of it is at least as extreme as what we saw
-    if (n >= 8) {
-      s += '<g' + T2.cls(anim && n === 8, 't2-fade') + '>' + T2.axis(p3) + lbl(p3, 'ערך p', 'var(--curve)');
+      '<g transform="translate(205,166) scale(.28)">' + T2.cloud('θ = 0.5', 44) + '</g></g>';
+    if (n >= 6) {
+      s += '<g' + T2.cls(anim && n === 6, 't2-fade') + '>';
       pmf.forEach(function (v, k) {
-        var tail = k >= 14 || (n >= 9 && k <= 2);
-        s += bar(p3, k, Math.max(2, p3.h * v / pmf[8]), tail ? 'var(--curve)' : 'var(--seen)', tail ? 1 : .55);
+        var tail = (n >= 8 && k >= 14) || (n >= 9 && k <= 2), h = Math.max(tail ? 4 : 1, p2.h * v / pmf[8]);
+        s += '<rect x="' + (p2.X(k / N) - w / 2) + '" y="' + (p2.base - h) + '" width="' + w + '" height="' + h + '" fill="' + (tail ? 'var(--curve)' : 'var(--seen)') + '" opacity="' + (tail ? 1 : .75) + '"/>';
       });
-      s += obs(p3, p3.base - 55) + '<text x="' + p3.X(15 / N) + '" y="' + (p3.base - 66) + '" text-anchor="middle" font-size="17" fill="var(--curve)" direction="ltr">P(k ≥ 14) = 0.002</text></g>';
+      s += '</g>';
     }
-    if (n >= 9) s += '<g' + T2.cls(anim && n === 9, 't2-fade') + '><text x="' + p3.X(1 / N) + '" y="' + (p3.base - 66) + '" text-anchor="middle" font-size="17" fill="var(--curve)" direction="ltr">P(k ≤ 2) = 0.002</text>' +
-      '<text x="' + p3.X(.5) + '" y="' + (p3.base - p3.h - 8) + '" text-anchor="middle" font-size="20" font-weight="700" fill="var(--curve)" direction="ltr">p = 0.004</text></g>';
+    // 3. p: only the line of what we saw, and how much of the distribution lies beyond it
+    if (n >= 7) s += '<g' + T2.cls(anim && n === 7, 't2-fade') + '>' + T2.axis(p3) + obs(14 / N) + note(14 / N, 'θ̂ = 0.875', 19, 'var(--ink)', 62) + '</g>';
+    if (n >= 8) s += '<g' + T2.cls(anim && n === 8, 't2-fade') + '>' + lbl(p3, 'ערך p', 'var(--curve)') + note(14 / N, 'P(k ≥ 14) = 0.002', 17, 'var(--curve)', -90) + '</g>';
+    if (n >= 9) s += '<g' + T2.cls(anim && n === 9, 't2-fade') + '>' + obs(2 / N) + note(2 / N, 'P(k ≤ 2) = 0.002', 17, 'var(--curve)', 90) +
+      note(.5, 'p = 0.004', 26, 'var(--curve)') + '</g>';
     svg.innerHTML = s;
   }
-  // Study after study: the first ones baby by baby, then faster and faster
-  function run(my) {
-    var i = 0;
-    reset();
-    function slow() {
-      if (my !== token) return;
-      if (i >= 3) return fast();
-      current = study(); done++;
-      var dots = 0, tick = setInterval(function () {
-        if (my !== token) return clearInterval(tick);
-        render(6, false, ++dots);
-        if (dots >= N) {
-          clearInterval(tick);
-          setTimeout(function () { if (my !== token) return; counts[current.k]++; render(6, false, N); i++; setTimeout(slow, 450); }, 350);
-        }
-      }, 45);
-    }
-    function fast() {
-      if (my !== token) return;
-      var batch = done < 25 ? 1 : done < 200 ? 6 : 40;
-      for (var b = 0; b < batch && done < TOTAL; b++) { var st = study(); counts[st.k]++; done++; current = st; }
-      render(6, false, N);
-      if (done < TOTAL) setTimeout(fast, done < 25 ? 150 : 35);
-    }
-    slow();
-  }
-  reset();
   T2.steps(sec, function (n, anim) {
-    token++;
     if (n === 0) smp.innerHTML = '';
     else if (n === 1 || smp.children.length === 0) T2.sample(smp, anim && n === 1);
-    [smp, lab, arrow].forEach(function (e) { e.classList.toggle('off', n < 1); });
-    if (n < 6) reset();
-    if (n === 6 && anim) { T2.say(chat, MSG[6], true); run(token); return; }
-    if (n >= 6) fill();
+    [smp, lab, arrow, thought].forEach(function (e) { e.classList.toggle('off', n < 1); });
+    thought.classList.toggle('late', anim && n === 1);
     T2.say(chat, MSG[Math.min(n, MSG.length - 1)], anim);
     render(n, anim);
   });
@@ -1023,19 +954,19 @@ window.T2 = (function () {
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="_libs/fc605f9aab/revealjs/dist/reveal.js"></script>
+  <script src="_libs/747e483d74/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="_libs/fc605f9aab/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="_libs/fc605f9aab/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="_libs/fc605f9aab/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="_libs/fc605f9aab/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="_libs/fc605f9aab/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="_libs/747e483d74/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="_libs/747e483d74/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="_libs/747e483d74/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="_libs/747e483d74/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="_libs/747e483d74/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="_libs/fc605f9aab/revealjs/plugin/notes/notes.js"></script>
-  <script src="_libs/fc605f9aab/revealjs/plugin/search/search.js"></script>
-  <script src="_libs/fc605f9aab/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="_libs/fc605f9aab/revealjs/plugin/math/math.js"></script>
+  <script src="_libs/747e483d74/revealjs/plugin/notes/notes.js"></script>
+  <script src="_libs/747e483d74/revealjs/plugin/search/search.js"></script>
+  <script src="_libs/747e483d74/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="_libs/747e483d74/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1286,7 +1217,7 @@ window.T2 = (function () {
     // נגן הקראה לקטע מקור באנגלית (W2.T1), באותו מבנה כמו שקף ההאזנה ב-W1.T1:
     // פס עם כפתור וציר מעל הריבועים, המילים שנאמרו מתכהות והמילה הנוכחית מסומנת.
     // <div class="en" data-audio="..." data-times="[...]">: data-times = התחלת כל מילה (שניות), לפי סדר המילים בטקסט;
-    // [...] ופיסוק בלבד אינם מילים ולא מסומנים. הצעד הראשון קדימה בשקף מפעיל את ההשמעה.
+    // [...] ופיסוק בלבד אינם מילים ולא מסומנים, וגם לא שורת העמוד (p.src-jump, W3.T1). הצעד הראשון קדימה בשקף מפעיל את ההשמעה.
     (function () {
       const SKIP = /^\[…\][.,;:]?$/;
       const boxes = [...document.querySelectorAll('.en[data-audio]')];
@@ -1296,7 +1227,7 @@ window.T2 = (function () {
       boxes.forEach(box => {
         const times = JSON.parse(box.dataset.times || '[]');
         const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
-        const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+        const nodes = []; while (walker.nextNode()) if (!walker.currentNode.parentElement.closest('.src-jump')) nodes.push(walker.currentNode);
         const words = [];
         nodes.forEach(n => {
           const frag = document.createDocumentFragment();
