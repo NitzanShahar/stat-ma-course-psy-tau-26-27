@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="הטלת מטבע לתרגיל להגשה מספר 3 – קורס סטטיסטיקה ושיטות מחקר, בית הספר לפסיכולוגיה, אוניברסיטת תל אביב">
+<title>הטלת מטבע</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* Unit A (blue) as the only accent; ink for text */
+:root {
+  --bg: #fcfcfa; --ink: #1b2028; --ink-soft: #5a6472;
+  --unit: #185fa5; --unit-line: #9fbbd9; --unit-bg: #eaf1f9; --btn-text: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15181d; --ink: #e9ecf0; --ink-soft: #9aa3ae;
+    --unit: #7fb0e3; --unit-line: #3d5f82; --unit-bg: #1d2a38; --btn-text: #0f1722;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15181d; --ink: #e9ecf0; --ink-soft: #9aa3ae;
+  --unit: #7fb0e3; --unit-line: #3d5f82; --unit-bg: #1d2a38; --btn-text: #0f1722;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Assistant", "Arial Hebrew", Arial, sans-serif;
+  padding-inline: max(16px, env(safe-area-inset-left, 0px));
+}
+main {
+  min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px; padding-block: 32px; text-align: center;
+}
+h1 { margin: 0; font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; }
+.title-rule { width: 90px; height: 4px; border-radius: 2px; background: var(--unit); margin: -14px 0 0; }
+
+/* the coin: two faces back to back; the outer box tosses, the inner box spins */
+.stage { perspective: 900px; height: 260px; display: flex; align-items: flex-end; justify-content: center; }
+.toss { width: 190px; height: 190px; }
+.coin { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
+.face {
+  position: absolute; inset: 0; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--unit-bg); border: 6px solid var(--unit);
+  box-shadow: inset 0 0 0 8px var(--bg), inset 0 0 0 10px var(--unit-line);
+  color: var(--unit); font-size: 4.2rem; font-weight: 700;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.face.tails { transform: rotateX(180deg); }
+
+button {
+  font: inherit; font-size: 2.1rem; font-weight: 700;
+  background: var(--unit); color: var(--btn-text); border: 0; border-radius: 18px;
+  padding: 22px 80px; min-width: min(320px, 100%); cursor: pointer;
+}
+button:hover { filter: brightness(1.08); }
+button:focus-visible { outline: 3px solid var(--unit-line); outline-offset: 3px; }
+button:disabled { opacity: .55; cursor: default; filter: none; }
+
+.result { min-height: 3.4rem; margin: 0; font-size: clamp(2rem, 7vw, 2.8rem); font-weight: 700; }
+.result.hide { visibility: hidden; }
+.note { margin: 0; color: var(--ink-soft); font-size: 1rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>הטלת מטבע</h1>
+  <div class="title-rule" aria-hidden="true"></div>
+
+  <div class="stage" aria-hidden="true">
+    <div class="toss" id="toss">
+      <div class="coin" id="coin">
+        <div class="face heads">עץ</div>
+        <div class="face tails">פלי</div>
+      </div>
+    </div>
+  </div>
+
+  <button id="flip" type="button">הטלה</button>
+  <p class="result hide" id="result" aria-live="polite">&nbsp;</p>
+  <p class="note">עץ = הצלחה · פלי = כישלון</p>
+</main>
+
+<script>
+const btn = document.getElementById('flip');
+const coin = document.getElementById('coin');
+const toss = document.getElementById('toss');
+const result = document.getElementById('result');
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let angle = 0; // multiple of 180: even turns = עץ, odd = פלי
+
+function fairBit() {
+  const a = new Uint8Array(1);
+  crypto.getRandomValues(a);
+  return a[0] & 1; // 0 = עץ, 1 = פלי
+}
+
+btn.addEventListener('click', () => {
+  const tails = fairBit() === 1;
+  const showingTails = (angle / 180) % 2 === 1;
+  const spins = reduce ? 1 : 6;
+  const from = angle;
+  angle += spins * 360 + (tails !== showingTails ? 180 : 0);
+  const ms = reduce ? 400 : 1700;
+
+  btn.disabled = true;
+  result.classList.add('hide');
+
+  coin.animate(
+    [{ transform: `rotateX(${from}deg)` }, { transform: `rotateX(${angle}deg)` }],
+    { duration: ms, easing: 'cubic-bezier(.25,.6,.3,1)', fill: 'forwards' }
+  );
+  if (!reduce) {
+    toss.animate(
+      [
+        { transform: 'translateY(0) scale(1)', easing: 'cubic-bezier(.2,.7,.4,1)' },
+        { transform: 'translateY(-70px) scale(1.12)', offset: .45, easing: 'cubic-bezier(.6,0,.8,.4)' },
+        { transform: 'translateY(0) scale(1)' }
+      ],
+      { duration: ms }
+    );
+  }
+
+  setTimeout(() => {
+    result.textContent = tails ? 'כישלון' : 'הצלחה';
+    result.classList.remove('hide');
+    btn.disabled = false;
+    btn.focus();
+  }, ms);
+});
+</script>
+</body>
+</html>
