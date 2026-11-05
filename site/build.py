@@ -97,7 +97,7 @@ def weeks_json(data):
 PILL_SURVEY = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3.5" width="12" height="14" rx="2"/><path d="M7.5 3.5v-1h5v1M7.5 9l1.3 1.3L11.5 7.5M7.5 14h5"/></svg>'
 PILL_GAME = '<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="16" height="9" rx="4.5"/><path d="M6 10.5h3M7.5 9v3"/><circle cx="12.8" cy="9.8" r=".6"/><circle cx="14.8" cy="11.2" r=".6"/></svg>'
 PILL_AI = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7z"/></svg>'
-LABEL_ICONS = {'סקר': PILL_SURVEY, 'משחק': PILL_GAME, 'Gemini': PILL_AI}  # extra links shown as a round button by their label
+LABEL_ICONS = {'סקר': PILL_SURVEY, 'משחק': PILL_GAME, 'Gemini': PILL_AI, 'בוט Bayesian': PILL_AI, 'בוט Frequentist': PILL_AI, 'הטלת מטבע': PILL_GAME}  # extra links shown as a round button by their label
 
 
 def pill_icon(h, lbl=''):
