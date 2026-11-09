@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="he"><head>
-<script src="_libs/747e483d74/clipboard/clipboard.min.js"></script>
-<script src="_libs/747e483d74/quarto-html/tabby.min.js"></script>
-<script src="_libs/747e483d74/quarto-html/popper.min.js"></script>
-<script src="_libs/747e483d74/quarto-html/tippy.umd.min.js"></script>
-<link href="_libs/747e483d74/quarto-html/tippy.css" rel="stylesheet">
-<link href="_libs/747e483d74/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="_libs/747e483d74/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="_libs/0b337bd691/clipboard/clipboard.min.js"></script>
+<script src="_libs/0b337bd691/quarto-html/tabby.min.js"></script>
+<script src="_libs/0b337bd691/quarto-html/popper.min.js"></script>
+<script src="_libs/0b337bd691/quarto-html/tippy.umd.min.js"></script>
+<link href="_libs/0b337bd691/quarto-html/tippy.css" rel="stylesheet">
+<link href="_libs/0b337bd691/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="_libs/0b337bd691/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W4.V2: ה-Likelihood של הגאוסיאן</title>
+  <title>ה-likelihood של μ ו-σ</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="_libs/747e483d74/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="_libs/747e483d74/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="_libs/0b337bd691/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="_libs/0b337bd691/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,11 +29,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="_libs/747e483d74/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="_libs/747e483d74/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="_libs/747e483d74/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="_libs/747e483d74/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="_libs/747e483d74/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="_libs/0b337bd691/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="_libs/0b337bd691/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="_libs/0b337bd691/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="_libs/0b337bd691/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="_libs/0b337bd691/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -323,57 +323,397 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center" dir="rtl">
+<section id="title-slide" class="quarto-title-block center" dir="rtl" data-unit="a">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W4.V2: ה-Likelihood של הגאוסיאן</h1>
-  <p class="subtitle">מעבר למודל רציף בעל שני פרמטרים: תוחלת (μ) וסטיית תקן (σ)</p>
+  <p class="week-label">שבוע 4 · Continuous estimates</p>
+  <h1 class="title">ה-likelihood של μ ו-σ</h1>
+  <div class="title-rule"></div>
+  <p class="subtitle">מהתצפיות אל הפרמטרים של ההתפלגות הגאוסיינית</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
-<section id="לוח-galton-galton-board" class="slide level2">
-<h2>לוח Galton (Galton Board)</h2>
-<ul>
-<li>כדורים נופלים דרך מסמרים וזזים ימינה/שמאלה באופן אקראי.</li>
-<li>סכום הרעשים המצטבר מייצר את <strong>ההתפלגות הנורמלית (גאוסיאנית)</strong>.</li>
-<li>לכן הגאוסיאן מופיע בכל מקום בטבע!</li>
-</ul>
-</section>
-<section id="פונקציית-ה-likelihood-הדו-מימדית" class="slide level2">
-<h2>פונקציית ה-Likelihood הדו-מימדית</h2>
-<div class="ltr">
-<p><span class="math display">\[L(\mu, \sigma | \text{Data}) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\]</span></p>
+<section id="הבעיה-ההפוכה" class="slide level2">
+<h2>הבעיה ההפוכה</h2>
+<div class="centered-content">
+<div class="flow-diagram">
+<div class="flow-node hidden-node">
+<p><strong><span class="math inline">\(\mu = \;?\)</span> · <span class="math inline">\(\sigma = \;?\)</span></strong> · חבויים בטבע</p>
 </div>
-<ul>
-<li>כעת יש לנו <strong>שני פרמטרים חבויים</strong>: <span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span>.</li>
-<li>עקומת ה-Likelihood הופכת ל<strong>משטח סבירות דו-מימדי (Likelihood Surface)</strong>!</li>
-</ul>
-</section>
-<section id="הדגמה-חיה-משטח-הסבירות-הדו-מימדי" class="slide level2">
-<h2>הדגמה חיה: משטח הסבירות הדו-מימדי</h2>
-<div style="background:#fff; padding:10px; border-radius:8px; border:1px solid #ccc; margin-top:10px;">
-  <div id="plot_gs" style="width:100%; height:400px;"></div>
+<div class="flow-arrow">
+<p>▼</p>
 </div>
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<div class="flow-node">
+<p><span class="math inline">\(y \sim \text{Normal}(\mu,\ \sigma)\)</span></p>
+</div>
+<div class="flow-arrow">
+<p>▼</p>
+</div>
+<div class="flow-node seen-node">
+<p><strong><span class="math inline">\(y_1, y_2, \dots, y_n\)</span></strong> · התצפיות שבידינו</p>
+</div>
+</div>
+<div style="margin-top:.6em;">
+<ul>
+<li class="fragment">במצגת הקודמת הלכנו מ-<span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span> אל התצפיות. במחקר יש לנו רק את התצפיות.</li>
+<li class="fragment">בדיוק כמו בכד של ברנולי: עוברים על ערכים מועמדים של הפרמטר, ושואלים בכמה דרכים כל אחד מהם יכול לייצר את מה שראינו.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="ספירת-דרכים-בלוח" class="slide level2 part-gate">
+<h2>ספירת דרכים בלוח</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-title">ספירת דרכים בלוח</div>
+  <div class="gate-why">likelihood בלי נוסחה: לוח גלטון שמונח על כל מועמד</div>
+</div>
+</section>
+<section id="ספירת-דרכים-בלוח-1" class="slide level2 example-slide">
+<h2>ספירת דרכים בלוח</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <label>התצפיות: <select id="wc-data"><option value="0">תינוק אחד: 2.6 ק"ג</option><option value="1">שני תינוקות: 2.6 ו-3.4 ק"ג</option></select></label>
+    <button id="wc-next" class="demo-btn">המועמד הבא</button>
+    <button id="wc-all" class="demo-btn">כל המועמדים</button>
+    <button id="wc-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <svg id="wc-svg" viewbox="0 0 1000 400" style="width:100%; height:auto; display:block;" aria-label="לוח גלטון שמונח על כל ערך מועמד של μ, ומספר הדרכים לתצפיות"></svg>
+  <div class="demo-readout" id="wc-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
 <script>
-  function render_gs() {
-    let muVals = [], sigmaVals = [], zData = [];
-    for(let m = 150; m <= 190; m += 2) muVals.push(m);
-    for(let s = 2; s <= 15; s += 0.5) sigmaVals.push(s);
-    for(let s of sigmaVals) {
-      let row = [];
-      for(let m of muVals) {
-        let lik = Math.exp(-Math.pow(m-170, 2)/(2*s*s)) * Math.pow(1/s, 5);
-        row.push(lik);
+  (function () {
+    const svg = document.getElementById('wc-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    // לוח של 5 שורות: 6 תאים ברוחב חצי ק"ג סביב μ, עם 1, 5, 10, 10, 5, 1 דרכים
+    const WAYS = [1, 5, 10, 10, 5, 1], BIN = .5, CANDS = [1.5, 2, 2.5, 3, 3.5, 4, 4.5];
+    const DATA = [[2.6], [2.6, 3.4]];
+    const x0 = 70, x1 = 960, lo = .5, hi = 5.5, X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
+    const axY = 190, boardTop = 60, barBase = 380, barTop = 250;
+    let cur = -1, done = [];
+    const ways = (y, m) => { const j = Math.floor((y - (m - 3 * BIN)) / BIN + 1e-9); return j >= 0 && j < 6 ? WAYS[j] : 0; };
+    function draw() {
+      const ys = DATA[+$('wc-data').value], maxP = 10 ** ys.length;
+      let s = '';
+      if (cur >= 0) {
+        const m = CANDS[cur], hit = ys.map(y => Math.floor((y - (m - 3 * BIN)) / BIN + 1e-9));
+        // הלוח: משפך ומוטות קטנים, ומתחתם ששת התאים
+        for (let i = 0; i < 5; i++) for (let j = 0; j <= i; j++) s += `<circle cx="${X(m) + (j - i / 2) * (X(BIN) - X(0))}" cy="${boardTop - 44 + i * 9}" r="2.6" fill="var(--ink-faint)"/>`;
+        WAYS.forEach((w, j) => {
+          const a = m + (j - 3) * BIN, h = w / 10 * (axY - boardTop - 8), on = hit.includes(j);
+          s += `<rect x="${X(a) + 2}" y="${axY - h}" width="${X(BIN) - X(0) - 4}" height="${h}" rx="3" fill="var(--panel)" stroke="${on ? 'var(--curve)' : 'var(--ink-faint)'}" stroke-width="${on ? 4 : 1.5}"/>
+                <text x="${X(a + BIN / 2)}" y="${axY - h - 8}" text-anchor="middle" font-size="18" font-weight="700" fill="${on ? 'var(--curve)' : 'var(--ink-soft)'}">${w}</text>`;
+        });
+        s += `<line x1="${X(m)}" y1="${boardTop - 52}" x2="${X(m)}" y2="${axY}" stroke="var(--hidden)" stroke-width="2.5" stroke-dasharray="6 5"/>`;
       }
-      zData.push(row);
+      s += `<line x1="${x0}" y1="${axY}" x2="${x1}" y2="${axY}" stroke="var(--ink)" stroke-width="2"/>`;
+      for (let v = 1; v <= 5; v += .5) s += `<line x1="${X(v)}" y1="${axY}" x2="${X(v)}" y2="${axY + 6}" stroke="var(--ink)"/>
+        <text x="${X(v)}" y="${axY + 26}" text-anchor="middle" font-size="16" fill="var(--ink-soft)">${v}</text>`;
+      s += `<text x="${x1}" y="${axY + 50}" text-anchor="start" direction="rtl" font-size="16" fill="var(--ink-soft)">משקל לידה (ק"ג)</text>`;
+      ys.forEach((y, i) => {
+        s += `<circle cx="${X(y)}" cy="${axY}" r="10" fill="var(--seen)" stroke="#fff" stroke-width="2"/>
+              <text x="${X(y)}" y="${axY + 5}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">${i + 1}</text>`;
+      });
+      // מתחת לציר: מספר הדרכים של כל מועמד שכבר חושב
+      s += `<line x1="${x0}" y1="${barBase}" x2="${x1}" y2="${barBase}" stroke="var(--ink-faint)" stroke-width="1.5"/>
+            <text x="${x0}" y="${barTop - 6}" text-anchor="end" direction="rtl" font-size="16" fill="var(--ink-soft)">מספר הדרכים לכל μ מועמד</text>`;
+      done.forEach(i => {
+        const m = CANDS[i], ws = ys.map(y => ways(y, m)), p = ws.reduce((a, b) => a * b, 1), h = p / maxP * (barBase - barTop - 26);
+        s += `<rect x="${X(m) - 22}" y="${barBase - h}" width="44" height="${Math.max(h, 1.5)}" fill="var(--curve)" opacity="${i === cur ? 1 : .6}"/>
+              <text x="${X(m)}" y="${barBase - h - 7}" text-anchor="middle" direction="ltr" font-size="15" font-weight="700" fill="var(--curve)">${ws.length > 1 ? ws.join('×') + '=' : ''}${p}</text>`;
+      });
+      CANDS.forEach(m => { s += `<text x="${X(m)}" y="${barBase + 18}" text-anchor="middle" font-size="14" fill="var(--hidden)">μ=${m}</text>`; });
+      svg.innerHTML = s;
+      let out = 'הלוח מונח על μ מועמד, ושואלים בכמה דרכים הוא מייצר כל תצפית';
+      if (cur >= 0) {
+        const m = CANDS[cur], ws = ys.map(y => ways(y, m));
+        out = `<span class="ltr">μ = ${m}</span> · ` + ws.map((w, i) => `תינוק ${i + 1}: <span class="ltr">${w}</span> דרכים`).join(' · ') +
+              (ws.length > 1 ? ` · יחד: <span class="ltr">${ws.join(' × ')} = ${ws.reduce((a, b) => a * b, 1)}</span>` : '');
+      }
+      $('wc-out').innerHTML = out;
     }
-    Plotly.newPlot('plot_gs', [{ z: zData, x: muVals, y: sigmaVals, type: 'surface' }], {
-      title: 'משטח הסבירות הדו-מימדי L(μ, σ | Data)',
-      scene: { xaxis: {title: 'μ'}, yaxis: {title: 'σ'}, zaxis: {title: 'Likelihood'} },
-      margin: {t:30, b:10, l:10, r:10}
-    });
-  }
-  setTimeout(render_gs, 500);
+    function step() { cur = (cur + 1) % CANDS.length; if (!done.includes(cur)) done.push(cur); draw(); }
+    $('wc-next').onclick = step;
+    $('wc-all').onclick = () => { done = CANDS.map((_, i) => i); cur = 3; draw(); };
+    $('wc-reset').onclick = () => { cur = -1; done = []; draw(); };
+    $('wc-data').onchange = () => { cur = -1; done = []; draw(); };
+    draw();
+  })();
 </script>
+<div class="demo-note">
+<p>הלוח מהשיעור, עם 5 שורות. מניחים אותו כך שהמרכז שלו על <span class="math inline">\(\mu\)</span> מועמד, וסופרים בכמה דרכים כדור יכול ליפול לתא של כל תינוק. התחילו בתינוק אחד, ואחר כך עברו לשניים.</p>
+</div>
+</section>
+<section id="ספירת-דרכים-בלוח-2" class="slide level2">
+<h2>ספירת דרכים בלוח</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment">לכל ערך מועמד של <span class="math inline">\(\mu\)</span> ספרנו בכמה דרכים הלוח יכול לייצר כל תצפית.</li>
+<li class="fragment">כשיש כמה תצפיות <strong>כופלים</strong>: כל דרך לתינוק הראשון משתלבת עם כל דרך לתינוק השני. בדיוק כמו בשבילי הנתונים של השבוע הראשון.</li>
+<li class="fragment">המועמד שיש לו הכי הרבה דרכים הוא <span class="math inline">\(\mu = 3\)</span>: בדיוק הממוצע של 2.6 ו-3.4.</li>
+<li class="fragment">זו התפלגות ה-<span class="term">likelihood</span>: עד כמה התצפיות צפויות, בהינתן כל ערך אפשרי של הפרמטר.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="likelihood-רציף" class="slide level2 part-gate">
+<h2>likelihood רציף</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span></div>
+  <div class="gate-title">likelihood רציף</div>
+  <div class="gate-why">מהלוח אל פונקציית הצפיפות</div>
+</div>
+</section>
+<section id="likelihood-רציף-1" class="slide level2">
+<h2>likelihood רציף</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><p>במקום לספור דרכים בלוח, מחשבים לכל תצפית את הצפיפות שלה, <span class="math inline">\(p(y_i \mid \mu, \sigma)\)</span>. אותו רעיון, בלי תאים.</p></li>
+<li class="fragment"><p>וכמו בלוח, כופלים את כל התצפיות:</p>
+<div class="ltr">
+<p><span class="math display">\[\mathcal{L}(\mu) = p(y_1 \mid \mu, \sigma) \times p(y_2 \mid \mu, \sigma) \times \dots \times p(y_n \mid \mu, \sigma)\]</span></p>
+</div></li>
+<li class="fragment"><p><strong>הדוגמה:</strong> נבדקים צופים בסרטון מותח באורך 120 שניות, ואחר כך מעריכים כמה זמן הוא נמשך. <span class="math inline">\(y\)</span> היא ההערכה, בשניות.</p></li>
+<li class="fragment"><p>בינתיים נניח ש-<span class="math inline">\(\sigma = 35\)</span> ידוע, ונחפש רק את <span class="math inline">\(\mu\)</span>.</p></li>
+<li class="fragment"><p><strong>מעכשיו <span class="math inline">\(y\)</span> יופיע על הציר האנכי</strong>, כמו שיהיה ברגרסיה.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="likelihood-רציף-2" class="slide level2 example-slide">
+<h2>likelihood רציף</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <label>μ מועמד: <input type="range" id="lk-mu" min="0" max="300" step="1" value="60"> <span class="ltr demo-readout" id="lk-muv"></span></label>
+    <button class="demo-btn" data-o="1">תצפית</button>
+    <button class="demo-btn" data-o="10">10 תצפיות</button>
+    <button class="demo-btn" data-o="100">100 תצפיות</button>
+    <button id="lk-all" class="demo-btn">כל המועמדים</button>
+    <button id="lk-reset" class="demo-btn ghost">איפוס</button>
+    <label><input type="checkbox" id="lk-mean"> הממוצע</label>
+    <button id="lk-reveal" class="demo-btn ghost">לחשוף את μ</button>
+  </div>
+  <svg id="lk-svg" viewbox="0 0 1000 380" style="width:100%; height:auto; display:block;" aria-label="התצפיות, הפעמון של μ מועמד, וה-likelihood של כל μ"></svg>
+  <div class="demo-readout" id="lk-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('lk-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    // המחשב יודע את μ = 140. σ = 35 ידוע לכולם.
+    const TRUE = 140, SD = 35, yb = 345, yt = 25, Y = v => yb - v / 300 * (yb - yt);
+    const dX0 = 110, dX1 = 330, bX = 345, bW = 120, lX0 = 600, lX1 = 960;
+    const randn = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+    const logp = (y, m) => -.5 * ((y - m) / SD) ** 2 - Math.log(SD * Math.sqrt(2 * Math.PI));
+    let ys = [], jit = [], seen = new Set(), all = false, show = false;
+    const ll = m => ys.reduce((a, y) => a + logp(y, m), 0);
+    const sci = l => { if (!ys.length) return '1'; const e = Math.floor(l / Math.LN10), m = Math.exp(l - e * Math.LN10); return `${m.toFixed(1)}·10<sup>${e}</sup>`; };
+    function draw() {
+      const m = +$('lk-mu').value; $('lk-muv').textContent = m;
+      seen.add(m);
+      let top = -Infinity; for (let c = 0; c <= 300; c++) top = Math.max(top, ll(c));
+      const rel = c => Math.exp(ll(c) - top), LX = r => lX0 + r * (lX1 - lX0);
+      let s = '';
+      [0, 60, 120, 180, 240, 300].forEach(v => {
+        s += `<line x1="${dX0 - 20}" y1="${Y(v)}" x2="${dX1}" y2="${Y(v)}" stroke="var(--rule)"/>
+              <text x="${dX0 - 28}" y="${Y(v) + 6}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${v}</text>
+              <line x1="${lX0}" y1="${Y(v)}" x2="${lX1}" y2="${Y(v)}" stroke="var(--rule)"/>`;
+      });
+      s += `<line x1="${dX0 - 20}" y1="${yt}" x2="${dX0 - 20}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="20" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)" transform="rotate(-90 20 ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>
+            <line x1="${lX0}" y1="${yt}" x2="${lX0}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="${(lX0 + lX1) / 2}" y="${yb + 26}" text-anchor="middle" font-size="16" fill="var(--curve)" font-weight="700">likelihood</text>
+            <text x="${lX0 - 12}" y="${yt - 6}" text-anchor="middle" font-size="16" fill="var(--hidden)" font-weight="700">μ</text>`;
+      // הפעמון של המועמד, על הצד
+      let b = '';
+      for (let i = 0; i <= 120; i++) { const v = m - 3.2 * SD + i / 120 * 6.4 * SD; if (v < 0 || v > 300) continue; b += (b ? 'L' : 'M') + (bX + Math.exp(logp(v, m) - logp(m, m)) * bW).toFixed(1) + ',' + Y(v).toFixed(1); }
+      s += `<path d="${b}" fill="var(--hidden-bg)" stroke="var(--hidden)" stroke-width="2.5" opacity=".9"/>
+            <line x1="${dX0 - 20}" y1="${Y(m)}" x2="${lX1}" y2="${Y(m)}" stroke="var(--hidden)" stroke-width="2.5" stroke-dasharray="6 5"/>`;
+      if ($('lk-mean').checked && ys.length) { const mean = ys.reduce((a, c) => a + c, 0) / ys.length; s += `<line x1="${dX0 - 20}" y1="${Y(mean)}" x2="${lX1}" y2="${Y(mean)}" stroke="var(--seen)" stroke-width="2"/><text x="${dX1 - 4}" y="${Y(mean) - 8}" text-anchor="start" direction="rtl" font-size="15" fill="var(--seen)">הממוצע</text>`; }
+      if (show) s += `<line x1="${dX0 - 20}" y1="${Y(TRUE)}" x2="${lX1}" y2="${Y(TRUE)}" stroke="var(--ink)" stroke-width="3"/><text x="${lX1}" y="${Y(TRUE) - 8}" text-anchor="end" font-size="16" font-weight="700" fill="var(--ink)">μ = ${TRUE}</text>`;
+      ys.slice(-400).forEach((y, i, a) => {
+        const k = ys.length - a.length + i, on = Math.exp(logp(y, m) - logp(m, m));
+        s += `<circle cx="${dX0 + jit[k] * (dX1 - dX0 - 20)}" cy="${Y(y)}" r="${ys.length > 50 ? 3.5 : 6}" fill="var(--seen)" opacity="${.25 + .75 * on}"/>`;
+      });
+      // ה-likelihood: נקודה לכל מועמד שבדקנו, או העקומה כולה
+      if (all) { let d = ''; for (let c = 0; c <= 300; c++) d += (c ? 'L' : 'M') + LX(rel(c)).toFixed(1) + ',' + Y(c).toFixed(1); s += `<path d="${d}" fill="none" stroke="var(--curve)" stroke-width="3.5"/>`; }
+      else seen.forEach(c => { s += `<circle cx="${LX(rel(c))}" cy="${Y(c)}" r="3" fill="var(--curve)" opacity=".7"/>`; });
+      s += `<circle cx="${LX(rel(m))}" cy="${Y(m)}" r="8" fill="var(--curve)"/>`;
+      svg.innerHTML = s;
+      $('lk-out').innerHTML = ys.length
+        ? `תצפיות: <span class="ltr">${ys.length}</span> · <span class="ltr">𝓛(μ=${m}) = ${sci(ll(m))}</span> · ביחס למועמד הטוב ביותר: <span class="ltr">${(100 * rel(m)).toFixed(1)}%</span>`
+        : 'עוד אין תצפיות. בלי תצפיות, כל המועמדים סבירים באותה מידה';
+      $('lk-reveal').textContent = show ? 'להסתיר את μ' : 'לחשוף את μ';
+    }
+    function add(k) { for (let i = 0; i < k; i++) { ys.push(Math.max(1, Math.min(299, Math.round(TRUE + SD * randn())))); jit.push(Math.random()); } draw(); }
+    svg.closest('.demo-panel').querySelectorAll('[data-o]').forEach(b => b.onclick = () => add(+b.dataset.o));
+    $('lk-mu').oninput = draw; $('lk-mean').onchange = draw;
+    $('lk-all').onclick = () => { all = !all; $('lk-all').textContent = all ? 'רק מה שבדקנו' : 'כל המועמדים'; draw(); };
+    $('lk-reveal').onclick = () => { show = !show; draw(); };
+    $('lk-reset').onclick = () => { ys = []; jit = []; seen = new Set(); all = false; show = false; $('lk-all').textContent = 'כל המועמדים'; draw(); };
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>הזיזו את <span class="math inline">\(\mu\)</span> המועמד. הפעמון זז איתו, ותצפיות רחוקות ממנו מחווירות: הצפיפות שלהן קטנה. כל עמדה משאירה נקודה בעקומת ה-<span class="term">likelihood</span> שמימין. אחר כך הוסיפו תצפיות, ובדקו שוב.</p>
+</div>
+</section>
+<section id="likelihood-רציף-3" class="slide level2">
+<h2>likelihood רציף</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><strong>בלי תצפיות</strong>, כל המועמדים סבירים באותה מידה: ה-<span class="term">likelihood</span> שטוח.</li>
+<li class="fragment"><strong>כל תצפית</strong> מורידה את הסבירות של מועמדים שרחוקים ממנה, וה-<span class="term">likelihood</span> נעשה צר יותר.</li>
+<li class="fragment"><strong>השיא</strong> נמצא בדיוק בממוצע של התצפיות. זה הממצא של גאוס מ-1809.</li>
+<li class="fragment"><strong>הרוחב</strong> קטן כשיש יותר תצפיות, וגדל כש-<span class="math inline">\(\sigma\)</span> גדול.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="וגם-σ" class="slide level2 part-gate">
+<h2>וגם σ</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span></div>
+  <div class="gate-title">וגם σ</div>
+  <div class="gate-why">שני פרמטרים חבויים, ומפה של likelihood</div>
+</div>
+</section>
+<section id="וגם-σ-1" class="slide level2">
+<h2>וגם σ</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><p>עד עכשיו הנחנו ש-<span class="math inline">\(\sigma\)</span> ידוע. במחקר אמיתי גם הוא חבוי: אנחנו לא יודעים מראש כמה הנבדקים שונים זה מזה.</p></li>
+<li class="fragment"><p>מועמד הוא עכשיו <strong>זוג</strong>, <span class="math inline">\((\mu, \sigma)\)</span>, ולכל זוג:</p>
+<div class="ltr">
+<p><span class="math display">\[\mathcal{L}(\mu, \sigma) = \prod_{i=1}^{n} p(y_i \mid \mu, \sigma)\]</span></p>
+</div></li>
+<li class="fragment"><p>במקום עקומה מקבלים <strong>מפה</strong>: ציר אחד ל-<span class="math inline">\(\mu\)</span>, ציר אחד ל-<span class="math inline">\(\sigma\)</span>, והצבע הוא ה-<span class="term">likelihood</span>.</p></li>
+<li class="fragment"><p>הנתונים: הערכות הזמן של 20 נבדקים.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="וגם-σ-2" class="slide level2 example-slide">
+<h2>וגם σ</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <span>לחצו על המפה כדי לבחור זוג מועמד</span>
+    <label><input type="checkbox" id="sf-peak"> השיא</label>
+  </div>
+  <svg id="sf-svg" viewbox="0 0 1000 380" style="width:100%; height:auto; display:block; cursor:crosshair;" aria-label="מפת ה-likelihood של μ ו-σ, והתצפיות עם הפעמון של הזוג שנבחר"></svg>
+  <div class="demo-readout" id="sf-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('sf-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    // 20 הערכות זמן (שניות) של סרטון באורך 120 שניות
+    const YS = [152, 107, 173, 139, 91, 158, 128, 183, 145, 104, 170, 66, 143, 176, 108, 138, 169, 100, 154, 173];
+    const n = YS.length, MEAN = YS.reduce((a, b) => a + b, 0) / n, SMLE = Math.sqrt(YS.reduce((a, b) => a + (b - MEAN) ** 2, 0) / n);
+    const ll = (m, s) => -n * Math.log(s) - YS.reduce((a, y) => a + (y - m) ** 2, 0) / (2 * s * s);
+    const TOP = ll(MEAN, SMLE);
+    // התצפיות משמאל (y אנכי), המפה מימין: μ אופקי, σ אנכי
+    const yb = 345, yt = 25, Yd = v => yb - v / 260 * (yb - yt), dX0 = 90, dX1 = 250, bX = 262, bW = 110;
+    const mX0 = 520, mX1 = 960, mu0 = 90, mu1 = 190, s0 = 10, s1 = 80;
+    const MX = m => mX0 + (m - mu0) / (mu1 - mu0) * (mX1 - mX0), SY = s => yb - (s - s0) / (s1 - s0) * (yb - yt);
+    const cv = document.createElement('canvas'); cv.width = 220; cv.height = 160;
+    const g = cv.getContext('2d'), img = g.createImageData(220, 160);
+    // הצבעים: מהרקע (#fcfcfa) אל צבע העקומה (#c2405f)
+    for (let j = 0; j < 160; j++) for (let i = 0; i < 220; i++) {
+      const m = mu0 + (i + .5) / 220 * (mu1 - mu0), s = s1 - (j + .5) / 160 * (s1 - s0), r = Math.exp(ll(m, s) - TOP), k = 4 * (j * 220 + i);
+      img.data[k] = 252 + (194 - 252) * r; img.data[k + 1] = 252 + (64 - 252) * r; img.data[k + 2] = 250 + (95 - 250) * r; img.data[k + 3] = 255;
+    }
+    g.putImageData(img, 0, 0);
+    const URL = cv.toDataURL();
+    const jit = YS.map((_, i) => ((i * 37) % 20) / 20);
+    let pm = 150, ps = 20;
+    function draw() {
+      let s = `<image href="${URL}" x="${mX0}" y="${yt}" width="${mX1 - mX0}" height="${yb - yt}" preserveAspectRatio="none"/>
+               <rect x="${mX0}" y="${yt}" width="${mX1 - mX0}" height="${yb - yt}" fill="none" stroke="var(--ink-faint)"/>`;
+      [100, 120, 140, 160, 180].forEach(m => { s += `<text x="${MX(m)}" y="${yb + 24}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${m}</text>`; });
+      [20, 40, 60, 80].forEach(v => { s += `<text x="${mX0 - 10}" y="${SY(v) + 5}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<text x="${mX1 + 22}" y="${yb + 24}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">μ</text>
+            <text x="${mX0 - 46}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">σ</text>`;
+      if ($('sf-peak').checked) s += `<line x1="${MX(MEAN)}" y1="${yt}" x2="${MX(MEAN)}" y2="${yb}" stroke="var(--ink)" stroke-dasharray="5 5"/>
+            <line x1="${mX0}" y1="${SY(SMLE)}" x2="${mX1}" y2="${SY(SMLE)}" stroke="var(--ink)" stroke-dasharray="5 5"/>
+            <circle cx="${MX(MEAN)}" cy="${SY(SMLE)}" r="7" fill="var(--ink)"/>`;
+      s += `<circle cx="${MX(pm)}" cy="${SY(ps)}" r="9" fill="none" stroke="var(--hidden)" stroke-width="4"/>`;
+      // התצפיות והפעמון של הזוג שנבחר
+      [0, 60, 120, 180, 240].forEach(v => {
+        s += `<line x1="${dX0 - 14}" y1="${Yd(v)}" x2="${bX + bW}" y2="${Yd(v)}" stroke="var(--rule)"/>
+              <text x="${dX0 - 22}" y="${Yd(v) + 5}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${v}</text>`;
+      });
+      s += `<line x1="${dX0 - 14}" y1="${yt}" x2="${dX0 - 14}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="18" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)" transform="rotate(-90 18 ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>`;
+      let b = '';
+      for (let i = 0; i <= 120; i++) { const v = pm - 3.2 * ps + i / 120 * 6.4 * ps; if (v < 0 || v > 260) continue; b += (b ? 'L' : 'M') + (bX + Math.exp(-.5 * ((v - pm) / ps) ** 2) * bW * Math.min(1, 25 / ps)).toFixed(1) + ',' + Yd(v).toFixed(1); }
+      s += `<path d="${b}" fill="var(--hidden-bg)" stroke="var(--hidden)" stroke-width="2.5"/>
+            <line x1="${dX0 - 14}" y1="${Yd(pm)}" x2="${bX + bW}" y2="${Yd(pm)}" stroke="var(--hidden)" stroke-width="2" stroke-dasharray="6 5"/>`;
+      YS.forEach((y, i) => { s += `<circle cx="${dX0 + jit[i] * (dX1 - dX0)}" cy="${Yd(y)}" r="6" fill="var(--seen)" opacity="${.3 + .7 * Math.exp(-.5 * ((y - pm) / ps) ** 2)}"/>`; });
+      svg.innerHTML = s;
+      const r = Math.exp(ll(pm, ps) - TOP);
+      let out = `<span class="ltr">μ = ${pm.toFixed(0)}, σ = ${ps.toFixed(0)}</span> · likelihood ביחס לשיא: <span class="ltr">${r < .001 ? '&lt;0.1' : (100 * r).toFixed(1)}%</span>`;
+      if ($('sf-peak').checked) out += ` · השיא: <span class="ltr">μ = ${MEAN.toFixed(1)}, σ = ${SMLE.toFixed(1)}</span>`;
+      $('sf-out').innerHTML = out;
+    }
+    svg.addEventListener('click', e => {
+      const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+      const q = p.matrixTransform(svg.getScreenCTM().inverse());
+      if (q.x < mX0 || q.x > mX1 || q.y < yt || q.y > yb) return;
+      pm = mu0 + (q.x - mX0) / (mX1 - mX0) * (mu1 - mu0); ps = s0 + (yb - q.y) / (yb - yt) * (s1 - s0); draw();
+    });
+    $('sf-peak').onchange = draw;
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>כל נקודה במפה היא זוג מועמד: כמה גבוה המרכז, וכמה רחב הפעמון. נסו <span class="math inline">\(\sigma\)</span> קטן מאוד: התצפיות הרחוקות כמעט בלתי אפשריות. נסו <span class="math inline">\(\sigma\)</span> גדול מאוד: הפעמון נמוך, וכל תצפית מקבלת צפיפות קטנה. השיא נמצא באמצע.</p>
+</div>
+</section>
+<section id="וגם-σ-3" class="slide level2">
+<h2>וגם σ</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><strong>השיא במפה:</strong> <span class="math inline">\(\mu\)</span> הוא הממוצע, 138.9 שניות. <span class="math inline">\(\sigma\)</span> הוא השורש של ממוצע ריבועי הסטיות מהממוצע, 32.2 שניות.</li>
+<li class="fragment"><strong><span class="math inline">\(\sigma\)</span> קטן מדי:</strong> הפעמון צר, והתצפיות הרחוקות כמעט בלתי אפשריות.</li>
+<li class="fragment"><strong><span class="math inline">\(\sigma\)</span> גדול מדי:</strong> הפעמון רחב ונמוך, וכל התצפיות מקבלות צפיפות קטנה.</li>
+<li class="fragment"><strong>ה-<span class="math inline">\(\mu\)</span> הטוב ביותר הוא הממוצע, לכל <span class="math inline">\(\sigma\)</span>.</strong> <span class="math inline">\(\sigma\)</span> קובע רק כמה חד השיא.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="שתי-שאלות" class="slide level2">
+<h2>שתי שאלות</h2>
+<div class="centered-content">
+<div class="soft-card fragment">
+  <h3>שאלה ראשונה</h3>
+  <p>האם יש דרך מהירה למצוא את השיא, בלי לחשב את המפה כולה?</p>
+</div>
+<div class="soft-card fragment">
+  <h3>שאלה שנייה</h3>
+  <p>קיבלנו את הסיכוי לתצפיות בהינתן כל ערך של הפרמטרים. האם זה באמת מה שאנחנו מחפשים?</p>
+</div>
+<p class="fragment" style="text-align:center; margin-top:.6em;">שתי התשובות: במצגת הבאה, דרך Bayesian ודרך Frequentist.</p>
+</div>
+</section>
+<section id="סיכום" class="slide level2 summary-slide">
+<h2>סיכום</h2>
+<div>
+<ul>
+<li class="fragment"><strong>likelihood:</strong> עד כמה התצפיות צפויות, בהינתן ערך מועמד של הפרמטרים.</li>
+<li class="fragment"><strong>בלוח גלטון:</strong> סופרים בכמה דרכים הלוח, כשהוא מונח על המועמד, מייצר כל תצפית, וכופלים בין התצפיות.</li>
+<li class="fragment"><strong>ברציף:</strong> במקום דרכים, צפיפות. <span class="math inline">\(\mathcal{L}(\mu, \sigma) = \prod_i p(y_i \mid \mu, \sigma)\)</span>.</li>
+<li class="fragment"><strong>השיא:</strong> <span class="math inline">\(\mu\)</span> הוא ממוצע התצפיות, ו-<span class="math inline">\(\sigma\)</span> הוא שורש הממוצע של ריבועי הסטיות.</li>
+<li class="fragment"><strong>עוד תצפיות:</strong> ה-likelihood צר יותר.</li>
+<li class="fragment"><strong>שני פרמטרים:</strong> במקום עקומה, מפה.</li>
+</ul>
+</div>
 <div class="footer footer-default">
 
 </div>
@@ -382,19 +722,19 @@
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="_libs/747e483d74/revealjs/dist/reveal.js"></script>
+  <script src="_libs/0b337bd691/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="_libs/747e483d74/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="_libs/747e483d74/revealjs/plugin/notes/notes.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/search/search.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/math/math.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/notes/notes.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/search/search.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

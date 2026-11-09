@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="he"><head>
-<script src="_libs/747e483d74/clipboard/clipboard.min.js"></script>
-<script src="_libs/747e483d74/quarto-html/tabby.min.js"></script>
-<script src="_libs/747e483d74/quarto-html/popper.min.js"></script>
-<script src="_libs/747e483d74/quarto-html/tippy.umd.min.js"></script>
-<link href="_libs/747e483d74/quarto-html/tippy.css" rel="stylesheet">
-<link href="_libs/747e483d74/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="_libs/747e483d74/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="_libs/0b337bd691/clipboard/clipboard.min.js"></script>
+<script src="_libs/0b337bd691/quarto-html/tabby.min.js"></script>
+<script src="_libs/0b337bd691/quarto-html/popper.min.js"></script>
+<script src="_libs/0b337bd691/quarto-html/tippy.umd.min.js"></script>
+<link href="_libs/0b337bd691/quarto-html/tippy.css" rel="stylesheet">
+<link href="_libs/0b337bd691/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="_libs/0b337bd691/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="_libs/747e483d74/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="_libs/747e483d74/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="_libs/0b337bd691/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="_libs/0b337bd691/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,11 +29,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="_libs/747e483d74/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="_libs/747e483d74/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="_libs/747e483d74/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="_libs/747e483d74/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="_libs/747e483d74/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="_libs/0b337bd691/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="_libs/0b337bd691/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="_libs/0b337bd691/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="_libs/0b337bd691/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="_libs/0b337bd691/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -329,38 +329,73 @@
   <p class="subtitle">MLE, רווח סמך ובדיקת השערות</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
-<section id="שלוש-שאלות-על-פרמטר-אחד" class="slide level2">
-<h2>שלוש שאלות על פרמטר אחד</h2>
-<div class="centered-content">
+<section id="הערכת-פרמטר-בגישה-השכיחותנית" class="slide level2">
+<h2>הערכת פרמטר בגישה השכיחותנית</h2>
+<div class="centered-content near-title text-sm indent-list">
+<p>נתון: <span class="math inline">\(n\)</span> תצפיות בלתי-תלויות מתוך <span class="math inline">\(\text{Bernoulli}(\theta)\)</span>, מתוכן <span class="math inline">\(k\)</span> הצלחות. כיצד נסיק על הפרמטר הקבוע (אך הלא-ידוע) <span class="math inline">\(\theta\)</span>?</p>
 <div>
 <ul>
-<li class="fragment">יש לנו <span class="math inline">\(n\)</span> תצפיות מ-<span class="math inline">\(\text{Bernoulli}(\theta)\)</span>, ו-<span class="math inline">\(k\)</span> מהן הצלחות. מה אפשר להסיק על <span class="math inline">\(\theta\)</span>?</li>
-<li class="fragment"><strong>מה האומדן?</strong> הערך הסביר ביותר של <span class="math inline">\(\theta\)</span>: MLE.</li>
-<li class="fragment"><strong>כמה הוא מדויק?</strong> טווח של ערכים שמתיישבים עם הנתונים: רווח סמך.</li>
-<li class="fragment"><strong>האם זה יכול להיות מקרה?</strong> ערך p.</li>
-<li class="fragment">בגישה ה-<span class="term">frequentist</span>, <span class="math inline">\(\theta\)</span> הוא מספר קבוע שאנחנו לא יודעים. מה שאקראי הוא הנתונים.</li>
+<li class="fragment"><strong>אמידה נקודתית</strong> (MLE): עבור איזה ערך של <span class="math inline">\(\theta\)</span> התצפיות שקיבלנו הן הסבירות ביותר?</li>
+<li class="fragment"><strong>בדיקת השערות</strong> (<span class="math inline">\(p\)</span>-value): בהנחה שהשערת האפס (<span class="math inline">\(\theta = \theta_{\text{null}}\)</span>) נכונה, עד כמה התצפיות שלנו (או קיצוניות מהן) מפתיעות?</li>
+<li class="fragment"><strong>אמידה ברווח</strong> (רווח בר-סמך / CI): מהו טווח ערכי הפרמטר עבורו ב-X% מהמחקרים הטווח יכיל את <span class="math inline">\(\theta\)</span> האמיתי?</li>
 </ul>
+</div>
+<div class="recap-card fragment">
+<p><span class="recap-icon">💡</span><strong>תזכורת – מה עשינו בגישה הבייסיאנית:</strong><br> הערכנו עבור כל ערך אפשרי של <span class="math inline">\(\theta\)</span> את הסיכוי (צפיפות ההסתברות) שהוא הערך החבוי, בהינתן הנתונים והפריור. מתוך התפלגות זו מצאנו את הערך הסביר ביותר (MAP) ואת הטווח שבו נמצא <span class="math inline">\(\theta\)</span> בהסתברות של <span class="math inline">\(X\%\)</span> (Credible Interval / HDI).</p>
 </div>
 </div>
 </section>
 <section id="נראות-מקסימלית" class="slide level2 part-gate">
 <h2>נראות מקסימלית</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span><span class="later"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span><span class="later"></span><span class="later"></span></div>
   <div class="gate-title">נראות מקסימלית</div>
   <div class="gate-why">מה האומדן? הערך של θ שהנתונים תומכים בו הכי הרבה: MLE.</div>
 </div>
 </section>
 <section id="נראות-מקסימלית-1" class="slide level2">
 <h2>נראות מקסימלית</h2>
-<p><span class="math inline">\(k\)</span> הצלחות מתוך <span class="math inline">\(n\)</span> תצפיות. ה-<span class="term">likelihood</span> מהשבוע הראשון:</p>
+<div class="soft-card">
+<h3>
+נראות מקסימלית (maximum likelihood estimate; MLE)
+</h3>
+<p>
+ה-MLE הוא הערך של הפרמטר שבו פונקציית ה-likelihood הכי גבוהה.
+</p>
+</div>
+<div class="two-col fragment">
+<div class="soft-card">
+<h3>
+דוגמה להתפלגות נראות לפרמטר ברנולי:
+</h3>
+<div style="position:relative;">
+<svg viewbox="0 0 400 160" style="width:100%; height:auto; display:block;" aria-label="דוגמה לפונקציית ה-likelihood של Bernoulli">
+  <path d="M20.0,120.0 L21.8,120.0 L23.6,120.0 L25.4,120.0 L27.2,120.0 L29.0,120.0 L30.8,120.0 L32.6,120.0 L34.4,120.0 L36.2,120.0 L38.0,120.0 L39.8,120.0 L41.6,120.0 L43.4,120.0 L45.2,120.0 L47.0,120.0 L48.8,120.0 L50.6,120.0 L52.4,120.0 L54.2,120.0 L56.0,120.0 L57.8,120.0 L59.6,120.0 L61.4,120.0 L63.2,120.0 L65.0,120.0 L66.8,120.0 L68.6,120.0 L70.4,120.0 L72.2,120.0 L74.0,119.9 L75.8,119.9 L77.6,119.9 L79.4,119.9 L81.2,119.9 L83.0,119.9 L84.8,119.8 L86.6,119.8 L88.4,119.8 L90.2,119.7 L92.0,119.7 L93.8,119.6 L95.6,119.6 L97.4,119.5 L99.2,119.4 L101.0,119.3 L102.8,119.2 L104.6,119.1 L106.4,119.0 L108.2,118.9 L110.0,118.7 L111.8,118.5 L113.6,118.4 L115.4,118.2 L117.2,118.0 L119.0,117.7 L120.8,117.5 L122.6,117.2 L124.4,116.9 L126.2,116.6 L128.0,116.2 L129.8,115.8 L131.6,115.4 L133.4,115.0 L135.2,114.6 L137.0,114.1 L138.8,113.5 L140.6,113.0 L142.4,112.4 L144.2,111.8 L146.0,111.1 L147.8,110.4 L149.6,109.7 L151.4,108.9 L153.2,108.0 L155.0,107.2 L156.8,106.3 L158.6,105.3 L160.4,104.3 L162.2,103.3 L164.0,102.2 L165.8,101.0 L167.6,99.9 L169.4,98.6 L171.2,97.3 L173.0,96.0 L174.8,94.6 L176.6,93.2 L178.4,91.8 L180.2,90.2 L182.0,88.7 L183.8,87.1 L185.6,85.4 L187.4,83.7 L189.2,82.0 L191.0,80.2 L192.8,78.4 L194.6,76.6 L196.4,74.7 L198.2,72.8 L200.0,70.8 L201.8,68.8 L203.6,66.8 L205.4,64.8 L207.2,62.7 L209.0,60.7 L210.8,58.6 L212.6,56.5 L214.4,54.4 L216.2,52.2 L218.0,50.1 L219.8,48.0 L221.6,45.9 L223.4,43.8 L225.2,41.7 L227.0,39.6 L228.8,37.6 L230.6,35.6 L232.4,33.6 L234.2,31.7 L236.0,29.8 L237.8,27.9 L239.6,26.1 L241.4,24.4 L243.2,22.7 L245.0,21.0 L246.8,19.5 L248.6,18.0 L250.4,16.6 L252.2,15.3 L254.0,14.1 L255.8,13.0 L257.6,12.0 L259.4,11.1 L261.2,10.3 L263.0,9.6 L264.8,9.0 L266.6,8.6 L268.4,8.3 L270.2,8.1 L272.0,8.0 L273.8,8.1 L275.6,8.3 L277.4,8.6 L279.2,9.1 L281.0,9.7 L282.8,10.5 L284.6,11.4 L286.4,12.4 L288.2,13.6 L290.0,14.9 L291.8,16.4 L293.6,18.0 L295.4,19.8 L297.2,21.6 L299.0,23.7 L300.8,25.8 L302.6,28.0 L304.4,30.4 L306.2,32.9 L308.0,35.5 L309.8,38.2 L311.6,41.0 L313.4,43.8 L315.2,46.8 L317.0,49.8 L318.8,52.8 L320.6,56.0 L322.4,59.1 L324.2,62.3 L326.0,65.5 L327.8,68.7 L329.6,71.9 L331.4,75.1 L333.2,78.3 L335.0,81.4 L336.8,84.4 L338.6,87.4 L340.4,90.3 L342.2,93.2 L344.0,95.9 L345.8,98.5 L347.6,101.0 L349.4,103.4 L351.2,105.6 L353.0,107.7 L354.8,109.6 L356.6,111.4 L358.4,112.9 L360.2,114.4 L362.0,115.6 L363.8,116.7 L365.6,117.6 L367.4,118.3 L369.2,118.9 L371.0,119.3 L372.8,119.7 L374.6,119.8 L376.4,120.0 L378.2,120.0 L380.0,120.0" fill="none" stroke="var(--curve)" stroke-width="3"></path>
+  <line x1="272.0" y1="8" x2="272.0" y2="120" stroke="var(--hidden)" stroke-width="2" stroke-dasharray="6 5"></line>
+  <line x1="20" y1="120" x2="380" y2="120" stroke="var(--ink)" stroke-width="2"></line>
+  <text x="20" y="138" text-anchor="middle" font-size="13" fill="var(--ink-soft)">0</text>
+  <text x="200.0" y="138" text-anchor="middle" font-size="13" fill="var(--ink-soft)">0.5</text>
+  <text x="380" y="138" text-anchor="middle" font-size="13" fill="var(--ink-soft)">1</text>
+  <text x="200.0" y="160" text-anchor="middle" font-size="17" font-style="italic" fill="var(--ink-soft)">θ</text>
+</svg>
+<div class="speech-bubble fragment"><span style="font-size:1.15em;">💡</span> <b>תזכורת:</b> התפלגות הנראות אינה התפלגות הסתברות תקנית, והיא לא מסתכמת ל-1.</div>
+</div>
+<p>מחושב על ידי:</p>
 <div class="ltr">
 <p><span class="math display">\[\mathcal{L}(\theta) = \theta^{k}(1-\theta)^{n-k}\]</span></p>
 </div>
-<div class="fragment">
-<p>ה-<span class="term">MLE</span> (<span class="term">maximum likelihood estimate</span>) הוא הערך של <span class="math inline">\(\theta\)</span> שבו ה-<span class="term">likelihood</span> הכי גבוה. ב-Bernoulli הוא פשוט שיעור ההצלחות:</p>
+</div>
+<div class="soft-card">
+<h3>
+חישוב מהיר:
+</h3>
+<p>ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> הוא פשוט שיעור ההצלחות:</p>
 <div class="ltr">
-<p><span class="math display">\[\hat\theta = \frac{k}{n}\]</span></p>
+<p><span class="math display">\[\hat\theta_{\text{MLE}} = \frac{k}{n}\]</span></p>
+</div>
+<div class="note-balloon">
+כשמדובר באומדן MLE של פרמטר, יופיע הסימון <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> (תטא עם כובע)
+</div>
 </div>
 </div>
 </section>
@@ -397,7 +432,8 @@
     let runs = [], cur, k, show = false, timer = null;
     // θ̂ ב-SVG: θ ומעליו כובע מצויר, ממורכזים סביב x
     const hatTheta = (x, y, fs, fill) => `<text x="${x}" y="${y}" text-anchor="middle" direction="ltr" font-size="${fs}" font-style="italic" fill="${fill}">θ</text>
-      <path d="M${x - .2 * fs},${y - .8 * fs} L${x + .05 * fs},${y - 1.02 * fs} L${x + .3 * fs},${y - .8 * fs}" fill="none" stroke="${fill}" stroke-width="${fs / 12}"/>`;
+      <path d="M${x - .2 * fs},${y - .8 * fs} L${x + .05 * fs},${y - 1.02 * fs} L${x + .3 * fs},${y - .8 * fs}" fill="none" stroke="${fill}" stroke-width="${fs / 12}"/>
+      <text x="${x + .42 * fs}" y="${y + .22 * fs}" text-anchor="start" direction="ltr" font-size="${fs * .58}" fill="${fill}">MLE</text>`;
 
     const line = r => r.map((v, i) => (i ? 'L' : 'M') + X(i + 1).toFixed(1) + ',' + Y(v).toFixed(1)).join('');
     function draw() {
@@ -424,7 +460,7 @@
       }
       svg.innerHTML = s;
       const n = cur.length;
-      $('rm-out').innerHTML = n ? `<span class="ltr">N = ${n}</span> · הצלחות: <span class="ltr">${k}</span> · <span class="ltr"><span class="hat">θ</span> = ${(k / n).toFixed(3)}</span>` : 'עוד אין תצפיות';
+      $('rm-out').innerHTML = n ? `<span class="ltr">N = ${n}</span> · הצלחות: <span class="ltr">${k}</span> · <span class="ltr"><span class="hat">θ</span><sub>MLE</sub> = ${(k / n).toFixed(3)}</span>` : 'עוד אין תצפיות';
       $('rm-reveal').textContent = show ? 'להסתיר את θ' : 'לחשוף את θ';
     }
     function stop() { if (timer) { clearInterval(timer); timer = null; } }
@@ -445,384 +481,450 @@
   })();
 </script>
 <div class="demo-note">
-<p>כל תצפית חדשה מעדכנת את <span class="math inline">\(\hat\theta\)</span>. המחשב יודע את <span class="math inline">\(\theta\)</span> האמיתי, ו”לחשוף את θ” מראה אותו. “סדרה חדשה” מתחילה ניסוי חדש ומשאירה את הקודמים באפור.</p>
+<p>כל תצפית חדשה מעדכנת את <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span>. המחשב יודע את <span class="math inline">\(\theta\)</span> האמיתי, ו”לחשוף את θ” מראה אותו. “סדרה חדשה” מתחילה ניסוי חדש ומשאירה את הקודמים באפור.</p>
 </div>
 </section>
 <section id="נראות-מקסימלית-3" class="slide level2">
 <h2>נראות מקסימלית</h2>
 <div>
 <ul>
-<li class="fragment"><strong>ה-MLE מתכנס ל-<span class="math inline">\(\theta\)</span>.</strong> זה חוק המספרים הגדולים של Bernoulli. לאומדן שמתכנס קוראים <span class="term">consistent</span>.</li>
-<li class="fragment"><strong>בהתחלה הוא קופץ.</strong> אחרי 5 תצפיות <span class="math inline">\(\hat\theta\)</span> יכול להיות כמעט כל דבר.</li>
-<li class="fragment"><strong>כל סדרה נראית אחרת.</strong> באותו <span class="math inline">\(n\)</span>, סדרות שונות נותנות <span class="math inline">\(\hat\theta\)</span> שונים.</li>
-<li class="fragment">אבל בניסוי אמיתי יש <strong>סדרה אחת</strong>, ו-<span class="math inline">\(\theta\)</span> מוסתר. המספר <span class="math inline">\(\hat\theta\)</span> לבדו לא אומר כמה הוא רחוק מ-<span class="math inline">\(\theta\)</span>.</li>
+<li class="fragment"><strong>התכנסות במדגם אינסופי:</strong> ככל שנגדיל את מספר התצפיות (<span class="math inline">\(n \to \infty\)</span>), ובהנחה שהמודל המייצר קבוע והתצפיות בלתי-תלויות, אומדן ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> ילך ויתקרב לפרמטר החבוי <span class="math inline">\(\theta\)</span> (בניסוי ברנולי, הדבר נובע ישירות מחוק המספרים הגדולים).</li>
+<li class="fragment"><strong>הבעיה:</strong> מחקר בודד עם <span class="math inline">\(n\)</span> תצפיות סופיות מפיק לנו אומדן נקודתי בודד (Point estimate). מכיוון שהמדגם סופי, האומדן שלנו כמעט תמיד יסטה במידה מסוימת מ-<span class="math inline">\(\theta\)</span>. כיצד נוכל לכמת את אי-הוודאות?</li>
 </ul>
 </div>
-<div class="fragment">
-<p><strong>אז מה אפשר לעשות?</strong></p>
+<div class="recap-card fragment">
+<p><span class="recap-icon">💡</span><strong>תזכורת – מה עשינו בגישה הבייסיאנית?</strong><br> הערכנו עבור כל ערך אפשרי של <span class="math inline">\(\theta\)</span> את הסיכוי (צפיפות ההסתברות) שהוא הערך החבוי. רוחב ההתפלגות הפוסטריורית עצמה מבטא את חוסר הוודאות.</p>
 </div>
 </section>
 <section id="התפלגות-דגימה" class="slide level2 part-gate">
 <h2>התפלגות דגימה</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span><span class="later"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span><span class="later"></span><span class="later"></span></div>
   <div class="gate-title">התפלגות דגימה</div>
   <div class="gate-why">איך האומדן היה מתפזר, אם היינו חוזרים על הניסוי שוב ושוב.</div>
 </div>
 </section>
 <section id="התפלגות-דגימה-1" class="slide level2 stacked-cards">
 <h2>התפלגות דגימה</h2>
-<div class="compare-card bayes fragment">
-<!-- -->
-<h3 id="bayesian-שבוע-שעבר">Bayesian · שבוע שעבר</h3>
-<p>שמים התפלגות על <span class="math inline">\(\theta\)</span>. ה-<span class="term">posterior</span> רחב כשיש מעט נתונים וצר כשיש הרבה. הרוחב הוא אי-הוודאות.</p>
-</div>
 <div class="compare-card freq fragment">
 <!-- -->
-<h3 id="frequentist-היום">Frequentist · היום</h3>
-<p><span class="math inline">\(\theta\)</span> קבוע, ולכן שואלים על <strong>השיטה</strong>: אם היינו חוזרים על הניסוי עם אותו <span class="math inline">\(n\)</span>, עד כמה <span class="math inline">\(\hat\theta\)</span> היה מתפזר? זו ה-<span class="term">sampling distribution</span>. ואת הצורה שלה נותן משפט הגבול המרכזי.</p>
+<h3 id="הגדרה-התפלגות-דגימה-sampling-distribution">הגדרה · התפלגות דגימה (<span class="term">sampling distribution</span>)</h3>
+<p>תחת ההנחה שהפרמטר באוכלוסייה קבוע ושווה לערך “בר ההפרכה” שקבענו (<span class="math inline">\(\theta_{\text{null}}\)</span>), ואילו חזרנו על הניסוי אינסוף פעמים באותו גודל מדגם (<span class="math inline">\(n\)</span>), זוהי התפלגות ההסתברות של כל אומדני המדגם (<span class="math inline">\(\hat{\theta}_{\text{MLE}}\)</span>) שהיינו מקבלים.</p>
 </div>
-</section>
-<section id="התפלגות-דגימה-2" class="slide level2">
-<h2>התפלגות דגימה</h2>
-<div class="centered-content">
 <div>
 <ul>
-<li class="fragment">דמיינו שחוזרים על אותו ניסוי שוב ושוב: בכל פעם <span class="math inline">\(n\)</span> תצפיות, ובכל פעם מחשבים <span class="math inline">\(\hat\theta\)</span>.</li>
-<li class="fragment">כש-<span class="math inline">\(n\)</span> גדול מספיק, ההיסטוגרמה של כל ה-<span class="math inline">\(\hat\theta\)</span> האלה נראית כמו <strong>פעמון</strong>.</li>
-<li class="fragment">המרכז של הפעמון הוא <span class="math inline">\(\theta\)</span>, וככל ש-<span class="math inline">\(n\)</span> גדל, הפעמון צר יותר.</li>
-<li class="fragment">וזה לא רק ב-Bernoulli: ממוצע של הרבה תצפיות מתנהג כך כמעט תמיד.</li>
+<li class="fragment">דמיינו שהפרמטר באוכלוסייה שווה ל-<span class="math inline">\(\theta_{\text{null}}\)</span>, ושחוזרים על אותו ניסוי שוב ושוב, בכל פעם <span class="math inline">\(n\)</span> תצפיות, ובכל פעם מחשבים <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span>.</li>
+<li class="fragment">כש-<span class="math inline">\(n\)</span> גדול מספיק, צורת התפלגות הדגימה היא פעמונית (לפי משפט הגבול המרכזי של לפלס), וככל ש-<span class="math inline">\(n\)</span> גדל, הפעמון צר יותר.</li>
+<li class="fragment">התפלגות הדגימה היא התפלגות הסתברות תקנית שמסתכמת ל-1 (ומכאן היא מאפשרת לנו לחשב רווח בר-סמך ו-p-value).</li>
 </ul>
 </div>
-</div>
 </section>
-<section id="התפלגות-דגימה-3" class="slide level2 example-slide">
+<section id="התפלגות-דגימה-2" class="slide level2 example-slide">
 <h2>התפלגות דגימה</h2>
 <div class="demo-panel">
   <div class="demo-controls" style="justify-content:center; font-size:.5em;">
-    <label>θ: <input type="range" id="clt-th" min="0.05" max="0.95" step="0.01" value="0.71"> <span class="ltr demo-readout" id="clt-thv"></span></label>
+    <label>θ<sub>null</sub>: <input type="range" id="dot-th" min="0.05" max="0.95" step="0.01" value="0.71"> <span class="ltr demo-readout" id="dot-thv"></span></label>
     <label>תצפיות בכל ניסוי (n):
-      <select id="clt-n"><option>1</option><option>2</option><option>5</option><option selected="">10</option><option>30</option><option>100</option><option>500</option></select>
+      <select id="dot-n"><option>1</option><option>2</option><option>5</option><option selected="">10</option><option>30</option><option>100</option><option>500</option></select>
     </label>
     <button class="demo-btn" data-r="1">ניסוי אחד</button>
     <button class="demo-btn" data-r="100">100 ניסויים</button>
     <button class="demo-btn" data-r="1000">1,000 ניסויים</button>
-    <button id="clt-reset" class="demo-btn ghost">איפוס</button>
-    <label><input type="checkbox" id="clt-bell"> הפעמון</label>
+    <button id="dot-reset" class="demo-btn ghost">איפוס</button>
+    <label><input type="checkbox" id="dot-bell"> ההתפלגות התאורטית</label>
   </div>
-  <svg id="clt-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="התפלגות הדגימה של האומדן"></svg>
-  <div class="demo-readout" id="clt-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+  <svg id="dot-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="התפלגות הדגימה של האומדן, בנקודות"></svg>
+  <div class="demo-readout" id="dot-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
 </div>
 <script>
   (function () {
-    const svg = document.getElementById('clt-svg');
+    const svg = document.getElementById('dot-svg');
     if (!svg) return;
     const $ = id => document.getElementById(id);
     const x0 = 60, x1 = 960, yb = 250, yt = 14, X = v => x0 + v * (x1 - x0);
     let est = [], last = null;
     // θ̂ ב-SVG: θ ומעליו כובע מצויר, ממורכזים סביב x
     const hatTheta = (x, y, fs, fill) => `<text x="${x}" y="${y}" text-anchor="middle" direction="ltr" font-size="${fs}" font-style="italic" fill="${fill}">θ</text>
-      <path d="M${x - .2 * fs},${y - .8 * fs} L${x + .05 * fs},${y - 1.02 * fs} L${x + .3 * fs},${y - .8 * fs}" fill="none" stroke="${fill}" stroke-width="${fs / 12}"/>`;
+      <path d="M${x - .2 * fs},${y - .8 * fs} L${x + .05 * fs},${y - 1.02 * fs} L${x + .3 * fs},${y - .8 * fs}" fill="none" stroke="${fill}" stroke-width="${fs / 12}"/>
+      <text x="${x + .42 * fs}" y="${y + .22 * fs}" text-anchor="start" direction="ltr" font-size="${fs * .58}" fill="${fill}">MLE</text>`;
     const binom = (n, th) => { let k = 0; for (let i = 0; i < n; i++) if (Math.random() < th) k++; return k; };
 
     function draw() {
-      const th = +$('clt-th').value, n = +$('clt-n').value, R = est.length;
-      $('clt-thv').textContent = th.toFixed(2);
-      // עמודה לכל ערך אפשרי של k/n, או 100 תאים כש-n גדול. הגובה הוא צפיפות, כדי שהפעמון יתאים.
+      const th = +$('dot-th').value, n = +$('dot-n').value, R = est.length;
+      $('dot-thv').textContent = th.toFixed(2);
+      // תא לכל ערך אפשרי של k/n, או 101 תאים כש-n גדול. בכל תא הנקודות נערמות.
       const B = n <= 100 ? n + 1 : 101, w = n <= 100 ? 1 / n : 0.01;
-      const cnt = Array(B).fill(0);
+      const cnt = Array(B).fill(0), lastBin = last === null ? -1 : (n <= 100 ? Math.round(last * n) : Math.min(100, Math.round(last * 100)));
       est.forEach(v => cnt[n <= 100 ? Math.round(v * n) : Math.min(100, Math.round(v * 100))]++);
-      const dens = cnt.map(c => R ? c / R / w : 0);
+      // ההתפלגות התאורטית: פעמון סביב θ_null, בגובה שמתאים לספירה הצפויה בכל תא
       const se = Math.sqrt(th * (1 - th) / n), bell = v => Math.exp(-.5 * ((v - th) / se) ** 2) / (se * Math.sqrt(2 * Math.PI));
-      const top = Math.max(bell(th) * 1.1, ...dens.map(d => d * 1.08), 1e-9), Y = d => yb - d / top * (yb - yt);
+      const showBell = $('dot-bell').checked && R > 0;
+      const maxC = Math.max(1, ...cnt, showBell ? R * w * bell(th) : 0), colW = w * (x1 - x0) * .9, H = (yb - yt - 4) * (showBell ? .78 : 1);
+      // רדיוס הנקודה: הגדול ביותר שבו העמודה הגבוהה ביותר עדיין נכנסת, כשבתוך תא הנקודות נערמות גם לצדדים
+      let r = Math.min(9, colW / 2), m = 1;
+      for (; r > .6; r -= .2) { m = Math.max(1, Math.floor(colW / (2 * r))); if (Math.ceil(maxC / m) * 2 * r <= H) break; }
+      m = Math.max(1, Math.floor(colW / (2 * r)));
       let s = '';
-      const bw = Math.max(2, Math.min(40, w * (x1 - x0) * .8));
-      dens.forEach((d, i) => {
-        if (!d) return;
-        const v = n <= 100 ? i / n : i / 100, hit = last !== null && Math.abs(v - last) < 1e-9;
-        s += `<rect x="${X(v) - bw / 2}" y="${Y(d)}" width="${bw}" height="${yb - Y(d)}" fill="${hit ? 'var(--curve)' : 'var(--seen)'}" opacity="${hit ? 1 : .7}"/>`;
+      cnt.forEach((c, i) => {
+        if (!c) return;
+        const v = n <= 100 ? i / n : i / 100, cx0 = X(v) - (Math.min(m, c) * 2 * r) / 2;
+        for (let j = 0; j < c; j++) {
+          const row = Math.floor(j / m), col = j % m, inRow = Math.min(m, c - row * m);
+          const cx = X(v) - inRow * r + r + col * 2 * r, cy = yb - r - row * 2 * r;
+          const hit = i === lastBin && j === c - 1;
+          s += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${(r * .92).toFixed(2)}" fill="${hit ? 'var(--curve)' : 'var(--seen)'}" opacity="${hit ? 1 : .75}"/>`;
+        }
       });
-      if ($('clt-bell').checked) {
+      if (showBell) {
         let d = '';
-        for (let i = 0; i <= 400; i++) { const v = i / 400; d += (i ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(bell(v)).toFixed(1); }
+        for (let i = 0; i <= 400; i++) { const v = i / 400; d += (i ? 'L' : 'M') + X(v).toFixed(1) + ',' + (yb - H * bell(v) / bell(th)).toFixed(1); }
         s += `<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="8 6"/>`;
       }
       s += `<line x1="${X(th)}" y1="${yt}" x2="${X(th)}" y2="${yb}" stroke="var(--hidden)" stroke-width="2.5"/>
+            <text x="${X(th) + 8}" y="${yt + 14}" text-anchor="start" direction="ltr" font-size="17" font-style="italic" fill="var(--hidden)">θ<tspan dy="5" font-size="12" font-style="normal">null</tspan></text>
             <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
       [0, .25, .5, .75, 1].forEach(v => { s += `<text x="${X(v)}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${v}</text>`; });
-      // כותרות הצירים: ה-θ̂ מצויר בנפרד, והטקסט העברי נגמר משמאלו
       const cx = (x0 + x1) / 2 + 60;
       s += hatTheta(cx + 14, yb + 48, 19, 'var(--ink-soft)') +
-           `<text x="${cx}" y="${yb + 48}" text-anchor="end" direction="ltr" font-size="17" fill="var(--ink-soft)">שיצא בכל ניסוי</text>
-            <text x="24" y="${(yb + yt) / 2}" text-anchor="middle" direction="ltr" font-size="17" fill="var(--ink-soft)" transform="rotate(-90 24 ${(yb + yt) / 2})">כמה ניסויים</text>`;
+           `<text x="${cx}" y="${yb + 48}" text-anchor="end" direction="ltr" font-size="17" fill="var(--ink-soft)">שיצא בכל ניסוי</text>`;
       svg.innerHTML = s;
-      const H = '<span class="hat">θ</span>';
+      const H2 = '<span class="hat">θ</span><sub>MLE</sub>';
       let out = R ? `ניסויים: <span class="ltr">${R.toLocaleString('en')}</span>` : 'עוד אין ניסויים';
-      if (last !== null) out += ` · האחרון: <span class="ltr">${H} = ${last.toFixed(2)}</span>`;
+      if (last !== null) out += ` · האחרון: <span class="ltr">${H2} = ${last.toFixed(2)}</span>`;
       if (R > 1) {
-        const m = est.reduce((a, b) => a + b, 0) / R, sd = Math.sqrt(est.reduce((a, b) => a + (b - m) ** 2, 0) / (R - 1));
-        out += ` · הממוצע של כל ה-${H}: <span class="ltr">${m.toFixed(3)}</span> · סטיית התקן שלהם: <span class="ltr">${sd.toFixed(3)}</span>`;
+        const mu = est.reduce((a, b) => a + b, 0) / R, sd = Math.sqrt(est.reduce((a, b) => a + (b - mu) ** 2, 0) / (R - 1));
+        out += ` · הממוצע של כל ה-${H2}: <span class="ltr">${mu.toFixed(3)}</span> · סטיית התקן שלהם: <span class="ltr">${sd.toFixed(3)}</span>`;
       }
-      $('clt-out').innerHTML = out;
+      $('dot-out').innerHTML = out;
     }
-    function run(r) { const th = +$('clt-th').value, n = +$('clt-n').value; for (let i = 0; i < r; i++) est.push(binom(n, th) / n); last = r === 1 ? est[est.length - 1] : null; draw(); }
+    function run(r) { const th = +$('dot-th').value, n = +$('dot-n').value; for (let i = 0; i < r; i++) est.push(binom(n, th) / n); last = r === 1 ? est[est.length - 1] : null; draw(); }
     function reset() { est = []; last = null; draw(); }
     svg.closest('.demo-panel').querySelectorAll('[data-r]').forEach(b => b.onclick = () => run(+b.dataset.r));
-    $('clt-reset').onclick = reset;
-    $('clt-th').oninput = reset; $('clt-n').oninput = reset;
-    $('clt-bell').onchange = draw;
+    $('dot-reset').onclick = reset;
+    $('dot-th').oninput = reset; $('dot-n').oninput = reset; $('dot-bell').onchange = draw;
     reset();
   })();
 </script>
 <div class="demo-note">
-<p>כל ניסוי: <span class="math inline">\(n\)</span> תצפיות, ומהן <span class="math inline">\(\hat\theta\)</span> אחד. כל עמודה סופרת כמה ניסויים יצאו עם אותו <span class="math inline">\(\hat\theta\)</span>, וכל העמודות יחד הן <strong>התפלגות הדגימה</strong> של <span class="math inline">\(\hat\theta\)</span>. הקו הסגול: <span class="math inline">\(\theta\)</span> האמיתי.<br>נסו <span class="math inline">\(n=1\)</span>, אחר כך <span class="math inline">\(n=5\)</span> עם <span class="math inline">\(\theta=0.1\)</span>, ואז <span class="math inline">\(n=500\)</span>.</p>
+<p>כל ניסוי: <span class="math inline">\(n\)</span> תצפיות, ומהן <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> אחד. כל נקודה היא ניסוי אחד, והנקודות נערמות מעל הערך שיצא. כל הנקודות יחד הן <strong>התפלגות הדגימה</strong> של <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span>. הקו הסגול: <span class="math inline">\(\theta_{\text{null}}\)</span>.<br>נסו <span class="math inline">\(n=1\)</span>, אחר כך <span class="math inline">\(n=5\)</span> עם <span class="math inline">\(\theta=0.1\)</span>, ואז <span class="math inline">\(n=500\)</span>.</p>
 </div>
 </section>
-<section id="התפלגות-דגימה-4" class="slide level2">
+<section id="התפלגות-דגימה-3" class="slide level2">
 <h2>התפלגות דגימה</h2>
-<div>
-<ul>
-<li class="fragment"><p><strong>מרכז:</strong> הממוצע של <span class="math inline">\(\hat\theta\)</span> על פני ניסויים הוא <span class="math inline">\(\theta\)</span>. לאומדן כזה קוראים <span class="term">unbiased</span>.</p></li>
-<li class="fragment"><p><strong>רוחב:</strong> סטיית התקן של התפלגות הדגימה נקראת <span class="term">standard error</span> (SE):</p>
+<div class="centered-content near-title">
+<p><strong>רוחב (פיזור):</strong> סטיית התקן של התפלגות הדגימה נקראת טעות תקן (<span class="term" style="white-space:nowrap">Standard Error</span>). בהתפלגות ברנולי היא מחושבת כך:</p>
 <div class="ltr">
-<p><span class="math display">\[SE(\hat\theta) = \sqrt{\frac{\theta(1-\theta)}{n}}\]</span></p>
-</div></li>
-<li class="fragment"><p>פי ארבעה תצפיות, חצי SE. זו הסיבה שמחקרים גדולים יקרים כל כך.</p></li>
-<li class="fragment"><p><strong>צורה:</strong> הפעמון טוב כשיש מספיק הצלחות <strong>וגם</strong> מספיק כישלונות. כלל אצבע: לפחות 10 מכל סוג. עם <span class="math inline">\(n=5\)</span> ו-<span class="math inline">\(\theta=0.1\)</span> ראיתם מה קורה בלי זה.</p></li>
-</ul>
+<p><span class="math display">\[SE_{\text{null}} = \sqrt{\frac{\theta_{\text{null}}(1-\theta_{\text{null}})}{n}}\]</span></p>
+</div>
+<p>בהתפלגות ברנולי, מאחר שערך ה-<span class="math inline">\(\theta_{\text{null}}\)</span> ידוע לנו, לא מדובר באומדן אלא בהערכה מדויקת. כפי שנראה בהמשך, זהו מקרה ייחודי, ולרוב נאלץ להסתפק באומדנים.</p>
 </div>
 </section>
-<section id="רווח-סמך" class="slide level2 part-gate">
-<h2>רווח סמך</h2>
+<section id="אזור-הקבלה-ו-p-value" class="slide level2 part-gate">
+<h2>אזור הקבלה ו-p-value</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span><span class="later"></span><span class="later"></span><span class="later"></span></div>
-  <div class="gate-title">רווח סמך</div>
-  <div class="gate-why">טווח של ערכים שמתיישבים עם הנתונים.</div>
-</div>
-</section>
-<section id="רווח-סמך-1" class="slide level2">
-<h2>רווח סמך</h2>
-<div>
-<ul>
-<li class="fragment"><p><strong>המלכוד:</strong> ב-SE מופיע <span class="math inline">\(\theta\)</span>, ואותו אנחנו לא יודעים. הפתרון המעשי: להציב במקומו את <span class="math inline">\(\hat\theta\)</span>.</p>
-<div class="ltr">
-<p><span class="math display">\[\widehat{SE} = \sqrt{\frac{\hat\theta(1-\hat\theta)}{n}}\]</span></p>
-</div></li>
-<li class="fragment"><p>בפעמון, 95% מהמסה נמצאים בטווח <span class="math inline">\(\pm 1.96\)</span> סטיות תקן. מכאן רווח סמך של 95% (<span class="term">confidence interval</span>):</p>
-<div class="ltr">
-<p><span class="math display">\[\hat\theta \pm 1.96 \cdot \widehat{SE}\]</span></p>
-</div></li>
-<li class="fragment"><p>למשל, 30 הצלחות מתוך 50: <span class="math inline">\(\hat\theta = 0.6\)</span>, ‏<span class="math inline">\(\widehat{SE} = \sqrt{0.6 \cdot 0.4 / 50} = 0.069\)</span>, ורווח הסמך הוא <span class="math inline">\(0.6 \pm 0.14\)</span>, כלומר <span class="math inline">\([0.46,\ 0.74]\)</span>.</p></li>
-</ul>
-</div>
-</section>
-<section id="רווח-סמך-2" class="slide level2 example-slide">
-<h2>רווח סמך</h2>
-<div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center; font-size:.5em;">
-    <label>θ: <input type="range" id="ci-th" min="0.05" max="0.95" step="0.01" value="0.71"> <span class="ltr demo-readout" id="ci-thv"></span></label>
-    <label>n: <select id="ci-n"><option>5</option><option selected="">10</option><option>20</option><option>50</option><option>100</option><option>1000</option></select></label>
-    <label>רמת ביטחון: <select id="ci-lvl"><option value="80">80%</option><option value="90">90%</option><option value="95" selected="">95%</option><option value="99">99%</option></select> <span class="ltr demo-readout" id="ci-zv"></span></label>
-    <button class="demo-btn" data-r="1">ניסוי אחד</button>
-    <button class="demo-btn" data-r="100">100 ניסויים</button>
-    <button id="ci-reset" class="demo-btn ghost">איפוס</button>
-  </div>
-  <svg id="ci-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="רווחי סמך מ-100 ניסויים"></svg>
-  <div class="demo-readout" id="ci-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('ci-svg');
-    if (!svg) return;
-    const $ = id => document.getElementById(id);
-    const x0 = 60, x1 = 960, yt = 10, yb = 280, X = v => x0 + Math.min(1.05, Math.max(-.05, v)) * (x1 - x0);
-    // המכפיל של SE לכל רמת ביטחון: האחוזון המתאים של הפעמון
-    const Z = { 80: 1.2816, 90: 1.6449, 95: 1.96, 99: 2.5758 };
-    // שומרים את k של כל ניסוי (ולא את הרווח), כדי ששינוי רמת הביטחון יחשב מחדש את הרווחים של אותם ניסויים
-    let ks = [], kc = [];
-
-    const interval = (k, n, z) => { const p = k / n, h = z * Math.sqrt(p * (1 - p) / n); return { p, lo: p - h, hi: p + h }; };
-    function draw() {
-      const th = +$('ci-th').value, n = +$('ci-n').value, L = +$('ci-lvl').value, z = Z[L];
-      $('ci-thv').textContent = th.toFixed(2); $('ci-zv').textContent = `±${z.toFixed(2)} SE`;
-      const covers = k => { const iv = interval(k, n, z); return iv.lo <= th && th <= iv.hi; };
-      const rh = (yb - yt) / 100;
-      let s = `<rect x="${X(0)}" y="${yt}" width="${X(1) - X(0)}" height="${yb - yt}" fill="var(--panel)"/>`;
-      ks.forEach((k, i) => {
-        const iv = interval(k, n, z), y = yt + (i + .5) * rh, cov = covers(k);
-        if (iv.hi - iv.lo < 1e-9) s += `<circle cx="${X(iv.p)}" cy="${y}" r="2.6" fill="var(--curve)"/>`;
-        else s += `<line x1="${X(iv.lo)}" y1="${y}" x2="${X(iv.hi)}" y2="${y}" stroke="${cov ? 'var(--seen)' : 'var(--curve)'}" stroke-width="${Math.max(1.2, rh * .7)}" ${cov ? 'opacity=".7"' : ''}/>`;
-      });
-      s += `<line x1="${X(th)}" y1="${yt - 4}" x2="${X(th)}" y2="${yb}" stroke="var(--hidden)" stroke-width="3"/>
-            <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      [0, .25, .5, .75, 1].forEach(v => { s += `<text x="${X(v)}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${v}</text>`; });
-      s += `<text x="${(x0 + x1) / 2}" y="${yb + 48}" text-anchor="middle" font-size="17" fill="var(--ink-soft)" direction="rtl">כל שורה: רווח סמך של ${L}% שחושב מניסוי אחד · הניסויים הישנים למעלה, החדשים למטה</text>`;
-      svg.innerHTML = s;
-      const tot = kc.reduce((a, c) => a + c, 0), hit = kc.reduce((a, c, k) => a + (covers(k) ? c : 0), 0);
-      let out = 'עוד אין ניסויים';
-      if (tot) {
-        out = `מכילים את θ: <span class="ltr">${ks.filter(covers).length}</span> מתוך <span class="ltr">${ks.length}</span> הרווחים שבגרף · מכל <span class="ltr">${tot.toLocaleString('en')}</span> הניסויים: <span class="ltr">${(100 * hit / tot).toFixed(1)}%</span>`;
-        const k = ks[ks.length - 1], iv = interval(k, n, z);
-        out += ` · הניסוי האחרון: <span class="ltr">${k}</span> מתוך <span class="ltr">${n}</span>, הרווח <span class="ltr">[${iv.lo.toFixed(2)}, ${iv.hi.toFixed(2)}]</span>`;
-      }
-      $('ci-out').innerHTML = out;
-    }
-    function run(r) {
-      const th = +$('ci-th').value, n = +$('ci-n').value;
-      for (let j = 0; j < r; j++) {
-        let k = 0; for (let i = 0; i < n; i++) if (Math.random() < th) k++;
-        ks.push(k); kc[k]++;
-      }
-      if (ks.length > 100) ks = ks.slice(-100);
-      draw();
-    }
-    function reset() { ks = []; kc = Array(+$('ci-n').value + 1).fill(0); draw(); }
-    svg.closest('.demo-panel').querySelectorAll('[data-r]').forEach(b => b.onclick = () => run(+b.dataset.r));
-    $('ci-reset').onclick = reset; $('ci-th').oninput = reset; $('ci-n').oninput = reset;
-    $('ci-lvl').oninput = draw;
-    reset();
-  })();
-</script>
-<div class="demo-note">
-<p>כל שורה היא ניסוי אחד: <span class="math inline">\(n\)</span> תצפיות, ומהן רווח סמך <span class="math inline">\(\hat\theta \pm z \cdot \widehat{SE}\)</span>, כש-<span class="math inline">\(z\)</span> נקבע לפי רמת הביטחון. כחול: הרווח מכיל את <span class="math inline">\(\theta\)</span>. אדום: הרווח לא מכיל את <span class="math inline">\(\theta\)</span>. נקודה אדומה: כל התצפיות יצאו זהות, ולכן <span class="math inline">\(\widehat{SE}=0\)</span> והרווח הוא נקודה אחת. שינוי רמת הביטחון מחשב מחדש את הרווחים של אותם ניסויים.<br>רמת ביטחון של 95% היא תכונה של השיטה, לא של רווח אחד: אם חוזרים על הניסוי שוב ושוב, כ-95% מהרווחים יכילו את <span class="math inline">\(\theta\)</span>. ברווח הזה זה נכון רק בקירוב, ופחות מכך כש-<span class="math inline">\(n\)</span> קטן או כש-<span class="math inline">\(\theta\)</span> קרוב ל-0 או ל-1. נסו <span class="math inline">\(n=10\)</span> עם <span class="math inline">\(\theta=0.9\)</span>, ואז <span class="math inline">\(n=1000\)</span>.</p>
-</div>
-</section>
-<section id="מדגמים-קטנים" class="slide level2 part-gate">
-<h2>מדגמים קטנים</h2>
-<div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span><span class="later"></span><span class="later"></span></div>
-  <div class="gate-title">מדגמים קטנים</div>
-  <div class="gate-why">מה קורה לרווח הסמך כשיש מעט נתונים, ואיך מתקנים את זה.</div>
-</div>
-</section>
-<section id="מדגמים-קטנים-1" class="slide level2">
-<h2>מדגמים קטנים</h2>
-<div>
-<ul>
-<li class="fragment">טיפול חדש ניתן ל-10 מטופלים, וכולם השתפרו.</li>
-<li class="fragment"><span class="math inline">\(\hat\theta = 1\)</span>, ‏<span class="math inline">\(\widehat{SE} = \sqrt{1 \cdot 0 / 10} = 0\)</span>, ורווח הסמך הוא <span class="math inline">\([1,\ 1]\)</span>: “בטוחים לחלוטין שהטיפול עובד תמיד”.</li>
-<li class="fragment">שתי הנחות נשברו יחד: <span class="math inline">\(n\)</span> קטן מדי לפעמון, וה-<span class="math inline">\(\hat\theta\)</span> שהוצב ב-SE רחוק מ-<span class="math inline">\(\theta\)</span>.</li>
-<li class="fragment">ה-95% הוא הבטחה <strong>לאורך זמן ובקירוב</strong>. ב-<span class="math inline">\(n\)</span> קטן, או כש-<span class="math inline">\(\theta\)</span> קרוב ל-0 או ל-1, רווח הסמך הזה מכסה הרבה פחות. ראיתם את זה בהדגמה.</li>
-<li class="fragment">יש רווחים <span class="term">frequentist</span> שעובדים גם כאן. וה-<span class="term">posterior</span> עם <span class="term">prior</span> אחיד לא קורס: נראה את זה במצגת הבאה.</li>
-</ul>
-</div>
-</section>
-<section id="מדגמים-קטנים-2" class="slide level2 example-slide">
-<h2>מדגמים קטנים</h2>
-<div class="demo-note" style="font-size:.55em; color:var(--ink); margin:0 0 10px;">
-<p>במדגם קטן גם סטיית התקן נאמדת ורועשת. התפלגות <span class="math inline">\(t\)</span> מתקנת את הפעמון לכך, ולכן רווח שבנוי עליה מכסה באמת 95%.</p>
-</div>
-<div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center; font-size:.5em;">
-    <label>נבדקים בכל ניסוי (n): <select id="st-n"><option>2</option><option>3</option><option selected="">5</option><option>10</option><option>30</option></select></label>
-    <button class="demo-btn" data-r="1">ניסוי אחד</button>
-    <button class="demo-btn" data-r="100">100 ניסויים</button>
-    <button id="st-reset" class="demo-btn ghost">איפוס</button>
-  </div>
-  <svg id="st-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="רווחים עם 1.96 ורווחים עם t"></svg>
-  <div class="demo-readout" id="st-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('st-svg');
-    if (!svg) return;
-    const $ = id => document.getElementById(id);
-    // אוכלוסייה: תוספת שעות שינה, כמו בדוגמה של Student. μ = 1.5, σ = 1.2.
-    const MU = 1.5, SD = 1.2, TQ = { 2: 12.71, 3: 4.30, 5: 2.78, 10: 2.26, 30: 2.05 };
-    const lo = -4, hi = 7, yt = 40, yb = 280;
-    let ivs = [], tot = 0, hz = 0, ht = 0;
-    function randn() { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
-
-    function panel(px, w, key, title) {
-      const X = v => px + (Math.min(hi, Math.max(lo, v)) - lo) / (hi - lo) * w, rh = (yb - yt) / 100;
-      let s = `<text x="${px + w / 2}" y="24" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)" direction="rtl">${title}</text>
-               <rect x="${px}" y="${yt}" width="${w}" height="${yb - yt}" fill="var(--panel)"/>`;
-      ivs.forEach((iv, i) => {
-        const [a, b] = iv[key], cov = a <= MU && MU <= b, y = yt + (i + .5) * rh;
-        s += `<line x1="${X(a)}" y1="${y}" x2="${X(b)}" y2="${y}" stroke="${cov ? 'var(--seen)' : 'var(--curve)'}" stroke-width="${Math.max(1.2, rh * .7)}" ${cov ? 'opacity=".7"' : ''}/>`;
-      });
-      s += `<line x1="${X(MU)}" y1="${yt - 6}" x2="${X(MU)}" y2="${yb}" stroke="var(--hidden)" stroke-width="3"/>
-            <line x1="${px}" y1="${yb}" x2="${px + w}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      [-4, -2, 0, 2, 4, 6].forEach(v => { s += `<text x="${X(v)}" y="${yb + 24}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
-      return s;
-    }
-    function draw() {
-      const n = +$('st-n').value;
-      svg.innerHTML = panel(530, 430, 'z', 'הפעמון: ⁦±1.96 · s/√n⁩') + panel(40, 430, 't', `⁦Student: ±${TQ[n].toFixed(2)} · s/√n⁩`) +
-        `<text x="500" y="${yb + 48}" text-anchor="middle" font-size="16" fill="var(--ink-soft)" direction="rtl">תוספת שעות שינה. הקו הסגול: μ, הממוצע באוכלוסייה</text>`;
-      const sh = ivs.length;
-      $('st-out').innerHTML = tot
-        ? `כיסו את μ מתוך <span class="ltr">${tot.toLocaleString('en')}</span> ניסויים · הפעמון: <span class="ltr">${(100 * hz / tot).toFixed(1)}%</span> · Student: <span class="ltr">${(100 * ht / tot).toFixed(1)}%</span>`
-        : 'עוד אין ניסויים';
-    }
-    function run(r) {
-      const n = +$('st-n').value, q = TQ[n];
-      for (let j = 0; j < r; j++) {
-        const y = Array.from({ length: n }, () => MU + SD * randn()), m = y.reduce((a, b) => a + b, 0) / n;
-        const s = Math.sqrt(y.reduce((a, b) => a + (b - m) ** 2, 0) / (n - 1)), se = s / Math.sqrt(n);
-        const iv = { z: [m - 1.96 * se, m + 1.96 * se], t: [m - q * se, m + q * se] };
-        ivs.push(iv); tot++;
-        if (iv.z[0] <= MU && MU <= iv.z[1]) hz++;
-        if (iv.t[0] <= MU && MU <= iv.t[1]) ht++;
-      }
-      if (ivs.length > 100) ivs = ivs.slice(-100);
-      draw();
-    }
-    function reset() { ivs = []; tot = 0; hz = 0; ht = 0; draw(); }
-    svg.closest('.demo-panel').querySelectorAll('[data-r]').forEach(b => b.onclick = () => run(+b.dataset.r));
-    $('st-reset').onclick = reset; $('st-n').oninput = reset;
-    reset();
-  })();
-</script>
-<div class="demo-note">
-<p>אותם מדגמים בדיוק בשני הצדדים. ההבדל היחיד הוא המכפיל. עם <span class="math inline">\(n=3\)</span> או <span class="math inline">\(n=5\)</span>, הפעמון מבטיח 95% ומספק פחות. עם <span class="math inline">\(n=30\)</span> ההבדל כמעט נעלם.</p>
-</div>
-</section>
-<section id="ערך-p" class="slide level2 part-gate">
-<h2>ערך p</h2>
-<div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span><span class="later"></span></div>
-  <div class="gate-title">ערך p</div>
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-title">אזור הקבלה ו-p-value</div>
   <div class="gate-why">אם אין אפקט, עד כמה מה שראינו מפתיע?</div>
 </div>
 </section>
-<section id="ערך-p-1" class="slide level2">
-<h2>ערך p</h2>
-<div>
-<ol type="1">
-<li class="fragment"><strong>כמה רחוק מה שראינו</strong>, ביחידות SE (<span class="term">z</span>): <span class="math inline">\(\;z = \dfrac{\hat\theta - \theta_0}{SE_0}\)</span>.</li>
-<li class="fragment">אם p קטן מ-<span class="math inline">\(\alpha\)</span> (בדרך כלל 0.05), התוצאה <span class="term">משמעותית</span>.</li>
-</ol>
+<section id="אזור-הקבלה-ו-p-value-1" class="slide level2 stacked-cards">
+<h2>אזור הקבלה ו-p-value</h2>
+<div class="compare-card freq fragment">
+<!-- -->
+<h3 id="הגדרה-אזור-קבלה-acceptance-region">הגדרה · <span class="term">אזור קבלה</span> (acceptance region)</h3>
+<p>הטווח סביב <span class="math inline">\(\theta_{\text{null}}\)</span> שבו נופלים <span class="math inline">\(X\%\)</span> מערכי ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> של מחקרים חוזרים (אותו מחקר, שוב ושוב, באותו גודל מדגם <span class="math inline">\(n\)</span>), אם <span class="math inline">\(\theta_{\text{null}}\)</span> הוא הפרמטר החבוי (האמיתי).</p>
 </div>
-<div class="soft-card fragment" style="max-width:780px; margin:18px auto 0; font-size:.68em;">
+<div>
+<ul>
+<li class="fragment">דמיינו שהפרמטר באוכלוסייה שווה ל-<span class="math inline">\(\theta_{\text{null}}\)</span>, ושחוזרים על המחקר שוב ושוב. בכל מחקר מחשבים <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span>, והערכים מתפזרים סביב <span class="math inline">\(\theta_{\text{null}}\)</span>: זו התפלגות הדגימה.</li>
+<li class="fragment">התפלגות הדגימה היא התפלגות הסתברות (השטח שלה הוא 1), ולכן אפשר לסמן בה את הטווח האמצעי שבו נופלים <span class="math inline">\(X\%\)</span> מערכי ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span>, בהינתן שהערך בר ההפרכה נכון. זה אזור הקבלה.</li>
+<li class="fragment">אם ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> שקיבלנו במחקר שלנו נפל מחוץ לאזור הקבלה, לא סביר ש-<span class="math inline">\(\theta_{\text{null}}\)</span> הוא הערך האמיתי באוכלוסייה.</li>
+</ul>
+</div>
+<div class="speech-bubble fragment fade-in-then-out" style="top:0; left:0; width:44%;">
+<span style="font-size:1.15em;">💡</span> <b>על השם:</b> את ההשערה ברת-ההפרכה אפשר רק לדחות, לא “לקבל”. השם “אזור קבלה” התקבע בגלל ערבוב בין הגישה של Fisher לגישה של Neyman–Pearson.
+</div>
+</section>
+<section id="אזור-הקבלה-ו-p-value-2" class="slide level2 stacked-cards">
+<h2>אזור הקבלה ו-p-value</h2>
+<div class="compare-card freq fragment">
+<!-- -->
+<h3 id="הגדרה-p-value">הגדרה · <span class="term">p-value</span></h3>
+<p>ההסתברות לקבל תוצאה קיצונית לפחות כמו זו שראינו, אם ההשערה ברת-ההפרכה נכונה.</p>
+</div>
+<div>
+<ul>
+<li class="fragment">מאחר שהתפלגות הדגימה היא התפלגות הסתברות תקנית, ניתן לחשב את החלק ממנה שרחוק מ-<span class="math inline">\(\theta_{\text{null}}\)</span> לפחות כמו ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> שלנו (בשני הצדדים).</li>
+<li class="fragment">שטח זה הוא p: ההסתברות לקבל <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> אמפירי שווה לערך שקיבלנו או קיצוני ממנו.</li>
+</ul>
+</div>
+<div class="soft-card fragment" style="max-width:600px; margin:22px 0 0; margin-inline-start:auto; font-size:.68em;">
   <div style="direction:ltr; text-align:left; display:flex; align-items:baseline; gap:.6em;">
+    <span style="font-size:1.4em;">📖</span>
     <span style="font-size:1.7em; font-weight:700; color:var(--hidden);">significant</span>
     <span style="color:var(--ink-soft);">/sɪɡˈnɪf.ɪ.kənt/</span>
   </div>
   <div style="margin:.5em 0 .4em; color:var(--ink-soft); font-size:.85em;">שם תואר</div>
   <div style="display:flex; flex-wrap:wrap; gap:.45em;"><span style="border:1px solid var(--rule); background:var(--panel); border-radius:6px; padding:.1em .6em;">מַשְׁמָעוּתִי</span><span style="border:1px solid var(--rule); background:var(--panel); border-radius:6px; padding:.1em .6em;">חָשׁוּב</span><span style="border:1px solid var(--rule); background:var(--panel); border-radius:6px; padding:.1em .6em;">גָּדוֹל</span><span style="border:1px solid var(--rule); background:var(--panel); border-radius:6px; padding:.1em .6em;">רַב</span><span style="border:1px solid var(--rule); background:var(--panel); border-radius:6px; padding:.1em .6em;">נִכָּר</span><span style="border:1px solid var(--rule); background:var(--panel); border-radius:6px; padding:.1em .6em;">מַהוּתִי</span></div>
 </div>
-<div class="soft-card fragment" style="max-width:780px; margin:14px auto 0; font-size:.68em;">
-  <h3>בסטטיסטיקה</h3>
-  <p>משמעותי אומר דבר אחד בלבד: אם H₀ נכונה, תוצאה רחוקה כמו שלנו לא סבירה (p קטן מ-α). זה לא אומר שהאפקט חשוב, ולא שהוא גדול.</p>
-</div>
 </section>
-<section id="ערך-p-2" class="slide level2">
-<h2>ערך p</h2>
+<section id="אזור-הקבלה-ו-p-value-3" class="slide level2 example-slide">
+<h2>אזור הקבלה ו-p-value</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center; font-size:.5em;">
+    <label>θ<sub>null</sub>: <input type="range" id="pv-null" min="0.05" max="0.95" step="0.01" value="0.5"> <span class="ltr demo-readout" id="pv-nullv"></span></label>
+    <label>n: <select id="pv-n"><option>5</option><option>10</option><option>20</option><option selected="">50</option><option>100</option><option>1000</option></select></label>
+    <label>אזור הקבלה: <select id="pv-a"><option value="0.1">90%</option><option value="0.05" selected="">95%</option><option value="0.01">99%</option></select></label>
+    <button id="pv-tail" class="demo-btn ghost">דו-זנבי</button>
+    <label><input type="checkbox" id="pv-dist"> התפלגות הדגימה</label>
+    <label><input type="checkbox" id="pv-acc"> אזור הקבלה</label>
+    <label><input type="checkbox" id="pv-show"> <bdi dir="ltr"><span style="position:relative; display:inline-block;">θ<span style="position:absolute; left:0; right:0; top:-.62em; text-align:center; font-size:.8em;">^</span></span><sub>MLE</sub></bdi> אמפירי:</label> <label><input type="range" id="pv-my" min="0" max="1" step="0.02" value="0.64"> <span class="ltr demo-readout" id="pv-myv"></span></label>
+    <button class="demo-btn" data-r="1">ניסוי אחד</button>
+    <button class="demo-btn" data-r="50">50 ניסויים</button>
+    <button id="pv-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <svg id="pv-svg" viewbox="0 0 1000 345" style="width:100%; height:auto; display:block;" aria-label="ניסויים חוזרים כשההשערה ברת-ההפרכה נכונה, והתפלגות הדגימה"></svg>
+  <div class="demo-readout" id="pv-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('pv-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    // נקודות הניסויים לכל הגובה, והתפלגות הדגימה מתחתן על אותו ציר
+    const x0 = 60, x1 = 960, yt = 10, ym = 160, yb = 290, X = v => x0 + Math.min(1.05, Math.max(-.05, v)) * (x1 - x0);
+    const erf = x => { const s = Math.sign(x); x = Math.abs(x); const t = 1 / (1 + .3275911 * x); return s * (1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - .284496736) * t + .254829592) * t * Math.exp(-x * x)); };
+    const Phi = z => .5 * (1 + erf(z / Math.SQRT2));
+    // הסף של z לכל אזור קבלה (90/95/99%), לפי החלק שמחוץ לו
+    const Z = { 0.1: 1.6449, 0.05: 1.96, 0.01: 2.5758 };
+    // חד-זנבי (ימני, θ > θ_null): כל החלק שמחוץ לאזור הקבלה בזנב אחד
+    const Z1 = { 0.1: 1.2816, 0.05: 1.6449, 0.01: 2.3263 };
+    let two = true;
+    const fmtP = p => p < .001 ? p.toExponential(1) : p.toFixed(3);
+    let ks = [], kc = [];
+    const SHOW = 50;   // כמה ניסויים מוצגים (האחרונים)
+
+    const test = (ph, n, t0) => { const se = Math.sqrt(t0 * (1 - t0) / n), z = (ph - t0) / se; return { z, p: two ? 2 * (1 - Phi(Math.abs(z))) : 1 - Phi(z) }; };
+    function draw() {
+      const t0 = +$('pv-null').value, n = +$('pv-n').value, a = +$('pv-a').value, zc = (two ? Z : Z1)[a], my = +$('pv-my').value, show = $('pv-show').checked, dist = $('pv-dist').checked, acc = $('pv-acc').checked;
+      $('pv-my').disabled = !show; $('pv-tail').textContent = two ? 'דו-זנבי' : 'חד-זנבי';
+      $('pv-nullv').textContent = t0.toFixed(2); $('pv-myv').textContent = n >= 1000 ? my.toFixed(3) : my.toFixed(2);
+      const sig = k => test(k / n, n, t0).p < a;
+      const se0 = Math.sqrt(t0 * (1 - t0) / n), lo = two ? t0 - zc * se0 : 0, hi = t0 + zc * se0;
+      const rh = (yb - yt) / SHOW;
+      let s = `<rect x="${X(0)}" y="${yt}" width="${X(1) - X(0)}" height="${yb - yt}" fill="var(--panel)"/>`;
+      if (acc) s += `<rect x="${X(Math.max(0, lo))}" y="${yt}" width="${Math.max(0, X(Math.min(1, hi)) - X(Math.max(0, lo)))}" height="${yb - yt}" fill="var(--seen)" opacity=".13"/>`;
+      // התפלגות הדגימה סביב θ_null (קירוב נורמלי, גובה קבוע)
+      const H = yb - ym - 22, Y = v => yb - H * Math.exp(-((v - t0) ** 2) / (2 * se0 * se0));
+      const d = Math.abs(my - t0), pts = [];
+      for (let i = 0; i <= 400; i++) pts.push(i / 400);
+      const area = f => { const q = pts.filter(f); return q.length ? `M${X(q[0])},${yb} ` + q.map(v => `L${X(v)},${Y(v)}`).join(' ') + ` L${X(q[q.length - 1])},${yb} Z` : ''; };
+      if (dist) s += `<path d="${area(() => true)}" fill="var(--seen)" opacity=".18"/>`;
+      if (show && dist) {
+        if (two) s += `<path d="${area(v => v <= t0 - d)}" fill="var(--curve)" opacity=".55"/>
+                       <path d="${area(v => v >= t0 + d)}" fill="var(--curve)" opacity=".55"/>`;
+        else s += `<path d="${area(v => v >= my)}" fill="var(--curve)" opacity=".55"/>`;
+      }
+      if (dist) s += `<path d="M${pts.map(v => `${X(v)},${Y(v)}`).join(' L')}" fill="none" stroke="var(--ink-soft)" stroke-width="2"/>`;
+      const mirror = 2 * t0 - my;
+      if (show && two && mirror >= 0 && mirror <= 1) s += `<line x1="${X(mirror)}" y1="${ym + 6}" x2="${X(mirror)}" y2="${yb}" stroke="var(--curve)" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+      if (show) s += `<line x1="${X(my)}" y1="${ym + 6}" x2="${X(my)}" y2="${yb}" stroke="var(--curve)" stroke-width="3"/>`;
+      s += `<line x1="${X(t0)}" y1="${yt - 4}" x2="${X(t0)}" y2="${yb}" stroke="var(--hidden)" stroke-width="3"/>
+            <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      // נקודה לכל ניסוי: ה-θ̂_MLE שלו (מעל ההתפלגות)
+      ks.forEach((k, i) => {
+        const y = yt + (i + .5) * rh;
+        s += `<circle cx="${X(k / n)}" cy="${y}" r="4" fill="${sig(k) ? 'var(--curve)' : 'var(--seen)'}"/>`;
+      });
+      [0, .25, .5, .75, 1].forEach(v => { s += `<text x="${X(v)}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<text x="${(x0 + x1) / 2}" y="${yb + 48}" text-anchor="middle" font-size="17" fill="var(--ink-soft)" direction="rtl">כל נקודה: ניסוי אחד כש-θ<tspan baseline-shift="sub" font-size="12">null</tspan> נכון · הניסויים הישנים למעלה, החדשים למטה</text>`;
+      svg.innerHTML = s;
+      const r = test(my, n, t0), parts = [];
+      if (show) parts.push(`ה-<bdi dir="ltr"><span style="position:relative; display:inline-block;">θ<span style="position:absolute; left:0; right:0; top:-.62em; text-align:center; font-size:.8em;">^</span></span><sub>MLE</sub></bdi> האמפירי: <span class="ltr">p = ${fmtP(r.p)}</span> (השטח האדום) · ${r.p < a ? 'מחוץ לאזור הקבלה' : 'בתוך אזור הקבלה'}`);
+      const tot = kc.reduce((x, c) => x + c, 0), hit = kc.reduce((x, c, k) => x + (sig(k) ? c : 0), 0);
+      if (tot) parts.push(`מחוץ לאזור הקבלה בטעות: <span class="ltr">${hit.toLocaleString('en')}</span> מתוך <span class="ltr">${tot.toLocaleString('en')}</span> ניסויים (<span class="ltr">${(100 * hit / tot).toFixed(1)}%</span>)`);
+      $('pv-out').innerHTML = parts.join(' · ') || 'עוד אין ניסויים';
+    }
+    function run(r) {
+      const th = +$('pv-null').value, n = +$('pv-n').value;   // θ האמיתי = θ_null
+      for (let j = 0; j < r; j++) {
+        let k = 0; for (let i = 0; i < n; i++) if (Math.random() < th) k++;
+        ks.push(k); kc[k]++;
+      }
+      if (ks.length > SHOW) ks = ks.slice(-SHOW);
+      draw();
+    }
+    function reset() {
+      const n = +$('pv-n').value, el = $('pv-my');
+      el.step = 1 / n; el.value = Math.round(+el.value * n) / n;   // רק ערכים אפשריים: k/n
+      ks = []; kc = Array(n + 1).fill(0); draw();
+    }
+    svg.closest('.demo-panel').querySelectorAll('[data-r]').forEach(b => b.onclick = () => run(+b.dataset.r));
+    $('pv-reset').onclick = reset; $('pv-null').oninput = reset; $('pv-n').oninput = reset;
+    $('pv-a').oninput = draw; $('pv-my').oninput = draw; $('pv-show').onchange = draw; $('pv-dist').onchange = draw; $('pv-acc').onchange = draw;
+    $('pv-tail').onclick = () => { two = !two; draw(); };
+    reset();
+  })();
+</script>
+</section>
+<section id="אזור-הקבלה-ו-p-value-4" class="slide level2">
+<h2>אזור הקבלה ו-p-value</h2>
 <div>
 <ul>
 <li class="fragment">p <strong>הוא</strong> <span class="math inline">\(P(\text{נתונים קיצוניים לפחות כמו שלנו} \mid H_0)\)</span>.</li>
 <li class="fragment">p <strong>אינו</strong> <span class="math inline">\(P(H_0 \mid \text{נתונים})\)</span>. זה ה-<span class="term">confusion of the inverse</span> מהבדיקה הרפואית בשבוע שעבר, בדיוק אותה טעות.</li>
-<li class="fragment"><strong>לא משמעותי אינו “אין אפקט”.</strong> 7 מתוך 10 לא משמעותי, ועדיין <span class="math inline">\(\hat\theta = 0.7\)</span>. פשוט אין מספיק נתונים.</li>
+<li class="fragment"><strong>לא משמעותי אינו “אין אפקט”.</strong> 7 מתוך 10 לא משמעותי, ועדיין <span class="math inline">\(\hat\theta_{\text{MLE}} = 0.7\)</span>. פשוט אין מספיק נתונים.</li>
 <li class="fragment"><strong>משמעותי אינו “אפקט גדול”.</strong> בסקר של מיליון איש, 51% מול 49% נותן p קטן מ-<span class="math inline">\(10^{-80}\)</span>. עם <span class="math inline">\(n\)</span> ענק, כל הבדל זעיר משמעותי.</li>
-<li class="fragment"><strong>הקשר לרווח הסמך:</strong> ערך שנמצא מחוץ לרווח סמך 95% יידחה בבדיקה עם <span class="math inline">\(\alpha = 0.05\)</span>, בקירוב. הרווח מראה את כל הערכים שלא היינו דוחים.</li>
 </ul>
+</div>
+</section>
+<section id="רווח-בר-סמך" class="slide level2 part-gate">
+<h2>רווח בר-סמך</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span><span class="later"></span></div>
+  <div class="gate-title">רווח בר-סמך</div>
+  <div class="gate-why">טווח של ערכים שמתיישבים עם הנתונים.</div>
+</div>
+</section>
+<section id="רווח-בר-סמך-confidence-interval" class="slide level2 stacked-cards with-formulas">
+<h2>רווח בר-סמך (Confidence Interval)</h2>
+<div class="compare-card freq fragment">
+<!-- -->
+<h3 id="הגדרה-confidence-interval">הגדרה · <span class="term">confidence interval</span></h3>
+<p>טווח ערכים סביב אומדן המדגם (<span class="math inline">\(\hat{\theta}_{\text{MLE}}\)</span>), כך שאם נחזור על המחקר אינסוף פעמים ונחשב בכל פעם טווח כזה, ב-<span class="math inline">\(X\%\)</span> מהמחקרים הוא יכיל את הפרמטר החבוי <span class="math inline">\(\theta\)</span>.</p>
+</div>
+<div>
+<ul>
+<li class="fragment"><strong>המטרה המקורית של רווח בר-סמך היא אמידה (Estimation), לא בדיקת השערות:</strong>
+<ul>
+<li class="fragment">בבדיקת השערות (<span class="math inline">\(p\)</span>-value ואזור קבלה) השאלה בינארית (כן/לא): האם אפשר לפסול את <span class="math inline">\(\theta_{\text{null}}\)</span>?</li>
+<li class="fragment">ברווח בר-סמך השאלה כמותית (כמה?): אין לנו <span class="math inline">\(\theta_{\text{null}}\)</span> בראש, ושואלים מהו טווח הערכים הסביר ל-<span class="math inline">\(\theta\)</span> החבוי. כלומר, מה גודל האפקט ומה רמת הדיוק שלנו.</li>
+</ul></li>
+<li class="fragment"><strong>אז למה במאמרים בודקים אם <span class="math inline">\(0\)</span> (או <span class="math inline">\(\theta_{\text{null}}\)</span>) נמצא בתוך הרווח? בגלל הדואליות:</strong> הרווח בנוי מאותו “סרגל” של התפלגות הדגימה, ולכן הוא מכיל את כל ערכי ה-<span class="math inline">\(\theta_{\text{null}}\)</span> שלא היינו דוחים. כך רואים גם את גודל האפקט, וגם, על הדרך, אם <span class="math inline">\(\theta_{\text{null}}\)</span> (למשל <span class="math inline">\(0\)</span> בהפרש ממוצעים, או <span class="math inline">\(0.5\)</span> במטבע) נמצא מחוץ לרווח, כלומר אם התוצאה מובהקת (<span class="math inline">\(p &lt; \alpha\)</span>).</li>
+</ul>
+</div>
+</section>
+<section id="רווח-בר-סמך-confidence-interval-1" class="slide level2 stacked-cards with-formulas">
+<h2>רווח בר-סמך (Confidence Interval)</h2>
+<div class="compare-card freq fragment">
+<!-- -->
+<h3 id="הגדרה-confidence-interval-1">הגדרה · <span class="term">confidence interval</span></h3>
+<p>טווח ערכים סביב אומדן המדגם (<span class="math inline">\(\hat{\theta}_{\text{MLE}}\)</span>), כך שאם נחזור על המחקר אינסוף פעמים ונחשב בכל פעם טווח כזה, ב-<span class="math inline">\(X\%\)</span> מהמחקרים הוא יכיל את הפרמטר החבוי <span class="math inline">\(\theta\)</span>.</p>
+</div>
+<div>
+<ul>
+<li class="fragment">כדי לבנות רווח בר-סמך אנו משאילים את המנגנון של התפלגות הדגימה ואזור הקבלה, שמאפשר לנו לבנות טווח שב-<span class="math inline">\(X\%\)</span> מהמחקרים יכיל את ערך הפרמטר החבוי <span class="math inline">\(\theta\)</span>.</li>
+<li class="fragment">כשבנינו אזור קבלה, הנחנו שערך הפרמטר החבוי הוא <span class="math inline">\(\theta_{\text{null}}\)</span> קבוע מראש; כעת, אנו רוצים שהטווח יתפוס את <span class="math inline">\(\theta\)</span> האמיתי החבוי בטבע.</li>
+<li class="fragment">לשם כך אנו בונים רווח שמרכזו הוא אומדן המדגם <span class="math inline">\(\hat{\theta}_{\text{MLE}}\)</span>, ורוחבו נגזר מנוסחת התפלגות הדגימה תוך הצבת <span class="math inline">\(\hat{\theta}_{\text{MLE}}\)</span> (כדי לקבל אומדן לרוחב).</li>
+</ul>
+</div>
+</section>
+<section id="רווח-בר-סמך-1" class="slide level2 example-slide">
+<h2>רווח בר-סמך</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center; font-size:.5em;">
+    <label>θ (הפרמטר החבוי האמיתי): <input type="range" id="cb-th" min="0.05" max="0.95" step="0.01" value="0.5"> <span class="ltr demo-readout" id="cb-thv"></span></label>
+    <label>n: <select id="cb-n"><option>5</option><option>10</option><option>20</option><option>50</option><option selected="">100</option><option>1000</option></select></label>
+    <label>רמת סמך: <select id="cb-a"><option value="0.1">90%</option><option value="0.05" selected="">95%</option><option value="0.01">99%</option></select></label>
+    <label><input type="checkbox" id="cb-dist"> התפלגות הדגימה</label>
+    <label><input type="checkbox" id="cb-acc"> טווח <span class="ltr" id="cb-accv">95%</span> סביב θ</label>
+    <label><input type="checkbox" id="cb-ci"> רווחי בר-סמך</label>
+    <button class="demo-btn" data-r="1">ניסוי אחד</button>
+    <button class="demo-btn" data-r="50">50 ניסויים</button>
+    <button id="cb-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <svg id="cb-svg" viewbox="0 0 1000 345" style="width:100%; height:auto; display:block;" aria-label="רווחי סמך סביב כל אומדן, על רקע הטווח סביב θ והתפלגות הדגימה"></svg>
+  <div class="demo-readout" id="cb-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('cb-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    // כמו בהדגמת אזור הקבלה: נקודות הניסויים לכל הגובה, והתפלגות הדגימה סביב θ בתחתית
+    const x0 = 60, x1 = 960, yt = 10, ym = 160, yb = 290, X = v => x0 + Math.min(1.05, Math.max(-.05, v)) * (x1 - x0);
+    const Z = { 0.1: 1.6449, 0.05: 1.96, 0.01: 2.5758 };
+    const SHOW = 50;   // כמה ניסויים מוצגים (האחרונים)
+    let ks = [], kc = [];
+
+    // הרווח של כל ניסוי: θ̂_MLE ± z·SE, כשה-SE מחושב מ-θ האמיתי (רוחב זהה לטווח סביב θ),
+    // כדי שנקודה בתוך הטווח תמיד תכיל את θ (בפועל מציבים θ̂_MLE, והכיסוי הוא רק בקירוב).
+    const interval = (k, n, z, th) => { const ph = k / n, h = z * Math.sqrt(th * (1 - th) / n); return { ph, lo: ph - h, hi: ph + h }; };
+    function draw() {
+      const th = +$('cb-th').value, n = +$('cb-n').value, a = +$('cb-a').value, z = Z[a], dist = $('cb-dist').checked, acc = $('cb-acc').checked, ci = $('cb-ci').checked;
+      $('cb-thv').textContent = th.toFixed(2); $('cb-accv').textContent = `${Math.round(100 * (1 - a))}%`;
+      const covers = k => { const iv = interval(k, n, z, th); return iv.lo <= th && th <= iv.hi; };
+      const se0 = Math.sqrt(th * (1 - th) / n), lo = th - z * se0, hi = th + z * se0;
+      const rh = (yb - yt) / SHOW;
+      let s = `<rect x="${X(0)}" y="${yt}" width="${X(1) - X(0)}" height="${yb - yt}" fill="var(--panel)"/>`;
+      if (acc) s += `<rect x="${X(Math.max(0, lo))}" y="${yt}" width="${Math.max(0, X(Math.min(1, hi)) - X(Math.max(0, lo)))}" height="${yb - yt}" fill="var(--seen)" opacity=".13"/>`;
+      const H = yb - ym - 22, Y = v => yb - H * Math.exp(-((v - th) ** 2) / (2 * se0 * se0)), pts = [];
+      for (let i = 0; i <= 400; i++) pts.push(i / 400);
+      if (dist) s += `<path d="M${X(0)},${yb} ${pts.map(v => `L${X(v)},${Y(v)}`).join(' ')} L${X(1)},${yb} Z" fill="var(--seen)" opacity=".18"/>
+                      <path d="M${pts.map(v => `${X(v)},${Y(v)}`).join(' L')}" fill="none" stroke="var(--ink-soft)" stroke-width="2"/>`;
+      s += `<line x1="${X(th)}" y1="${yt - 4}" x2="${X(th)}" y2="${yb}" stroke="var(--hidden)" stroke-width="3"/>
+            <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      // לכל ניסוי: הנקודה (θ̂_MLE) והידיים של הרווח שלו
+      ks.forEach((k, i) => {
+        const iv = interval(k, n, z, th), y = yt + (i + .5) * rh, col = covers(k) ? 'var(--seen)' : 'var(--curve)';
+        if (ci) s += `<line x1="${X(iv.lo)}" y1="${y}" x2="${X(iv.hi)}" y2="${y}" stroke="${col}" stroke-width="2"/>`;
+        s += `<circle cx="${X(iv.ph)}" cy="${y}" r="4" fill="${col}"/>`;
+      });
+      [0, .25, .5, .75, 1].forEach(v => { s += `<text x="${X(v)}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<text x="${(x0 + x1) / 2}" y="${yb + 48}" text-anchor="middle" font-size="17" fill="var(--ink-soft)" direction="rtl">כל נקודה: ניסוי אחד, והקו סביבה: רווח בר-סמך שלו · הניסויים הישנים למעלה, החדשים למטה</text>`;
+      svg.innerHTML = s;
+      const tot = kc.reduce((x, c) => x + c, 0), hit = kc.reduce((x, c, k) => x + (covers(k) ? c : 0), 0);
+      $('cb-out').innerHTML = tot ? `מכילים את θ: <span class="ltr">${hit.toLocaleString('en')}</span> מתוך <span class="ltr">${tot.toLocaleString('en')}</span> ניסויים (<span class="ltr">${(100 * hit / tot).toFixed(1)}%</span>)` : 'עוד אין ניסויים';
+    }
+    function run(r) {
+      const th = +$('cb-th').value, n = +$('cb-n').value;
+      for (let j = 0; j < r; j++) {
+        let k = 0; for (let i = 0; i < n; i++) if (Math.random() < th) k++;
+        ks.push(k); kc[k]++;
+      }
+      if (ks.length > SHOW) ks = ks.slice(-SHOW);
+      draw();
+    }
+    function reset() { ks = []; kc = Array(+$('cb-n').value + 1).fill(0); draw(); }
+    svg.closest('.demo-panel').querySelectorAll('[data-r]').forEach(b => b.onclick = () => run(+b.dataset.r));
+    $('cb-reset').onclick = reset; $('cb-th').oninput = reset; $('cb-n').oninput = reset;
+    $('cb-a').oninput = draw; $('cb-dist').onchange = draw; $('cb-acc').onchange = draw; $('cb-ci').onchange = draw;
+    reset();
+  })();
+</script>
+<div class="demo-note">
+<p>מטרת הרווח היא לתפוס את <span class="math inline">\(\theta\)</span> החבוי: ב-<span class="math inline">\(X\%\)</span> מהניסויים אומדן ה-<span class="math inline">\(\hat{\theta}_{\text{MLE}}\)</span> נופל בתוך הטווח המוצלל סביב <span class="math inline">\(\theta\)</span>, ולכן הרווח סביבו (בירוק) מצליח להכיל את <span class="math inline">\(\theta\)</span>. רק ב-<span class="math inline">\((100-X)\%\)</span> מהניסויים (באדום) הרווח מפספס את <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</section>
+<section id="שימוש-במנגנון-התפלגות-הדגימה" class="slide level2 stacked-cards">
+<h2>שימוש במנגנון התפלגות הדגימה</h2>
+<p>התפלגות דגימה קיימת רק סביב פרמטר קבוע, ולעולם לא סביב אומדן, שהוא תוצאה אקראית חד-פעמית. ובכל זאת, בפועל, אנו נשתמש בהתפלגות הדגימה באופנים הבאים:</p>
+<div class="compare-card freq fragment">
+<!-- -->
+<h3 id="ההיפותטית-סביב-theta_textnull">ההיפותטית · סביב <span class="math inline">\(\theta_{\text{null}}\)</span></h3>
+<p>ניסוי מחשבתי: איך הייתה נראית אילו <span class="math inline">\(\theta_{\text{true}} = \theta_{\text{null}}\)</span>? המרכז והרוחב (<span class="math inline">\(SE_{\text{null}}\)</span>) ידועים. ממנה מחשבים אזור קבלה ו-p-value.</p>
+</div>
+<div class="compare-card freq fragment">
+<!-- -->
+<h3 id="האמיתית-סביב-theta_texttrue">האמיתית · סביב <span class="math inline">\(\theta_{\text{true}}\)</span></h3>
+<p>היחידה שקיימת בטבע: כך היו מתפזרים ערכי ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> אילו חזרנו על הניסוי שוב ושוב. היא מאפשרת לבנות רווח בר-סמך שמרכזו <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span>, וכך מתקבלים שני אומדנים: נקודה (המרכז) וטווח (הרווח).</p>
+</div>
+</section>
+<section id="למה-משתמשים-לעיתים-בהתפלגות-t" class="slide level2">
+<h2>למה משתמשים לעיתים בהתפלגות <span class="math inline">\(t\)</span>?</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment">כשבודקים ממוצע של משתנה רציף (למשל ציון בשאלון), רוחב התפלגות הדגימה תלוי בפיזור באוכלוסייה. את הפיזור הזה איננו יודעים, ולכן אומדים אותו מהמדגם.</li>
+<li class="fragment">האמידה הזו מוסיפה אי-ודאות, בעיקר במדגם קטן, והתפלגות <span class="math inline">\(t\)</span> היא פעמון עם זנבות רחבים יותר שמתחשב בה. בברנולי הרוחב נקבע מהפרמטר עצמו, ולכן אין בה צורך.</li>
+</ul>
+</div>
 </div>
 </section>
 <section id="מאמר-לדוגמה" class="slide level2 part-gate">
 <h2>מאמר לדוגמה</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span></div>
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span></div>
   <div class="gate-title">מאמר לדוגמה</div>
   <div class="gate-why">תינוקות בוחרים בין דמות שעוזרת לדמות שמפריעה, וכל הכלים על הנתונים שלהם.</div>
 </div>
@@ -852,10 +954,10 @@
 <div class="centered-content">
 <div>
 <ul>
-<li class="fragment">14 מתוך 16 בחרו בעוזרת. ה-MLE: <span class="math inline">\(\hat\theta = 14/16 = 0.875\)</span>.</li>
-<li class="fragment"><span class="math inline">\(\widehat{SE} = \sqrt{0.875 \cdot 0.125 / 16} = 0.083\)</span>.</li>
-<li class="fragment">רווח סמך של 95%: <span class="math inline">\(0.875 \pm 1.96 \cdot 0.083 = 0.875 \pm 0.16\)</span>, כלומר <span class="math inline">\([0.71,\ 1.04]\)</span>.</li>
-<li class="fragment">הגבול העליון גדול מ-1, ו-<span class="math inline">\(\theta\)</span> לא יכול להיות גדול מ-1. זה סימן שעם 16 תינוקות הקירוב כבר חורק.</li>
+<li class="fragment">14 מתוך 16 בחרו בעוזרת: <span class="math inline">\(\hat\theta_{\text{MLE}} = 14/16 = 0.875\)</span>.</li>
+<li class="fragment">ההשערה ברת-ההפרכה: לתינוקות אין העדפה, <span class="math inline">\(\theta_{\text{null}} = 0.5\)</span>. אם היא נכונה, <span class="math inline">\(SE_{\text{null}} = \sqrt{0.5 \cdot 0.5 / 16} = 0.125\)</span>.</li>
+<li class="fragment">כמה רחוק ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> שלנו: <span class="math inline">\(z = \dfrac{0.875 - 0.5}{0.125} = 3\)</span>. בקירוב הפעמון, <span class="math inline">\(p = 0.0027\)</span>.</li>
+<li class="fragment">בחישוב מדויק בהתפלגות הבינומית: <span class="math inline">\(p = 0.0042\)</span>. עם <span class="math inline">\(\alpha = 0.05\)</span>, <span class="math inline">\(p &lt; \alpha\)</span>: ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> מחוץ לאזור הקבלה של 95%, והתוצאה <span class="term">משמעותית</span>.</li>
 </ul>
 </div>
 </div>
@@ -865,71 +967,22 @@
 <div class="centered-content">
 <div>
 <ul>
-<li class="fragment"><span class="math inline">\(H_0\)</span>: לתינוקות אין העדפה, <span class="math inline">\(\theta = 0.5\)</span>.</li>
-<li class="fragment">אם <span class="math inline">\(H_0\)</span> נכונה: <span class="math inline">\(SE_0 = \sqrt{0.5 \cdot 0.5 / 16} = 0.125\)</span>.</li>
-<li class="fragment">כמה רחוק מה שראינו: <span class="math inline">\(z = \dfrac{0.875 - 0.5}{0.125} = 3\)</span>. בקירוב הפעמון, <span class="math inline">\(p = 0.0027\)</span>.</li>
-<li class="fragment">בספירה מדויקת בהתפלגות הבינומית: <span class="math inline">\(p = 0.0042\)</span>. קטן מ-0.05: התוצאה <span class="term">משמעותית</span>.</li>
+<li class="fragment"><span class="math inline">\(\widehat{SE} = \sqrt{0.875 \cdot 0.125 / 16} = 0.083\)</span>.</li>
+<li class="fragment">רווח בר-סמך של 95%: <span class="math inline">\(0.875 \pm 1.96 \cdot 0.083 = 0.875 \pm 0.16\)</span>, כלומר <span class="math inline">\([0.71,\ 1.04]\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\theta_{\text{null}} = 0.5\)</span> מחוץ לרווח, ולכן גם כך היינו דוחים אותו, כמו שראינו ב-p.</li>
+<li class="fragment">הגבול העליון גדול מ-1, ו-<span class="math inline">\(\theta\)</span> לא יכול להיות גדול מ-1. זה סימן שעם 16 תינוקות הקירוב כבר חורק.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="מה-עונה-על-מה" class="slide level2">
-<h2>מה עונה על מה</h2>
-<div class="centered-table">
-<table>
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>השאלה</th>
-<th>הכלי</th>
-<th>ב-Bernoulli</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>מה האומדן?</td>
-<td>MLE</td>
-<td><span class="math inline">\(\hat\theta = k/n\)</span></td>
-</tr>
-<tr class="even">
-<td>כמה הוא היה משתנה בין מדגמים?</td>
-<td><span class="term">standard error</span></td>
-<td><span class="math inline">\(\sqrt{\hat\theta(1-\hat\theta)/n}\)</span></td>
-</tr>
-<tr class="odd">
-<td>איזה טווח של ערכים מתיישב עם הנתונים?</td>
-<td>רווח סמך</td>
-<td><span class="math inline">\(\hat\theta \pm 1.96\,\widehat{SE}\)</span></td>
-</tr>
-<tr class="even">
-<td>ומה כשהמדגם קטן?</td>
-<td>התפלגות מדויקת</td>
-<td>בינומית, או <span class="math inline">\(t\)</span> לממוצע</td>
-</tr>
-<tr class="odd">
-<td>האם זה יכול להיות מקרה?</td>
-<td>ערך p</td>
-<td><span class="math inline">\(P(\text{קיצוני לפחות כך} \mid H_0)\)</span></td>
-</tr>
-</tbody>
-</table>
 </div>
 </section>
 <section id="סיכום" class="slide level2 summary-slide">
 <h2>סיכום</h2>
 <div>
 <ul>
-<li class="fragment"><strong>MLE:</strong> הערך של <span class="math inline">\(\theta\)</span> שבו ה-<span class="term">likelihood</span> הכי גבוה. ב-Bernoulli: <span class="math inline">\(\hat\theta = k/n\)</span>.</li>
-<li class="fragment"><strong>consistent:</strong> ה-MLE מתכנס ל-<span class="math inline">\(\theta\)</span> ככל ש-<span class="math inline">\(n\)</span> גדל (חוק המספרים הגדולים).</li>
-<li class="fragment"><strong>sampling distribution:</strong> איך <span class="math inline">\(\hat\theta\)</span> היה מתפזר על פני ניסויים חוזרים. לפי משפט הגבול המרכזי: פעמון שמרכזו <span class="math inline">\(\theta\)</span>, וצר יותר ככל ש-<span class="math inline">\(n\)</span> גדל.</li>
-<li class="fragment"><strong>standard error:</strong> סטיית התקן של התפלגות הדגימה. במעשה מציבים בה את <span class="math inline">\(\hat\theta\)</span>.</li>
-<li class="fragment"><strong>רווח סמך 95%:</strong> <span class="math inline">\(\hat\theta \pm 1.96\,\widehat{SE}\)</span>. ה-95% שייך לשיטה, לא לרווח אחד. ב-<span class="math inline">\(n\)</span> קטן ההבטחה נשברת.</li>
-<li class="fragment"><strong>Student:</strong> כשמציבים אומדן במקום הערך האמיתי במדגם קטן, צריך התפלגות מדויקת (<span class="math inline">\(t\)</span>), אחרת הוודאות מזויפת.</li>
-<li class="fragment"><strong>ערך p:</strong> <span class="math inline">\(P(\text{נתונים קיצוניים לפחות כמו שלנו} \mid H_0)\)</span>. לא <span class="math inline">\(P(H_0 \mid \text{נתונים})\)</span>, ולא גודל האפקט.</li>
+<li class="fragment"><strong>MLE:</strong> ה-<span class="math inline">\(\theta\)</span> שבו הנראות (<span class="term">likelihood</span>) הכי גבוהה. בברנולי <span class="math inline">\(\hat\theta_{\text{MLE}} = k/n\)</span>, והוא מתכנס ל-<span class="math inline">\(\theta\)</span> ככל ש-<span class="math inline">\(n\)</span> גדל.</li>
+<li class="fragment"><strong>התפלגות דגימה:</strong> כך היו מתפזרים ערכי ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> במחקרים חוזרים, סביב פרמטר קבוע. היא פעמונית (משפט הגבול המרכזי), ורוחבה, טעות התקן (<span class="math inline">\(SE\)</span>), קטן ככל ש-<span class="math inline">\(n\)</span> גדל.</li>
+<li class="fragment"><strong>אזור הקבלה ו-p-value:</strong> סביב <span class="math inline">\(\theta_{\text{null}}\)</span>, אזור הקבלה הוא הטווח שבו נופלים <span class="math inline">\(X\%\)</span> מערכי ה-<span class="math inline">\(\hat\theta_{\text{MLE}}\)</span>. p הוא ההסתברות לקבל <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span> קיצוני לפחות כמו שלנו, אם <span class="math inline">\(\theta_{\text{null}}\)</span> נכון. הוא אינו ההסתברות ש-<span class="math inline">\(\theta_{\text{null}}\)</span> נכון, ואינו גודל האפקט.</li>
+<li class="fragment"><strong>רווח בר-סמך:</strong> טווח סביב <span class="math inline">\(\hat\theta_{\text{MLE}}\)</span>, שב-<span class="math inline">\(X\%\)</span> מהמחקרים מכיל את <span class="math inline">\(\theta\)</span> החבוי. ה-<span class="math inline">\(X\%\)</span> שייך לשיטה, לא לרווח אחד, וכל <span class="math inline">\(\theta_{\text{null}}\)</span> שמחוץ לרווח היה נדחה.</li>
 </ul>
 </div>
 <div class="footer footer-default">
@@ -940,19 +993,19 @@
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="_libs/747e483d74/revealjs/dist/reveal.js"></script>
+  <script src="_libs/0b337bd691/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="_libs/747e483d74/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="_libs/747e483d74/revealjs/plugin/notes/notes.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/search/search.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="_libs/747e483d74/revealjs/plugin/math/math.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/notes/notes.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/search/search.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="_libs/0b337bd691/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
