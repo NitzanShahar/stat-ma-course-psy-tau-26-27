@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="he"><head>
-<script src="_libs/96ae01a3d4/clipboard/clipboard.min.js"></script>
-<script src="_libs/96ae01a3d4/quarto-html/tabby.min.js"></script>
-<script src="_libs/96ae01a3d4/quarto-html/popper.min.js"></script>
-<script src="_libs/96ae01a3d4/quarto-html/tippy.umd.min.js"></script>
-<link href="_libs/96ae01a3d4/quarto-html/tippy.css" rel="stylesheet">
-<link href="_libs/96ae01a3d4/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="_libs/96ae01a3d4/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="_libs/c86215b912/clipboard/clipboard.min.js"></script>
+<script src="_libs/c86215b912/quarto-html/tabby.min.js"></script>
+<script src="_libs/c86215b912/quarto-html/popper.min.js"></script>
+<script src="_libs/c86215b912/quarto-html/tippy.umd.min.js"></script>
+<link href="_libs/c86215b912/quarto-html/tippy.css" rel="stylesheet">
+<link href="_libs/c86215b912/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="_libs/c86215b912/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="עידו בן ארצי · גל עטון · רם אשל">
@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="_libs/96ae01a3d4/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="_libs/96ae01a3d4/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="_libs/c86215b912/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="_libs/c86215b912/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,11 +29,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="_libs/96ae01a3d4/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="_libs/96ae01a3d4/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="_libs/96ae01a3d4/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="_libs/96ae01a3d4/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="_libs/96ae01a3d4/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="_libs/c86215b912/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="_libs/c86215b912/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="_libs/c86215b912/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="_libs/c86215b912/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="_libs/c86215b912/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -333,10 +333,14 @@
 </section>
 <section id="קודם-שואלים-איזה-משתנה" class="slide level2">
 <h2>קודם שואלים: איזה משתנה?</h2>
-<div class="pair-cards">
-  <div class="soft-card"><h3>קטגוריאלי</h3><p>כל ערך הוא קבוצה. <b>סופרים:</b> כמה בכל קבוצה, ואיזה אחוז מהמדגם.</p><p><span class="ltr">gender, major_depression, attachment_profile</span></p><p>טבלת שכיחויות · עוגה · עמודות</p></div>
-  <div class="soft-card"><h3>רציף</h3><p>כל ערך הוא נקודה על ציר. <b>מתארים:</b> איפה המרכז, כמה פיזור, ומה הצורה.</p><p><span class="ltr">age, iq, sleep_duration</span></p><p>ממוצע וסטיית תקן · היסטוגרמה · מלבן וכינור</p></div>
+<div class="pair-cards var-kinds">
+  <div class="soft-card"><h3>קטגוריאלי</h3><p>כל ערך הוא קבוצה. <b>סופרים</b> כמה בכל קבוצה, בטבלת שכיחויות.</p><h4>גרפים</h4><ul><li>תרשים פאי</li><li>תרשים עמודות</li></ul></div>
+  <div class="soft-card"><h3>רציף</h3><p>כל ערך הוא נקודה על ציר. <b>מתארים</b> מרכז, פיזור וצורה, בטבלה תיאורית.</p><h4>גרפים</h4><ul><li>היסטוגרמה</li><li>גרף נקודות</li><li>מלבן וכינור</li></ul></div>
 </div>
+<style>
+  .reveal .var-kinds h4 { font-size: .8em; color: var(--unit); margin: .6em 0 .1em; }
+  .reveal .var-kinds ul { margin: 0; }
+</style>
 <div class="discuss">
 <p>אותה שאלה כמו ב-JASP: סוג המשתנה קובע איזה תיאור מתאים לו, ואיזה אין לו משמעות.</p>
 </div>
@@ -349,9 +353,10 @@
   <div class="gate-why">כמה בכל קבוצה.</div>
 </div>
 </section>
-<section id="טבלת-שכיחויות" class="slide level2">
-<h2>טבלת שכיחויות</h2>
+<section id="דיווח-תיאורי-של-משתנה-קטגוריאלי" class="slide level2">
+<h2>דיווח תיאורי של משתנה קטגוריאלי</h2>
 
+<p class="slide-sub">טבלת שכיחויות</p>
 <div class="two-col">
   <div>
     <table class="freq">
@@ -377,15 +382,16 @@
   .reveal .freq-text p { font-size: .62em; line-height: 1.45; margin: 0 0 .5em; }
 </style>
 </section>
-<section id="עוגה-או-עמודות" class="slide level2">
-<h2>עוגה או עמודות</h2>
+<section id="דיווח-תיאורי-של-משתנה-קטגוריאלי-1" class="slide level2">
+<h2>דיווח תיאורי של משתנה קטגוריאלי</h2>
+<p class="slide-sub">תרשים פאי או תרשים עמודות</p>
 <div class="screen-steps">
   <ul>
-    <li><span class="ui">Basic plots</span> ← <span class="ui">Pie charts</span>: עוגה. טובה כשיש מעט קבוצות, והשאלה היא "איזה חלק מהשלם".</li>
-    <li><span class="ui">Distribution plots</span> על משתנה Nominal: עמודות. טובות להשוואה בין קבוצות, גם כשיש הרבה.</li>
+    <li><span class="ui">Basic plots</span> ← <span class="ui">Pie charts</span>: תרשים פאי. טוב כשיש מעט קבוצות, והשאלה היא "איזה חלק מהשלם".</li>
+    <li><span class="ui">Distribution plots</span> על משתנה Nominal: תרשים עמודות. טוב להשוואה בין קבוצות, גם כשיש הרבה.</li>
     <li>העין משווה גבהים טוב יותר מזוויות. כשהקבוצות קרובות בגודלן, כמו ב-<span class="ltr">attachment_profile</span>, העמודות ברורות יותר.</li>
   </ul>
-  <img class="screen-shot" src="W4_T2 שכיחויות ועוגה.webp" alt="טבלאות שכיחויות ועוגות ב-JASP">
+  <img class="screen-shot" src="W4_T2 שכיחויות ופאי.webp" alt="טבלאות שכיחויות ותרשימי פאי ב-JASP">
 </div>
 </section>
 <section id="משתנה-רציף" class="slide level2 part-gate">
@@ -396,9 +402,10 @@
   <div class="gate-why">מרכז, פיזור וצורה.</div>
 </div>
 </section>
-<section id="טבלה-תיאורית" class="slide level2">
-<h2>טבלה תיאורית</h2>
+<section id="דיווח-תיאורי-של-משתנה-רציף" class="slide level2">
+<h2>דיווח תיאורי של משתנה רציף</h2>
 
+<p class="slide-sub">טבלה תיאורית</p>
 <table class="desc">
   <thead><tr><th></th><th>gender</th><th>Valid</th><th>Mean</th><th>Std. Deviation</th><th>Median</th><th>Minimum</th><th>Maximum</th></tr></thead>
   <tbody>
@@ -423,8 +430,9 @@
   .reveal .desc-notes p { font-size: .62em; line-height: 1.45; margin: 0 0 .4em; }
 </style>
 </section>
-<section id="היסטוגרמה-וגרף-נקודות" class="slide level2">
-<h2>היסטוגרמה וגרף נקודות</h2>
+<section id="דיווח-תיאורי-של-משתנה-רציף-1" class="slide level2">
+<h2>דיווח תיאורי של משתנה רציף</h2>
+<p class="slide-sub">היסטוגרמה וגרף נקודות</p>
 <div class="demo-panel hist-demo" id="hist-demo">
   <div class="demo-controls">
     <label>רוחב עמודה <input type="range" min="2" max="20" step="1" value="10"></label>
@@ -494,8 +502,9 @@ window.W4T2 = {
 })();
 </script>
 </section>
-<section id="מלבן-כינור-ופיזור-נקודות" class="slide level2">
-<h2>מלבן, כינור ופיזור נקודות</h2>
+<section id="דיווח-תיאורי-של-משתנה-רציף-2" class="slide level2">
+<h2>דיווח תיאורי של משתנה רציף</h2>
+<p class="slide-sub">מלבן, כינור ופיזור נקודות</p>
 <div class="bv">
   <div class="demo-panel" id="bv-demo">
     <div class="demo-controls">
@@ -582,7 +591,7 @@ window.W4T2 = {
 <div class="centered-content">
 <p>על קובץ ההדגמה, במחברת אחת עם כותרת:</p>
 <ol type="1">
-<li>טבלת שכיחויות ועוגה ל-<code>major_depression</code>.</li>
+<li>טבלת שכיחויות ותרשים פאי ל-<code>major_depression</code>.</li>
 <li>טבלה תיאורית ל-<code>iq</code> ול-<code>sleep_duration</code>, לפי <code>gender</code>.</li>
 <li>היסטוגרמה של <code>iq</code>. נסו רוחב עמודה אחר ב-<span class="ui">Bin width type</span>. מה משתנה בתמונה?</li>
 <li>מלבן, כינור ופיזור של <code>sleep_duration</code> לפי <code>gender</code>.</li>
@@ -612,7 +621,7 @@ window.W4T2 = {
 <section id="מה-לזכור" class="slide level2 summary-slide">
 <h2>מה לזכור</h2>
 <ul>
-<li><strong>קטגוריאלי:</strong> סופרים. טבלת שכיחויות, ועוגה או עמודות.</li>
+<li><strong>קטגוריאלי:</strong> סופרים. טבלת שכיחויות, ותרשים פאי או עמודות.</li>
 <li><strong>רציף:</strong> מרכז (ממוצע, חציון), פיזור (סטיית תקן, טווח) וצורה (היסטוגרמה, כינור).</li>
 <li>רוחב העמודה בהיסטוגרמה משנה את התמונה, ולא את הנתונים.</li>
 <li>מלבן מסכם, כינור מראה צורה, ופיזור מראה כל נבדק. ביחד הם משלימים זה את זה.</li>
@@ -626,19 +635,19 @@ window.W4T2 = {
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="_libs/96ae01a3d4/revealjs/dist/reveal.js"></script>
+  <script src="_libs/c86215b912/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="_libs/96ae01a3d4/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="_libs/96ae01a3d4/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="_libs/96ae01a3d4/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="_libs/96ae01a3d4/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="_libs/96ae01a3d4/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="_libs/c86215b912/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="_libs/c86215b912/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="_libs/c86215b912/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="_libs/c86215b912/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="_libs/c86215b912/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="_libs/96ae01a3d4/revealjs/plugin/notes/notes.js"></script>
-  <script src="_libs/96ae01a3d4/revealjs/plugin/search/search.js"></script>
-  <script src="_libs/96ae01a3d4/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="_libs/96ae01a3d4/revealjs/plugin/math/math.js"></script>
+  <script src="_libs/c86215b912/revealjs/plugin/notes/notes.js"></script>
+  <script src="_libs/c86215b912/revealjs/plugin/search/search.js"></script>
+  <script src="_libs/c86215b912/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="_libs/c86215b912/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
