@@ -556,8 +556,6 @@ class Site:
             public_more |= set(self.cfg.get('more_staff', []))
         for m in it.get('more', []):
             lbl = m.get('label') or ''
-            if lbl == 'פתרון לדוגמא':  # shown inside the weekly practice task card, not as a row of its own
-                continue
             if m.get('href') and (lbl in public_more or lbl.split(':')[0].strip() in public_more):  # 'הקראה: ...' counts as 'הקראה'  # extra links are private unless their label is listed
                 folder = 'files/' + it['code'].replace('.', '_')
                 h = m['href'] if re.match(r'https?://', m['href']) else self.copy_file(m['href'], folder)
@@ -613,7 +611,7 @@ class Site:
         main = f'<a class="mlink" href="{link}"{target}>{ic}<span>{body}</span></a>' if link else f'<span class="mlink">{ic}<span>{body}</span></span>'
         tones = self.cfg.get('doc_tones', {})
         rows = ''.join(f'<div class="mat"><a class="mlink" href="{h}" target="_blank" rel="noopener"><span class="ic">{icon}</span>'
-                       f'<span><span class="mt">{esc(lbl)}</span><span class="ms">טקסט מקורי</span></span></a>'
+                       f'<span><span class="mt">{esc(lbl)}</span>{"" if lbl == "פתרון לדוגמא" else '<span class="ms">טקסט מקורי</span>'}</span></a>'
                        + (f'<span class="pills">{"".join(pill(ml, mh, lbl, self.p, tones.get(lbl)) for ml, mh in dm_)}</span>' if dm_ else '') + '</div>'
                        for lbl, h, dm_ in docs)
         return f'<div class="mat">{main}' + (f'<span class="pills">{pills}</span>' if pills else '') + '</div>' + rows
