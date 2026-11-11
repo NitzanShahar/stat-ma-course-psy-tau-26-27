@@ -130,6 +130,12 @@
       "hw": "הגשת תרגיל מספר 1: נראות של אחוז ההצבעה ביישוב."
     }
   },
+  "staff_reading": {
+    "4": {
+      "text": "מילוי הסקר על הבוחן העצמי.",
+      "url": "https://socialtau.qualtrics.com/jfe/form/SV_8DqmOUs7s1pPbWm"
+    }
+  },
   "task_links": {
     "1": {
       "reading": "https://socialtau.qualtrics.com/jfe/form/SV_bfKVUGUXurS3L4a"

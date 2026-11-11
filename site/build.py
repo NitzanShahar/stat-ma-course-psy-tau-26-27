@@ -852,6 +852,13 @@ class Site:
             if url:
                 note.append(f'הגשה מקוונת: <a class="ln" href="{esc(url)}" target="_blank" rel="noopener">טופס ההגשה</a>')
             cards.append(self.task_card('מטלת קריאה שבועית', '', text, note, nl, frm=w.get('lecture')))
+        sx = self.cfg.get('staff_reading', {}).get(str(w['n'])) if self.staff and not reading else None
+        if sx and nl:  # staff-only reading task (the student site does not show it)
+            x = d(nl)
+            at = self.cfg.get('reading_due_time', '10:00')
+            note = [esc(f'תאריך אחרון להגשה: יום {DAYS[x.weekday()]} {x.day}.{x.month} ב-{at}'),
+                    f'הגשה מקוונת: <a class="ln" href="{esc(sx["url"])}" target="_blank" rel="noopener">טופס ההגשה</a>']
+            cards.append(self.task_card('מטלת קריאה שבועית', '', sx['text'], note, nl, frm=w.get('lecture')))
         for it in hw:
             m = re.match(r'תרגיל להגשה מספר (\d+)\s*—\s*(.+)', self.clean_title(it))
             text = texts.get('hw') or (f'הגשת תרגיל מספר {m.group(1)}: {m.group(2)}.' if m else f'{self.clean_title(it)}.')
