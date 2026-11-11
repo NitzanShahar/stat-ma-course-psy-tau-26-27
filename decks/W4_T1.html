@@ -366,30 +366,15 @@
   <img class="screen-shot" src="W4_T1 סוגי משתנים.webp" alt="טבלת הנתונים ב-JASP, ותפריט סוג המשתנה">
 </div>
 </section>
-<section id="שלושה-סוגי-משתנים" class="slide level2">
-<h2>שלושה סוגי משתנים</h2>
-<div class="pair-cards">
-  <div class="soft-card"><h3>Scale · רציף</h3><p>הערכים הם כמות על ציר: אפשר לחבר, לחסר ולחשב ממוצע.</p><p><span class="ltr">age, iq, sleep_duration</span></p></div>
-  <div class="soft-card"><h3>Nominal · קטגוריאלי</h3><p>הערכים הם שמות של קבוצות, בלי סדר ביניהן.</p><p><span class="ltr">gender, major_depression, attachment_profile</span></p></div>
-</div>
-<div class="soft-card"><h3>Ordinal · סדר</h3><p>קבוצות שיש ביניהן סדר, אבל לא מרחק ידוע: <span class="ltr">low &lt; high</span>. <span class="ltr">social_media_usage, wm_capacity</span></p></div>
-<div class="discuss">
-<p>JASP מנחש את הסוג לבד, ולפעמים טועה. <code>subject_id</code> נקרא כמספר, אבל הוא שם של נבדק: ממוצע של מספרי נבדק אינו אומר דבר. מחליפים אותו ל-Nominal.</p>
-</div>
-</section>
-<section id="תרגיל-כמה-נבדקים" class="slide level2">
-<h2>תרגיל: כמה נבדקים?</h2>
+<section id="הגדרת-סוגי-משתנים" class="slide level2">
+<h2>הגדרת סוגי משתנים</h2>
 <div class="centered-content">
-<ol type="1">
-<li>מחליפים את <code>subject_id</code> ל-<span class="ui">Nominal</span>.</li>
-<li><span class="ui">Descriptives</span> ← מעבירים את <code>subject_id</code> למשבצת <span class="ui">Variables</span>.</li>
-<li>בטבלה, השורה <span class="ui">Valid</span> היא מספר הנבדקים.</li>
-</ol>
-<div class="fragment">
-<div class="soft-card">
-<p>בקובץ ההדגמה: <strong>131 נבדקים</strong>, ואין ערכים חסרים (<span class="ui">Missing</span> = 0).</p>
-</div>
-</div>
+  <div class="prior-cards">
+    <div class="soft-card"><h3>Scale · רציף</h3><p class="ltr">age, iq, sleep_duration</p></div>
+    <div class="soft-card"><h3>Nominal · קטגוריאלי</h3><p class="ltr">gender, major_depression, subject_id</p></div>
+    <div class="soft-card"><h3>Ordinal · סדר</h3><p class="ltr">social_media_usage, wm_capacity</p></div>
+  </div>
+  <div class="discuss"><b>תרגיל:</b> מחליפים את <span class="ui">subject_id</span> ל-<span class="ui">Nominal</span>. כמה נבדקים יש? (<span class="ui">Descriptives</span> ← <span class="ui">Valid</span>) <span class="fragment"><b>131</b></span></div>
 </div>
 </section>
 <section id="המחברת" class="slide level2 part-gate">
@@ -423,22 +408,13 @@
   <img class="screen-shot" src="W4_T1 עריכת גרף.webp" alt="עריכת ציר בגרף של JASP">
 </div>
 </section>
-<section id="שומרים" class="slide level2">
-<h2>שומרים</h2>
-<div class="centered-content">
-<ul>
-<li><span class="ui">File</span> ← <span class="ui">Save as</span> שומר קובץ <code>.jasp</code>: הנתונים, הניתוחים, ההגדרות וההערות, יחד.</li>
-<li>כשפותחים את הקובץ שוב, כל ניתוח נפתח בדיוק כפי שהשארתם אותו, ואפשר להמשיך לשנות.</li>
-<li><span class="ui">Export Results</span> שומר את הפלט כ-html או pdf, לקריאה בלבד.</li>
-</ul>
-<p><span class="demo-note">במטלת התרגול מגישים גם את קובץ ה-<code>.jasp</code>.</span></p>
-</div>
-</section>
-<section id="סרטון-לתזכורת" class="slide level2">
-<h2>סרטון לתזכורת</h2>
+<section id="הדגמות-לתזכורת" class="slide level2">
+<h2>הדגמות לתזכורת</h2>
 <div class="video-row">
   <figure><figcaption>כתיבה במחברת ושינוי פלטים</figcaption><video src="W4_T1 סרטון מחברת ופלטים.mp4" controls="" preload="metadata"></video></figure>
+  <figure><figcaption>חיבור Gemini של האוניברסיטה ל-JASP</figcaption><video src="W4_T1 סרטון Gemini EDU.mp4" controls="" preload="metadata"></video></figure>
 </div>
+<p><span class="demo-note">הדגמות שקטות, בלי קול: רואים על מה לוחצים. את מפתח ה-API יוצרים בחשבון האוניברסיטה, ולא משתפים אותו עם אף אחד.</span></p>
 </section>
 <section id="מה-לזכור" class="slide level2 summary-slide">
 <h2>מה לזכור</h2>

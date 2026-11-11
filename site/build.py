@@ -98,6 +98,8 @@ PILL_SURVEY = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" strok
 PILL_GAME = '<svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="16" height="9" rx="4.5"/><path d="M6 10.5h3M7.5 9v3"/><circle cx="12.8" cy="9.8" r=".6"/><circle cx="14.8" cy="11.2" r=".6"/></svg>'
 PILL_AI = '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7z"/></svg>'
 PILL_SOLUTION = '<svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M6.8 10.2l2.2 2.2 4.2-4.6"/></svg>'
+PILL_DEMO = '<svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5l9.5 6-4.3 1 2.6 4.8-1.8 1-2.6-4.8-3.4 3z"/></svg>'  # a silent demo: where to click
+PILL_DATA = '<svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/><path d="M3 8h14M3 12.3h14M8 3.5v13"/></svg>'  # a data file (csv)
 LABEL_ICONS = {'סקר': PILL_SURVEY, 'משחק': PILL_GAME, 'Gemini': PILL_AI, 'בוט Bayesian': PILL_AI, 'בוט Frequentist': PILL_AI, 'הטלת מטבע': PILL_GAME, 'פתרון': PILL_SOLUTION}  # extra links shown as a round button by their label
 
 
@@ -105,6 +107,10 @@ def pill_icon(h, lbl=''):
     h = h.lower()
     if lbl in LABEL_ICONS:
         return LABEL_ICONS[lbl]
+    if lbl.startswith('הדגמה'):  # a silent screen demo, not a lecturer explaining a deck
+        return PILL_DEMO
+    if lbl == 'נתונים':
+        return PILL_DATA
     return PILL_PLAY if (h.endswith(('.mp4', '.webm', '.mov')) or 'youtu' in h or 'vimeo' in h) else PILL_AUDIO if h.endswith(('.mp3', '.m4a', '.wav', '.ogg')) else PILL_DOC
 
 
@@ -142,6 +148,8 @@ def pill(lbl, h, ctx='', p='', tone=''):
     if lbl in LABEL_ICONS:  # survey / game / AI helper: opens in a new tab
         h = h if re.match(r'https?://', h) else h
         return f'<a class="pill" href="{h}" target="_blank" rel="noopener" title="{esc(lbl)}" aria-label="{esc(lbl)}">{LABEL_ICONS[lbl]}</a>'
+    if lbl == 'נתונים':  # a data file: downloaded, not opened
+        return f'<a class="pill" href="{h}" download title="{esc(lbl)}" aria-label="{esc(lbl)}">{PILL_DATA}</a>'
     tone = ' ' + tone if tone else ' purple' if 'סגול' in lbl else ' yellow' if 'צהוב' in lbl else ''
     if re.match(r'https?://', h):
         return f'<a class="pill{tone}" href="{h}" target="_blank" rel="noopener" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h)}</a>'
@@ -149,7 +157,7 @@ def pill(lbl, h, ctx='', p='', tone=''):
         src = h[len(p):] if p and h.startswith(p) else h
         title = f'{ctx} · {lbl}' if ctx else lbl
         h = f'{p}play.html?src={quote(src, safe="")}&t={quote(title, safe="")}'
-    return f'<a class="pill{tone}" href="{h}" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h if "play.html" not in h else src)}</a>'
+    return f'<a class="pill{tone}" href="{h}" title="{esc(lbl)}" aria-label="{esc(lbl)}">{pill_icon(h if "play.html" not in h else src, lbl)}</a>'
 
 
 def br(s):
