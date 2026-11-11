@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W10.V2 — סטנדרטיזציה, מירכוז ונרמול</title>
+  <title>W10.V2 — DAG: confounding, collider ו-backdoor criterion</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,246 +325,28 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W10.V2 — סטנדרטיזציה, מירכוז ונרמול</h1>
-  <p class="subtitle">איפה שמים את האפס, באילו יחידות מודדים, ומה נשאר זהה</p>
+  <h1 class="title">W10.V2 — DAG: confounding, collider ו-backdoor criterion</h1>
+  <p class="subtitle">ריבוד הוא אותה פעולה בדיוק בשני המקרים, עם תוצאה הפוכה</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להבין מה עושה <strong>centering</strong> (מירכוז): מזיז את ראשית הצירים, משנה את ה-intercept ולא את השיפוע.</li>
-<li>להבין מה עושה <strong>z-scoring</strong> (תקנון): משנה גם את יחידות השיפוע והופך אותו ל-<strong>standardized coefficient</strong>.</li>
-<li>לדעת מתי כל אחד מהם מועיל ומתי מזיק.</li>
-<li>להבין למה <strong>מירכוז לפני interaction</strong> הוא כמעט חובה, ולחבר זאת לשבוע 6.</li>
-<li>לא לקרוא מקדמים סטנדרטיים כגדלי אפקט בין מדגמים שונים.</li>
+<li>לקרוא <strong>DAG</strong>: מה גרף מקודד, ומה הוא בכלל לא אומר.</li>
+<li>להכיר את שלושת המבנים היסודיים: <strong>chain</strong> (mediator), <strong>fork</strong> (confounder) ו-<strong>collider</strong>.</li>
+<li>לספור ביד, בטבלה של 400 מועמדים, איך התניה על collider <strong>יוצרת</strong> קשר שלא קיים.</li>
+<li>להבין את הניגוד המרכזי: <strong>ריבוד (stratification) מסיר קשר מדומה ב-confounding, ויוצר אותו ב-collider</strong>.</li>
+<li>לנסח את ה-<strong>backdoor criterion</strong> ולראות איפה כלי הריבוד מגיע לקצה.</li>
 </ul>
 </section>
-<section id="שתי-שאלות-שרגרסיה-רציפה-מכריחה-לשאול" class="slide level2">
-<h2>שתי שאלות שרגרסיה רציפה מכריחה לשאול</h2>
-<p>במשתנה דמה לא הייתה ברירה: האפס היה קבוצת הייחוס והיחידה הייתה “מעבר בין קבוצות”. ב-X רציף שתי ההחלטות הן שלנו.</p>
+<section id="מה-גרף-מקודד-ומה-לא" class="slide level2">
+<h2>מה גרף מקודד, ומה לא</h2>
 <div>
 <ul>
-<li class="fragment"><strong>איפה האפס?</strong> <span class="math inline">\(\beta_0\)</span> הוא הערך המנובא כש-<span class="math inline">\(X = 0\)</span>. אבל גיל 0, IQ 0 ושעות שינה 0 לא קיימים במדגם. ה-intercept הופך להארכה של הקו אל מקום שאין בו נתונים.</li>
-<li class="fragment"><strong>מה היחידה?</strong> אותו קשר בדיוק נותן שיפוע של 0.5 לשנה או 0.04 לחודש. המספר תלוי ביחידה שבחרנו.</li>
-</ul>
-</div>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>הרעיון המרכזי</strong></p>
-</div>
-<div class="callout-content">
-<p>שני התיקונים הם <strong>טרנספורמציות ליניאריות של X</strong>. הם לא משנים את הקו, את ה-residuals או את הניבויים. הם משנים רק <strong>על איזו שאלה כל מקדם עונה</strong>.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="centering-להזיז-את-האפס" class="slide level2">
-<h2>Centering: להזיז את האפס</h2>
-<p><span class="math display">\[X^{c}_i = X_i - c \qquad (\text{בדרך כלל } c = \bar{X})\]</span></p>
-<p>נציב <span class="math inline">\(X_i = X_i^c + c\)</span> במשוואה המקורית:</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 (X_i^c + c) + \epsilon_i = \underbrace{(\beta_0 + \beta_1 c)}_{\beta_0^{c}} + \beta_1 X_i^c + \epsilon_i\]</span></p>
-<div>
-<ul>
-<li class="fragment"><span class="math inline">\(\beta_1\)</span> <strong>לא משתנה</strong>: אותו קו, אותו שיפוע.</li>
-<li class="fragment"><span class="math inline">\(\beta_0^c = \beta_0 + \beta_1 c\)</span> משתנה: זה הערך המנובא ב-<span class="math inline">\(X = c\)</span>. כשמרכזים סביב הממוצע, <span class="math inline">\(\beta_0^c = \bar{y}\)</span>, כלומר <strong>הניחוש הטוב ביותר לנבדק ממוצע</strong>.</li>
-<li class="fragment">ההתאמה של המודל זהה: אותם residuals, אותו <span class="math inline">\(R^2\)</span>.</li>
-</ul>
-</div>
-</section>
-<section id="z-scoring-להזיז-את-האפס-ולשנות-את-היחידה" class="slide level2">
-<h2>Z-scoring: להזיז את האפס ולשנות את היחידה</h2>
-<p><span class="math display">\[z_i = \frac{X_i - \bar{X}}{s_X} \qquad\Longrightarrow\qquad \beta_1^{z} = \beta_1 \cdot s_X\]</span></p>
-<div>
-<ul>
-<li class="fragment">השיפוע עכשיו הוא: <strong>בכמה יחידות Y משתנה הערך המנובא כש-X עולה בסטיית תקן אחת</strong>.</li>
-<li class="fragment">אם גם Y עובר תקנון, מקבלים <strong>standardized coefficient</strong>:</li>
-</ul>
-<p><span class="math display">\[\beta^{std} = \beta_1 \cdot \frac{s_X}{s_Y}\]</span></p>
-<ul>
-<li class="fragment">ברגרסיה עם מנבא יחיד, <span class="math inline">\(\beta^{std} = r\)</span>. זה החיבור למצגת הקודמת: <span class="math inline">\(r\)</span> הוא השיפוע כששני הצירים מתוקננים.</li>
-<li class="fragment">ברגרסיה מרובה <span class="math inline">\(\beta^{std}\)</span> <strong>אינו</strong> <span class="math inline">\(r\)</span>, כי מפקחים על משתנים נוספים.</li>
-</ul>
-</div>
-</section>
-<section id="מתי-זה-מועיל-ומתי-מזיק" class="slide level2">
-<h2>מתי זה מועיל ומתי מזיק</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="מועיל">מועיל</h3>
-<ul>
-<li><strong>ה-intercept מקבל פירוש</strong>: ניבוי לאדם ממוצע במקום לאדם שלא קיים.</li>
-<li><strong>prior אחיד על כל המקדמים</strong>: ב-posterior קל יותר להצדיק prior כמו Normal(0, 1) כשכל המנבאים באותה סקאלה.</li>
-<li><strong>מנבאים ביחידות שונות</strong> נראים על אותו ציר. בזהירות, ראו בהמשך.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="מזיק">מזיק</h3>
-<ul>
-<li><strong>מאבדים יחידות טבעיות</strong>: “נקודה לכל שעת שינה” ניתן לתקשר, “0.3 סטיות תקן” הרבה פחות.</li>
-<li><strong>z של משתנה דמה</strong> אינו הפרש בין קבוצות אלא “לכל סטיית תקן של הדמה”, מספר שאף אחד לא יודע לפרש.</li>
-<li><strong>המקדם תלוי במדגם</strong>: סטיית התקן משתנה ממדגם למדגם, ראו שקף אזהרה.</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="הדגמה-אינטראקטיבית-מה-זז-ומה-נשאר" class="slide level2">
-<h2>הדגמה אינטראקטיבית: מה זז ומה נשאר</h2>
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:18px; align-items:center; margin-bottom:6px; font-size:0.85em;">
-    <label><input type="radio" name="mode_v2" value="A" checked=""> אותם נתונים, טרנספורמציה של X</label>
-    <label><input type="radio" name="mode_v2" value="B"> מדגם אחר, אותו קו אמיתי (טווח X שונה)</label>
-  </div>
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label><span id="mlabel_v2">מרכז ה-X החדש</span>: <b id="mval_v2">40</b>
-      <input type="range" id="m_v2" min="-20" max="80" step="1" value="40"></label>
-    <label><span id="slabel_v2">סטיית התקן החדשה של X</span>: <b id="sval_v2">10.0</b>
-      <input type="range" id="s_v2" min="1" max="20" step="0.5" value="10"></label>
-  </div>
-  <div id="presets_v2" style="display:flex; gap:8px; margin-bottom:6px; font-size:0.85em;">
-    <button id="p_raw_v2" style="padding:3px 10px;">גולמי</button>
-    <button id="p_cen_v2" style="padding:3px 10px;">מירכוז</button>
-    <button id="p_z_v2" style="padding:3px 10px;">תקנון (z)</button>
-  </div>
-  <div id="demo-std2" style="width:100%; height:320px;"></div>
-  <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;">
-    <div id="c0_v2" style="flex:1 1 150px; text-align:center; padding:8px; border-radius:6px; font-weight:bold;"></div>
-    <div id="c1_v2" style="flex:1 1 150px; text-align:center; padding:8px; border-radius:6px; font-weight:bold;"></div>
-    <div id="c2_v2" style="flex:1 1 150px; text-align:center; padding:8px; border-radius:6px; font-weight:bold;"></div>
-  </div>
-  <div style="font-size:0.75em; color:#666; margin-top:4px;">הרעש בהדגמה מכוון כך שאינו מתואם ל-X, כדי שהמקדמים יתאימו בדיוק לחישוב ולא יתערבבו בתנודות מדגם. הצבע הכחול מציין ערך זהה לנקודת ההתחלה (גולמי, מרכז 40, סטיית תקן 10), והאדום ערך ששונה.</div>
-</div>
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-<script>
-(function() {
-  const n = 80, M0 = 40, S0 = 10;
-  function randn() {
-    let u = 0, v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-  // בסיס: zx מתוקנן בדיוק (ממוצע 0, סטיית תקן 1), ורעש e ללא מתאם ל-zx, סטיית תקן 5
-  let zx = [], e = [];
-  for (let i = 0; i < n; i++) { zx.push(randn()); e.push(randn()); }
-  let mz = zx.reduce((a, b) => a + b, 0) / n;
-  zx = zx.map(v => v - mz);
-  let sz = Math.sqrt(zx.reduce((a, b) => a + b * b, 0) / n);
-  zx = zx.map(v => v / sz);
-  let me = e.reduce((a, b) => a + b, 0) / n;
-  e = e.map(v => v - me);
-  let c = e.reduce((a, b, i) => a + b * zx[i], 0) / n;
-  e = e.map((v, i) => v - c * zx[i]);
-  let se = Math.sqrt(e.reduce((a, b) => a + b * b, 0) / n);
-  e = e.map(v => 5 * v / se);
-
-  function build(mode, m, s) {
-    const x = [], y = [];
-    for (let i = 0; i < n; i++) {
-      const xi = m + s * zx[i];
-      x.push(xi);
-      // A: Y קבוע (50 + 5*zx + e). B: הקו האמיתי הוא y = 30 + 0.5*x + e
-      y.push(mode === 'A' ? 50 + 5 * zx[i] + e[i] : 30 + 0.5 * xi + e[i]);
-    }
-    return { x: x, y: y };
-  }
-  function fit(d) {
-    let mx = 0, my = 0;
-    for (let i = 0; i < n; i++) { mx += d.x[i]; my += d.y[i]; }
-    mx /= n; my /= n;
-    let sxy = 0, sxx = 0, syy = 0;
-    for (let i = 0; i < n; i++) {
-      sxy += (d.x[i] - mx) * (d.y[i] - my);
-      sxx += (d.x[i] - mx) * (d.x[i] - mx);
-      syy += (d.y[i] - my) * (d.y[i] - my);
-    }
-    const b1 = sxy / sxx;
-    return { b0: my - b1 * mx, b1: b1, r: sxy / Math.sqrt(sxx * syy) };
-  }
-  function mode() { return document.querySelector('input[name="mode_v2"]:checked').value; }
-  function badge(id, title, val, base) {
-    const el = document.getElementById(id);
-    const same = Math.abs(val - base) < 0.005;
-    el.innerHTML = title + ': ' + val.toFixed(2) + '<br><span style="font-size:0.8em;">' + (same ? 'ללא שינוי' : 'השתנה (בסיס ' + base.toFixed(2) + ')') + '</span>';
-    el.style.background = same ? '#eef5fa' : '#fdecea';
-    el.style.color = same ? '#185fa5' : '#a32d2d';
-  }
-  function draw() {
-    const md = mode();
-    const m = parseFloat(document.getElementById('m_v2').value);
-    const s = parseFloat(document.getElementById('s_v2').value);
-    document.getElementById('mval_v2').textContent = m.toFixed(0);
-    document.getElementById('sval_v2').textContent = s.toFixed(1);
-    document.getElementById('mlabel_v2').textContent = md === 'A' ? 'מרכז ה-X החדש' : 'מרכז ה-X במדגם';
-    document.getElementById('slabel_v2').textContent = md === 'A' ? 'סטיית התקן החדשה של X' : 'סטיית התקן של X במדגם';
-    document.getElementById('presets_v2').style.display = md === 'A' ? 'flex' : 'none';
-
-    const d = build(md, m, s), f = fit(d);
-    const base = fit(build(md, M0, S0));
-
-    const xmin = Math.min.apply(null, d.x), xmax = Math.max.apply(null, d.x);
-    const xlo = Math.min(0, xmin), xhi = Math.max(0, xmax);
-    const xpad = 0.08 * (xhi - xlo);
-    const ymin = Math.min.apply(null, d.y), ymax = Math.max.apply(null, d.y);
-    const span = ymax - ymin;
-    let ylo = ymin, yhi = ymax;
-    if (f.b0 > ymin - span && f.b0 < ymax + span) { ylo = Math.min(ylo, f.b0); yhi = Math.max(yhi, f.b0); }
-    const ypad = 0.1 * (yhi - ylo);
-    const X0 = xlo - xpad, X1 = xhi + xpad;
-
-    Plotly.newPlot('demo-std2', [
-      { x: d.x, y: d.y, mode: 'markers', marker: { color: '#2980b9', size: 7, opacity: 0.75 }, showlegend: false },
-      { x: [X0, X1], y: [f.b0 + f.b1 * X0, f.b0 + f.b1 * X1], mode: 'lines', line: { color: '#c0392b', width: 3 }, showlegend: false },
-      { x: [0], y: [f.b0], mode: 'markers+text', text: ['β0'], textposition: 'top right',
-        marker: { color: '#27ae60', size: 12, symbol: 'diamond' }, showlegend: false }
-    ], {
-      xaxis: { title: 'X', range: [X0, X1], zeroline: true, zerolinecolor: '#27ae60', zerolinewidth: 2 },
-      yaxis: { title: 'Y', range: [ylo - ypad, yhi + ypad] },
-      margin: { t: 15, b: 45, l: 50, r: 15 }
-    }, { displayModeBar: false });
-
-    badge('c0_v2', 'β0 (intercept)', f.b0, base.b0);
-    badge('c1_v2', 'β1 (slope)', f.b1, base.b1);
-    badge('c2_v2', 'β1 מתוקנן (= r)', f.r, base.r);
-  }
-  function setPreset(m, s) {
-    document.getElementById('m_v2').value = m;
-    document.getElementById('s_v2').value = s;
-    draw();
-  }
-  ['m_v2', 's_v2'].forEach(id => document.getElementById(id).addEventListener('input', draw));
-  document.querySelectorAll('input[name="mode_v2"]').forEach(el => el.addEventListener('change', draw));
-  document.getElementById('p_raw_v2').addEventListener('click', function() { setPreset(40, 10); });
-  document.getElementById('p_cen_v2').addEventListener('click', function() { setPreset(0, 10); });
-  document.getElementById('p_z_v2').addEventListener('click', function() { setPreset(0, 1); });
-  setTimeout(draw, 400);
-})();
-</script>
-</section>
-<section id="מה-ההדגמה-מראה" class="slide level2">
-<h2>מה ההדגמה מראה</h2>
-<div>
-<ul>
-<li class="fragment"><strong>מצב “אותם נתונים”:</strong> הזזת המרכז משנה את <span class="math inline">\(\beta_0\)</span> ואת שום דבר אחר. הכפתור “מירכוז” מציב מרכז 0: ה-intercept הופך ל-<span class="math inline">\(\bar{y}\)</span> והשיפוע נשאר 0.5.</li>
-<li class="fragment">הקטנת סטיית התקן של X (טרנספורמציה) <strong>מגדילה</strong> את השיפוע, כי יחידת X קטנה יותר. בכפתור “תקנון” סטיית התקן היא 1 והשיפוע הוא 5: בדיוק <span class="math inline">\(\beta_1 \cdot s_X\)</span>.</li>
-<li class="fragment"><strong><span class="math inline">\(\beta_1\)</span> המתוקנן אינו משתנה אף פעם</strong> תחת טרנספורמציה ליניארית. הוא תמיד <span class="math inline">\(r\)</span>.</li>
-<li class="fragment"><strong>מצב “מדגם אחר”:</strong> כאן הקו האמיתי קבוע. סטיית התקן של X משנה את <span class="math inline">\(\beta_1\)</span> המתוקנן (כלומר <span class="math inline">\(r\)</span>) ולא את השיפוע הגולמי. חכו לשקף האזהרה.</li>
-</ul>
-</div>
-</section>
-<section id="המקרה-החשוב-מירכוז-לפני-interaction" class="slide level2">
-<h2>המקרה החשוב: מירכוז לפני interaction</h2>
-<p>נחזור ליחידה של שבוע 6:</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 (X_1 \cdot X_2) + \epsilon_i\]</span></p>
-<p>האפקט של <span class="math inline">\(X_1\)</span> הוא <span class="math inline">\(\beta_1 + \beta_3 X_2\)</span>, כלומר <span class="math inline">\(\beta_1\)</span> הוא האפקט של <span class="math inline">\(X_1\)</span> <strong>כאשר <span class="math inline">\(X_2 = 0\)</span></strong>.</p>
-<div>
-<ul>
-<li class="fragment">בשבוע 6 זה היה טבעי: <span class="math inline">\(X_2 = 0\)</span> הייתה קבוצת הייחוס. ברציף, <span class="math inline">\(X_2 = 0\)</span> הוא לפעמים מקום שאין בו אף אחד. אם <span class="math inline">\(X_2\)</span> הוא גיל, <span class="math inline">\(\beta_1\)</span> הוא האפקט של <span class="math inline">\(X_1\)</span> אצל גיל 0.</li>
-<li class="fragment">מרכזים <span class="math inline">\(X_2\)</span> סביב <span class="math inline">\(c\)</span>: מתקבל <span class="math inline">\(\beta_1^{c} = \beta_1 + \beta_3 c\)</span>, כלומר <strong>האפקט של <span class="math inline">\(X_1\)</span> אצל אדם ממוצע</strong>.</li>
-<li class="fragment"><span class="math inline">\(\beta_3\)</span> ו”ההבדל בין ההבדלים” <strong>לא משתנים</strong>.</li>
-<li class="fragment">גם משתנה דמה כדאי לקודד לפעמים <span class="math inline">\(-\tfrac{1}{2}/+\tfrac{1}{2}\)</span>, וכך האפקט הראשי הוא ממוצע שני האפקטים הפשוטים.</li>
+<li class="fragment"><strong>צמתים</strong> הם משתנים. <strong>חץ</strong> מ-A ל-B אומר: A <em>עשוי</em> להשפיע ישירות על B.</li>
+<li class="fragment"><strong>היעדר חץ</strong> הוא הטענה החזקה: A אינו משפיע ישירות על B. זו ההנחה שאתם מתחייבים אליה.</li>
+<li class="fragment">הגרף <strong>directed</strong> (חצים עם כיוון) ו-<strong>acyclic</strong> (אין מעגלים: אף משתנה לא גורם לעצמו).</li>
+<li class="fragment">הגרף <strong>לא-פרמטרי</strong> בהגדרה: הוא לא אומר דבר על צורת הקשר (ליניארי? סף? אינטראקציה?), על גודלו או על סימנו.</li>
 </ul>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
@@ -573,22 +355,142 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>המודל לא השתנה, השאלה השתנתה</strong></p>
+<p><strong>מאין מגיע הגרף</strong></p>
 </div>
 <div class="callout-content">
-<p>אחרי מירכוז הניבויים, ה-residuals ו-<span class="math inline">\(\beta_3\)</span> זהים. מה שהשתנה הוא הפירוש של האפקטים הראשיים. בלי מירכוז הם עונים על שאלה שאף אחד לא שאל (“מה האפקט אצל בן אדם ב-X2 = 0”), ולכן נעשים חסרי פשר.</p>
+<p>מהידע התאורטי שלכם, <strong>לא מהנתונים</strong>. שני גרפים שונים לגמרי יכולים להפיק בדיוק אותה טבלה. כמה מהר נראה את זה בהדגמה.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="אזהרה-מקדם-סטנדרטי-אינו-גודל-אפקט-בין-מדגמים" class="slide level2">
-<h2>אזהרה: מקדם סטנדרטי אינו גודל אפקט בין מדגמים</h2>
-<p><span class="math display">\[\beta^{std} = \beta_1 \cdot \frac{s_X}{s_Y}\]</span></p>
+<section id="שלושה-מבנים-יסודיים" class="slide level2 smaller">
+<h2>שלושה מבנים יסודיים</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3 id="chain-mediator">Chain (mediator)</h3>
+<svg viewbox="0 0 220 140" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
+  <defs><marker id="ah1" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
+  <line x1="57" y1="70" x2="86" y2="70" stroke="#333" stroke-width="2.5" marker-end="url(#ah1)"></line>
+  <line x1="132" y1="70" x2="161" y2="70" stroke="#333" stroke-width="2.5" marker-end="url(#ah1)"></line>
+  <circle cx="35" cy="70" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="35" y="77" text-anchor="middle" font-size="18" font-weight="bold">X</text>
+  <circle cx="110" cy="70" r="20" fill="#fdf3e3" stroke="#a1690a" stroke-width="2"></circle><text x="110" y="77" text-anchor="middle" font-size="18" font-weight="bold">M</text>
+  <circle cx="185" cy="70" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="185" y="77" text-anchor="middle" font-size="18" font-weight="bold">Y</text>
+</svg>
+<ul>
+<li><strong>בלי ריבוד:</strong> X ו-Y קשורים. הקשר עובר דרך M.</li>
+<li><strong>ריבוד לפי M:</strong> חוסם את הנתיב. הקשר נעלם.</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="fork-confounder">Fork (confounder)</h3>
+<svg viewbox="0 0 220 140" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
+  <defs><marker id="ah2" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
+  <line x1="94.4" y1="45.6" x2="52" y2="88" stroke="#333" stroke-width="2.5" marker-end="url(#ah2)"></line>
+  <line x1="125.6" y1="45.6" x2="168" y2="88" stroke="#333" stroke-width="2.5" marker-end="url(#ah2)"></line>
+  <circle cx="110" cy="30" r="20" fill="#fdf3e3" stroke="#a1690a" stroke-width="2"></circle><text x="110" y="37" text-anchor="middle" font-size="18" font-weight="bold">C</text>
+  <circle cx="35" cy="105" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="35" y="112" text-anchor="middle" font-size="18" font-weight="bold">X</text>
+  <circle cx="185" cy="105" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="185" y="112" text-anchor="middle" font-size="18" font-weight="bold">Y</text>
+</svg>
+<ul>
+<li><strong>בלי ריבוד:</strong> קשר <strong>מדומה</strong>. C גורם לשניהם.</li>
+<li><strong>ריבוד לפי C:</strong> חוסם. הקשר המדומה נעלם.</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="collider">Collider</h3>
+<svg viewbox="0 0 220 140" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
+  <defs><marker id="ah3" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
+  <line x1="50.6" y1="45.6" x2="93" y2="88" stroke="#333" stroke-width="2.5" marker-end="url(#ah3)"></line>
+  <line x1="169.4" y1="45.6" x2="127" y2="88" stroke="#333" stroke-width="2.5" marker-end="url(#ah3)"></line>
+  <circle cx="35" cy="30" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="35" y="37" text-anchor="middle" font-size="18" font-weight="bold">X</text>
+  <circle cx="185" cy="30" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="185" y="37" text-anchor="middle" font-size="18" font-weight="bold">Y</text>
+  <circle cx="110" cy="105" r="20" fill="#fdecea" stroke="#c0392b" stroke-width="2"></circle><text x="110" y="112" text-anchor="middle" font-size="18" font-weight="bold">K</text>
+</svg>
+<ul>
+<li><strong>בלי ריבוד:</strong> אין קשר. הנתיב <strong>סגור</strong> כברירת מחדל.</li>
+<li><strong>ריבוד לפי K:</strong> <strong>פותח</strong> את הנתיב. קשר מדומה נוצר.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="collider-ביד-400-מועמדים" class="slide level2 smaller">
+<h2>Collider ביד: 400 מועמדים</h2>
+<p>מועמדים לתוכנית דוקטורט. <strong>ציונים גבוהים</strong> ו<strong>מכתבי המלצה חזקים</strong> הם בלתי תלויים לחלוטין: 100 מועמדים בכל שילוב. כלל הקבלה: מתקבלים אם יש <strong>לפחות אחד</strong> משני היתרונות.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="כל-400-המועמדים">כל 400 המועמדים</h3>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>מכתבים חזקים</th>
+<th>מכתבים חלשים</th>
+<th>סה”כ</th>
+<th>% מכתבים חזקים</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ציונים גבוהים</td>
+<td>100</td>
+<td>100</td>
+<td>200</td>
+<td><strong>50%</strong></td>
+</tr>
+<tr class="even">
+<td>ציונים נמוכים</td>
+<td>100</td>
+<td>100</td>
+<td>200</td>
+<td><strong>50%</strong></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<h3 id="רק-300-המתקבלים">רק 300 המתקבלים</h3>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>מכתבים חזקים</th>
+<th>מכתבים חלשים</th>
+<th>סה”כ</th>
+<th>% מכתבים חזקים</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ציונים גבוהים</td>
+<td>100</td>
+<td>100</td>
+<td>200</td>
+<td><strong>50%</strong></td>
+</tr>
+<tr class="even">
+<td>ציונים נמוכים</td>
+<td>100</td>
+<td>0</td>
+<td>100</td>
+<td><strong>100%</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div>
 <ul>
-<li class="fragment">שני מעבדות מוצאות <strong>בדיוק אותו</strong> אפקט אמיתי: 0.5 נקודות לכל שעה.</li>
-<li class="fragment">מעבדה A דגמה מבוגרים בטווח רחב (<span class="math inline">\(s_X = 10\)</span>). מעבדה B דגמה סטודנטים בלבד (<span class="math inline">\(s_X = 3\)</span>), עם אותו רעש.</li>
-<li class="fragment">התוצאה: <span class="math inline">\(r \approx 0.71\)</span> במעבדה A ו-<span class="math inline">\(r \approx 0.29\)</span> במעבדה B. המקדם המתוקנן קטן פי 2.5, והקשר האמיתי לא השתנה.</li>
+<li class="fragment"><strong>באוכלוסייה אין קשר:</strong> 50% בשתי השורות.</li>
+<li class="fragment"><strong>בקרב המתקבלים הקשר שלילי וחזק:</strong> מי שציוניו נמוכים חייב מכתבים חזקים, אחרת לא היה מתקבל. הפער: <strong>50 נקודות אחוז</strong>.</li>
+<li class="fragment">100 המועמדים בשילוב “נמוך + חלש” <strong>נעלמו מהטבלה</strong>. אלה הם שהיו מאזנים אותה.</li>
+</ul>
+</div>
+</section>
+<section id="למה-זה-קורה" class="slide level2">
+<h2>למה זה קורה</h2>
+<p>התניה על קבלה = “בתוך אלה שהתקבלו”. כשאתם יודעים שמועמד התקבל, שני היתרונות <strong>מתחרים</strong> על ההסבר.</p>
+<div>
+<ul>
+<li class="fragment">מתקבל עם ציונים נמוכים? בהכרח יש לו מכתבים חזקים. ההסבר היחיד.</li>
+<li class="fragment">מתקבל עם ציונים גבוהים? כבר הוסבר. המכתבים יכולים להיות כל דבר.</li>
+<li class="fragment">זה <strong>explaining away</strong>: מידע על סיבה אחת מפחית את הצורך בשנייה.</li>
 </ul>
 </div>
 <div class="callout callout-warning callout-captioned callout-style-default">
@@ -597,10 +499,402 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הטווח, לא הקשר</strong></p>
+<p><strong>זה לא רק קבלה לתוכנית</strong></p>
 </div>
 <div class="callout-content">
-<p>סטיית התקן של X (ושל Y) נקבעת גם על ידי שיטת הדגימה. השוואת מקדמים סטנדרטיים בין מחקרים מחליפה את ההבדל ביחס בין X ל-Y בהבדל בין האוכלוסיות שנדגמו. כדי להשוות בין מחקרים משווים מקדמים <strong>לא מתוקננים</strong>, ביחידות זהות.</p>
+<p>כל מסנן שמושפע משני משתנים הוא collider: מי שמתפרסם (מובהק <strong>או</strong> גדול), מי שמגיע למרפאה (תסמין א <strong>או</strong> ב), מי שנשאר במדגם (טיפול <strong>וגם</strong> תוצאה, כפי שראינו ב-W10.V1). המדגם עצמו יכול להיות ההתניה.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="אותו-כלי-על-confounding" class="slide level2 smaller">
+<h2>אותו כלי על confounding</h2>
+<p>400 ילדים. <strong>X</strong> = מידת נעל, <strong>Y</strong> = קריאה טובה. <strong>C</strong> = גיל. הגיל משפיע על שניהם. אין שום השפעה של נעל על קריאה.</p>
+<div class="columns">
+<div class="column" style="width:42%;">
+<h3 id="כל-400-הילדים">כל 400 הילדים</h3>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>קריאה טובה</th>
+<th>קריאה חלשה</th>
+<th>סה”כ</th>
+<th>% טובה</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>נעל גדולה</td>
+<td>136</td>
+<td>64</td>
+<td>200</td>
+<td><strong>68%</strong></td>
+</tr>
+<tr class="even">
+<td>נעל קטנה</td>
+<td>64</td>
+<td>136</td>
+<td>200</td>
+<td><strong>32%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>פער של <strong>36 נקודות אחוז</strong>.</p>
+</div><div class="column" style="width:58%;">
+<h3 id="מחולקים-לפי-גיל-ריבוד">מחולקים לפי גיל (ריבוד)</h3>
+<table>
+<thead>
+<tr class="header">
+<th>גיל</th>
+<th>נעל</th>
+<th>טובה</th>
+<th>חלשה</th>
+<th>% טובה</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>6-7</td>
+<td>גדולה</td>
+<td>8</td>
+<td>32</td>
+<td><strong>20%</strong></td>
+</tr>
+<tr class="even">
+<td>6-7</td>
+<td>קטנה</td>
+<td>32</td>
+<td>128</td>
+<td><strong>20%</strong></td>
+</tr>
+<tr class="odd">
+<td>9-10</td>
+<td>גדולה</td>
+<td>128</td>
+<td>32</td>
+<td><strong>80%</strong></td>
+</tr>
+<tr class="even">
+<td>9-10</td>
+<td>קטנה</td>
+<td>32</td>
+<td>8</td>
+<td><strong>80%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>בתוך כל רובד: <strong>פער אפס</strong>.</p>
+</div>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>הפעם הריבוד תיקן</strong></p>
+</div>
+<div class="callout-content">
+<p>הקשר המקורי היה מדומה: ילדים גדולים יותר גם נועלים נעל גדולה וגם קוראים טוב יותר. פיצול לפי הגיל חושף שאין דבר.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="הניגוד-המרכזי" class="slide level2">
+<h2>הניגוד המרכזי</h2>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>בלי ריבוד</th>
+<th>עם ריבוד</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Confounding</strong> (נעל וקריאה, מבלבל: גיל)</td>
+<td>פער של +36 נק’</td>
+<td><strong>0</strong>: הקשר המדומה <strong>נעלם</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Collider</strong> (ציונים ומכתבים, קולידר: קבלה)</td>
+<td>פער של 0</td>
+<td><strong>−50</strong> נק’: קשר מדומה <strong>נוצר</strong></td>
+</tr>
+</tbody>
+</table>
+<div>
+<ul>
+<li class="fragment">זו <strong>אותה פעולה טכנית בדיוק</strong>: מפצלים את הטבלה לפי משתנה שלישי ומסתכלים בכל חלק.</li>
+<li class="fragment">התוצאה <strong>הפוכה</strong>. מה שקובע אם זה תיקון או נזק הוא לא הטבלה, אלא <strong>מי גורם למי בגרף</strong>.</li>
+<li class="fragment">ברגרסיה (שבועות 11-12) שני המקרים נראים זהים: “הוספתי מנבא”. ההבדל בין תיקון להרס נעלם מהעין. לכן מלמדים את זה <strong>כאן</strong>, בטבלאות, כשעוד אפשר לראות כל תא.</li>
+</ul>
+</div>
+</section>
+<section id="ה-backdoor-criterion" class="slide level2">
+<h2>ה-backdoor criterion</h2>
+<p><strong>Backdoor path</strong> מ-X ל-Y: כל נתיב שמתחיל בחץ <strong>שנכנס</strong> ל-X (<code>X ← ...</code>). נתיב סיבתי מתחיל בחץ שיוצא מ-X.</p>
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>הקריטריון</strong></p>
+</div>
+<div class="callout-content">
+<p>קבוצת משתנים Z מספיקה לזיהוי האפקט של X על Y אם: <strong>(1)</strong> היא חוסמת כל backdoor path מ-X ל-Y, <strong>(2)</strong> אין בה צאצא של X (בפרט: mediator).</p>
+</div>
+</div>
+</div>
+<div>
+<ul>
+<li class="fragment">נתיב <strong>נחסם</strong> אם מרבדים על <strong>non-collider</strong> שעליו (chain או fork).</li>
+<li class="fragment">נתיב עם <strong>collider</strong> חסום מעצמו, כל עוד לא מרבדים עליו, <strong>ולא על אף צאצא שלו</strong>.</li>
+<li class="fragment"><strong>אל תרבדו על mediator</strong> אם רוצים את האפקט הכולל: זה חוסם את האפקט עצמו.</li>
+</ul>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>שני מקרי קצה</strong></p>
+</div>
+<div class="callout-content">
+<p>בניסוי אקראי אין חצים נכנסים ל-X, כלומר אין backdoor paths, ו-Z ריקה. בנעל וקריאה: <code>X ← גיל → Y</code>, ולכן Z = {גיל}.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="הדגמה-מתי-הריבוד-מתקן-ומתי-הוא-הורס" class="slide level2">
+<h2>הדגמה: מתי הריבוד מתקן, ומתי הוא הורס</h2>
+
+<style>
+  .dm-tb { border-collapse: collapse; font-size: 0.6em; flex: 1 1 0; min-width: 150px; background: #fff; }
+  .dm-tb th, .dm-tb td { border: 1px solid #ccc; padding: 3px 5px; text-align: center; }
+  .dm-tb th { background: #f4f4f4; }
+  .dm-tb caption { font-weight: bold; padding: 3px; caption-side: top; }
+</style>
+<div style="background:#fff; padding:14px; border-radius:8px; border:1px solid #ddd; margin-top:4px;">
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:6px; font-size:0.8em;">
+    <label>מבנה: <b id="stval">confounder</b>
+      <input type="range" id="st" min="1" max="3" step="1" value="1"></label>
+    <label>עוצמת הקשרים: <b id="sgval">0.80</b>
+      <input type="range" id="sg" min="0" max="1" step="0.05" value="0.8"></label>
+    <span id="gtxt" style="font-size:0.95em;"></span>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:stretch;">
+    <div id="tables" style="display:flex; gap:8px; flex:2 1 540px;"></div>
+    <div id="demo-dag" style="flex:1 1 250px; height:200px;"></div>
+  </div>
+  <div id="banner" style="text-align:center; font-weight:bold; padding:7px; border-radius:6px; margin-top:8px; font-size:0.8em;"></div>
+  <div style="font-size:0.7em; text-align:center; margin-top:4px; color:#555;">עברו בין מבנה 1 ל-3 ושימו לב שהמספרים בטבלאות <b>אינם משתנים</b>. רק ההחלטה הנכונה משתנה.</div>
+</div>
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<script>
+(function() {
+  const N = 800;
+  const GRAPH = { 1: 'X ← Z → Y', 2: 'X → Z ← Y', 3: 'X → Z → Y' };
+  const NAME = { 1: 'confounder', 2: 'collider', 3: 'mediator' };
+  const ZDESC = { 1: 'Z = גיל', 2: 'Z = קבלה', 3: 'Z = מתווך' };
+  const OK = { bg: '#e6f4ea', fg: '#1e7e34', bar: '#27ae60' };
+  const BAD = { bg: '#fdecea', fg: '#a32d2d', bar: '#c0392b' };
+  const NEU = { bg: '#eef5fa', fg: '#185fa5', bar: '#2980b9' };
+  const $ = id => document.getElementById(id);
+
+  // p[x][y][z]: ההסתברות המשותפת בכל אחד משמונת התאים
+  function joint(st, s) {
+    const p = [[[0, 0], [0, 0]], [[0, 0], [0, 0]]];
+    for (let x = 0; x < 2; x++) for (let y = 0; y < 2; y++) for (let z = 0; z < 2; z++) {
+      let v;
+      if (st === 1) {            // X ← Z → Y
+        const a = 0.5 + 0.4 * s * (z ? 1 : -1);
+        v = 0.5 * (x ? a : 1 - a) * (y ? a : 1 - a);
+      } else if (st === 2) {     // X → Z ← Y
+        const k = 0.5 + 0.48 * s * (x + y - 1);
+        v = 0.25 * (z ? k : 1 - k);
+      } else {                   // X → Z → Y
+        const m = 0.5 + 0.4 * s * (x ? 1 : -1);
+        const yy = 0.5 + 0.4 * s * (z ? 1 : -1);
+        v = 0.5 * (z ? m : 1 - m) * (y ? yy : 1 - yy);
+      }
+      p[x][y][z] = v;
+    }
+    return p;
+  }
+
+  function stats(p, zs) {
+    const n = [[0, 0], [0, 0]];
+    let mass = 0;
+    for (let x = 0; x < 2; x++) for (let y = 0; y < 2; y++) {
+      n[x][y] = zs.reduce((a, z) => a + p[x][y][z], 0);
+      mass += n[x][y];
+    }
+    const p1 = n[1][1] / (n[1][0] + n[1][1]);
+    const p0 = n[0][1] / (n[0][0] + n[0][1]);
+    return { n: n, p1: p1, p0: p0, rd: p1 - p0, mass: mass };
+  }
+
+  const pp = v => (v >= 0 ? '+' : '') + Math.round(v * 100);
+
+  function tbl(title, S, col) {
+    const f = v => Math.round(N * v);
+    return '<table class="dm-tb"><caption>' + title + '</caption>' +
+      '<tr><th></th><th>Y=1</th><th>Y=0</th><th>% Y=1</th></tr>' +
+      '<tr><th>X=1</th><td>' + f(S.n[1][1]) + '</td><td>' + f(S.n[1][0]) + '</td><td>' + Math.round(S.p1 * 100) + '%</td></tr>' +
+      '<tr><th>X=0</th><td>' + f(S.n[0][1]) + '</td><td>' + f(S.n[0][0]) + '</td><td>' + Math.round(S.p0 * 100) + '%</td></tr>' +
+      '<tr><td colspan="4" style="background:' + col.bg + '; color:' + col.fg + '; font-weight:bold;">הפרש: ' + pp(S.rd) + ' נק\'</td></tr>' +
+      '</table>';
+  }
+
+  function draw() {
+    const st = parseInt($('st').value);
+    const s = parseFloat($('sg').value);
+    $('stval').textContent = NAME[st];
+    $('sgval').textContent = s.toFixed(2);
+    $('gtxt').innerHTML = '<span dir="ltr" style="font-weight:bold;">' + GRAPH[st] + '</span> &nbsp;(' + ZDESC[st] + ')';
+
+    const p = joint(st, s);
+    const all = stats(p, [0, 1]);
+    const z1 = stats(p, [1]);
+    const z0 = stats(p, [0]);
+    const strat = (z1.mass * z1.rd + z0.mass * z0.rd) / (z1.mass + z0.mass);
+    const truth = (st === 3) ? all.rd : 0;   // באפקט הכולל דרך mediator, האפקט הסיבתי הוא הקשר הגולמי
+
+    const crudeOK = Math.abs(all.rd - truth) < 0.03;
+    const stratOK = Math.abs(strat - truth) < 0.03;
+    let cCrude, cStrat, msg, cBan;
+    if (crudeOK && stratOK) {
+      cCrude = NEU; cStrat = NEU; cBan = NEU;
+      msg = 'הקשרים חלשים מדי: שתי המדידות מסכימות, ואין מה לתקן ואין מה להרוס.';
+    } else if (!crudeOK && stratOK) {
+      cCrude = BAD; cStrat = OK; cBan = OK;
+      msg = 'הריבוד תיקן: בלי ריבוד הקשר מדומה. בתוך רבדים הוא נעלם.';
+    } else if (crudeOK && !stratOK && st === 2) {
+      cCrude = OK; cStrat = BAD; cBan = BAD;
+      msg = 'הריבוד הרס: באוכלוסייה אין קשר, ובתוך רבדי Z נוצר קשר שלא היה.';
+    } else {
+      cCrude = OK; cStrat = BAD; cBan = BAD;
+      msg = 'הריבוד הרס: Z הוא mediator, והריבוד חסם את האפקט הסיבתי עצמו (over-control).';
+    }
+
+    $('tables').innerHTML =
+      tbl('מדידה א: כל האוכלוסייה', all, cCrude) +
+      tbl('מדידה ב: רובד Z=1', z1, cStrat) +
+      tbl('מדידה ב: רובד Z=0', z0, cStrat);
+
+    const ban = $('banner');
+    ban.textContent = msg + '   (האפקט הסיבתי האמיתי: ' + pp(truth) + ' נק\')';
+    ban.style.background = cBan.bg; ban.style.color = cBan.fg;
+
+    const trace = {
+      type: 'bar', orientation: 'h',
+      y: ['האפקט האמיתי', 'בלי ריבוד', 'עם ריבוד'],
+      x: [truth * 100, all.rd * 100, strat * 100],
+      text: [pp(truth), pp(all.rd), pp(strat)], textposition: 'outside', cliponaxis: false,
+      marker: { color: ['#34495e', cCrude.bar, cStrat.bar] }
+    };
+    const layout = {
+      xaxis: { title: 'הפרש באחוזים (נק\')', range: [-45, 85], zeroline: true },
+      yaxis: { autorange: 'reversed' },
+      margin: { t: 10, b: 45, l: 95, r: 20 }
+    };
+    Plotly.newPlot('demo-dag', [trace], layout, { displayModeBar: false });
+  }
+
+  ['st', 'sg'].forEach(id => $(id).addEventListener('input', draw));
+  setTimeout(draw, 400);
+})();
+</script>
+</section>
+<section id="מה-ההדגמה-מראה" class="slide level2">
+<h2>מה ההדגמה מראה</h2>
+<div>
+<ul>
+<li class="fragment"><strong>Confounder:</strong> בלי ריבוד יש קשר חזק. בתוך כל רובד הוא מתאפס. <strong>הריבוד תיקן</strong>.</li>
+<li class="fragment"><strong>Collider:</strong> בלי ריבוד אין קשר. בתוך כל רובד הוא מופיע. <strong>הריבוד הרס</strong>.</li>
+<li class="fragment"><strong>Mediator:</strong> בלי ריבוד רואים את האפקט הכולל. בתוך הרבדים הוא נעלם, כי חסמנו את הנתיב שדרכו האפקט עובר. <strong>גם כאן הריבוד הרס.</strong></li>
+<li class="fragment">שימו לב: <strong>הטבלאות של confounder ושל mediator זהות במספרים.</strong> הנתונים אינם יכולים לומר מה נכון לעשות. <strong>הגרף הוא זה שמחליט.</strong></li>
+</ul>
+</div>
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>הלקח</strong></p>
+</div>
+<div class="callout-content">
+<p>אין כלל טכני “תמיד לרבד” או “אל תרבד”. השאלה היחידה: מה מקומו של Z בגרף ביחס ל-X ול-Y.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="ה-cliffhanger-הגרף-אמר-לרבד-לפי-גיל" class="slide level2">
+<h2>ה-cliffhanger: הגרף אמר לרבד לפי גיל</h2>
+<p>הגרף אמר מה לפקח. הוא לא אמר <strong>איך</strong>. בדוגמת הנעל חילקנו את הגיל לשתי קבוצות. אבל גיל הוא משתנה רציף, ובמציאות יש יותר ממבלבל אחד.</p>
+<table>
+<thead>
+<tr class="header">
+<th>מבלבלים</th>
+<th>רמות</th>
+<th>רבדים</th>
+<th>תצפיות ממוצעות לרובד (n=400)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>גיל</td>
+<td>10</td>
+<td>10</td>
+<td>40</td>
+</tr>
+<tr class="even">
+<td>+ מין</td>
+<td>2</td>
+<td>20</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td>+ מעמד סוציו-אקונומי</td>
+<td>5</td>
+<td>100</td>
+<td><strong>4</strong></td>
+</tr>
+<tr class="even">
+<td>+ עוד שלושה משתנים בינריים</td>
+<td>2 × 2 × 2</td>
+<td>800</td>
+<td><strong>0.5</strong></td>
+</tr>
+</tbody>
+</table>
+<div>
+<ul>
+<li class="fragment">חלוקה גסה של גיל משאירה <strong>residual confounding</strong> בתוך הרבדים.</li>
+<li class="fragment">חלוקה עדינה מחלקת את המדגם לרבדים ריקים.</li>
+<li class="fragment">בכל רובד צריך <em>גם</em> ילדים עם נעל גדולה <em>וגם</em> עם נעל קטנה, אחרת אין מה להשוות.</li>
+</ul>
+</div>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>הריבוד קורס</strong></p>
+</div>
+<div class="callout-content">
+<p>הידיעה <strong>מה</strong> לפקח קיימת. חסר כלי שמפקח על כמה מבלבלים, גם רציפים, <strong>בלי לחתוך</strong> את המדגם לרבדים. זו בדיוק השאלה ששבוע 11 פותח בה.</p>
 </div>
 </div>
 </div>
@@ -608,11 +902,11 @@
 <section id="סיכום-w10.v2" class="slide level2">
 <h2>סיכום W10.V2</h2>
 <ul>
-<li><strong>Centering</strong> מזיז את האפס: משנה את ה-intercept ולא את השיפוע. <span class="math inline">\(\beta_0^c = \beta_0 + \beta_1 c\)</span>.</li>
-<li><strong>Z-scoring</strong> משנה גם את היחידה: <span class="math inline">\(\beta_1^z = \beta_1 s_X\)</span>. עם Y מתוקנן מקבלים <span class="math inline">\(\beta^{std}\)</span>, ובמנבא יחיד זה <span class="math inline">\(r\)</span>.</li>
-<li>שני התיקונים הם טרנספורמציות ליניאריות ולא משנים את הקו, את ה-residuals או את הניבויים.</li>
-<li><strong>מירכוז לפני interaction:</strong> בלי מירכוז ה-main effects הם האפקט כשהמשתנה השני הוא 0, לרוב ערך חסר משמעות. אחרי מירכוז הם האפקט אצל אדם ממוצע, ו-<span class="math inline">\(\beta_3\)</span> נשאר זהה.</li>
-<li>מקדם סטנדרטי תלוי בסטיית התקן של המדגם, ולכן אינו גודל אפקט להשוואה בין מדגמים.</li>
+<li>גרף (<strong>DAG</strong>) הוא לא-פרמטרי: הוא מקודד מי גורם למי, לא באיזו צורה ובאיזו עוצמה. הוא בא מתאוריה, לא מנתונים.</li>
+<li>שלושה מבנים: <strong>chain</strong> ו-<strong>fork</strong> פתוחים כברירת מחדל וריבוד חוסם אותם. <strong>Collider</strong> סגור כברירת מחדל, וריבוד <strong>פותח</strong> אותו.</li>
+<li><strong>אותה פעולה, תוצאה הפוכה:</strong> ריבוד מסיר קשר מדומה ב-confounding ויוצר אותו ב-collider. לכן החלטה על פיקוח באה מהגרף, לא מהטבלה.</li>
+<li><strong>Backdoor criterion:</strong> חוסמים את כל הנתיבים שנכנסים ל-X, בלי לפתוח collider ובלי לרבד על צאצא של X.</li>
+<li>ריבוד קורס כשהמבלבלים רבים או רציפים. <strong>שבוע 11</strong> נפתח כתשובה לשאלה איך מפקחים בלי לחתוך.</li>
 </ul>
 <div class="footer footer-default">
 

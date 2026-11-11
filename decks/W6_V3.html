@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W13.V4 — non-collapsibility של odds ratio</title>
+  <title>W6.V3 — הערכה Frequentist והקישור ל-t-test</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,176 +325,74 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W13.V4 — non-collapsibility של odds ratio</h1>
-  <p class="subtitle">למה ה-OR משתנה כשמוסיפים משתנה, גם כשאין שום confounding</p>
+  <h1 class="title">W6.V3 — הערכה Frequentist והקישור ל-t-test</h1>
+  <p class="subtitle">Sampling Distribution, SE, t-statistic והשוואת פלטים צד לצד</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להכיר את התופעה: <strong>odds ratio מותנה</strong> שונה מ-<strong>odds ratio שולי</strong>, גם בלי confounding ובלי הטיה.</li>
-<li>להבין שזו <strong>תכונה מתמטית של המדד</strong> ולא בעיה סיבתית.</li>
-<li>להסיק את ההשלכה המעשית: <strong>אי אפשר להשוות מקדמים לוגיסטיים בין מודלים עם סטים שונים של מנבאים</strong>.</li>
-<li>לחבר לכשל ה-<strong>Table 2 fallacy</strong> משבוע 11.</li>
-<li>לדעת ש-risk ratio ו-risk difference הם <strong>collapsible</strong>.</li>
+<li>להבין את הגישה השכיחותנית להערכת ההבדל בין קבוצות.</li>
+<li>להגדיר את <strong>התפלגות הדגימה של ההפרש</strong> (<span class="math inline">\(SE(\hat{\beta}_1)\)</span>).</li>
+<li>לגזור את <strong>סטטיסטי t</strong> ודרגות החופש.</li>
+<li><strong>השקף המרכזי בשבוע:</strong> להציג צד לצד פלט t-test ופלט רגרסיה ולהיווכח בזהות המוחלטת!</li>
 </ul>
 </section>
-<section id="התופעה" class="slide level2">
-<h2>התופעה</h2>
-<p>נוהג נפוץ בספרות, בפרט הרפואית והאפידמיולוגית:</p>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>“בדיקת confounding” לפי שינוי במקדם</strong></p>
-</div>
-<div class="callout-content">
-<p>“הרצנו מודל עם הטיפול בלבד וקיבלנו <span class="math inline">\(\text{OR} = 4.0\)</span>. הוספנו את המשתנה <span class="math inline">\(Z\)</span> והמקדם ירד ל-3.4. <strong>לכן <span class="math inline">\(Z\)</span> מבלבל</strong> (confounder).”</p>
-</div>
-</div>
-</div>
-<p>בקורס למדנו (שבוע 9) שבלבול הוא עניין סיבתי: הוא נקבע לפי ה-DAG, לא לפי שינוי במספר. ברגרסיה <strong>ליניארית</strong>, הוספת מנבא שאינו קשור לטיפול משאירה את מקדם הטיפול כפי שהוא, כי הפרש ממוצעים הוא collapsible. ברגרסיה <strong>לוגיסטית</strong> המקדם משתנה גם כשאין confounding בכלל.</p>
+<section id="הגישה-השכיחותנית-מחשבה-היפותטית" class="slide level2">
+<h2>הגישה השכיחותנית: מחשבה היפותטית</h2>
+<p>בגישה השכיחותנית, הפרמטר <span class="math inline">\(\beta_1\)</span> הוא מספר קבוע ולא ידוע בטבע.</p>
 <div>
 <ul>
-<li class="fragment">ה-OR המותנה (במודל עם <span class="math inline">\(Z\)</span>) והשולי (בלי <span class="math inline">\(Z\)</span>) שונים זה מזה.</li>
-<li class="fragment">זה קורה גם כש-<span class="math inline">\(Z\)</span> <strong>אינו קשור</strong> לטיפול, כלומר בניסוי רנדומלי.</li>
-<li class="fragment">הסיבה היא במדד עצמו: <strong>non-collapsibility</strong>.</li>
+<li class="fragment"><strong>השאלה השכיחותנית:</strong> מה היה קורה לאומדן שלנו (<span class="math inline">\(\hat{\beta}_1 = \bar{y}_1 - \bar{y}_0\)</span>) אילו היינו חוזרים על הניסוי שוב ושוב באותם תנאים בדיוק?</li>
+<li class="fragment">ההתפלגות ההיפותטית של האומדנים הללו נקראת <strong>התפלגות הדגימה</strong> (Sampling Distribution).</li>
 </ul>
 </div>
 </section>
-<section id="collapsibility-ההגדרה" class="slide level2">
-<h2>collapsibility: ההגדרה</h2>
-<p>מדד אפקט הוא <strong>collapsible</strong> אם, בהיעדר confounding, כיווץ הטבלה על פני <span class="math inline">\(Z\)</span> אינו משנה אותו: כשהמדד זהה בכל תתי-הקבוצות, הוא נשאר באותו ערך גם בטבלה השולית.</p>
-<p>לדוגמה, ה-RD השולי הוא תמיד הממוצע המשוקלל של ה-RD בתתי-הקבוצות:</p>
-<p><span class="math display">\[\text{RD}_{\text{marginal}} = \sum_z w_z\, \text{RD}_z\]</span></p>
+<section id="שגיאת-התקן-של-ההפרש-se" class="slide level2">
+<h2>שגיאת התקן של ההפרש (<span class="math inline">\(SE\)</span>)</h2>
+<p>סטיית התקן של התפלגות הדגימה הזו נקראת <strong>שגיאת התקן של ההפרש</strong>:</p>
+<p><span class="math display">\[SE(\hat{\beta}_1) = \sqrt{s_p^2 \left(\frac{1}{n_1} + \frac{1}{n_2}\right)}\]</span></p>
+<div>
+<ul>
+<li class="fragment"><span class="math inline">\(SE\)</span> מודדת כמה אומדן ההפרש שלנו צפוי לתנוד בין מדגמים שונים עקב רעש מקרי.</li>
+<li class="fragment">ככל שגודל המדגם (<span class="math inline">\(n\)</span>) גדל <span class="math inline">\(\leftarrow\)</span> <span class="math inline">\(SE\)</span> קטנה והאומדן מדויק יותר.</li>
+</ul>
+</div>
+</section>
+<section id="גזירת-סטטיסטי-t" class="slide level2">
+<h2>גזירת סטטיסטי t</h2>
+<p>תחת השערת האפס (<span class="math inline">\(H_0: \beta_1 = 0\)</span>), יחס ה-t מוגדר כסטיית האומדן מ-0 ביחידות של שגיאת תקן:</p>
+<p><span class="math display">\[t = \frac{\hat{\beta}_1 - 0}{SE(\hat{\beta}_1)}\]</span></p>
+<div>
+<ul>
+<li class="fragment">סטטיסטי <span class="math inline">\(t\)</span> עוקב אחר התפלגות <span class="math inline">\(t\)</span> עם <span class="math inline">\(df = n_1 + n_2 - 2\)</span> דרגות חופש.</li>
+<li class="fragment"><strong>p-value:</strong> ההסתברות לקבל אומדן קיצוני כזה או יותר, בהנחה שהשערת האפס נכונה בטבע.</li>
+</ul>
+</div>
+</section>
+<section id="השקף-החשוב-ביותר-פלט-t-test-מול-פלט-רגרסיה" class="slide level2">
+<h2>השקף החשוב ביותר: פלט t-test מול פלט רגרסיה</h2>
+<p>השוואת פלטים על אותם נתוני בדיקה בדיוק:</p>
+<div class="compare-card">
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="collapsible">Collapsible</h3>
+<h3 id="independent-samples-t-test">Independent Samples t-test</h3>
 <ul>
-<li><strong>Risk difference</strong> (RD)</li>
-<li><strong>Risk ratio</strong> (RR)</li>
+<li><span class="math inline">\(\Delta\bar{y} = 4.20\)</span></li>
+<li><span class="math inline">\(SE = 1.05\)</span></li>
+<li><span class="math inline">\(t(28) = 4.00\)</span></li>
+<li><span class="math inline">\(p &lt; 0.001\)</span></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<h3 id="non-collapsible">Non-collapsible</h3>
+<h3 id="linear-regression-y-beta_0-beta_1-x">Linear Regression (<span class="math inline">\(y = \beta_0 + \beta_1 X\)</span>)</h3>
 <ul>
-<li><strong>Odds ratio</strong> (OR)</li>
-<li><strong>Hazard ratio</strong> ב-Cox</li>
+<li><span class="math inline">\(\hat{\beta}_1 = 4.20\)</span></li>
+<li><span class="math inline">\(SE(\hat{\beta}_1) = 1.05\)</span></li>
+<li><span class="math inline">\(t(28) = 4.00\)</span></li>
+<li><span class="math inline">\(p &lt; 0.001\)</span></li>
 </ul>
 </div>
 </div>
-<p>שימו לב: זה לא אומר שה-OR “שגוי”. הוא פשוט <strong>לא נשמר</strong> כשמכווצים את הטבלה.</p>
-</section>
-<section id="דוגמה-מספרית-ניסוי-רנדומלי-בלי-confounding" class="slide level2">
-<h2>דוגמה מספרית: ניסוי רנדומלי, בלי confounding</h2>
-<p>אוכלוסייה עם שתי תתי-קבוצות שוות בגודלן (<span class="math inline">\(Z = 0, 1\)</span>). בכל תת-קבוצה, מחצית מקבלים טיפול ומחצית ביקורת: הטיפול <strong>בלתי תלוי</strong> ב-<span class="math inline">\(Z\)</span>. ל-<span class="math inline">\(Z\)</span> יש סיכון בסיס שונה.</p>
-<table>
-<colgroup>
-<col style="width: 13%">
-<col style="width: 17%">
-<col style="width: 17%">
-<col style="width: 17%">
-<col style="width: 17%">
-<col style="width: 17%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: center;">ביקורת</th>
-<th style="text-align: center;">טיפול</th>
-<th style="text-align: center;">RD</th>
-<th style="text-align: center;">RR</th>
-<th style="text-align: center;">OR</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong><span class="math inline">\(Z=0\)</span></strong> (100+100)</td>
-<td style="text-align: center;">20/100 = 0.20</td>
-<td style="text-align: center;">50/100 = 0.50</td>
-<td style="text-align: center;">0.30</td>
-<td style="text-align: center;">2.50</td>
-<td style="text-align: center;"><strong>4.00</strong></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong><span class="math inline">\(Z=1\)</span></strong> (100+100)</td>
-<td style="text-align: center;">50/100 = 0.50</td>
-<td style="text-align: center;">80/100 = 0.80</td>
-<td style="text-align: center;">0.30</td>
-<td style="text-align: center;">1.60</td>
-<td style="text-align: center;"><strong>4.00</strong></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>שולי</strong> (200+200)</td>
-<td style="text-align: center;">70/200 = 0.35</td>
-<td style="text-align: center;">130/200 = 0.65</td>
-<td style="text-align: center;">0.30</td>
-<td style="text-align: center;">1.86</td>
-<td style="text-align: center;"><strong>3.45</strong></td>
-</tr>
-</tbody>
-</table>
-<div>
-<ul>
-<li class="fragment">ה-OR בכל תת-קבוצה: <strong>4.00</strong>. ה-OR השולי: <span class="math inline">\(\frac{0.65/0.35}{0.35/0.65} = 3.45\)</span>. <strong>קטן יותר</strong>.</li>
-<li class="fragment">ה-RD השולי (0.30) הוא ממוצע ה-RD של תתי-הקבוצות (כאן הם במקרה שווים). ה-RR משתנה בין השורות, כי בדוגמה זו ה-OR הוא הקבוע.</li>
-<li class="fragment">אין כאן confounding, אין הטיה, ואין טעות חישוב: זה המדד.</li>
-</ul>
-</div>
-</section>
-<section id="למה-זה-קורה" class="slide level2">
-<h2>למה זה קורה</h2>
-<p>ה-OR השולי הוא פונקציה של <strong>הסיכונים הממוצעים</strong>:</p>
-<p><span class="math display">\[\text{OR}_{\text{marginal}} = \frac{\bar p_1 / (1-\bar p_1)}{\bar p_0 / (1-\bar p_0)}, \qquad \bar p_t = \sum_z w_z\, p_{tz}\]</span></p>
-<p>הסיכונים ממוצעים באופן ליניארי בין תתי-קבוצות, אבל ה-odds הם פונקציה <strong>לא ליניארית</strong> של הסיכון. ממוצע של פונקציה אינו הפונקציה של הממוצע.</p>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>אינטואיציה</strong></p>
-</div>
-<div class="callout-content">
-<p>המודל השולי מערבב אנשים עם סיכוני בסיס שונים. הסיכונים ממוצעים בצורה ליניארית, אבל ה-log-odds אינם, והערבוב מושך את ה-OR לכיוון 1. ככל ש-<span class="math inline">\(Z\)</span> מסביר יותר מהשונות בתוצאה, ההבדל גדל. במונחי משתנה חבוי: השונות של השארית קבועה (<span class="math inline">\(\pi^2/3\)</span>), ולכן הוספת מנבא חזק <strong>משנה את הסקאלה</strong> של המקדמים.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="ההשלכה-המעשית" class="slide level2">
-<h2>ההשלכה המעשית</h2>
-<div class="callout callout-danger callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>אי אפשר להשוות מקדמים לוגיסטיים בין מודלים עם סטים שונים של מנבאים</strong></p>
-</div>
-<div class="callout-content">
-<p>מקדם ממודל בלי <span class="math inline">\(Z\)</span> ומקדם ממודל עם <span class="math inline">\(Z\)</span> אינם מודדים את אותו הדבר. ההבדל ביניהם אינו מעיד על confounding, על הטיה או על תיווך.</p>
-</div>
-</div>
-</div>
-<div>
-<ul>
-<li class="fragment">הנוהג “הוספנו משתנה וראינו שהמקדם ירד, אז הוא מבלבל” <strong>אינו תקף</strong> ברגרסיה לוגיסטית.</li>
-<li class="fragment">גם ההפך: מקדם שלא השתנה בין מודלים אינו מוכיח שאין confounding (השינוי של non-collapsibility והשינוי של confounding יכולים לבטל זה את זה).</li>
-<li class="fragment">ההכרעה אם משתנה מבלבל מגיעה מ<strong>ידע על מנגנון</strong>, דהיינו מה-DAG, ולא מהשוואת מקדמים.</li>
-<li class="fragment">ראו Greenland, Robins &amp; Pearl (1999) ו-Mood (2010) לדיון מפורט.</li>
-</ul>
-</div>
-</section>
-<section id="חיבור-ל-table-2-fallacy" class="slide level2">
-<h2>חיבור ל-Table 2 fallacy</h2>
-<p>בשבוע 11 ראינו את ה-<strong>Table 2 fallacy</strong>: לפרש את כל המקדמים במודל רב-מנבאים כאפקטים של המנבאים, בעוד המודל הותאם לשאלה סיבתית אחת בלבד.</p>
-<div>
-<ul>
-<li class="fragment">כל מקדם מותאם לסט המנבאים הספציפי שבמודל, ולכן משתנה איתו.</li>
-<li class="fragment">ב-OR זה קורה <strong>בנוסף</strong> לכל הבעיות הסיבתיות: גם בלי mediator ובלי collider, הוספת מנבא מזיזה את המקדם.</li>
-<li class="fragment">זו עוד סיבה שלא לקרוא מקדמים בטבלה של מודל רב-מנבאים כאפקטים.</li>
-</ul>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
@@ -502,166 +400,22 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>שני מקורות לשינוי מקדם</strong></p>
+<p><strong>המספרים זהים לחלוטין!</strong></p>
 </div>
 <div class="callout-content">
-<ol type="1">
-<li><strong>סיבתי:</strong> confounding, mediator, collider (מבנה ה-DAG).</li>
-<li><strong>מתמטי:</strong> non-collapsibility של המדד.</li>
-</ol>
-<p>אי אפשר להבחין ביניהם לפי המספר לבד.</p>
+<p>מבחן t אינו אלא מקרה פרטי של מודל ליניארי עם מנבא בינארי.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-ה-or-השולי-מול-המותנה" class="slide level2">
-<h2>הדגמה אינטראקטיבית: ה-OR השולי מול המותנה</h2>
-<p>הטיפול מוקצה 50/50 בכל תת-קבוצה, ולכן <strong>אין confounding</strong>. סליידר אחד קובע כמה שונה סיכון הבסיס בין תתי-הקבוצות, והשני את עוצמת האפקט. בוחרים מה קבוע בתוך תתי-הקבוצות: ה-OR או ה-RR.</p>
-
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>פער סיכון בסיס בין תתי-הקבוצות (הפרש log-odds): <b id="dval_nc">2.0</b>
-      <input type="range" id="d_nc" min="0" max="4" step="0.1" value="2"></label>
-    <label><span id="efflab_nc">OR בתוך כל תת-קבוצה</span>: <b id="eval_nc">4.00</b>
-      <input type="range" id="e_nc" min="1" max="8" step="0.25" value="4"></label>
-    <span>
-      קבוע בתוך תתי-הקבוצות:
-      <label style="margin-inline-start:6px;"><input type="radio" name="mode_nc" value="OR" checked=""> OR</label>
-      <label style="margin-inline-start:6px;"><input type="radio" name="mode_nc" value="RR"> RR</label>
-    </span>
-  </div>
-  <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start;">
-    <div id="tbl_nc" style="flex:1 1 340px; font-size:0.68em; direction:rtl;"></div>
-    <div style="flex:1 1 320px; direction:ltr;"><div id="demo-nc" style="width:100%; height:310px;"></div></div>
-  </div>
-  <div id="msg_nc" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; font-size:0.85em;"></div>
-</div>
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-<script>
-(function() {
-  const m = -2;                       // log-odds ממוצע של סיכון הבסיס
-  const sig = z => 1 / (1 + Math.exp(-z));
-  const logit = p => Math.log(p / (1 - p));
-  const OR = (p1, p0) => (p1 / (1 - p1)) / (p0 / (1 - p0));
-  let lastMode = null;
-
-  function mode() { return document.querySelector('input[name="mode_nc"]:checked').value; }
-
-  function configureSlider(d, reset) {
-    const s = document.getElementById('e_nc');
-    const md = mode();
-    if (md === 'OR') {
-      s.min = 1; s.max = 8; s.step = 0.25;
-      if (reset) s.value = 4;
-      document.getElementById('efflab_nc').textContent = 'OR בתוך כל תת-קבוצה';
-    } else {
-      const p0b = sig(m + d / 2);
-      const rrMax = Math.max(1.1, Math.min(4, Math.floor(0.98 / p0b * 20) / 20));
-      s.min = 1; s.max = rrMax; s.step = 0.05;
-      if (reset) s.value = Math.min(2, rrMax);
-      if (parseFloat(s.value) > rrMax) s.value = rrMax;
-      document.getElementById('efflab_nc').textContent = 'RR בתוך כל תת-קבוצה';
-    }
-  }
-
-  function draw() {
-    const d = parseFloat(document.getElementById('d_nc').value);
-    const md = mode();
-    configureSlider(d, md !== lastMode);
-    lastMode = md;
-    const e = parseFloat(document.getElementById('e_nc').value);
-    document.getElementById('dval_nc').textContent = d.toFixed(1);
-    document.getElementById('eval_nc').textContent = e.toFixed(2);
-
-    const p0 = [sig(m - d / 2), sig(m + d / 2)];
-    const p1 = p0.map(p => md === 'OR' ? sig(logit(p) + Math.log(e)) : Math.min(0.999, p * e));
-    const b0 = (p0[0] + p0[1]) / 2, b1 = (p1[0] + p1[1]) / 2;   // תתי-קבוצות שוות בגודלן, הקצאה 50/50
-
-    const rows = [
-      { name: 'תת-קבוצה 1 (סיכון נמוך)', c: p0[0], t: p1[0] },
-      { name: 'תת-קבוצה 2 (סיכון גבוה)', c: p0[1], t: p1[1] },
-      { name: 'שולי (כל האוכלוסייה)', c: b0, t: b1 }
-    ];
-    rows.forEach(r => { r.or = OR(r.t, r.c); r.rr = r.t / r.c; r.rd = r.t - r.c; });
-
-    let html = '<table style="width:100%; border-collapse:collapse; text-align:center;">' +
-      '<tr style="background:#eef5fa;"><th></th><th>risk ביקורת</th><th>risk טיפול</th><th>RD</th><th>RR</th><th>OR</th></tr>';
-    rows.forEach((r, i) => {
-      html += '<tr' + (i === 2 ? ' style="border-top:2px solid #888; font-weight:bold;"' : '') + '><td>' + r.name + '</td>' +
-        '<td>' + r.c.toFixed(3) + '</td><td>' + r.t.toFixed(3) + '</td><td>' + r.rd.toFixed(3) + '</td>' +
-        '<td style="color:#2980b9;">' + r.rr.toFixed(2) + '</td><td style="color:#c0392b;">' + r.or.toFixed(2) + '</td></tr>';
-    });
-    html += '</table>';
-    document.getElementById('tbl_nc').innerHTML = html;
-
-    const cats = ['תת-קבוצה 1', 'תת-קבוצה 2', 'שולי'];
-    const orV = rows.map(r => r.or), rrV = rows.map(r => r.rr);
-    const top = Math.max.apply(null, orV.concat(rrV)) * 1.2;
-    Plotly.newPlot('demo-nc', [
-      { x: cats, y: orV, type: 'bar', name: 'OR', marker: { color: '#c0392b' }, text: orV.map(v => v.toFixed(2)), textposition: 'outside' },
-      { x: cats, y: rrV, type: 'bar', name: 'RR', marker: { color: '#2980b9' }, text: rrV.map(v => v.toFixed(2)), textposition: 'outside' }
-    ], {
-      barmode: 'group',
-      yaxis: { title: 'גודל האפקט', range: [0, top] },
-      margin: { t: 15, b: 40, l: 50, r: 10 },
-      legend: { orientation: 'h', y: 1.12 },
-      shapes: [{ type: 'line', xref: 'paper', x0: 0, x1: 1, y0: 1, y1: 1, line: { color: '#999', width: 1, dash: 'dot' } }]
-    }, { displayModeBar: false });
-
-    const el = document.getElementById('msg_nc');
-    const near = (a, b) => Math.abs(a - b) < 0.015 * Math.max(a, b);
-    if (d < 0.05 || e < 1.01) {
-      el.textContent = 'אין הבדל בסיכון הבסיס (או אין אפקט): אין מה לכווץ, ולכן כל המדדים שווים';
-      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
-    } else if (md === 'OR') {
-      const gap = (1 - rows[2].or / e) * 100;
-      el.textContent = 'OR מותנה (בשתי תתי-הקבוצות): ' + e.toFixed(2) + '  ·  OR שולי: ' + rows[2].or.toFixed(2) +
-                       '  ·  הפער: ' + gap.toFixed(0) + '%, בלי שום confounding. ה-RR שונה בכל שורה. ה-RD השולי הוא ממוצע ה-RD של תתי-הקבוצות.';
-      el.style.background = '#fdecea'; el.style.color = '#a32d2d';
-    } else {
-      el.textContent = 'RR מותנה: ' + e.toFixed(2) + ' בשתי תתי-הקבוצות  ·  RR שולי: ' + rows[2].rr.toFixed(2) +
-                       (near(rows[2].rr, e) ? ' (נשמר)' : '') +
-                       '  ·  אבל ה-OR: ' + rows[0].or.toFixed(2) + ' / ' + rows[1].or.toFixed(2) + ' / שולי ' + rows[2].or.toFixed(2);
-      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
-    }
-  }
-  ['d_nc', 'e_nc'].forEach(id => document.getElementById(id).addEventListener('input', draw));
-  document.querySelectorAll('input[name="mode_nc"]').forEach(r => r.addEventListener('change', draw));
-  setTimeout(draw, 400);
-})();
-</script>
-</section>
-<section id="מה-ההדגמה-מראה" class="slide level2">
-<h2>מה ההדגמה מראה</h2>
-<div>
+<section id="סיכום-שבוע-6" class="slide level2">
+<h2>סיכום שבוע 6</h2>
 <ul>
-<li class="fragment">במצב <strong>OR קבוע</strong>: ה-OR בשתי תתי-הקבוצות זהה, וה-OR השולי <strong>קטן ממנו</strong>. ככל שפער סיכון הבסיס גדל, גם הפער בין השולי למותנה גדל. בפער 0 הוא נעלם.</li>
-<li class="fragment">במצב <strong>RR קבוע</strong>: ה-RR השולי שווה בדיוק ל-RR של כל תת-קבוצה, בעוד ה-OR נשבר: שלושה מספרים שונים.</li>
-<li class="fragment">RD, כפי שרואים בטבלה, מתכווץ באופן ליניארי: השולי הוא ממוצע של המותנים.</li>
-</ul>
-</div>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>RR ו-RD כחלופות, ואזהרה</strong></p>
-</div>
-<div class="callout-content">
-<p>חלק מהחוקרים מעדיפים לדווח RR או RD כי הם collapsible, וקל יותר להשוות אותם בין מודלים. אבל השוליים והמותנים עונים על <strong>שאלות שונות</strong> (אפקט ממוצע באוכלוסייה מול אפקט בתוך תת-קבוצה): אין ביניהם “נכון” ו”שגוי”. צריך לדעת איזו שאלה שואלים.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="סיכום-w13.v4" class="slide level2">
-<h2>סיכום W13.V4</h2>
-<ul>
-<li><strong>odds ratio</strong> הוא <strong>non-collapsible</strong>: ה-OR המותנה (עם קו-וריאטים) שונה מה-OR השולי, <strong>גם בלי confounding ובלי הטיה</strong>. זו תכונה מתמטית של המדד.</li>
-<li>לכן <strong>אי אפשר להשוות מקדמים לוגיסטיים בין מודלים עם סטים שונים של מנבאים</strong>, ו”הוספנו משתנה והמקדם ירד, אז הוא מבלבל” אינו תקף.</li>
-<li>הכרעה על confounding באה מה-<strong>DAG</strong> ולא משינוי במקדם.</li>
-<li>זו סיבה נוספת, בנוסף ל-<strong>Table 2 fallacy</strong>, שלא לקרוא מקדמים במודל רב-מנבאים כאפקטים.</li>
-<li><strong>Risk ratio</strong> ו-<strong>risk difference</strong> הם collapsible. הבחירה ביניהם ובין OR תלויה בשאלה: אפקט מותנה או שולי.</li>
+<li>מנבא קטגוריאלי בינארי הופך למודל ליניארי בעזרת <strong>Dummy Coding</strong>.</li>
+<li><strong><span class="math inline">\(\beta_0\)</span></strong> הוא ממוצע קבוצת הייחוס; <strong><span class="math inline">\(\beta_1\)</span></strong> הוא ההפרש בין הממוצעים.</li>
+<li>הגישה הבסיאנית מעריכה את ה-Posterior הקיים על ההפרש (<span class="math inline">\(\beta_1\)</span>).</li>
+<li>הגישה השכיחותנית בוחנת את התפלגות הדגימה של האומדן ומפיקה t-statistic.</li>
+<li><strong>השורה התחתונה:</strong> t-test ורגרסיה הם אותו כלי ניתוח בדיוק!</li>
 </ul>
 <div class="footer footer-default">
 

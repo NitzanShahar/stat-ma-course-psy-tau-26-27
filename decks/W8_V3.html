@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W8.V3 — הטיית פרסום, funnel plot ו-pre-registration</title>
+  <title>W8.V3 — משבר הרפליקציה, השוואות מרובות ו-p-hacking</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,39 +325,111 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W8.V3 — הטיית פרסום, funnel plot ו-pre-registration</h1>
-  <p class="subtitle">הספרות אינה מדגם מייצג של המחקרים שבוצעו, ומה אפשר לעשות בעניין</p>
+  <h1 class="title">W8.V3 — משבר הרפליקציה, השוואות מרובות ו-p-hacking</h1>
+  <p class="subtitle">למה ‘יצא מובהק’ פירושו כמעט כלום כשלא יודעים כמה ניתוחים הוכנו</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להבין את <strong>publication bias</strong> ולמה הוא מנפח את האומדן המשותף, ולחבר אותו לטענה משבוע 7.</li>
-<li>לקרוא <strong>funnel plot</strong>: למה הוא אמור להיות סימטרי, מה אי-סימטריה מרמזת ומה המגבלות של הפירוש.</li>
-<li>להכיר בקצרה את <strong>p-curve</strong> ומבחני אי-סימטריה.</li>
-<li>להבין מה נרשם ב-<strong>pre-registration</strong>, ולמה הוא מנטרל את דרגות החופש של החוקר בלי לאסור חקירה.</li>
-<li>להכיר <strong>registered reports</strong> ומרשמים (כולל PROSPERO) כחלק מתשתית החיפוש.</li>
+<li>להכיר את הנתונים של <strong>Open Science Collaboration (2015)</strong> ואת מה שהם כן ולא אומרים.</li>
+<li>להבחין בין <strong>reproducibility</strong> ל-<strong>replicability</strong>.</li>
+<li>להבין את הבעיה של <strong>השוואות מרובות</strong>: FWER מול FDR, ואת התיקונים Bonferroni ו-Benjamini-Hochberg.</li>
+<li>להבין את <strong>garden of forking paths</strong> ואת <strong>researcher degrees of freedom</strong>: זו אינה רמאות מכוונת.</li>
+<li>לזהות שהמערך הפאקטוריאלי משבוע 7 הוא מכונת forking paths מובנית.</li>
 </ul>
 </section>
-<section id="חזרה-לשבוע-7-הספרות-היא-מדגם-מסונן" class="slide level2">
-<h2>חזרה לשבוע 7: הספרות היא מדגם מסונן</h2>
-<p>בשבוע 7 טענו שמחקר שמגיע לפרסום אינו מדגם ניטרלי של מה שנעשה: יש סינון לפי מובהקות. במטא-אנליזה אפשר לראות את הסינון הזה בעין ואפילו למדוד אותו.</p>
+<section id="open-science-collaboration-2015" class="slide level2">
+<h2>Open Science Collaboration (2015)</h2>
+<p>שחזור של <strong>100 מחקרים</strong> שפורסמו בשלושה כתבי עת מובילים בפסיכולוגיה, בפרוטוקולים שנקבעו מראש ובעוצמה גבוהה.</p>
 <div>
 <ul>
-<li class="fragment">מחקרים <strong>מובהקים</strong> מוגשים לפרסום, מתקבלים ומצוטטים יותר. מחקרים שלא הצליחו נשארים ב”מגירה” (<strong>file drawer</strong>).</li>
-<li class="fragment">הבדיקה הכמותית הכי ישירה: Scheel ועמיתיה (2021) השוו מאמרים רגילים בפסיכולוגיה ל-<strong>registered reports</strong>. בכ-96% מהמאמרים הרגילים נתמכה ההשערה הראשונה, לעומת כ-44% ב-registered reports.</li>
-<li class="fragment">ההפרש בין 96% ל-44% הוא הערכה גסה של כמה מהסינון נובע מהמובהקות ולא מהמציאות.</li>
+<li class="fragment">כמעט כל המחקרים המקוריים (כ-97%) דיווחו על ממצא מובהק.</li>
+<li class="fragment">בשחזורים רק כ-<strong>36%</strong> הגיעו למובהקות.</li>
+<li class="fragment">גדלי האפקט בשחזורים היו בממוצע <strong>בערך חצי</strong> מהמקוריים.</li>
 </ul>
 </div>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>זהירות בפירוש</strong></p>
+</div>
+<div class="callout-content">
+<p>36% אינו “שיעור הממצאים השקריים”. גם שחזור הוא ניסוי רועש, עם עוצמה סופית, והקשר שאינו זהה. אבל הכיוון ברור: <strong>הספרות המפורסמת מנופחת</strong>, בעיקר בגלל סינון על פי מובהקות.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="למה-הטיית-פרסום-מנפחת-את-האומדן" class="slide level2">
-<h2>למה הטיית פרסום מנפחת את האומדן</h2>
+<section id="reproducibility-מול-replicability" class="slide level2">
+<h2>Reproducibility מול replicability</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="reproducibility">Reproducibility</h3>
+<p><strong>אותם נתונים, אותו ניתוח.</strong></p>
+<p>האם אדם אחר, עם הנתונים והקוד שלכם, מגיע לאותן תוצאות?</p>
+<p>בעיה של שקיפות ותיעוד. נפתרת בשיתוף קוד ונתונים.</p>
+</div><div class="column" style="width:50%;">
+<h3 id="replicability">Replicability</h3>
+<p><strong>נתונים חדשים, אותה שאלה.</strong></p>
+<p>האם מחקר חדש, על משתתפים חדשים, מוצא אפקט דומה?</p>
+<p>בעיה של <strong>ידע מדעי</strong>. אין לה פתרון טכני, רק חשיבה על איך הממצא נוצר.</p>
+</div>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>פרק ה-p-value בשיעור הקודם הסביר למה שחזור אינו מובטח גם כשהאפקט אמיתי. השיעור הזה עוסק במה שקורה כשהאפקט הוא לא.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="השוואות-מרובות" class="slide level2">
+<h2>השוואות מרובות</h2>
+<p>כאשר מבצעים <span class="math inline">\(k\)</span> מבחנים ובכל אחד מהם <span class="math inline">\(\alpha = .05\)</span>:</p>
+<p><span class="math display">\[P(\text{at least one false positive}) = 1 - (1 - \alpha)^k\]</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="fwer">FWER</h3>
+<p><strong>Family-wise error rate</strong>: ההסתברות לשגיאה אחת לפחות במשפחה.</p>
+<p><strong>Bonferroni</strong>: מבחן מובהק רק אם <span class="math inline">\(p &lt; \alpha / k\)</span>. פשוט, שמרני מאוד.</p>
+</div><div class="column" style="width:50%;">
+<h3 id="fdr">FDR</h3>
+<p><strong>False discovery rate</strong>: שיעור ה”גילויים” שהם שגויים, בתוך אלה שהוכרזו כמובהקים.</p>
+<p><strong>Benjamini-Hochberg</strong>: ממיינים את ה-p-values, ומכריזים על כל אלה עד ה-<span class="math inline">\(i\)</span> הגדול ביותר שמקיים <span class="math inline">\(p_{(i)} \le \frac{i}{k} q\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>מתי מה</strong></p>
+</div>
+<div class="callout-content">
+<p>FWER כשכל טענה חשובה בפני עצמה (“האם התרופה מסוכנת?”). FDR כשסורקים הרבה מועמדים ומוכנים לספוג אחוז שגוי ידוע (גנים, voxels).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="garden-of-forking-paths" class="slide level2">
+<h2>Garden of forking paths</h2>
+<p>Gelman &amp; Loken (2013): הבעיה קיימת גם <strong>בלי</strong> fishing מכוון.</p>
 <div>
 <ul>
-<li class="fragment">אם מפרסמים רק תוצאות שעברו את סף המובהקות, מחקר קטן (שגיאת תקן גדולה) יכול להגיע לסף <strong>רק</strong> אם האפקט שנצפה גדול.</li>
-<li class="fragment">לכן המחקרים הקטנים שכן מתפרסמים הם אלה ש”התמזלו” לקבל אומדן גבוה. זה ה-<strong>winner’s curse</strong>.</li>
-<li class="fragment">ממוצע משוקלל של הספרות שפורסמה הוא ממוצע של מדגם מסונן, ולכן הוא <strong>מוטה כלפי מעלה</strong>.</li>
-<li class="fragment">ולפי שבוע 7: הטיה אינה נפתרת בהגדלת מספר המחקרים. עוד מחקר מסונן באותה דרך רק מגדיל את הביטחון באומדן שגוי.</li>
+<li class="fragment">החוקר אינו מריץ 20 ניתוחים ובוחר את הטוב. הוא מריץ <strong>ניתוח אחד</strong>, שנבחר אחרי שראה את הנתונים.</li>
+<li class="fragment">“ברור שצריך להוציא את הקיצוניים.” “ברור שהאפקט מופיע רק בנשים.” כל החלטה כזו סבירה בפני עצמה.</li>
+<li class="fragment">אילו הנתונים היו שונים, ההחלטות היו שונות, וכך גם הניתוח.</li>
+<li class="fragment">מה שקובע את שיעור ה-false positives הוא מספר הניתוחים ש<strong>היו יכולים</strong> להתבצע, לא מספר הניתוחים שהתבצעו.</li>
 </ul>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
@@ -369,271 +441,153 @@
 <p><strong>הנקודה</strong></p>
 </div>
 <div class="callout-content">
-<p>מטא-אנליזה מאחדת את <strong>מה שפורסם</strong>, לא את <strong>מה שנעשה</strong>. אם התהליך שקבע מה מפורסם תלוי בתוצאה, האיחוד יורש את ההטיה.</p>
+<p>ערך p של ניתוח שהוחלט עליו אחרי הנתונים אינו p של ההסתברות שחושבה. ההתפלגות תחת <span class="math inline">\(H_0\)</span> נחשבה בהנחה של תוכנית ניתוח קבועה מראש.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="funnel-plot" class="slide level2">
-<h2>Funnel plot</h2>
-<p>תרשים פיזור של כל המחקרים: על ציר x גודל האפקט, על ציר y <strong>שגיאת התקן</strong> (הציר הפוך: הדיוק הגבוה למעלה).</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="למה-משפך">למה “משפך”</h3>
+<section id="researcher-degrees-of-freedom" class="slide level2">
+<h2>Researcher degrees of freedom</h2>
+<p>Simmons, Nelson &amp; Simonsohn (2011) הראו בסימולציות: גמישות “לגיטימית” בלבד מעלה את ה-false positives הרבה מעבר ל-5%.</p>
+<div>
 <ul>
-<li>מחקרים מדויקים (למעלה) מתקבצים סביב האפקט האמיתי.</li>
-<li>ככל שהדיוק יורד, הפיזור מתרחב, ומתקבל צורת משפך.</li>
-<li>ללא הטיה, הענן <strong>סימטרי</strong> סביב האומדן המשותף: טעויות מקריות אינן מעדיפות כיוון.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="מה-אי-סימטריה-מרמזת">מה אי-סימטריה מרמזת</h3>
-<ul>
-<li>“חור” בפינה <strong>התחתונה</strong> בצד של אפקטים קטנים או שליליים.</li>
-<li>כלומר: מחקרים קטנים עם תוצאות לא מובהקות <strong>חסרים</strong>.</li>
-<li>זו חתימה אופיינית של publication bias.</li>
+<li class="fragment"><strong>כמה משתנים תלויים</strong> למדוד, ואיזה לדווח.</li>
+<li class="fragment"><strong>מתי להפסיק</strong> לאסוף נתונים (להציץ, ואם לא מובהק, להוסיף משתתפים).</li>
+<li class="fragment"><strong>איזה covariates</strong> לכלול.</li>
+<li class="fragment"><strong>אילו תנאים</strong> לדווח, ואילו לצרף או להוריד.</li>
+<li class="fragment"><strong>אילו תצפיות</strong> להוציא כקיצוניות.</li>
 </ul>
 </div>
-</div>
+<p>בסימולציות שלהם, שילוב של כמה דרגות חופש כאלה העלה את שיעור ה-false positives לרמה של עשרות אחוזים, תחת <span class="math inline">\(H_0\)</span> נכונה לחלוטין.</p>
 </section>
-<section id="המגבלות-של-הפירוש" class="slide level2">
-<h2>המגבלות של הפירוש</h2>
+<section id="הקישור-לשבוע-7-המערך-הפאקטוריאלי" class="slide level2">
+<h2>הקישור לשבוע 7: המערך הפאקטוריאלי</h2>
+<p>מערך 2×2 שלמדתם בשבוע שעבר מציע, כבר בניתוח הסטנדרטי:</p>
+<div>
+<ul>
+<li class="fragment">אפקט ראשי של <strong>A</strong>.</li>
+<li class="fragment">אפקט ראשי של <strong>B</strong>.</li>
+<li class="fragment"><strong>Interaction</strong> <span class="math inline">\(A \times B\)</span>.</li>
+<li class="fragment">ועוד פילוחים: אפקט A בתוך כל רמה של B, אפקט B בתוך כל רמה של A, פילוח לפי מגדר, גיל…</li>
+</ul>
+</div>
+<div class="callout callout-danger callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>מכונת forking paths</strong></p>
+</div>
+<div class="callout-content">
+<p>בניתוח של שלושת האפקטים הבסיסיים בלבד, אם <span class="math inline">\(H_0\)</span> נכונה בכולם, הסיכוי ל<strong>לפחות אחד</strong> מובהק הוא <span class="math inline">\(1 - .95^3 \approx 14\%\)</span>. הוסיפו ארבעה אפקטים פשוטים, ועוד משתנה תלוי שני, ואתם כבר הרבה מעבר לכך.</p>
+</div>
+</div>
+</div>
 <div class="callout callout-warning callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>אי-סימטריה אינה הוכחה להטיית פרסום</strong></p>
+<p><strong>והכשל מהשבוע שעבר</strong></p>
 </div>
 <div class="callout-content">
-<p>יש עוד הסברים לפער בין מחקרים קטנים לגדולים, ובמקרים כאלה נקרא לזה <strong>small-study effects</strong>.</p>
-</div>
-</div>
-</div>
-<div>
-<ul>
-<li class="fragment"><strong>הטרוגניות אמיתית</strong>: מחקרים קטנים אולי נעשים באוכלוסייה או בפרוטוקול אחרים (למשל טיפול אינטנסיבי ביותר במדגם קטן), ומייצרים אפקט גדול יותר בלי שום הטיה.</li>
-<li class="fragment"><strong>איכות מתודולוגית</strong>: מחקרים קטנים לעתים פחות קפדניים.</li>
-<li class="fragment"><strong>מקריות</strong>: עם מעט מחקרים (פחות מ-10) קשה להבחין באי-סימטריה אמיתית מרעש.</li>
-<li class="fragment"><strong>מדד האפקט עצמו</strong>: בחלק ממדדי האפקט (למשל odds ratio) קיים קשר מתמטי בין האומדן לשגיאת התקן.</li>
-</ul>
-</div>
-</section>
-<section id="בקצרה-מבחני-אי-סימטריה-ו-p-curve" class="slide level2">
-<h2>בקצרה: מבחני אי-סימטריה ו-p-curve</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="מבחני-אי-סימטריה">מבחני אי-סימטריה</h3>
-<ul>
-<li><strong>Egger’s regression</strong>: רגרסיה של האומדן המתוקנן (<span class="math inline">\(y_i/\text{SE}_i\)</span>) על הדיוק (<span class="math inline">\(1/\text{SE}_i\)</span>). חותך רחוק מ-0 מעיד על אי-סימטריה.</li>
-<li><strong>trim-and-fill</strong>: משלימים “מחקרים חסרים” כדי לקבל סימטריה, ומעריכים את האומדן המתוקן.</li>
-<li>כוח סטטיסטי נמוך כשיש מעט מחקרים.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="p-curve">p-curve</h3>
-<ul>
-<li>מסתכלים רק על ה-p-values <strong>המובהקים</strong> (<span class="math inline">\(p&lt;.05\)</span>) שפורסמו.</li>
-<li>אם יש אפקט אמיתי, יש יותר p קטנים (מתחת ל-.01) מאשר בסביבות .05: התפלגות <strong>right-skewed</strong>.</li>
-<li>אם אין אפקט, ההתפלגות שטוחה.</li>
-<li>מוגבל: נשען רק על המובהקים, ורגיש להטרוגניות.</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>מה משותף</strong></p>
-</div>
-<div class="callout-content">
-<p>כולם מזהים <strong>סימנים</strong> להטיה, אבל לא מתקנים אותה באופן אמין. התיקון האמיתי הוא לא לייצר אותה מלכתחילה.</p>
+<p>“בקבוצה A מובהק ובקבוצה B לא, ולכן יש interaction” הוא בעצמו fork: דרך נוספת “למצוא משהו” מאותם נתונים.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-funnel-plot-והטיית-פרסום" class="slide level2">
-<h2>הדגמה: funnel plot והטיית פרסום</h2>
+<section id="הדגמה-כמה-false-positives-בלי-שום-אפקט-אמיתי" class="slide level2">
+<h2>הדגמה: כמה false positives בלי שום אפקט אמיתי</h2>
+<p>בכל הרצה: <span class="math inline">\(k\)</span> מבחנים בלתי תלויים, <strong><span class="math inline">\(H_0\)</span> נכונה בכולם</strong>. תאים אדומים הם מבחנים שיצאו “מובהקים”.</p>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center; margin-bottom:6px; font-size:0.8em;">
-    <label>אפקט אמיתי (μ): <b id="pmu_v">0.20</b>
-      <input type="range" id="pmu" min="0" max="0.8" step="0.05" value="0.2"></label>
-    <label>שיעור המחקרים הלא-מובהקים שנעלמים: <b id="ps_v">80%</b>
-      <input type="range" id="ps" min="0" max="100" step="5" value="80"></label>
-    <label><input type="checkbox" id="pghost" checked=""> הצג את המחקרים שנעלמו</label>
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
+    <label>מספר המבחנים (k): <b id="kval_fw">10</b>
+      <input type="range" id="k_fw" min="1" max="60" step="1" value="10"></label>
+    <label>רמת אלפא: <b id="aval_fw">0.05</b>
+      <input type="range" id="a_fw" min="0.01" max="0.20" step="0.01" value="0.05"></label>
+    <label><input type="checkbox" id="bon_fw"> תיקון Bonferroni</label>
+    <button id="go_fw" style="padding:4px 12px; cursor:pointer;">הרצה חדשה</button>
   </div>
-  <div id="demo-funnel" style="width:100%; height:380px;"></div>
-  <div id="funnel_out" style="text-align:center; font-weight:bold; font-size:0.85em; padding:8px; border-radius:6px; margin-top:6px;"></div>
-  <div id="funnel_egger" style="text-align:center; font-size:0.78em; padding:4px; color:#555;"></div>
+  <div id="demo-fwer" style="width:100%; height:270px;"></div>
+  <div id="grid_fw" style="display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin:8px 0;"></div>
+  <div id="out_fw" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  function g(id) { return document.getElementById(id); }
-  function mulberry32(a) {
-    return function() {
-      var t = a += 0x6D2B79F5;
-      t = Math.imul(t ^ t >>> 15, t | 1);
-      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    };
-  }
-  const rng = mulberry32(7042026);
-  function randn() {
-    let u = 0, v = 0;
-    while (u === 0) u = rng();
-    while (v === 0) v = rng();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-  // 250 מחקרים שבוצעו. ההגרלה קבועה, ורק הפרמטרים משתנים.
-  const K = 250;
-  const U = [], E = [], R = [];
-  for (let i = 0; i < K; i++) { U.push(rng()); E.push(randn()); R.push(rng()); }
-  const se = U.map(u => {
-    const n = Math.min(400, 12 + Math.floor(-Math.log(1 - u * 0.999) * 60)); // n לקבוצה, בהתפלגות מוטה ימינה
-    return Math.sqrt(2 / n);
-  });
-
+  const STUDIES = 2000;
   function draw() {
-    const mu = parseFloat(g('pmu').value);
-    const s  = parseFloat(g('ps').value) / 100;
-    const ghost = g('pghost').checked;
-    g('pmu_v').textContent = mu.toFixed(2);
-    g('ps_v').textContent  = Math.round(s * 100) + '%';
+    const k = parseInt(document.getElementById('k_fw').value);
+    const alpha = parseFloat(document.getElementById('a_fw').value);
+    const bon = document.getElementById('bon_fw').checked;
+    document.getElementById('kval_fw').textContent = k;
+    document.getElementById('aval_fw').textContent = alpha.toFixed(2);
+    const thr = bon ? alpha / k : alpha;
 
-    const px = [], py = [], gx = [], gy = [];
-    let sumW = 0, sumWY = 0, sumWall = 0, sumWYall = 0, nSig = 0;
-    const pz = [], pp = [];  // עבור Egger
-    for (let i = 0; i < K; i++) {
-      const y = mu + se[i] * E[i];
-      const sig = (y / se[i]) > 1.96;
-      const w = 1 / (se[i] * se[i]);
-      sumWall += w; sumWYall += w * y;
-      const published = sig || R[i] >= s;
-      if (published) {
-        px.push(y); py.push(se[i]);
-        sumW += w; sumWY += w * y;
-        if (sig) nSig++;
-        pz.push(y / se[i]); pp.push(1 / se[i]);
-      } else {
-        gx.push(y); gy.push(se[i]);
-      }
+    // עקומה תיאורטית
+    const ks = [], plain = [], corrected = [];
+    for (let i = 1; i <= 60; i++) {
+      ks.push(i);
+      plain.push(100 * (1 - Math.pow(1 - alpha, i)));
+      corrected.push(100 * (1 - Math.pow(1 - alpha / i, i)));
     }
-    const pooled = sumWY / sumW;
-    const pooledAll = sumWYall / sumWall;
-    const bias = pooled - mu;
-
-    // Egger: z = a + b * precision
-    let eggerText = '';
-    const m = pz.length;
-    if (m >= 5) {
-      const xb = pp.reduce((a, b) => a + b, 0) / m;
-      const yb = pz.reduce((a, b) => a + b, 0) / m;
-      let sxx = 0, sxy = 0;
-      for (let i = 0; i < m; i++) { sxx += (pp[i] - xb) * (pp[i] - xb); sxy += (pp[i] - xb) * (pz[i] - yb); }
-      const b = sxy / sxx, a = yb - b * xb;
-      let ssr = 0;
-      for (let i = 0; i < m; i++) { const r = pz[i] - a - b * pp[i]; ssr += r * r; }
-      const s2 = ssr / (m - 2);
-      const seA = Math.sqrt(s2 * (1 / m + xb * xb / sxx));
-      const t = a / seA;
-      eggerText = 'Egger: חותך = ' + a.toFixed(2) + ' (t = ' + t.toFixed(1) + ')' +
-                  (Math.abs(t) > 2 ? ' — אי-סימטריה מובהקת' : ' — אין סימן ברור לאי-סימטריה');
-    }
-
-    // קווי משפך סביב האפקט האמיתי
-    const seGrid = [0, 0.55];
-    const fl = seGrid.map(x => mu - 1.96 * x), fr = seGrid.map(x => mu + 1.96 * x);
-    const sigLine = seGrid.map(x => 1.96 * x);
-
-    const traces = [];
-    if (ghost) traces.push({ x: gx, y: gy, mode: 'markers', type: 'scatter', name: 'נעלמו (לא פורסמו)',
-      marker: { color: 'rgba(0,0,0,0)', size: 6, line: { color: '#999', width: 1 } } });
-    traces.push({ x: px, y: py, mode: 'markers', type: 'scatter', name: 'פורסמו',
-      marker: { color: '#2980b9', size: 6, opacity: 0.85 } });
-    traces.push({ x: fl, y: seGrid, mode: 'lines', name: 'משפך סביב האפקט האמיתי (95%)',
-      line: { color: '#95a5a6', width: 1, dash: 'dot' } });
-    traces.push({ x: fr, y: seGrid, mode: 'lines', showlegend: false, line: { color: '#95a5a6', width: 1, dash: 'dot' } });
-    traces.push({ x: sigLine, y: seGrid, mode: 'lines', name: 'סף המובהקות (z = 1.96)',
-      line: { color: '#e67e22', width: 2 } });
-    traces.push({ x: [mu, mu], y: [0, 0.55], mode: 'lines', name: 'אפקט אמיתי',
-      line: { color: '#27ae60', width: 3, dash: 'dash' } });
-    traces.push({ x: [pooled, pooled], y: [0, 0.55], mode: 'lines', name: 'אומדן משותף מהמפורסמים',
-      line: { color: '#c0392b', width: 3 } });
-
+    const curPoint = 100 * (1 - Math.pow(1 - thr, k));
+    const t1 = { x: ks, y: plain, mode: 'lines', name: 'בלי תיקון', line: { color: '#c0392b', width: 3 } };
+    const t2 = { x: ks, y: corrected, mode: 'lines', name: 'Bonferroni', line: { color: '#27ae60', width: 3, dash: 'dash' } };
+    const t3 = { x: [k], y: [curPoint], mode: 'markers', name: 'המצב הנוכחי',
+                 marker: { size: 13, color: '#2980b9', line: { color: '#fff', width: 2 } } };
     const layout = {
-      xaxis: { title: 'גודל אפקט', range: [-1.3, 1.7], zeroline: false },
-      yaxis: { title: 'שגיאת תקן (דיוק גבוה למעלה)', range: [0.55, 0] },
-      margin: { t: 10, b: 45, l: 60, r: 20 },
-      legend: { orientation: 'h', y: -0.28, font: { size: 10 } }
+      xaxis: { title: 'מספר המבחנים (k)' },
+      yaxis: { title: 'P(לפחות false positive אחד), %', range: [0, 100] },
+      margin: { t: 15, b: 45, l: 55, r: 20 },
+      legend: { orientation: 'h', y: 1.15 }
     };
-    Plotly.newPlot('demo-funnel', traces, layout, { displayModeBar: false });
+    Plotly.newPlot('demo-fwer', [t1, t2, t3], layout, { displayModeBar: false });
 
-    const el = g('funnel_out');
-    el.textContent = 'פורסמו ' + px.length + ' מתוך ' + K + '  ·  אפקט אמיתי ' + mu.toFixed(2) +
-      '  ·  אומדן משותף ' + pooled.toFixed(2) + '  ·  הטיה ' + (bias >= 0 ? '+' : '') + bias.toFixed(2);
-    if (Math.abs(bias) < 0.04) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
+    // הרצה חיה אחת
+    const grid = document.getElementById('grid_fw');
+    grid.innerHTML = '';
+    let hits = 0;
+    for (let i = 0; i < k; i++) {
+      const p = Math.random();
+      const sig = p < thr;
+      if (sig) hits++;
+      const cell = document.createElement('div');
+      cell.style.cssText = 'width:34px; height:26px; font-size:0.6em; display:flex; align-items:center; justify-content:center; border-radius:4px; ' +
+        (sig ? 'background:#c0392b; color:#fff; font-weight:bold;' : 'background:#eef1f4; color:#777;');
+      cell.textContent = p.toFixed(2).replace(/^0/, '');
+      grid.appendChild(cell);
+    }
+
+    // סימולציה של 2000 מחקרים
+    let studiesWithHit = 0;
+    for (let s = 0; s < STUDIES; s++) {
+      for (let i = 0; i < k; i++) { if (Math.random() < thr) { studiesWithHit++; break; } }
+    }
+    const emp = 100 * studiesWithHit / STUDIES;
+
+    const el = document.getElementById('out_fw');
+    el.textContent = 'בהרצה הזו: ' + hits + ' מובהקים מתוך ' + k + '  ·  תיאוריה: ' + curPoint.toFixed(1) +
+                     '%  ·  סימולציה של ' + STUDIES + ' מחקרים: ' + emp.toFixed(1) + '% עם לפחות אחד';
+    if (curPoint < 6) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
+    else if (curPoint < 30) { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
     else { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
-    g('funnel_egger').textContent = eggerText;
   }
-  ['pmu', 'ps', 'pghost'].forEach(id => g(id).addEventListener('input', draw));
+  ['k_fw', 'a_fw', 'bon_fw'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  document.getElementById('go_fw').addEventListener('click', draw);
   setTimeout(draw, 400);
 })();
 </script>
 </section>
-<section id="מה-ההדגמה-מראה" class="slide level2">
-<h2>מה ההדגמה מראה</h2>
+<section id="מה-ההדגמה-מראה-ומה-עושים" class="slide level2">
+<h2>מה ההדגמה מראה, ומה עושים</h2>
 <div>
 <ul>
-<li class="fragment">ב-0% נעלמים, הענן הוא משפך סימטרי סביב האפקט האמיתי והאומדן המשותף מדויק.</li>
-<li class="fragment">כשהסף עולה, נפער <strong>חור בפינה השמאלית התחתונה</strong>: מחקרים קטנים, לא מובהקים, בצד של אפקטים נמוכים.</li>
-<li class="fragment">האומדן המשותף מתרחק מהאפקט האמיתי <strong>כלפי מעלה</strong>. ה-<strong>Egger intercept</strong> מתרחק מאפס, וזו המדידה הכמותית של החור.</li>
-<li class="fragment">הורידו את האפקט האמיתי ל-0 והעלו את הסף ל-100%: נשארים רק מחקרים “מובהקים”, והספרות מציגה <strong>אפקט חיובי ברור מאין</strong>.</li>
-</ul>
-</div>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>שימו לב</strong></p>
-</div>
-<div class="callout-content">
-<p>ההטיה חזקה יותר ככל שהאפקט האמיתי קטן והמחקרים קטנים, כלומר בדיוק בשדות שבהם מחקרים חלשים סטטיסטית שכיחים.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="pre-registration-מה-נרשם-מראש" class="slide level2">
-<h2>Pre-registration: מה נרשם מראש</h2>
-<p>רישום מראש הוא תיעוד עם חותמת זמן, לפני איסוף (או לפני ניתוח) הנתונים:</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li>ההשערות והכיוון שלהן.</li>
-<li>התכנון: תנאים, משתנה תלוי, כיצד ימדד.</li>
-<li>גודל המדגם וכלל העצירה.</li>
-<li>קריטריוני החרגה של נבדקים ותצפיות.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<ul>
-<li><strong>המודל הסטטיסטי המדויק</strong> ואופן הטיפול בקו-ווריאטים וב-outliers.</li>
-<li>קריטריון ההסקה: מה ייחשב ראיה לטובת ההשערה (למשל סף Bayes factor או תחום שקילות).</li>
-<li>מקום הרישום: OSF, AsPredicted, ClinicalTrials.gov.</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="למה-זה-מנטרל-את-דרגות-החופש-בלי-לאסור-חקירה" class="slide level2">
-<h2>למה זה מנטרל את דרגות החופש, בלי לאסור חקירה</h2>
-<div>
-<ul>
-<li class="fragment"><strong>בעיית ה-forking paths</strong>: בין הנתונים לתוצאה יש עשרות החלטות, ובכל אחת מהן החוקר יכול לבחור. אם הבחירה תלויה בתוצאה, ה-p-value כבר אינו אומר מה שחשבנו.</li>
-<li class="fragment">רישום מראש <strong>מקבע את המסלול לפני שרואים את הנתונים</strong>. כך הניתוח המאושש (<strong>confirmatory</strong>) אינו יכול להיות מותאם לתוצאה.</li>
-<li class="fragment"><strong>רישום אינו איסור על חקירה.</strong> אפשר, וכדאי, לחקור נתונים. החובה היחידה היא לסמן בבירור: “זה <strong>exploratory</strong>”, ולהתייחס לזה כהשערה לניסוי הבא ולא כמסקנה.</li>
-<li class="fragment">סטייה מהרישום מותרת אם היא <strong>מדווחת ומנומקת</strong>.</li>
+<li class="fragment">כבר ב-<span class="math inline">\(k = 14\)</span> מבחנים, סיכוי של יותר מ-50% ל-false positive אחד לפחות, <strong>בלי אפקט אמיתי בשום מקום</strong>.</li>
+<li class="fragment">הגדלת ה-<span class="math inline">\(\alpha\)</span> מחמירה את הבעיה; Bonferroni מחזיר את הסיכוי הכולל לכ-<span class="math inline">\(\alpha\)</span>, במחיר עוצמה.</li>
+<li class="fragment">החוקר בפועל לא רואה את ה-60 התאים. הוא רואה את האדום, ומספר סיפור.</li>
 </ul>
 </div>
 <div class="callout callout-tip callout-captioned callout-style-default">
@@ -642,43 +596,28 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>נקודה עדינה</strong></p>
+<p><strong>מה באמת עוזר</strong></p>
 </div>
 <div class="callout-content">
-<p>רישום מראש לא מבטיח ניתוח טוב, אלא רק ניתוח <strong>שאפשר לשפוט</strong>. רישום עמום (“ננתח את ההבדל בין הקבוצות”) משאיר את כל דרגות החופש פתוחות.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="registered-reports-מרשמים-ו-prospero" class="slide level2">
-<h2>Registered reports, מרשמים ו-PROSPERO</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="registered-reports">Registered reports</h3>
 <ul>
-<li>שלב 1: מגישים למגזין <strong>תכנון בלבד</strong> (רקע, שאלה, שיטה, תוכנית ניתוח). שיפוט עמיתים מתקיים <strong>לפני</strong> איסוף הנתונים.</li>
-<li>קבלה עקרונית (<strong>in-principle acceptance</strong>): המגזין מתחייב לפרסם, ללא קשר לתוצאה.</li>
-<li>שלב 2: מאשרים שנעשה מה שתוכנן.</li>
-<li>כך <strong>ההחלטה על פרסום אינה תלויה במובהקות</strong>, ולכן אין file drawer.</li>
+<li><strong>Preregistration</strong>: תוכנית הניתוח נקבעת לפני שרואים נתונים, כך שמספר ה-forks ידוע ומוגבל.</li>
+<li><strong>דיווח מלא</strong>: כל המשתנים, התנאים והניתוחים שנעשו.</li>
+<li><strong>Multiverse / robustness</strong>: להראות שהמסקנה עומדת על פני מגוון בחירות סבירות.</li>
+<li><strong>Bayesian אינו מחסן</strong>: posterior של השערה שנבחרה אחרי הנתונים סובל מאותה בעיה.</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<h3 id="מרשמים-כתשתית-לחיפוש">מרשמים כתשתית לחיפוש</h3>
-<ul>
-<li><strong>מרשמי ניסויים</strong> (ClinicalTrials.gov, OSF Registries): מאפשרים למצוא מחקרים שנרשמו ולא פורסמו, ולהשוות בין הרישום למאמר.</li>
-<li><strong>PROSPERO</strong> ו-OSF: רישום פרוטוקול של <strong>הסקירה עצמה</strong>. מונע שינוי שאלה או קריטריונים אחרי שרואים את התוצאות.</li>
-<li>כך חוזר העיקרון של W8.V1: הכל מוגדר מראש ובגלוי.</li>
-</ul>
+</div>
 </div>
 </div>
 </section>
 <section id="סיכום-w8.v3" class="slide level2">
 <h2>סיכום W8.V3</h2>
 <ul>
-<li><strong>Publication bias</strong>: מחקרים מובהקים מתפרסמים יותר, ולכן הספרות אינה מדגם מייצג. זו הראיה הכמותית לטענת שבוע 7, והיא מנפחת את האומדן המשותף.</li>
-<li><strong>Funnel plot</strong> אמור להיות סימטרי; חור בפינה השמאלית התחתונה מרמז על מחקרים חסרים, אך אי-סימטריה יכולה לנבוע גם מהטרוגניות ומ-small-study effects.</li>
-<li><strong>Egger, trim-and-fill ו-p-curve</strong> מזהים סימנים להטיה אך אינם מתקנים אותה.</li>
-<li><strong>Pre-registration</strong> מקבע את מסלול הניתוח לפני הנתונים, בלי לאסור חקירה, בתנאי שהיא מסומנת <strong>exploratory</strong>.</li>
-<li><strong>Registered reports</strong> מנתקים את הפרסום מהתוצאה; מרשמים ו-<strong>PROSPERO</strong> הם חלק מתשתית החיפוש של סקירה שיטתית.</li>
+<li>ב-Open Science Collaboration (2015) כ-36% מהשחזורים הגיעו למובהקות, וגדלי האפקט קטנו בערך בחצי.</li>
+<li><strong>Reproducibility</strong> הוא אותם נתונים ואותו ניתוח; <strong>replicability</strong> הוא נתונים חדשים.</li>
+<li><span class="math inline">\(P(\text{at least one false positive}) = 1 - (1-\alpha)^k\)</span>. <strong>FWER</strong> נשלט על ידי Bonferroni, <strong>FDR</strong> על ידי Benjamini-Hochberg.</li>
+<li><strong>Garden of forking paths</strong>: הבעיה אינה מרמה אלא ממספר הניתוחים שהיו <em>יכולים</em> להתבצע.</li>
+<li>מערך 2×2 מציע A, B, interaction ופילוחים: זו מכונת forking paths שלמדתם בשבוע 7.</li>
+<li>ההגנה: preregistration, דיווח מלא, ובדיקות robustness.</li>
 </ul>
 <div class="footer footer-default">
 

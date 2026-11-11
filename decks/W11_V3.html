@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W11.V3 — בדיקת הנחות, overfitting והשוואת מודלים</title>
+  <title>W11.V3 — attenuation: r כחסם תחתון</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,34 +325,39 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W11.V3 — בדיקת הנחות, overfitting והשוואת מודלים</h1>
-  <p class="subtitle">אבחון ולא טקס, למה R² לא יכול לבחור מודל, והבחנה בין prediction ל-inference</p>
+  <h1 class="title">W11.V3 — attenuation: r כחסם תחתון</h1>
+  <p class="subtitle">שני משחקים על אותה מכונה, ומה שגיאת מדידה עושה למתאם</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להכיר את ארבע הנחות המודל הליניארי, ולדעת מה כל אחת מבטיחה.</li>
-<li>לבדוק הנחות בתרשימי <strong>residuals</strong> ולא במבחנים — ולהבין את הטיעון לכך.</li>
-<li>להבין <strong>overfitting</strong>, ולמה <span class="math inline">\(R^2\)</span> לא יכול לשמש לבחירת מודל.</li>
-<li>להכיר את הרעיון של <strong>cross-validation</strong>.</li>
-<li>להבחין במפורש בין <strong>prediction</strong> ל-<strong>inference</strong>.</li>
+<li>לתת שם להבחנה בין <strong>prediction</strong> ל-<strong>inference</strong>: שני משחקים שונים שנשחקים באותה מכונה.</li>
+<li>להבין מה קורה ל-<span class="math inline">\(r\)</span> כש-X נמדד עם שגיאה: <strong>attenuation</strong>.</li>
+<li>לראות למה <span class="math inline">\(r\)</span> הנצפה הוא <strong>חסם תחתון</strong> לקשר האמיתי ולא אומדן שלו.</li>
+<li>להבין מה זה אומר על קריאת ספרות: מתאם חלש יכול לנבוע ממדידה גרועה ולא מהיעדר קשר.</li>
 </ul>
 </section>
-<section id="ארבע-ההנחות" class="slide level2">
-<h2>ארבע ההנחות</h2>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_{1i} + \dots + \varepsilon_i, \qquad \varepsilon_i \sim N(0, \sigma^2) \text{ ובלתי תלויים}\]</span></p>
+<section id="שני-משחקים-אותה-מכונה" class="slide level2">
+<h2>שני משחקים, אותה מכונה</h2>
+<p>המכונה היא המודל הליניארי. מה ששונה הוא <strong>השאלה</strong> ששואלים אותה.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="linearity">1. Linearity</h3>
-<p>התוחלת של <span class="math inline">\(Y\)</span> היא פונקציה ליניארית של המנבאים.</p>
-<h3 id="homoscedasticity">2. Homoscedasticity</h3>
-<p>שונות ה-residuals זהה בכל רמה של המנבאים.</p>
+<h3 id="prediction">Prediction</h3>
+<p><strong>“כמה טוב אני מנחש Y חדש?”</strong></p>
+<ul>
+<li>מעניין אותנו הניחוש, לא הסיבה.</li>
+<li>שגיאת מדידה היא חלק מהמציאות: היא תהיה שם גם כשננבא בעתיד.</li>
+<li>הקריטריון: שגיאת הניבוי.</li>
+</ul>
 </div><div class="column" style="width:50%;">
-<h3 id="independence">3. Independence</h3>
-<p>ה-residuals של תצפיות שונות אינם קשורים זה בזה.</p>
-<h3 id="normality-של-ה-residuals">4. Normality של ה-residuals</h3>
-<p>ההתפלגות של ה-<strong>שגיאות</strong> נורמלית. לא של <span class="math inline">\(Y\)</span>, ולא של <span class="math inline">\(X\)</span>.</p>
+<h3 id="inference">Inference</h3>
+<p><strong>“מה הקשר האמיתי בין שני המבנים?”</strong></p>
+<ul>
+<li>מעניין אותנו העולם: האם X קשור ל-Y, ובאיזו עוצמה.</li>
+<li>שגיאת מדידה היא <strong>עיוות</strong> בחומר הגלם.</li>
+<li>הקריטריון: כמה קרוב המקדם לאמת.</li>
+</ul>
 </div>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
@@ -361,63 +366,70 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>סדר חשיבות</strong></p>
+<p><strong>נחזור לזה</strong></p>
 </div>
 <div class="callout-content">
-<p>לרוב, הפרה של <strong>linearity</strong> פוגעת הכי קשה בפירוש המקדמים, והפרה של <strong>independence</strong> פוגעת הכי קשה בשגיאות התקן ובמובהקות. שונות לא שווה פוגעת בעיקר בשגיאות התקן. נורמליות היא ההנחה הפחות קריטית במדגמים לא קטנים, אך חשובה לטווחי ניבוי.</p>
+<p>זו הבחנה שתלווה אותנו עד סוף הקורס. בכל פעם שקוראים מקדם או <span class="math inline">\(r\)</span>, כדאי לשאול איזה משחק משחקים, כי אותו מספר יכול להיות מצוין לאחד ומטעה לשני.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="איך-בודקים-תרשימים-לא-מבחנים" class="slide level2">
-<h2>איך בודקים: תרשימים, לא מבחנים</h2>
+<section id="כש-x-נמדד-עם-שגיאה" class="slide level2">
+<h2>כש-X נמדד עם שגיאה</h2>
+<p>לא רואים את X האמיתי (T). רואים גרסה רועשת שלו:</p>
+<p><span class="math display">\[X_{obs} = T + u\]</span></p>
 <div>
 <ul>
-<li class="fragment"><strong>Residuals מול fitted values:</strong> ענן אקראי סביב האפס = בסדר. עקמומיות → linearity נפגעת. מניפה → שונות לא שווה.</li>
-<li class="fragment"><strong>Q-Q plot של ה-residuals:</strong> נקודות על האלכסון = בסדר. זנבות שמתרחקים → נורמליות.</li>
-<li class="fragment"><strong>Residuals לפי סדר האיסוף / לפי קבוצה, מוסד או משתתף:</strong> רצפים או אשכולות → תלות.</li>
+<li class="fragment"><span class="math inline">\(u\)</span> הוא רעש מדידה עם ממוצע 0, <strong>בלתי תלוי</strong> ב-<span class="math inline">\(T\)</span> וב-<span class="math inline">\(Y\)</span> (המודל הקלאסי).</li>
+<li class="fragment"><strong>Reliability</strong>: חלק ה-variance הנצפה שהוא אות ולא רעש.</li>
 </ul>
-</div>
-<p><strong>למה לא מבחנים</strong> (Shapiro-Wilk, Levene, Breusch-Pagan)?</p>
-<div>
+<p><span class="math display">\[\text{reliability} = \frac{\text{var}(T)}{\text{var}(X_{obs})} \in [0, 1]\]</span></p>
 <ul>
-<li class="fragment">במדגם גדול הם דוחים סטיות זעירות שאין להן שום השפעה מעשית; במדגם קטן אין להם כוח לזהות סטיות חמורות.</li>
-<li class="fragment">הם עונים “האם ההנחה מדויקת” — שאלה שהתשובה עליה תמיד “לא”. השאלה הרלוונטית היא <strong>“האם ההפרה משנה את המסקנה”</strong>.</li>
-<li class="fragment">תרשים מראה את <strong>הצורה</strong> של ההפרה, ולכן גם מה לעשות בעקבותיה. מבחן נותן רק p.</li>
+<li class="fragment">מהימנות 1 אומרת מדידה ללא שגיאה. מהימנות 0.5 אומרת שחצי מה-variance הנצפה הוא רעש.</li>
+<li class="fragment">החוקר לא רואה את <span class="math inline">\(T\)</span>, אלא רק את <span class="math inline">\(X_{obs}\)</span> ואת <span class="math inline">\(Y\)</span>. ועל זה הוא מחשב <span class="math inline">\(r\)</span>.</li>
 </ul>
 </div>
 </section>
-<section id="הטיעון-אבחון-לא-טקס" class="slide level2">
-<h2>הטיעון: אבחון, לא טקס</h2>
-<div class="callout callout-important callout-captioned callout-style-default">
+<section id="attenuation-הנוסחה" class="slide level2">
+<h2>Attenuation: הנוסחה</h2>
+<p><span class="math display">\[r_{observed} = r_{true} \cdot \sqrt{\text{reliability}}\]</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="מה-קורה-ל-r">מה קורה ל-<span class="math inline">\(r\)</span></h3>
+<ul>
+<li>מהימנות 0.81: <span class="math inline">\(r\)</span> נשאר 90% מהאמיתי.</li>
+<li>מהימנות 0.64: 80%.</li>
+<li>מהימנות 0.49: 70%.</li>
+<li>מהימנות 0.25: רק 50%.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="מה-קורה-לשיפוע">מה קורה לשיפוע</h3>
+<p><span class="math display">\[\beta_{observed} = \beta_{true} \cdot \text{reliability}\]</span></p>
+<p>השיפוע (הלא מתוקנן) מתכווץ עוד יותר, פי המהימנות עצמה ולא פי שורשה.</p>
+</div>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>שני שימושים שונים לחלוטין</strong></p>
+<p><strong>הבעיה בתמונה</strong></p>
 </div>
 <div class="callout-content">
-<p><strong>טקס:</strong> מריצים Shapiro-Wilk, ואם <span class="math inline">\(p &gt; .05\)</span> ממשיכים ל-t-test, ואם <span class="math inline">\(p &lt; .05\)</span> עוברים למבחן אחר. (זה הטקס של Gigerenzer מ-W7.V2.)</p>
-<p><strong>אבחון:</strong> מסתכלים על ה-residuals <em>אחרי</em> התאמת המודל, כדי להבין אם הוא מתאר את הנתונים — וכדי לשפר אותו.</p>
+<p>רעש ב-X <strong>מורח את הענן לרוחב</strong>. הנקודות נעות ימינה ושמאלה בלי קשר ל-Y, וקו הרגרסיה שטוח יותר.</p>
 </div>
 </div>
-</div>
-<div>
-<ul>
-<li class="fragment">בדיקת הנחות אינה שער שצריך לעבור לפני הריצה. היא חלק מהמודל: <strong>המודל הוא ההשערה, וה-residuals הם הראיה נגדה</strong>.</li>
-<li class="fragment">ההחלטה “לעבור למבחן אחר לפי תוצאת מבחן ההנחות” היא בעצמה צעד סטטיסטי עם שגיאות — ופתיחה של forking paths.</li>
-<li class="fragment">מה עושים כשההנחה נשברת? תלוי בצורה: להוסיף איבר לא ליניארי או אינטראקציה; להשתמש בשגיאות תקן robust; למדל את התלות (מודל היררכי, שבוע 12); או להבין שהמודל פשוט לא מתאר את התהליך.</li>
-</ul>
 </div>
 </section>
-<section id="overfitting-מודל-שמתאים-את-עצמו-לרעש" class="slide level2">
-<h2>Overfitting: מודל שמתאים את עצמו לרעש</h2>
+<section id="r-כחסם-תחתון" class="slide level2">
+<h2>r כחסם תחתון</h2>
+<p>תחת שגיאת מדידה קלאסית, <span class="math inline">\(|r_{observed}| \le |r_{true}|\)</span>. לכן:</p>
 <div>
 <ul>
-<li class="fragment">בכל מדגם יש <strong>אות</strong> (מה שיחזור במדגם הבא) ו<strong>רעש</strong> (מה שלא).</li>
-<li class="fragment">מודל גמיש מספיק מתאים את עצמו לשניהם. הוא “מסביר” את המדגם הנוכחי — כולל המקריות בו — ומאבד את היכולת להכליל.</li>
-<li class="fragment"><span class="math inline">\(R^2 = 1 - \dfrac{SSE}{SST}\)</span>. הוספת מנבא <strong>לעולם לא מגדילה</strong> את ה-SSE, ולכן <span class="math inline">\(R^2\)</span> רק עולה. גם עם מנבא של רעש טהור. עם <span class="math inline">\(n-1\)</span> מנבאים: <span class="math inline">\(R^2 = 1\)</span>.</li>
+<li class="fragment"><span class="math inline">\(r\)</span> שאנחנו רואים הוא <strong>חסם תחתון</strong> לעוצמת הקשר בין המבנים, ולא אומדן שלה.</li>
+<li class="fragment">הכיוון של ההטיה ידוע תמיד: המספר האמיתי גדול (בערכו המוחלט) ממה שנצפה.</li>
+<li class="fragment">הגודל שלה תלוי במהימנות, שהיא בדרך כלל לא ידועה בדיוק.</li>
 </ul>
 </div>
 <div class="callout callout-warning callout-captioned callout-style-default">
@@ -426,196 +438,12 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>המסקנה</strong></p>
+<p><strong>לא בכל מצב</strong></p>
 </div>
 <div class="callout-content">
-<p><span class="math inline">\(R^2\)</span> מודד התאמה למדגם <strong>שממנו נאמד המודל</strong>. הוא לא יכול להבדיל בין מודל שלמד אות למודל שלמד רעש, ולכן אינו קריטריון לבחירה בין מודלים בעלי מורכבות שונה.</p>
+<p>החסם תקף לשגיאה <strong>בלתי תלויה</strong> בקשר. שגיאה משותפת, למשל שני משתנים שנמדדו באותו שאלון עם אותה נטייה תגובה, יכולה דווקא <strong>להעלות</strong> את <span class="math inline">\(r\)</span>. ובמדגם סופי, כמו שראינו, גם אקראיות דוחפת את <span class="math inline">\(r\)</span> לשני הכיוונים.</p>
 </div>
 </div>
-</div>
-</section>
-<section id="הדגמה-אינטראקטיבית-דרגת-הפולינום-ושגיאת-הבדיקה" class="slide level2">
-<h2>הדגמה אינטראקטיבית: דרגת הפולינום ושגיאת הבדיקה</h2>
-<p>האמת: פונקציית סינוס חלקה. המדגם קטן ורועש. בוחרים דרגת פולינום.</p>
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>דרגת הפולינום: <b id="dval_of">3</b>
-      <input type="range" id="d_of" min="1" max="12" step="1" value="3"></label>
-    <label>גודל המדגם (n): <b id="nval_of">15</b>
-      <input type="range" id="n_of" min="14" max="60" step="2" value="15"></label>
-    <button id="btn_of" style="font-size:0.9em; padding:3px 12px;">מדגם חדש</button>
-  </div>
-  <div style="display:flex; flex-wrap:wrap; gap:8px;">
-    <div id="demo-of-fit" style="flex:1 1 320px; height:310px;"></div>
-    <div id="demo-of-err" style="flex:1 1 320px; height:310px;"></div>
-  </div>
-  <div id="out_of" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; font-size:0.9em;"></div>
-</div>
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-<script>
-(function() {
-  const SD = 0.3, MAXD = 12;
-  const f = x => 0.8 * Math.sin(2.5 * x);
-  function randn() {
-    let u = 0, v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-  // בסיס לז'אנדר, לשיפור יציבות נומרית
-  function phi(x, d) {
-    const P = [1, x];
-    for (let k = 2; k <= d; k++) P[k] = ((2 * k - 1) * x * P[k - 1] - (k - 1) * P[k - 2]) / k;
-    return P.slice(0, d + 1);
-  }
-  function solve(A, b) {
-    const p = b.length;
-    for (let i = 0; i < p; i++) {
-      let piv = i;
-      for (let r = i + 1; r < p; r++) if (Math.abs(A[r][i]) > Math.abs(A[piv][i])) piv = r;
-      [A[i], A[piv]] = [A[piv], A[i]]; [b[i], b[piv]] = [b[piv], b[i]];
-      for (let r = i + 1; r < p; r++) {
-        const m = A[r][i] / A[i][i];
-        for (let c = i; c < p; c++) A[r][c] -= m * A[i][c];
-        b[r] -= m * b[i];
-      }
-    }
-    const w = new Array(p).fill(0);
-    for (let i = p - 1; i >= 0; i--) {
-      let s = b[i];
-      for (let c = i + 1; c < p; c++) s -= A[i][c] * w[c];
-      w[i] = s / A[i][i];
-    }
-    return w;
-  }
-  function fit(xs, ys, d) {
-    const p = d + 1;
-    const A = Array.from({ length: p }, () => new Array(p).fill(0));
-    const b = new Array(p).fill(0);
-    for (let i = 0; i < xs.length; i++) {
-      const ph = phi(xs[i], d);
-      for (let a = 0; a < p; a++) {
-        b[a] += ph[a] * ys[i];
-        for (let c = 0; c < p; c++) A[a][c] += ph[a] * ph[c];
-      }
-    }
-    for (let a = 0; a < p; a++) A[a][a] += 1e-9;
-    return solve(A, b);
-  }
-  function predict(w, x) {
-    const ph = phi(x, w.length - 1);
-    let s = 0;
-    for (let i = 0; i < w.length; i++) s += w[i] * ph[i];
-    return s;
-  }
-
-  const grid = [];
-  for (let i = 0; i <= 200; i++) grid.push(-1 + i / 100);
-  let data = null;
-
-  function newSample() {
-    const n = parseInt(document.getElementById('n_of').value);
-    const xs = [], ys = [];
-    for (let i = 0; i < n; i++) {
-      const x = -1 + 2 * Math.random();
-      xs.push(x); ys.push(f(x) + SD * randn());
-    }
-    const my = ys.reduce((s, v) => s + v, 0) / n;
-    const sst = ys.reduce((s, v) => s + (v - my) * (v - my), 0);
-    const models = [];
-    for (let d = 1; d <= MAXD; d++) {
-      const w = fit(xs, ys, d);
-      let sse = 0;
-      for (let i = 0; i < n; i++) { const e = ys[i] - predict(w, xs[i]); sse += e * e; }
-      let g = 0;
-      for (const x of grid) { const e = predict(w, x) - f(x); g += e * e; }
-      models.push({ d: d, w: w, train: sse / n, r2: 1 - sse / sst, test: g / grid.length + SD * SD });
-    }
-    let best = 0;
-    models.forEach((m, i) => { if (m.test < models[best].test) best = i; });
-    data = { xs: xs, ys: ys, n: n, models: models, best: best };
-  }
-
-  function draw() {
-    if (!data) return;
-    const d = parseInt(document.getElementById('d_of').value);
-    document.getElementById('dval_of').textContent = d;
-    document.getElementById('nval_of').textContent = data.n;
-    const m = data.models[d - 1];
-
-    const pts = { x: data.xs, y: data.ys, mode: 'markers', name: 'נתוני אימון',
-                  marker: { color: '#2c3e50', size: 8 } };
-    const truth = { x: grid, y: grid.map(f), mode: 'lines', name: 'האמת',
-                    line: { color: '#27ae60', width: 3, dash: 'dash' } };
-    const fitLine = { x: grid, y: grid.map(x => predict(m.w, x)), mode: 'lines', name: 'המודל שנאמד',
-                      line: { color: '#c0392b', width: 3 } };
-    Plotly.newPlot('demo-of-fit', [truth, pts, fitLine], {
-      title: { text: 'ההתאמה לנתוני האימון', font: { size: 13 } },
-      xaxis: { title: 'X', range: [-1, 1] },
-      yaxis: { title: 'Y', range: [-2.5, 2.5] },
-      legend: { orientation: 'h', y: -0.28, font: { size: 10 } },
-      margin: { t: 40, b: 80, l: 45, r: 15 }
-    }, { displayModeBar: false, responsive: true });
-
-    const degs = data.models.map(q => q.d);
-    const tr = { x: degs, y: data.models.map(q => q.train), mode: 'lines+markers', name: 'שגיאת אימון',
-                 line: { color: '#2980b9', width: 3 } };
-    const te = { x: degs, y: data.models.map(q => q.test), mode: 'lines+markers', name: 'שגיאה על נתונים חדשים',
-                 line: { color: '#c0392b', width: 3 } };
-    const cur = { x: [d, d], y: [m.train, m.test], mode: 'markers', showlegend: false,
-                  marker: { color: '#f39c12', size: 14, symbol: 'circle-open', line: { width: 3 } } };
-    Plotly.newPlot('demo-of-err', [tr, te, cur], {
-      title: { text: 'MSE כפונקציה של הדרגה (ציר לוגריתמי)', font: { size: 13 } },
-      xaxis: { title: 'דרגת הפולינום', dtick: 1 },
-      yaxis: { title: 'MSE', type: 'log' },
-      legend: { orientation: 'h', y: -0.28, font: { size: 10 } },
-      margin: { t: 40, b: 80, l: 55, r: 15 }
-    }, { displayModeBar: false, responsive: true });
-
-    const el = document.getElementById('out_of');
-    el.textContent = 'דרגה ' + d + '  ·  R² על נתוני האימון = ' + m.r2.toFixed(3) +
-      '  ·  MSE אימון = ' + m.train.toFixed(3) +
-      '  ·  MSE על נתונים חדשים = ' + m.test.toFixed(3) +
-      '  ·  הדרגה הטובה ביותר במדגם הזה: ' + data.models[data.best].d;
-    if (d > data.models[data.best].d + 1) { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
-    else { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
-  }
-
-  document.getElementById('d_of').addEventListener('input', draw);
-  document.getElementById('n_of').addEventListener('input', function() { newSample(); draw(); });
-  document.getElementById('btn_of').addEventListener('click', function() { newSample(); draw(); });
-  if (window.Reveal && Reveal.on) {
-    Reveal.on('slidechanged', function() {
-      setTimeout(function() {
-        try { Plotly.Plots.resize('demo-of-fit'); Plotly.Plots.resize('demo-of-err'); } catch (e) {}
-      }, 150);
-    });
-  }
-  setTimeout(function() { newSample(); draw(); }, 400);
-})();
-</script>
-</section>
-<section id="מה-ההדגמה-מראה" class="slide level2">
-<h2>מה ההדגמה מראה</h2>
-<div>
-<ul>
-<li class="fragment"><strong>שגיאת האימון יורדת מונוטונית</strong> עם הדרגה, ו-<span class="math inline">\(R^2\)</span> עולה מונוטונית. תמיד. בדרגה <span class="math inline">\(n-1\)</span> הפולינום עובר בכל הנקודות.</li>
-<li class="fragment"><strong>השגיאה על נתונים חדשים יורדת ואז עולה</strong> — צורת U. בדרגות נמוכות המודל פשוט מדי (הוא מפספס אות), בדרגות גבוהות הוא מלמד את עצמו את הרעש.</li>
-<li class="fragment">הדרגה האופטימלית משתנה בין דגימות, ותלויה ב-<span class="math inline">\(n\)</span>: <strong>מדגם גדול מרשה מודל מורכב יותר</strong>.</li>
-<li class="fragment">הסתכלו על הקו האדום בתרשים השמאלי בדרגות גבוהות: הוא עובר בנקודות האימון בדיוק — ומתנהג פרוע בין הנקודות ובקצוות.</li>
-</ul>
-</div>
-</section>
-<section id="cross-validation-לבדוק-על-מה-שלא-ראינו" class="slide level2">
-<h2>Cross-validation: לבדוק על מה שלא ראינו</h2>
-<p>הרעיון: <strong>להעריך את המודל על נתונים שלא השתתפו באמידה שלו</strong>.</p>
-<div>
-<ul>
-<li class="fragment">מחלקים את המדגם ל-<span class="math inline">\(k\)</span> חלקים (folds).</li>
-<li class="fragment">מתאימים את המודל על <span class="math inline">\(k-1\)</span> חלקים, ומודדים את השגיאה על החלק שנשאר.</li>
-<li class="fragment">חוזרים על התהליך <span class="math inline">\(k\)</span> פעמים, כך שכל חלק משמש פעם אחת לבדיקה, וממצעים את השגיאה.</li>
-<li class="fragment">בוחרים את המודל עם שגיאת ה-CV הנמוכה ביותר. במקרה הקיצוני <span class="math inline">\(k = n\)</span>: leave-one-out.</li>
-</ul>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -623,40 +451,191 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>לא רק CV</strong></p>
+<p><strong>שגיאה ב-Y</strong></p>
 </div>
 <div class="callout-content">
-<p>יש משפחה שלמה של דרכים להעריך את השגיאה על נתונים חדשים בלי לאסוף אותם: adjusted <span class="math inline">\(R^2\)</span> ו-AIC (שמענישים על מורכבות), ו-LOO בגישה הבייסיאנית. כולם עונים על אותה שאלה: <strong>כמה המודל יטעה במדגם הבא</strong>, ולא כמה הוא מתאים לנוכחי.</p>
+<p>רעש קלאסי ב-Y גדל אל תוך ה-residuals: הוא מקטין את <span class="math inline">\(r\)</span> ואת <span class="math inline">\(R^2\)</span>, אבל <strong>אינו מטה</strong> את השיפוע הלא מתוקן. הבעיה החמורה לשיפוע היא שגיאה ב-X.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="prediction-מול-inference" class="slide level2">
-<h2>Prediction מול inference</h2>
-<p>שתי מטרות שונות לחלוטין ללמוד מנתונים (Shmueli, 2010):</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="prediction">Prediction</h3>
-<p><strong>שאלה:</strong> מה יהיה <span class="math inline">\(Y\)</span> עבור תצפית חדשה?</p>
-<p><strong>קריטריון:</strong> שגיאה על נתונים חדשים.</p>
-<p><strong>המקדמים:</strong> אינם חשובים כשלעצמם. מודל בעל 200 מנבאים יכול להיות מצוין.</p>
-</div><div class="column" style="width:50%;">
-<h3 id="inference">Inference</h3>
-<p><strong>שאלה:</strong> מה קורה ל-<span class="math inline">\(Y\)</span> אם משנים את <span class="math inline">\(X\)</span>? מה גודלו של אפקט מסוים?</p>
-<p><strong>קריטריון:</strong> הגרף — האם קבוצת הפיקוח נכונה (W8).</p>
-<p><strong>המקדמים:</strong> הם התוצר. כל מקדם צריך פירוש.</p>
+<section id="מה-זה-אומר-על-קריאת-ספרות" class="slide level2">
+<h2>מה זה אומר על קריאת ספרות</h2>
+<div>
+<ul>
+<li class="fragment">מחקר מדווח <span class="math inline">\(r = 0.30\)</span> ומסיק “קשר חלש”. אבל אם המהימנות של X היא 0.5, הקשר האמיתי בין המבנים הוא בערך <span class="math inline">\(0.30 / \sqrt{0.5} \approx 0.42\)</span>.</li>
+<li class="fragment">אם המהימנות היא 0.25, הקשר האמיתי יכול להיות אפילו 0.60.</li>
+<li class="fragment">ממצא <strong>“לא נמצא קשר”</strong> עם מדידה גרועה אינו ראיה להיעדר קשר. הוא ראיה לכך שהמדידה לא הצליחה לראות אותו.</li>
+<li class="fragment">והשוואה בין מחקרים: אותו קשר אמיתי ייראה חזק במחקר עם מדידה טובה וחלש במחקר עם מדידה גרועה.</li>
+</ul>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>חזרה לשני המשחקים</strong></p>
+</div>
+<div class="callout-content">
+<p>אם רוצים לנבא ממדד רועש שיישאר רועש גם בעתיד, <span class="math inline">\(r_{observed}\)</span> הוא המספר הנכון. אם רוצים להסיק על הקשר בין המבנים, אותו מספר הוא רק חסם תחתון.</p>
 </div>
 </div>
+</div>
+</section>
+<section id="הבהרה-זה-לא-קורס-בפסיכומטריקה" class="slide level2">
+<h2>הבהרה: זה לא קורס בפסיכומטריקה</h2>
 <div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הן לא נגזרות זו מזו</strong></p>
+<p><strong>מה נלמד ומה לא</strong></p>
 </div>
 <div class="callout-content">
-<p>מודל מצוין לניבוי אינו בהכרח מודל שמקדמיו ניתנים לפירוש סיבתי: הוספת <strong>collider</strong> משפרת לעיתים קרובות את הניבוי ומקלקלת את האומדן הסיבתי. ולהפך, מודל שמפוקח נכון לצורך אפקט סיבתי (רק ה-confounders) עשוי לנבא פחות טוב ממודל שמכיל כל מה שקשור ל-<span class="math inline">\(Y\)</span>. אל תשתמשו בקריטריון של אחת המטרות כדי לבחור מודל לצורך השנייה. נמשיך את זה ב-W11.V4.</p>
+<p>הקורס הזה <strong>לא</strong> עוסק בפסיכומטריקה, ולכן לא נלמד כאן classical test theory ולא אלפא של קרונבך. המהימנות מוצגת כאן כמספר נתון (למשל מספרות קודמת או ממדידה חוזרת).</p>
+<p>מה שחשוב לנו הוא <strong>ההשלכה על ההסקה</strong>: מדידה לא מושלמת מכווצת קשרים באופן שיטתי, וצריך לזכור זאת כשקוראים מקדם.</p>
+</div>
+</div>
+</div>
+<div>
+<ul>
+<li class="fragment">גם אם יש לנו הערכה של המהימנות, היא אומדן בפני עצמו, עם אי-ודאות.</li>
+<li class="fragment">לכן לא “מתקנים” את <span class="math inline">\(r\)</span> בעיוורון. מתייחסים אליו כחסם ושואלים כמה רחוק האמת עשויה להיות.</li>
+</ul>
+</div>
+</section>
+<section id="הדגמה-אינטראקטיבית-הקשר-האמיתי-מול-הנצפה" class="slide level2">
+<h2>הדגמה אינטראקטיבית: הקשר האמיתי מול הנצפה</h2>
+<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
+    <label>r אמיתי: <b id="rtrue_v3">0.60</b>
+      <input type="range" id="rtrue_s3" min="-0.95" max="0.95" step="0.05" value="0.6"></label>
+    <label>מהימנות המדידה של X: <b id="rel_v3">0.60</b>
+      <input type="range" id="rel_s3" min="0.1" max="1" step="0.05" value="0.6"></label>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:10px;">
+    <div id="demo-true3" style="flex:1 1 300px; min-width:0; height:330px;"></div>
+    <div id="demo-obs3" style="flex:1 1 300px; min-width:0; height:330px;"></div>
+  </div>
+  <div id="out_v3" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
+  <div id="out2_v3" style="text-align:center; padding:6px; font-size:0.85em;"></div>
+  <div style="font-size:0.75em; color:#666; margin-top:4px;">ההדגמה בנויה כך שהמדגם (n = 300) משקף בדיוק את הפרמטרים, כלומר בלי תנודות דגימה, כדי לבודד את ההשפעה של שגיאת המדידה.</div>
+</div>
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<script>
+(function() {
+  const n = 300;
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  function dot(a, b) { let s = 0; for (let i = 0; i < n; i++) s += a[i] * b[i]; return s / n; }
+  // גרם-שמידט: וקטורים ממורכזים, סטיית תקן 1, ואורתוגונליים זה לזה
+  function orth(raw, others) {
+    let m = raw.reduce((a, b) => a + b, 0) / n;
+    let v = raw.map(x => x - m);
+    others.forEach(o => { const c = dot(v, o); v = v.map((x, i) => x - c * o[i]); });
+    const s = Math.sqrt(dot(v, v));
+    return v.map(x => x / s);
+  }
+  const r1 = [], r2 = [], r3 = [];
+  for (let i = 0; i < n; i++) { r1.push(randn()); r2.push(randn()); r3.push(randn()); }
+  const T = orth(r1, []);
+  const E = orth(r2, [T]);
+  const U = orth(r3, [T, E]);
+
+  function fit(x, y) {
+    let mx = 0, my = 0;
+    for (let i = 0; i < n; i++) { mx += x[i]; my += y[i]; }
+    mx /= n; my /= n;
+    let sxy = 0, sxx = 0, syy = 0;
+    for (let i = 0; i < n; i++) {
+      sxy += (x[i] - mx) * (y[i] - my);
+      sxx += (x[i] - mx) * (x[i] - mx);
+      syy += (y[i] - my) * (y[i] - my);
+    }
+    const b1 = sxy / sxx;
+    return { b0: my - b1 * mx, b1: b1, r: sxy / Math.sqrt(sxx * syy) };
+  }
+  function draw() {
+    const rt = parseFloat(document.getElementById('rtrue_s3').value);
+    const rel = parseFloat(document.getElementById('rel_s3').value);
+    document.getElementById('rtrue_v3').textContent = rt.toFixed(2);
+    document.getElementById('rel_v3').textContent = rel.toFixed(2);
+
+    const k = Math.sqrt(1 - rt * rt);
+    const su = Math.sqrt((1 - rel) / rel);   // var(X_obs) = 1/rel
+    const Y = [], X = [];
+    for (let i = 0; i < n; i++) {
+      Y.push(rt * T[i] + k * E[i]);
+      X.push(T[i] + su * U[i]);
+    }
+    const fT = fit(T, Y), fX = fit(X, Y);
+    const XR = [-9, 9], YR = [-4, 4];
+
+    Plotly.newPlot('demo-true3', [
+      { x: T, y: Y, mode: 'markers', marker: { color: '#2980b9', size: 5, opacity: 0.6 }, showlegend: false },
+      { x: XR, y: [fT.b0 + fT.b1 * XR[0], fT.b0 + fT.b1 * XR[1]], mode: 'lines', line: { color: '#2980b9', width: 3 }, showlegend: false }
+    ], {
+      title: 'הקשר האמיתי: T מול Y',
+      xaxis: { title: 'T (ללא שגיאה)', range: XR },
+      yaxis: { title: 'Y', range: YR },
+      margin: { t: 40, b: 45, l: 45, r: 15 }
+    }, { displayModeBar: false });
+
+    Plotly.newPlot('demo-obs3', [
+      { x: X, y: Y, mode: 'markers', marker: { color: '#c0392b', size: 5, opacity: 0.5 }, showlegend: false },
+      { x: XR, y: [fT.b0 + fT.b1 * XR[0], fT.b0 + fT.b1 * XR[1]], mode: 'lines', line: { color: '#95a5a6', width: 2, dash: 'dash' }, showlegend: false },
+      { x: XR, y: [fX.b0 + fX.b1 * XR[0], fX.b0 + fX.b1 * XR[1]], mode: 'lines', line: { color: '#c0392b', width: 3 }, showlegend: false }
+    ], {
+      title: 'הקשר הנצפה: X_obs מול Y',
+      xaxis: { title: 'X הנצפה (עם שגיאה)', range: XR },
+      yaxis: { title: 'Y', range: YR },
+      margin: { t: 40, b: 45, l: 45, r: 15 }
+    }, { displayModeBar: false });
+
+    const el = document.getElementById('out_v3');
+    el.textContent = 'r אמיתי ' + fT.r.toFixed(2) + '  ·  r נצפה ' + fX.r.toFixed(2) +
+                     '  ·  שורש המהימנות ' + Math.sqrt(rel).toFixed(2) +
+                     '  ·  שיפוע: אמיתי ' + fT.b1.toFixed(2) + ', נצפה ' + fX.b1.toFixed(2);
+    const ratio = Math.abs(fT.r) < 1e-9 ? 1 : Math.abs(fX.r) / Math.abs(fT.r);
+    if (ratio >= 0.9) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
+    else if (ratio >= 0.7) { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
+    else { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
+    document.getElementById('out2_v3').textContent =
+      '|r נצפה| = ' + Math.abs(fX.r).toFixed(2) + ' ≤ |r אמיתי| = ' + Math.abs(fT.r).toFixed(2) +
+      '   ·   הנצפה שומר ' + (100 * ratio).toFixed(0) + '% מהקשר האמיתי' +
+      '   (הקו המקווקו באפור: השיפוע האמיתי)';
+  }
+  ['rtrue_s3', 'rel_s3'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  setTimeout(draw, 400);
+})();
+</script>
+</section>
+<section id="מה-ההדגמה-מראה" class="slide level2">
+<h2>מה ההדגמה מראה</h2>
+<div>
+<ul>
+<li class="fragment">מהימנות 1: שני הצדדים זהים. ככל שהיא יורדת, הענן הימני <strong>מתפשט לרוחב</strong> והקו נעשה שטוח.</li>
+<li class="fragment"><strong><span class="math inline">\(|r_{observed}|\)</span> קטן מ-<span class="math inline">\(|r_{true}|\)</span> תמיד</strong> (מלבד מהימנות 1), והיחס ביניהם הוא בדיוק <span class="math inline">\(\sqrt{\text{reliability}}\)</span>.</li>
+<li class="fragment">השיפוע נהרס מהר יותר מ-<span class="math inline">\(r\)</span>: מהימנות 0.5 משאירה 71% מה-<span class="math inline">\(r\)</span> אבל רק 50% מהשיפוע.</li>
+<li class="fragment">הקשר האמיתי לא זז לאורך כל ההדגמה. רק המדידה שלו הופכת לגרועה.</li>
+</ul>
+</div>
+<div class="callout callout-danger callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>מה מחכה בשבוע 12</strong></p>
+</div>
+<div class="callout-content">
+<p>כאן X הוא המשתנה שמעניין אותנו. המקרה החמור יותר הוא כשה-X שנמדד עם שגיאה הוא <strong>המבלבל שמפקחים עליו</strong>. אז הפיקוח חלקי בלבד, והשפעת המבלבל נשארת בתוך האפקט שמעניין אותנו. את זה נראה בשבוע 12.</p>
 </div>
 </div>
 </div>
@@ -664,11 +643,13 @@
 <section id="סיכום-w11.v3" class="slide level2">
 <h2>סיכום W11.V3</h2>
 <ul>
-<li>ההנחות: linearity, homoscedasticity, independence, normality של ה-residuals. הראשונה קובעת את פירוש המקדמים, והשלישית את שגיאות התקן.</li>
-<li>בודקים אותן ב<strong>תרשימי residuals</strong>, כאבחון שמשפר את המודל — לא כמבחן שמכריע איזה מבחן להריץ.</li>
-<li><strong>Overfitting:</strong> מודל שמתאים את עצמו לרעש. <span class="math inline">\(R^2\)</span> רק עולה עם מנבאים נוספים, ולכן אינו יכול לבחור מודל.</li>
-<li>שגיאה על נתונים חדשים יורדת ואז עולה. <strong>Cross-validation</strong> היא הדרך להעריך אותה מבלי לאסוף נתונים חדשים.</li>
-<li><strong>Prediction ו-inference הן מטרות שונות</strong> עם קריטריונים שונים. מודל טוב לאחת אינו בהכרח טוב לשנייה.</li>
+<li><strong>Prediction</strong> ו-<strong>inference</strong> הם שני משחקים על אותה מכונה. שגיאת מדידה היא חלק מהמציאות בראשון ועיוות בשני.</li>
+<li>כש-X נמדד עם שגיאה, <span class="math inline">\(r_{observed} = r_{true} \cdot \sqrt{\text{reliability}}\)</span>: <strong>attenuation</strong>.</li>
+<li>השיפוע הלא מתוקן מתכווץ פי המהימנות, ולכן קשה עוד יותר מ-<span class="math inline">\(r\)</span>.</li>
+<li><span class="math inline">\(r\)</span> הוא <strong>חסם תחתון</strong> ולא אומדן (תחת שגיאה בלתי תלויה).</li>
+<li>בספרות: מתאם חלש או “אין קשר” יכולים להעיד על מדידה גרועה ולא על היעדר קשר.</li>
+<li>הקורס לא עוסק בפסיכומטריקה. מה שחשוב הוא ההשלכה על ההסקה.</li>
+<li>שבוע 12 יראה את המקרה החמור יותר: מבלבל שנמדד עם שגיאה.</li>
 </ul>
 <div class="footer footer-default">
 

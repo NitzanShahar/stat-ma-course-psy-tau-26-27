@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W6.V1 — רקע מדעי ו-2×2 אדיטיבי</title>
+  <title>W6.V1 — מודל מייצר גאוסיאני עם קבוצות</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,201 +325,175 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W6.V1 — רקע מדעי ו-2×2 אדיטיבי</h1>
-  <p class="subtitle">המערך הפקטוריאלי, מודל אדיטיבי, Dummy Coding vs Effect Coding</p>
+  <h1 class="title">W6.V1 — מודל מייצר גאוסיאני עם קבוצות</h1>
+  <p class="subtitle">השוואת קבוצות, Dummy Coding והתמוטטות ההפרדה המלאכותית</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להבין מדוע <strong>המערך הפקטוריאלי</strong> הוא מההמצאות החזקות במדע.</li>
-<li>לבנות מודל <span class="math inline">\(2 \times 2\)</span> <strong>אדיטיבי</strong> (ללא אינטראקציה).</li>
-<li>להשוות לעומק בין <strong>Dummy Coding</strong> (<span class="math inline">\(0/1\)</span>) ל-<strong>Effect Coding</strong> (<span class="math inline">\(-1/1\)</span>).</li>
-<li>לראות כיצד משתנה משמעות החותך (<span class="math inline">\(\beta_0\)</span>) בין שיטות הקידוד.</li>
+<li>להבין מדוע <strong>השוואת קבוצות</strong> היא כלי מרכזי במדע אמפירי.</li>
+<li>לבנות מודל מייצר גאוסיאני שבו התוחלת תלויה בקבוצה.</li>
+<li>להכיר את טכניקת <strong>Dummy Coding</strong> (<span class="math inline">\(0/1\)</span>).</li>
+<li>לראות כיצד השוואת קבוצות הופכת באופן מלא ל<strong>רגרסיה ליניארית</strong>.</li>
+<li>להבין את <strong>המודל הריק</strong> (Empty Model) ואת תפקיד <strong>השאריות</strong> (Residuals).</li>
+<li>לראות את <strong>מטריצת התכנון</strong> (Design Matrix).</li>
 </ul>
 </section>
-<section id="למה-המערך-הפקטוריאלי-הוא-המצאה-מרכזית" class="slide level2">
-<h2>למה המערך הפקטוריאלי הוא המצאה מרכזית?</h2>
+<section id="למה-השוואת-קבוצות-היא-כלי-מרכזי" class="slide level2">
+<h2>למה השוואת קבוצות היא כלי מרכזי?</h2>
 <div>
-<ol type="1">
-<li class="fragment"><strong>חיסכון במשאבים ונבדקים:</strong> אותם נבדקים מאפשרים לבחון שתי שאלות מחקריות נפרדות במקביל.</li>
-<li class="fragment"><strong>בחינת תלות בין אפקטים:</strong> הדרך היחידה במדע לדעת אם האפקט של משתנה <span class="math inline">\(A\)</span> תלוי בנוכחות משתנה <span class="math inline">\(B\)</span>.</li>
-</ol>
+<ul>
+<li class="fragment"><strong>השאלה המדעית:</strong> האם התערבות, טיפול או שיוך קבוצתי משנים את המשתנה הנמדד?</li>
+<li class="fragment"><strong>ניסוי קלאסי:</strong> קבוצת ניסוי (Treatment) מול קבוצת ביקורת (Control).</li>
+<li class="fragment"><strong>תצפית:</strong> אנו רואים ערכים שונים בשתי הקבוצות, אך הנתונים כוללים רעש.</li>
+<li class="fragment"><strong>האתגר:</strong> האם ההבדל הנצפה נובע משינוי במנגנון המייצר החבוי בטבע, או מרעש דגימה מקרי?</li>
+</ul>
 </div>
+</section>
+<section id="המודל-המייצר-גאוסיאן-המותנה-בקבוצה" class="slide level2">
+<h2>המודל המייצר: גאוסיאן המותנה בקבוצה</h2>
+<p>ביחידה א’ העדכנו פרמטר יחיד למעבדת נתונים אחת: <span class="math inline">\(y_i \sim \text{Normal}(\mu, \sigma)\)</span>.</p>
+<p>כעת, המודל המייצר בטבע מניח <strong>תוחלת שונה לכל קבוצה</strong>:</p>
+<p><span class="math display">\[y_i \sim \text{Normal}(\mu_j, \sigma)\]</span></p>
+<div>
+<ul>
+<li class="fragment"><span class="math inline">\(\mu_1\)</span>: התוחלת החבויה בטבע עבור קבוצה 1 (למשל, ביקורת).</li>
+<li class="fragment"><span class="math inline">\(\mu_2\)</span>: התוחלת החבויה בטבע עבור קבוצה 2 (למשל, ניסוי).</li>
+<li class="fragment"><span class="math inline">\(\sigma\)</span>: סטיית התקן של הרעש (מניחים בשלב זה שונויות שוות).</li>
+</ul>
+</div>
+</section>
+<section id="הפיכת-מילים-למספרים-dummy-coding" class="slide level2">
+<h2>הפיכת מילים למספרים: Dummy Coding</h2>
+<p>מחשב ומשוואות מתמטיות אינם יודעים לעבוד עם המילים “ניסוי” ו”ביקורת”.</p>
+<p>אנו מציבים משתנה מספרי בינארי <span class="math inline">\(X_i\)</span>:</p>
+<p><span class="math display">\[X_i = \begin{cases} 0 &amp; \text{קבוצת ביקורת (Control)} \ 1 &amp; \text{קבוצת ניסוי (Treatment)} \end{cases}\]</span></p>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>דוגמה מחקרית</strong></p>
+<p><strong>שיוך קבוצת יחוס (Baseline)</strong></p>
 </div>
 <div class="callout-content">
-<p>בחינת תרופה (קיימת/חדשה) בשילוב סוג טיפול נפשי (CBT/דינמי) על מדד חרדה.</p>
+<p>הקבוצה שראתה <span class="math inline">\(X=0\)</span> נקראת <strong>קבוצת הייחוס</strong> (Reference Group). החותך במודל הליניארי יייצג את התוחלת שלה.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="מודל-22-אדיטיבי-ללא-אינטראקציה" class="slide level2">
-<h2>מודל 2×2 אדיטיבי (ללא אינטראקציה)</h2>
-<p>המודל הליניארי עבור שני מנבאים דיכוטומיים <span class="math inline">\(X_1\)</span> ו-<span class="math inline">\(X_2\)</span>:</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon_i\]</span></p>
+<section id="הניסוח-כרגרסיה-ליניארית" class="slide level2">
+<h2>הניסוח כרגרסיה ליניארית</h2>
+<p>ברגע שהשתמשנו ב-Dummy Coding, המודל המייצר נכתב כמשוואת רגרסיה:</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \quad \epsilon_i \sim \text{Normal}(0, \sigma)\]</span></p>
 <div>
 <ul>
-<li class="fragment">המודל מניח שההשפעה של <span class="math inline">\(X_1\)</span> קבועה ואינה תלויה בערכו של <span class="math inline">\(X_2\)</span>.</li>
-<li class="fragment"><strong>אדיטיביות:</strong> התחזית לכל תא היא פשוט סכום ההשפעות הנפרדות.</li>
+<li class="fragment"><strong>החותך (<span class="math inline">\(\beta_0\)</span>):</strong> התוחלת של קבוצת הייחוס (<span class="math inline">\(X=0\)</span>), כלומר <span class="math inline">\(\beta_0 = \mu_{\text{control}}\)</span>.</li>
+<li class="fragment"><strong>השיפוע (<span class="math inline">\(\beta_1\)</span>):</strong> ההפרש בין התוחלות (<span class="math inline">\(\mu_{\text{treatment}} - \mu_{\text{control}}\)</span>), כלומר <span class="math inline">\(\beta_1 = \Delta\mu\)</span>.</li>
+<li class="fragment"><strong>השארית (<span class="math inline">\(\epsilon_i\)</span>):</strong> הסטייה האינדיבידואלית של תצפית <span class="math inline">\(i\)</span> מממוצע הקבוצה שלה.</li>
 </ul>
 </div>
 </section>
-<section id="סוגיית-הקידוד-dummy-coding-01" class="slide level2">
-<h2>סוגיית הקידוד: Dummy Coding (<span class="math inline">\(0/1\)</span>)</h2>
-<p>נניח <span class="math inline">\(X_1 \in \{0, 1\}\)</span> ו-<span class="math inline">\(X_2 \in \{0, 1\}\)</span>:</p>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th><span class="math inline">\(X_2 = 0\)</span></th>
-<th><span class="math inline">\(X_2 = 1\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong><span class="math inline">\(X_1 = 0\)</span></strong></td>
-<td><span class="math inline">\(\beta_0\)</span></td>
-<td><span class="math inline">\(\beta_0 + \beta_2\)</span></td>
-</tr>
-<tr class="even">
-<td><strong><span class="math inline">\(X_1 = 1\)</span></strong></td>
-<td><span class="math inline">\(\beta_0 + \beta_1\)</span></td>
-<td><span class="math inline">\(\beta_0 + \beta_1 + \beta_2\)</span></td>
-</tr>
-</tbody>
-</table>
+<section id="המודל-הריק-empty-model-והשאריות" class="slide level2">
+<h2>המודל הריק (Empty Model) והשאריות</h2>
+<p>מה קורה אם אנו מניחים שאין כלל הבדל בין הקבוצות (<span class="math inline">\(\beta_1 = 0\)</span>)?</p>
+<p>אנו מקבלים את <strong>המודל הריק</strong>:</p>
+<p><span class="math display">\[y_i = \beta_0 + \epsilon_i\]</span></p>
 <div>
 <ul>
-<li class="fragment"><strong><span class="math inline">\(\beta_0\)</span>:</strong> ממוצע תא הייחוס (<span class="math inline">\(X_1=0, X_2=0\)</span>).</li>
-<li class="fragment"><strong><span class="math inline">\(\beta_1\)</span>:</strong> האפקט של <span class="math inline">\(X_1\)</span> כאשר <span class="math inline">\(X_2=0\)</span>.</li>
-<li class="fragment"><strong><span class="math inline">\(\beta_2\)</span>:</strong> האפקט של <span class="math inline">\(X_2\)</span> כאשר <span class="math inline">\(X_1=0\)</span>.</li>
+<li class="fragment">במודל הריק, החיזוי לכל התצפיות הוא הממוצע הכללי <span class="math inline">\(\bar{y}\)</span>.</li>
+<li class="fragment"><strong>השארית (<span class="math inline">\(e_i = y_i - \hat{y}_i\)</span>):</strong> המרחק בין התצפית בפועל לבין חיזוי המודל.</li>
+<li class="fragment">המודל הליניארי המלא עם המנבא <span class="math inline">\(X\)</span> שואף <strong>להקטין את גודל השאריות</strong> לעומת המודל הריק.</li>
 </ul>
 </div>
 </section>
-<section id="סוגיית-הקידוד-effect-coding--11" class="slide level2">
-<h2>סוגיית הקידוד: Effect Coding (<span class="math inline">\(-1/1\)</span>)</h2>
-<p>נציב כעת <span class="math inline">\(X_1 \in \{-1, 1\}\)</span> ו-<span class="math inline">\(X_2 \in \{-1, 1\}\)</span>:</p>
-<table>
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><span class="math inline">\(X_2 = -1\)</span></th>
-<th><span class="math inline">\(X_2 = 1\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong><span class="math inline">\(X_1 = -1\)</span></strong></td>
-<td><span class="math inline">\(\beta_0 - \beta_1 - \beta_2\)</span></td>
-<td><span class="math inline">\(\beta_0 - \beta_1 + \beta_2\)</span></td>
-</tr>
-<tr class="even">
-<td><strong><span class="math inline">\(X_1 = 1\)</span></strong></td>
-<td><span class="math inline">\(\beta_0 + \beta_1 - \beta_2\)</span></td>
-<td><span class="math inline">\(\beta_0 + \beta_1 + \beta_2\)</span></td>
-</tr>
-</tbody>
-</table>
-<div>
-<ul>
-<li class="fragment"><strong><span class="math inline">\(\beta_0\)</span>:</strong> <strong>הממוצע הכללי</strong> של כל התאים (Grand Mean)!</li>
-<li class="fragment"><strong><span class="math inline">\(\beta_1\)</span>:</strong> האפקט הראשי (Main Effect) של <span class="math inline">\(X_1\)</span> ביחס לממוצע הכללי.</li>
-<li class="fragment"><strong><span class="math inline">\(\beta_2\)</span>:</strong> האפקט הראשי (Main Effect) של <span class="math inline">\(X_2\)</span> ביחס לממוצע הכללי.</li>
-</ul>
-</div>
+<section id="מטריצת-התכנון-design-matrix" class="slide level2">
+<h2>מטריצת התכנון (Design Matrix)</h2>
+<p>מאחורי הקלעים, כל מודל ליניארי מיוצג במטריצה <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}\]</span></p>
+<p><span class="math display">\[\begin{bmatrix} y_1 \ y_2 \ y_3 \ y_4 \end{bmatrix} = \begin{bmatrix} 1 &amp; 0 \ 1 &amp; 0 \ 1 &amp; 1 \ 1 &amp; 1 \end{bmatrix} \begin{bmatrix} \beta_0 \ \beta_1 \end{bmatrix} + \begin{bmatrix} \epsilon_1 \ \epsilon_2 \ \epsilon_3 \ \epsilon_4 \end{bmatrix}\]</span></p>
+<p>הטור הראשון הוא עמודת ה-1-ים עבור החותך (<span class="math inline">\(\beta_0\)</span>), והטור השני הוא המשתנה הבינארי <span class="math inline">\(X_i\)</span>.</p>
 </section>
-<section id="השוואה-בין-הקידודים" class="slide level2">
-<h2>השוואה בין הקידודים</h2>
-<div class="compare-card">
+<section id="התמוטטות-ההפרדה-המלאכותית" class="slide level2">
+<h2>התמוטטות ההפרדה המלאכותית!</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="dummy-coding-01">Dummy Coding (<span class="math inline">\(0/1\)</span>)</h3>
+<h3 id="הראייה-הישנה">הראייה הישנה</h3>
 <ul>
-<li><span class="math inline">\(\beta_0\)</span> = ממוצע קבוצת הייחוס</li>
-<li>שימושי כשיש קבוצת ביקורת ברורה</li>
+<li>מבחן t למדגמים בלתי תלויים הוא כלי נפרד.</li>
+<li>רגרסיה ליניארית היא כלי נפרד לגמרי.</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<h3 id="effect-coding--11">Effect Coding (<span class="math inline">\(-1/1\)</span>)</h3>
+<h3 id="הראייה-המודרנית">הראייה המודרנית</h3>
 <ul>
-<li><span class="math inline">\(\beta_0\)</span> = הממוצע הכללי (Grand Mean)</li>
-<li>שימושי לניתוח שונות (ANOVA) ואפקטים ראשיים</li>
+<li><strong>t-test אינו אלא רגרסיה ליניארית</strong> עם מנבא קטגוריאלי בינארי!</li>
+<li>קו הרגרסיה מחבר בדיוק בין ממוצע קבוצה 0 לממוצע קבוצה 1.</li>
 </ul>
-</div>
-</div>
-</div>
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>תחזיות המודל לכל ארבעת התאים זהות לחלוטין בשתי השיטות!</p>
-</div>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-מודל-22-אדיטיבי" class="slide level2">
-<h2>הדגמה אינטראקטיבית: מודל 2×2 אדיטיבי</h2>
+<section id="הדגמה-אינטראקטיבית-רגרסיה-עם-מנבא-קטגוריאלי" class="slide level2">
+<h2>הדגמה אינטראקטיבית: רגרסיה עם מנבא קטגוריאלי</h2>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>β0 (בסיס A1B1): <b id="b0val_22">10.0</b>
-      <input type="range" id="b0_22" min="0" max="20" step="0.5" value="10"></label>
-    <label>β1 (אפקט A): <b id="b1val_22">8.0</b>
-      <input type="range" id="b1_22" min="-10" max="15" step="0.5" value="8"></label>
-    <label>β2 (אפקט B): <b id="b2val_22">5.0</b>
-      <input type="range" id="b2_22" min="-10" max="15" step="0.5" value="5"></label>
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:12px; font-size:0.85em;">
+    <label>β0 (ביקורת): <b id="b0val_cr">10.0</b>
+      <input type="range" id="b0_cr" min="4" max="20" step="0.5" value="10" style="vertical-align:middle;"></label>
+    <label>β1 (הפרש): <b id="b1val_cr">5.0</b>
+      <input type="range" id="b1_cr" min="-10" max="12" step="0.5" value="5" style="vertical-align:middle;"></label>
+    <button id="resample_cr" style="padding:6px 12px; background:#2c3e50; color:#fff; border:none; border-radius:4px; cursor:pointer;">מדגם חדש</button>
   </div>
-  <div id="demo-2x2-add" style="width:100%; height:340px;"></div>
+  <div id="demo-cat-reg" style="width:100%; height:380px;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  function draw2x2Additive() {
-    let b0 = parseFloat(document.getElementById('b0_22').value);
-    let b1 = parseFloat(document.getElementById('b1_22').value);
-    let b2 = parseFloat(document.getElementById('b2_22').value);
-    document.getElementById('b0val_22').textContent = b0.toFixed(1);
-    document.getElementById('b1val_22').textContent = b1.toFixed(1);
-    document.getElementById('b2val_22').textContent = b2.toFixed(1);
+  let n_cr = 15, noise0_cr, noise1_cr, jx0_cr, jx1_cr;
+  function resample_cr() {
+    noise0_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*4);
+    noise1_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*4);
+    jx0_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*0.12);
+    jx1_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*0.12);
+  }
+  function drawCatReg() {
+    let b0 = parseFloat(document.getElementById('b0_cr').value);
+    let b1 = parseFloat(document.getElementById('b1_cr').value);
+    document.getElementById('b0val_cr').textContent = b0.toFixed(1);
+    document.getElementById('b1val_cr').textContent = b1.toFixed(1);
 
-    let trace1 = { x: ['B1', 'B2'], y: [b0, b0+b2], mode: 'lines+markers', name: 'A1', line: {color: '#2980b9', width: 3}, marker: {size: 9} };
-    let trace2 = { x: ['B1', 'B2'], y: [b0+b1, b0+b1+b2], mode: 'lines+markers', name: 'A2', line: {color: '#e67e22', width: 3}, marker: {size: 9} };
+    let y0 = noise0_cr.map(e => b0 + e);
+    let y1 = noise1_cr.map(e => b0 + b1 + e);
+    let x0 = jx0_cr.map(j => 0 + j);
+    let x1 = jx1_cr.map(j => 1 + j);
+
+    let trace0 = { x: x0, y: y0, mode: 'markers', name: 'ביקורת (X=0)', marker: {color: '#2980b9', size: 9} };
+    let trace1 = { x: x1, y: y1, mode: 'markers', name: 'ניסוי (X=1)', marker: {color: '#e67e22', size: 9} };
+    let traceLine = { x: [0, 1], y: [b0, b0+b1], mode: 'lines+markers', name: `קו הרגרסיה (β0 + β1·X)`, line: {color: '#c0392b', width: 3} };
 
     let layout = {
-      title: 'מודל 2×2 אדיטיבי: הקווים תמיד מקבילים (אין אינטראקציה)',
-      xaxis: { title: 'גורם B' },
-      yaxis: { title: 'תוצאה מנובאת (Y)', range: [-2, 45] },
-      margin: { t: 40, b: 40, l: 45, r: 20 }
+      title: `y = β0 + β1·X  →  β0 = ${b0.toFixed(1)}, β1 = ${b1.toFixed(1)}`,
+      xaxis: { title: 'משתנה קטגוריאלי (X)', tickvals: [0, 1], ticktext: ['ביקורת (0)', 'ניסוי (1)'], range: [-0.4, 1.4] },
+      yaxis: { title: 'משתנה תלוי (Y)' },
+      margin: { t: 40, b: 40, l: 45, r: 20 },
+      legend: { orientation: 'h', y: -0.2 }
     };
-    Plotly.newPlot('demo-2x2-add', [trace1, trace2], layout, {displayModeBar:false});
+    Plotly.newPlot('demo-cat-reg', [trace0, trace1, traceLine], layout, {displayModeBar:false});
   }
-  ['b0_22','b1_22','b2_22'].forEach(id => document.getElementById(id).addEventListener('input', draw2x2Additive));
-  setTimeout(draw2x2Additive, 400);
+  document.getElementById('b0_cr').addEventListener('input', drawCatReg);
+  document.getElementById('b1_cr').addEventListener('input', drawCatReg);
+  document.getElementById('resample_cr').addEventListener('click', () => { resample_cr(); drawCatReg(); });
+  resample_cr();
+  setTimeout(drawCatReg, 400);
 })();
 </script>
 </section>
 <section id="סיכום-w6.v1" class="slide level2">
 <h2>סיכום W6.V1</h2>
 <ul>
-<li>המערך הפקטוריאלי מאפשר לבחון מספר גורמים במקביל ולזהות תלות ביניהם.</li>
-<li><strong>מודל אדיטיבי</strong> מניח שההשפעות של המנבאים פשוט מסתכמות (קווים מקבילים).</li>
-<li><strong>Dummy Coding</strong> מפרש את <span class="math inline">\(\beta_0\)</span> כקבוצת ייחוס.</li>
-<li><strong>Effect Coding</strong> מפרש את <span class="math inline">\(\beta_0\)</span> כהממוצע הכללי.</li>
+<li>מנבא קטגוריאלי מומר למספר בעזרת <strong>Dummy Coding</strong> (<span class="math inline">\(0/1\)</span>).</li>
+<li><strong><span class="math inline">\(\beta_0\)</span></strong> מייצג את ממוצע קבוצת הייחוס.</li>
+<li><strong><span class="math inline">\(\beta_1\)</span></strong> מייצג את <strong>ההבדל בין הממוצעים</strong> (<span class="math inline">\(\Delta\mu\)</span>).</li>
+<li>השוואת קבוצות ו-t-test הם מקרים פרטיים של המודל הליניארי.</li>
 </ul>
 <div class="footer footer-default">
 

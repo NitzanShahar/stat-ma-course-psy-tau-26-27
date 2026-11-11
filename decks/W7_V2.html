@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W7.V2 — ריטואלים סטטיסטיים: מה p לא אומר</title>
+  <title>W7.V2 — Interaction במודל הליניארי</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,323 +325,161 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W7.V2 — ריטואלים סטטיסטיים: מה p לא אומר</h1>
-  <p class="subtitle">ה-null ritual של Gigerenzer, שלוש אי-הבנות של ה-p-value, והכלאה שאיש לא תכנן</p>
+  <h1 class="title">W7.V2 — Interaction במודל הליניארי</h1>
+  <p class="subtitle">איבר המכפלה, ‘ההבדל בין ההבדלים’ והכשל הקלאסי בספרות</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להכיר את ה-<strong>null ritual</strong> ש-Gigerenzer מתאר, ולזהות אותו בספרות ובעבודות שלכם.</li>
-<li>לפרק מה ה-p-value <strong>אינו</strong>: לא הסתברות של השערת האפס, לא סיכוי לשחזור, ולא גודל אפקט.</li>
-<li>להבין שה-NHST שמלמדים הוא <strong>הכלאה</strong> של Fisher ושל Neyman-Pearson, שחלקו זה על זה בכל דבר מהותי.</li>
-<li>לראות בהדגמה שה-p-value <strong>קופץ בפראות</strong> בין חזרות של אותו ניסוי בדיוק.</li>
-<li>להבין שגם המעבר לגישה בייסיאנית אינו מחסן מפני טקס.</li>
+<li>להוסיף את איבר המכפלה (Interaction) למודל הליניארי.</li>
+<li>להבין את הגדרת האינטראקציה: <strong>“ההבדל בין ההבדלים”</strong>.</li>
+<li>לזהות ולהימנע מ<strong>הכשל הנפוץ בספרות</strong> (בחינת אינטראקציה לפי אפקטים פשוטים).</li>
+<li>להכיר שלושה דפוסים מורפולוגיים של אינטראקציה.</li>
 </ul>
 </section>
-<section id="ה-null-ritual" class="slide level2">
-<h2>ה-null ritual</h2>
-<p>Gigerenzer (2004, 2018) מתאר נוהל אחד שחוזר בכל מאמר, בלי קשר לשאלת המחקר:</p>
-<div>
-<ol type="1">
-<li class="fragment">קובעים <strong>השערת אפס</strong> (“אין הבדל”, “המתאם הוא אפס”).</li>
-<li class="fragment"><strong>לא מנסחים השערה משלכם</strong> בצורה כמותית שאפשר לסתור.</li>
-<li class="fragment">משתמשים <strong>תמיד ב-5%</strong>, בלי קשר לעלויות, לעוצמה או לתחום.</li>
-<li class="fragment">מדווחים <strong>מכנית</strong>: <span class="math inline">\(p &lt; .05\)</span>, <span class="math inline">\(p &lt; .01\)</span>, <span class="math inline">\(p &lt; .001\)</span> — לפי הכוכבית הקרובה.</li>
-</ol>
-</div>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>הנקודה של Gigerenzer</strong></p>
-</div>
-<div class="callout-content">
-<p>זה אינו שיטה סטטיסטית. אף סטטיסטיקאי לא הציע אותה. זה <strong>טקס</strong> — פעולה שמבוצעת מתוך הרגל ופחד ממבקרים, ולא מתוך הבנה של מה היא עושה.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="מה-בעצם-p-value-הוא" class="slide level2">
-<h2>מה בעצם p-value הוא</h2>
-<p><span class="math display">\[p = P(\text{data as extreme or more extreme} \mid H_0)\]</span></p>
+<section id="המודל-הליניארי-עם-אינטראקציה" class="slide level2">
+<h2>המודל הליניארי עם אינטראקציה</h2>
+<p>אנו מוסיפים למודל את איבר המכפלה <span class="math inline">\(X_1 \cdot X_2\)</span>:</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 (X_1 \cdot X_2) + \epsilon_i\]</span></p>
 <div>
 <ul>
-<li class="fragment">הסתברות לנתונים (או קיצוניים מהם), <strong>בהינתן</strong> ש-<span class="math inline">\(H_0\)</span> נכונה, כולל כל ההנחות של המודל.</li>
-<li class="fragment">זו הסתברות על <strong>נתונים</strong>, לא על <strong>השערות</strong>.</li>
-<li class="fragment">ב-<span class="math inline">\(H_0\)</span> שנכונה, ה-p-value מתפלג אחיד בין 0 ל-1. רק כך “5%” הוא באמת 5%.</li>
+<li class="fragment"><strong><span class="math inline">\(\beta_3\)</span>:</strong> פרמטר האינטראקציה!</li>
+<li class="fragment">מודד בכמה יחידות משתנה האפקט של <span class="math inline">\(X_1\)</span> כאשר <span class="math inline">\(X_2\)</span> עולה ביחידה אחת.</li>
+<li class="fragment"><strong>שקילות:</strong> <span class="math inline">\(\beta_3\)</span> מודד גם בכמה משתנה האפקט של <span class="math inline">\(X_2\)</span> כאשר <span class="math inline">\(X_1\)</span> עולה.</li>
 </ul>
 </div>
 </section>
-<section id="שלוש-אי-הבנות-שכל-אחת-מהן-שגויה" class="slide level2">
-<h2>שלוש אי-הבנות שכל אחת מהן שגויה</h2>
-<div class="columns">
-<div class="column" style="width:33%;">
-<h3 id="הסיכוי-ש-h_0-נכונה">1. “הסיכוי ש-<span class="math inline">\(H_0\)</span> נכונה”</h3>
-<p><span class="math inline">\(p = .03\)</span> <strong>לא</strong> אומר שהסיכוי ש-<span class="math inline">\(H_0\)</span> נכונה הוא 3%.</p>
-<p><span class="math inline">\(P(D \mid H_0) \neq P(H_0 \mid D)\)</span></p>
-</div><div class="column" style="width:33%;">
-<h3 id="הסיכוי-לשחזר">2. “הסיכוי לשחזר”</h3>
-<p><span class="math inline">\(p = .01\)</span> <strong>לא</strong> אומר ש-99% מהשחזורים יצאו מובהקים. זו ה-<strong>replication fallacy</strong>.</p>
-</div><div class="column" style="width:33%;">
-<h3 id="גודל-האפקט">3. “גודל האפקט”</h3>
-<p><span class="math inline">\(p\)</span> קטן <strong>לא</strong> אומר אפקט גדול. עם n גדול מספיק, כל הבדל זניח יהיה מובהק.</p>
-</div>
-</div>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>למה זה חשוב</strong></p>
-</div>
-<div class="callout-content">
-<p>כדי לקבל את <span class="math inline">\(P(H_0 \mid D)\)</span> צריך <strong>prior</strong> ו-<strong>likelihood</strong> תחת חלופה. ה-p-value אינו מכיל אף אחד מהם. זו בדיוק הסיבה שהקורס עובר לאמידת posterior.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="שתי-שיטות-שחלקו-על-הכל-והכלאה-ביניהן" class="slide level2">
-<h2>שתי שיטות שחלקו על הכל, והכלאה ביניהן</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="fisher">Fisher</h3>
-<ul>
-<li>רק השערת אפס, ללא חלופה מוגדרת.</li>
-<li>ה-p-value הוא מדד <strong>מדורג</strong> לראיות נגד <span class="math inline">\(H_0\)</span>.</li>
-<li>אין “5% קבוע” — שיקול דעת בכל מחקר.</li>
-<li>מסקנה על מקרה בודד: האם הנתונים מפתיעים?</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="neyman-pearson">Neyman-Pearson</h3>
-<ul>
-<li>שתי השערות מוגדרות מראש, <span class="math inline">\(H_0\)</span> ו-<span class="math inline">\(H_1\)</span>.</li>
-<li><span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> ו-<strong>power</strong> נקבעים לפני האיסוף.</li>
-<li>כלל <strong>החלטה</strong> לטווח ארוך, לא מדד ראיות.</li>
-<li>Fisher התנגד בחריפות לכל זה.</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-danger callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>ההכלאה</strong></p>
-</div>
-<div class="callout-content">
-<p>ה-NHST שמלמדים: <span class="math inline">\(H_0\)</span> בלבד (Fisher), עם <span class="math inline">\(\alpha = .05\)</span> קבוע (Neyman-Pearson), ופירוש של ה-p-value כאילו הוא הסתברות של ההשערה (אף אחד מהם). זו תערובת שאף אחד מהאבות המייסדים לא היה מאשר.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="המטאפורה-הפרוידיאנית-של-gigerenzer" class="slide level2">
-<h2>המטאפורה הפרוידיאנית של Gigerenzer</h2>
-<p>הכלאה הופכת ללוגיקה פנימית סותרת, ש-Gigerenzer מתאר כמבנה נפשי:</p>
-<div>
-<ul>
-<li class="fragment"><strong>הסופר-אגו — Neyman-Pearson.</strong> קובע כללים קפדניים: <span class="math inline">\(\alpha\)</span> מראש, power, גודל מדגם. דורש ציות.</li>
-<li class="fragment"><strong>האגו — Fisher.</strong> מתפשר בפועל: מחשב p, משווה ל-5%, ממשיך הלאה בלי חלופה.</li>
-<li class="fragment"><strong>האיד — Bayes.</strong> מה שהחוקר <em>באמת</em> רוצה לדעת: מה הסיכוי שההשערה שלי נכונה? נדחק ל<strong>מרתף</strong>, אך הרצון נשאר, ופורץ החוצה בצורת פירוש שגוי של ה-p-value — אי-ההבנה מס’ 1.</li>
-</ul>
-</div>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>מה לקחת מזה</strong></p>
-</div>
-<div class="callout-content">
-<p>אי-ההבנות אינן טיפשות של חוקרים. הן פתרון טבעי לכך שהכלי שקיבלו לא עונה על השאלה שהם שואלים.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="הדגמה-ריקוד-ערכי-ה-p" class="slide level2">
-<h2>הדגמה: ריקוד ערכי ה-p</h2>
-<p>אותו ניסוי בדיוק (שתי קבוצות, t-test), עם אפקט <strong>אמיתי וקבוע</strong>, שחוזר 400 פעמים.</p>
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>גודל האפקט האמיתי (d): <b id="dval_pd">0.40</b>
-      <input type="range" id="d_pd" min="0" max="1.2" step="0.05" value="0.4"></label>
-    <label>n בכל קבוצה: <b id="nval_pd">30</b>
-      <input type="range" id="n_pd" min="10" max="200" step="5" value="30"></label>
-    <button id="go_pd" style="padding:4px 12px; cursor:pointer;">חזרו על 400 הניסויים</button>
-  </div>
-  <div id="demo-pdance" style="width:100%; height:300px;"></div>
-  <div id="first_pd" style="text-align:center; font-size:0.8em; padding:4px;"></div>
-  <div id="out_pd" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
-</div>
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-<script>
-(function() {
-  const R = 400;
-  function randn() {
-    let u = 0, v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-  function lgamma(x) {
-    const c = [76.18009172947146, -86.50532032941677, 24.01409824083091,
-               -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
-    let y = x, tmp = x + 5.5;
-    tmp -= (x + 0.5) * Math.log(tmp);
-    let ser = 1.000000000190015;
-    for (let j = 0; j < 6; j++) { y += 1; ser += c[j] / y; }
-    return -tmp + Math.log(2.5066282746310005 * ser / x);
-  }
-  function betacf(a, b, x) {
-    const qab = a + b, qap = a + 1, qam = a - 1;
-    let c = 1, d = 1 - qab * x / qap;
-    if (Math.abs(d) < 1e-30) d = 1e-30;
-    d = 1 / d;
-    let h = d;
-    for (let m = 1; m <= 200; m++) {
-      const m2 = 2 * m;
-      let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
-      d = 1 + aa * d; if (Math.abs(d) < 1e-30) d = 1e-30;
-      c = 1 + aa / c; if (Math.abs(c) < 1e-30) c = 1e-30;
-      d = 1 / d; h *= d * c;
-      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
-      d = 1 + aa * d; if (Math.abs(d) < 1e-30) d = 1e-30;
-      c = 1 + aa / c; if (Math.abs(c) < 1e-30) c = 1e-30;
-      d = 1 / d;
-      const del = d * c;
-      h *= del;
-      if (Math.abs(del - 1) < 3e-7) break;
-    }
-    return h;
-  }
-  function betai(a, b, x) {
-    if (x <= 0) return 0;
-    if (x >= 1) return 1;
-    const bt = Math.exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
-    if (x < (a + 1) / (a + b + 2)) return bt * betacf(a, b, x) / a;
-    return 1 - bt * betacf(b, a, 1 - x) / b;
-  }
-  // p דו-צדדי של t עם df דרגות חופש
-  function pTwoSided(t, df) {
-    return betai(df / 2, 0.5, df / (df + t * t));
-  }
-  function oneExperiment(n, d) {
-    let s1 = 0, s2 = 0, q1 = 0, q2 = 0;
-    for (let i = 0; i < n; i++) {
-      const a = randn(), b = randn() + d;
-      s1 += a; q1 += a * a; s2 += b; q2 += b * b;
-    }
-    const m1 = s1 / n, m2 = s2 / n;
-    const v1 = (q1 - n * m1 * m1) / (n - 1), v2 = (q2 - n * m2 * m2) / (n - 1);
-    const sp2 = (v1 + v2) / 2;
-    const t = (m2 - m1) / Math.sqrt(sp2 * 2 / n);
-    return pTwoSided(t, 2 * n - 2);
-  }
-  function fmt(p) { return p < 0.001 ? '<.001' : p.toFixed(3).replace(/^0/, ''); }
-  function draw() {
-    const d = parseFloat(document.getElementById('d_pd').value);
-    const n = parseInt(document.getElementById('n_pd').value);
-    document.getElementById('dval_pd').textContent = d.toFixed(2);
-    document.getElementById('nval_pd').textContent = n;
-
-    const ps = [];
-    for (let r = 0; r < R; r++) ps.push(oneExperiment(n, d));
-    const bins = new Array(20).fill(0);
-    ps.forEach(p => { bins[Math.min(19, Math.floor(p / 0.05))]++; });
-    const centers = bins.map((_, i) => 0.05 * i + 0.025);
-    const colors = bins.map((_, i) => i === 0 ? '#c0392b' : '#2980b9');
-    const sig = ps.filter(p => p < 0.05).length;
-    const sorted = ps.slice().sort((a, b) => a - b);
-    const q = f => sorted[Math.floor(f * (R - 1))];
-
-    const trace = { x: centers, y: bins, type: 'bar', width: 0.045, marker: { color: colors } };
-    const layout = {
-      xaxis: { title: 'ערך p', range: [0, 1] },
-      yaxis: { title: 'מספר חזרות (מתוך ' + R + ')' },
-      margin: { t: 15, b: 45, l: 55, r: 20 },
-      shapes: [{ type: 'line', x0: 0.05, x1: 0.05, y0: 0, y1: 1, yref: 'paper',
-                 line: { color: '#27ae60', width: 2, dash: 'dash' } }]
-    };
-    Plotly.newPlot('demo-pdance', [trace], layout, { displayModeBar: false });
-
-    document.getElementById('first_pd').innerHTML = 'הניסויים הראשונים: ' +
-      ps.slice(0, 12).map(p => '<span style="color:' + (p < 0.05 ? '#c0392b' : '#555') +
-        '; font-weight:' + (p < 0.05 ? 'bold' : 'normal') + ';">' + fmt(p) + '</span>').join(' , ');
-
-    const el = document.getElementById('out_pd');
-    el.textContent = sig + ' מתוך ' + R + ' (' + (100 * sig / R).toFixed(0) + '%) מתחת ל-0.05  ·  ' +
-                     'p חציוני ' + fmt(q(0.5)) + '  ·  90% מהערכים בין ' + fmt(q(0.05)) + ' ל-' + fmt(q(0.95));
-    if (d === 0) { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
-    else if (sig / R > 0.8) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
-    else { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
-  }
-  ['d_pd', 'n_pd'].forEach(id => document.getElementById(id).addEventListener('input', draw));
-  document.getElementById('go_pd').addEventListener('click', draw);
-  setTimeout(draw, 400);
-})();
-</script>
-</section>
-<section id="מה-ההדגמה-מראה" class="slide level2">
-<h2>מה ההדגמה מראה</h2>
-<div>
-<ul>
-<li class="fragment"><strong>אותו אפקט, אותו n, אותו ניסוי</strong> — ובכל זאת p נע בין ערכים כמעט אפס לערכים קרובים ל-1. ה-p-value הוא סטטיסטי מדגם, ומשתנה כמו כל סטטיסטי אחר.</li>
-<li class="fragment">עם עוצמה נמוכה (אפקט קטן או n קטן) רוב החזרות <strong>לא</strong> יורדות מתחת ל-0.05, אף שהאפקט אמיתי לגמרי.</li>
-<li class="fragment">כשהאפקט הוא אפס (<span class="math inline">\(d = 0\)</span>) ההתפלגות שטוחה, ובדיוק כ-5% יורדים מתחת ל-0.05. <strong>אין ערך של p שמעיד על “אפס”.</strong></li>
-</ul>
-</div>
+<section id="ההגדרה-היסודית-ההבדל-בין-ההבדלים" class="slide level2">
+<h2>ההגדרה היסודית: “ההבדל בין ההבדלים”</h2>
+<p>נביט בהפרש האפקט של <span class="math inline">\(X_1\)</span> בשני התנאים של <span class="math inline">\(X_2\)</span>:</p>
+<p><span class="math display">\[\Delta_1 = \text{Effect of } X_1 \text{ at } X_2=0\]</span> <span class="math display">\[\Delta_2 = \text{Effect of } X_1 \text{ at } X_2=1\]</span></p>
+<p><span class="math display">\[\beta_3 = \Delta_2 - \Delta_1\]</span></p>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>מסקנה: למה p לא אומר שום דבר על שחזור</strong></p>
+<p><strong>כלל ברזל</strong></p>
 </div>
 <div class="callout-content">
-<p>סיכוי השחזור תלוי באפקט האמיתי וב-n של הניסוי הבא, שהם מה שלא ידוע. ה-p של הניסוי הראשון הוא רק מדגם בודד מתוך ההתפלגות שראיתם עכשיו.</p>
+<p>פרמטר האינטראקציה נאמד ונאמד בדיוק כמו כל פרמטר אחר במודל הליניארי!</p>
 </div>
 </div>
 </div>
 </section>
-<section id="גם-bayes-יכול-להפוך-לטקס" class="slide level2">
-<h2>גם Bayes יכול להפוך לטקס</h2>
-<p>Gigerenzer &amp; Marewski (2015) מזהירים מפני <strong>“universal method”</strong> — מתכון אחד שמחליף שיקול דעת.</p>
-<div>
-<ul>
-<li class="fragment">אם “<span class="math inline">\(BF &gt; 3\)</span>” או “<span class="math inline">\(BF &gt; 10\)</span>” מחליף את “<span class="math inline">\(p &lt; .05\)</span>” כסף קסמים, החלפנו טקס בטקס.</li>
-<li class="fragment">prior ברירת מחדל שלא נבחר מתוך ידע בתחום הוא ה-“5%” החדש.</li>
-<li class="fragment">posterior הוא מסקנה <strong>מותנית במודל וב-prior</strong>. אם המודל שגוי, גם ההסתברות הבייסיאנית שגויה.</li>
-</ul>
-</div>
-<div class="callout callout-important callout-captioned callout-style-default">
+<section id="הכשל-הנפוץ-ביותר-בספרות-המדעית" class="slide level2">
+<h2>הכשל הנפוץ ביותר בספרות המדעית!</h2>
+<p>חוקרים רבים טוענים לקיומה של אינטראקציה בדרך השגויה הבאה:</p>
+<div class="callout callout-danger callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>מה באמת מגן מפני טקס</strong></p>
+<p><strong>הטעות הקלאסית</strong></p>
 </div>
 <div class="callout-content">
-<p>הגדרת השערה שיכולה להיכשל, בחירה מנומקת של prior ושל אפקט מינימלי רלוונטי, דיווח של <strong>אי-ודאות</strong> (התפלגות ולא נקודה), וחשיבה על השאלה המדעית לפני שבוחרים כלי.</p>
+<p>“בקבוצה A האפקט היה מובהק (<span class="math inline">\(p &lt; 0.05\)</span>), ואילו בקבוצה B האפקט לא היה מובהק (<span class="math inline">\(p &gt; 0.05\)</span>), ולכן יש אינטראקציה!”</p>
 </div>
 </div>
 </div>
+<div>
+<ul>
+<li class="fragment"><strong>מדוע זו טעות קשה?</strong> ההבדל בין “מובהק” ל”לא מובהק” אינו כשלעצמו מובהק סטטיסטית!</li>
+<li class="fragment"><strong>הדרך הנכונה:</strong> חובה לבחון ישירות את המובהקות/ה-Posterior של פרמטר האינטראקציה <strong><span class="math inline">\(\beta_3\)</span></strong>!</li>
+</ul>
+</div>
+</section>
+<section id="שלושה-דפוסים-של-אינטראקציה" class="slide level2">
+<h2>שלושה דפוסים של אינטראקציה</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3 id="אדיטיבי-טהור">1. אדיטיבי טהור</h3>
+<ul>
+<li>קווים מקבילים לחלוטין.</li>
+<li><span class="math inline">\(\beta_3 = 0\)</span>.</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="אינטראקציה-של-הגברה">2. אינטראקציה של הגברה</h3>
+<ul>
+<li>האפקט קיים בשני התנאים, אך עוצמתו שונה.</li>
+<li>הקווים מתרחקים זה מזה.</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="crossover-interaction">3. Crossover Interaction</h3>
+<ul>
+<li>האפקט הופך את כיוונו בין התנאים!</li>
+<li>הקווים מצטלבים בצורת X.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="הדגמה-אינטראקטיבית-שליטה-באינטראקציה-beta_3" class="slide level2">
+<h2>הדגמה אינטראקטיבית: שליטה באינטראקציה (<span class="math inline">\(\beta_3\)</span>)</h2>
+<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
+    <label>β1 (אפקט A): <b id="b1val_in">2.0</b>
+      <input type="range" id="b1_in" min="-10" max="10" step="0.5" value="2"></label>
+    <label>β2 (אפקט B): <b id="b2val_in">10.0</b>
+      <input type="range" id="b2_in" min="-10" max="10" step="0.5" value="10"></label>
+    <label>β3 (אינטראקציה): <b id="b3val_in">8.0</b>
+      <input type="range" id="b3_in" min="-10" max="10" step="0.5" value="8"></label>
+  </div>
+  <div id="demo-inter" style="width:100%; height:340px;"></div>
+  <div id="pattern_in" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
+</div>
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<script>
+(function() {
+  let b0 = 10;
+  function drawInteractionDemo() {
+    let b1 = parseFloat(document.getElementById('b1_in').value);
+    let b2 = parseFloat(document.getElementById('b2_in').value);
+    let b3 = parseFloat(document.getElementById('b3_in').value);
+    document.getElementById('b1val_in').textContent = b1.toFixed(1);
+    document.getElementById('b2val_in').textContent = b2.toFixed(1);
+    document.getElementById('b3val_in').textContent = b3.toFixed(1);
+
+    let a1b1 = b0, a1b2 = b0 + b2;
+    let a2b1 = b0 + b1, a2b2 = b0 + b1 + b2 + b3;
+
+    let trace1 = { x: ['B1', 'B2'], y: [a1b1, a1b2], mode: 'lines+markers', name: 'A1 (ביקורת)', line: {color: '#2980b9', width: 3}, marker: {size: 9} };
+    let trace2 = { x: ['B1', 'B2'], y: [a2b1, a2b2], mode: 'lines+markers', name: 'A2 (ניסוי)', line: {color: '#c0392b', width: 3}, marker: {size: 9} };
+
+    let layout = {
+      title: `β3 = ${b3.toFixed(1)}`,
+      xaxis: { title: 'גורם B' },
+      yaxis: { title: 'תוצאה מנובאת (Y)', range: [-15, 45] },
+      margin: { t: 40, b: 40, l: 45, r: 20 }
+    };
+    Plotly.newPlot('demo-inter', [trace1, trace2], layout, {displayModeBar:false});
+
+    let effectAtB1 = a2b1 - a1b1, effectAtB2 = a2b2 - a1b2;
+    let pattern = document.getElementById('pattern_in');
+    if (Math.abs(b3) < 0.3) {
+      pattern.textContent = '1. אדיטיבי טהור — הקווים מקבילים (β3 ≈ 0)';
+      pattern.style.background = '#eef5fa'; pattern.style.color = '#185fa5';
+    } else if (effectAtB1 * effectAtB2 < 0) {
+      pattern.textContent = '3. Crossover Interaction — האפקט הופך כיוון בין התנאים!';
+      pattern.style.background = '#fdecea'; pattern.style.color = '#a32d2d';
+    } else {
+      pattern.textContent = '2. אינטראקציה של הגברה — האפקט קיים בשני התנאים, בעוצמה שונה';
+      pattern.style.background = '#fdf3e3'; pattern.style.color = '#a1690a';
+    }
+  }
+  ['b1_in','b2_in','b3_in'].forEach(id => document.getElementById(id).addEventListener('input', drawInteractionDemo));
+  setTimeout(drawInteractionDemo, 400);
+})();
+</script>
 </section>
 <section id="סיכום-w7.v2" class="slide level2">
 <h2>סיכום W7.V2</h2>
 <ul>
-<li>ה-<strong>null ritual</strong>: השערת אפס, בלי השערה משלכם, 5% תמיד, דיווח מכני. זה טקס ולא שיטה.</li>
-<li>p הוא <span class="math inline">\(P(\text{data} \mid H_0)\)</span>. הוא אינו <span class="math inline">\(P(H_0 \mid \text{data})\)</span>, אינו סיכוי לשחזור, ואינו גודל אפקט.</li>
-<li>ה-NHST הנפוץ הוא הכלאה בין Fisher ל-Neyman-Pearson, ומכאן הבלבול הכרוני.</li>
-<li>ה-p-value משתנה פראית בין חזרות של אותו ניסוי, ולכן אינו יכול לנבא שחזור.</li>
-<li>גורם בייס ו-posterior אינם חסינים: כל כלל אוטומטי (“<span class="math inline">\(BF &gt; 10\)</span>”) הוא טקס פוטנציאלי.</li>
-<li>בשיעור הבא: מה קורה כשהטקס הזה מופעל שוב ושוב, על הרבה מבחנים, בשיטות מחקר גמישות.</li>
+<li>פרמטר האינטראקציה (<span class="math inline">\(\beta_3\)</span>) מודד את <strong>“ההבדל בין ההבדלים”</strong>.</li>
+<li>חובה לבחון ישירות את <span class="math inline">\(\beta_3\)</span> ולא להסתמך על השוואת אפקטים פשוטים.</li>
+<li>אינטראקציה משנה את מורפולוגיית הקווים במפתח הגרפי (מביאה לחוסר מקבילות או הצטלבות).</li>
 </ul>
 <div class="footer footer-default">
 

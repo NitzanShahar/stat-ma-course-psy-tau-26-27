@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W11.V1 — מנבאים מרובים</title>
+  <title>W11.V1 — covariance, correlation ומקדם Pearson</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,40 +325,28 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W11.V1 — מנבאים מרובים</h1>
-  <p class="subtitle">בהחזקת משתנה קבוע, מישור במקום קו, וכשהמנבאים מתואמים זה עם זה</p>
+  <h1 class="title">W11.V1 — covariance, correlation ומקדם Pearson</h1>
+  <p class="subtitle">אותה מכונה משבועות 5-7, רק ש-X כבר לא 0/1</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להרחיב את המודל הליניארי ליותר ממנבא אחד.</li>
-<li>לפרש מקדם כ<strong>אפקט של <span class="math inline">\(X_1\)</span> בהחזקת <span class="math inline">\(X_2\)</span> קבוע</strong> (holding constant) — ולהבין מה זה אומר גאומטרית.</li>
-<li>להבין למה <strong>collinearity</strong> מנפחת שגיאות תקן ומייצרת מקדמים לא יציבים, אף שהניבוי עצמו נשאר תקין.</li>
-<li>להשוות מודלים לפי מידת הצטמצמות ה-residual, ולשאול אם היא מצדיקה את המורכבות הנוספת.</li>
+<li>לחבר את שבוע 10 לשבוע 11: מבלבל רציף דורש מכונה, וזו <strong>אותה מכונה</strong> של שבועות 5-7.</li>
+<li>לעבור ממשתנה דמה למשתנה רציף במודל <span class="math inline">\(y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)</span> ולהבין מה <span class="math inline">\(\beta_1\)</span> אומר עכשיו.</li>
+<li>להגדיר <strong>covariance</strong> ולהבין למה היחידות שלה חסרות פשר.</li>
+<li>להגדיר <strong>correlation</strong> כ-covariance מתוקנן, ולקשר בין <span class="math inline">\(r\)</span>, השיפוע ו-<span class="math inline">\(R^2\)</span>.</li>
+<li>לראות למה <span class="math inline">\(r\)</span> במדגם קטן קופץ פראית סביב הערך האמיתי.</li>
 </ul>
 </section>
-<section id="מ-x-אחד-לכמה" class="slide level2">
-<h2>מ-<span class="math inline">\(X\)</span> אחד לכמה</h2>
-<p>המודל שאתם מכירים, עם מנבא נוסף:</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \varepsilon_i\]</span></p>
-<p>ובכלליות, עם <span class="math inline">\(p\)</span> מנבאים: <span class="math inline">\(y_i = \beta_0 + \sum_{j=1}^{p} \beta_j X_{ji} + \varepsilon_i\)</span>.</p>
+<section id="איפה-עצרנו-בשבוע-10" class="slide level2">
+<h2>איפה עצרנו בשבוע 10</h2>
 <div>
 <ul>
-<li class="fragment"><strong>האמידה לא השתנתה:</strong> מחפשים את המקדמים שמצמצמים את <span class="math inline">\(\sum \varepsilon_i^2\)</span> — אותו עיקרון של least squares.</li>
-<li class="fragment"><strong>מה שהשתנה הוא הפירוש</strong> של כל מקדם.</li>
-<li class="fragment">המודל הזה <strong>אדיטיבי</strong>: האפקט של <span class="math inline">\(X_1\)</span> זהה בכל רמה של <span class="math inline">\(X_2\)</span>. אם רוצים שהאפקט ישתנה — זה איבר המכפלה של W6.V2 (ובמצגת הבאה, עם משתנים רציפים).</li>
-</ul>
-</div>
-</section>
-<section id="פירוש-המקדם-בהחזקת-קבוע" class="slide level2">
-<h2>פירוש המקדם: “בהחזקת קבוע”</h2>
-<p>נניח: <span class="math inline">\(Y\)</span> = רמת סימפטומים דיכאוניים, <span class="math inline">\(X_1\)</span> = לחץ נתפס, <span class="math inline">\(X_2\)</span> = תמיכה חברתית.</p>
-<div>
-<ul>
-<li class="fragment"><span class="math inline">\(\beta_1\)</span> הוא ההבדל הצפוי ב-<span class="math inline">\(Y\)</span> בין שני אנשים שנבדלים ביחידה אחת של לחץ <strong>ושווים בתמיכה חברתית</strong>.</li>
-<li class="fragment">זה לא אותו דבר כמו המקדם של לחץ במודל שבו תמיכה חברתית אינה נמצאת. שני המקדמים שווים רק אם <span class="math inline">\(X_1\)</span> ו-<span class="math inline">\(X_2\)</span> בלתי מתואמים.</li>
-<li class="fragment">ככל ש-<span class="math inline">\(X_1\)</span> ו-<span class="math inline">\(X_2\)</span> מתואמים יותר, כך המקדם הפשוט והמקדם “בהחזקת קבוע” יכולים להיות שונים יותר — ואפילו בסימן הפוך.</li>
+<li class="fragment">הגרף הסיבתי (DAG) אמר: כדי להעריך את האפקט חייבים <strong>לפקח על גיל</strong>.</li>
+<li class="fragment">ניסינו <strong>ריבוד</strong>: לחתוך את הנבדקים לשכבות לפי גיל ולהשוות בתוך כל שכבה.</li>
+<li class="fragment">הריבוד קורס. גיל הוא עשרות רמות; ועוד מבלבל, ועוד אחד. למשל: 40 רמות גיל × 3 מבלבלים בינאריים = 320 תאים, על מדגם של 200 נבדקים.</li>
+<li class="fragment">רוב התאים ריקים, והשאר מכילים שניים-שלושה נבדקים.</li>
 </ul>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
@@ -367,214 +355,30 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>“בהחזקת קבוע” הוא סטטיסטי, לא ניסויי</strong></p>
+<p><strong>המכונה שחסרה</strong></p>
 </div>
 <div class="callout-content">
-<p>לא החזקנו שום דבר קבוע. השוונו בין אנשים שבמקרה דומים ב-<span class="math inline">\(X_2\)</span>. השאלה <strong>אילו</strong> משתנים ראוי להחזיק קבועים אינה שאלה של המודל — זו שאלה של הגרף מהשבוע התשיעי. נחזור לזה ב-W11.V4.</p>
+<p>צריך דרך להתאים לגיל <strong>בלי לחתוך אותו לקבוצות</strong>: להכניס אותו למודל כמשתנה רציף, כלומר כקו. זו לא מכונה חדשה. זו המכונה של empty model, המודל האדיטיבי וה-interaction, עם X אחר.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="גאומטריה-מישור-במקום-קו" class="slide level2">
-<h2>גאומטריה: מישור במקום קו</h2>
+<section id="אותה-משוואה-x-אחר" class="slide level2">
+<h2>אותה משוואה, X אחר</h2>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_i + \epsilon_i\]</span></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="מנבא-אחד">מנבא אחד</h3>
+<h3 id="כש-x-הוא-משתנה-דמה-01">כש-X הוא משתנה דמה (0/1)</h3>
 <ul>
-<li>הנתונים חיים במרחב דו-ממדי: <span class="math inline">\((X, Y)\)</span>.</li>
-<li>המודל הוא <strong>קו</strong>.</li>
-<li>ה-residual הוא המרחק האנכי של כל נקודה מהקו.</li>
+<li><span class="math inline">\(\beta_0\)</span> = ממוצע קבוצת הייחוס.</li>
+<li><span class="math inline">\(\beta_1\)</span> = <strong>ההפרש</strong> בין שני הממוצעים.</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<h3 id="שני-מנבאים">שני מנבאים</h3>
+<h3 id="כש-x-רציף">כש-X רציף</h3>
 <ul>
-<li>הנתונים חיים במרחב תלת-ממדי: <span class="math inline">\((X_1, X_2, Y)\)</span>.</li>
-<li>המודל הוא <strong>מישור</strong>.</li>
-<li>ה-residual הוא המרחק האנכי של כל נקודה מהמישור.</li>
+<li><span class="math inline">\(\beta_0\)</span> = הערך המנובא כש-<span class="math inline">\(X = 0\)</span>.</li>
+<li><span class="math inline">\(\beta_1\)</span> = <strong>שיפוע (slope)</strong>: בכמה יחידות Y משתנה הערך המנובא כש-X עולה ביחידה אחת.</li>
 </ul>
-</div>
-</div>
-<div>
-<ul>
-<li class="fragment"><span class="math inline">\(\beta_1\)</span> הוא השיפוע של המישור <strong>בכיוון ציר <span class="math inline">\(X_1\)</span></strong>; <span class="math inline">\(\beta_2\)</span> הוא השיפוע בכיוון ציר <span class="math inline">\(X_2\)</span>.</li>
-<li class="fragment">כל חתך של המישור לאורך <span class="math inline">\(X_1\)</span> הוא קו באותו שיפוע — וזו בדיוק משמעות ה<strong>אדיטיביות</strong>.</li>
-<li class="fragment">עם שלושה מנבאים ויותר זה hyperplane שאי אפשר לצייר, אבל הרעיון זהה.</li>
-</ul>
-</div>
-</section>
-<section id="collinearity-כשהמנבאים-מתואמים" class="slide level2">
-<h2>Collinearity: כשהמנבאים מתואמים</h2>
-<div>
-<ul>
-<li class="fragment">כש-<span class="math inline">\(X_1\)</span> ו-<span class="math inline">\(X_2\)</span> מתואמים חזק, ענן הנקודות במישור <span class="math inline">\((X_1, X_2)\)</span> הוא אליפסה צרה.</li>
-<li class="fragment">המישור מוצב היטב <strong>בתוך</strong> האליפסה — לכן הניבוי תקין.</li>
-<li class="fragment">אבל הנטייה שלו <strong>לרוחב</strong> האליפסה (כיוון שבו <span class="math inline">\(X_1\)</span> עולה ו-<span class="math inline">\(X_2\)</span> יורד) כמעט לא נקבעת על ידי הנתונים: שולחן שכל רגליו בשורה אחת.</li>
-</ul>
-</div>
-<p>עבור מנבא <span class="math inline">\(j\)</span>, שגיאת התקן של המקדם היא:</p>
-<p><span class="math display">\[SE(\hat\beta_j) = \frac{\sigma}{s_{X_j}\sqrt{n-1}} \cdot \sqrt{\text{VIF}_j}, \qquad \text{VIF}_j = \frac{1}{1 - R_j^2}\]</span></p>
-<p>כאשר <span class="math inline">\(R_j^2\)</span> הוא ה-<span class="math inline">\(R^2\)</span> מהחיזוי של <span class="math inline">\(X_j\)</span> מכל שאר המנבאים. בשני מנבאים: <span class="math inline">\(R_j^2 = r^2\)</span>.</p>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>VIF בפועל</strong></p>
-</div>
-<div class="callout-content">
-<p><span class="math inline">\(r = 0.9\)</span> נותן <span class="math inline">\(\text{VIF} \approx 5.3\)</span>, כלומר שגיאת התקן גדולה פי <span class="math inline">\(\sqrt{5.3} \approx 2.3\)</span>. <span class="math inline">\(r = 0.99\)</span> נותן <span class="math inline">\(\text{VIF} \approx 50\)</span>, כלומר פי 7 בערך.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="הדגמה-אינטראקטיבית-קולינאריות-ואי-יציבות-המקדמים" class="slide level2">
-<h2>הדגמה אינטראקטיבית: קולינאריות ואי-יציבות המקדמים</h2>
-<p>האמת קבועה: <span class="math inline">\(\beta_1 = \beta_2 = 1\)</span>, <span class="math inline">\(\sigma = 2\)</span>. בכל שינוי בסליידר מוגרלות 300 דגימות חדשות ובכל אחת נאמד המודל.</p>
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>המתאם בין X1 ל-X2 (r): <b id="rval_mc">0.30</b>
-      <input type="range" id="r_mc" min="0" max="0.99" step="0.01" value="0.3"></label>
-    <label>גודל המדגם (n): <b id="nval_mc">60</b>
-      <input type="range" id="n_mc" min="30" max="200" step="10" value="60"></label>
-    <button id="btn_mc" style="font-size:0.9em; padding:3px 12px;">דגימות חדשות</button>
-  </div>
-  <div style="display:flex; flex-wrap:wrap; gap:8px;">
-    <div id="demo-mc-hist" style="flex:1 1 320px; height:300px;"></div>
-    <div id="demo-mc-sc" style="flex:1 1 320px; height:300px;"></div>
-  </div>
-  <div id="out_mc" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; font-size:0.9em;"></div>
-</div>
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-<script>
-(function() {
-  const B0 = 1, B1 = 1, B2 = 1, SIGMA = 2, REPS = 300;
-  function randn() {
-    let u = 0, v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-  function sd(a) {
-    const m = a.reduce((s, x) => s + x, 0) / a.length;
-    return Math.sqrt(a.reduce((s, x) => s + (x - m) * (x - m), 0) / (a.length - 1));
-  }
-  function mean(a) { return a.reduce((s, x) => s + x, 0) / a.length; }
-
-  let res = null;
-
-  function simulate() {
-    const r = parseFloat(document.getElementById('r_mc').value);
-    const n = parseInt(document.getElementById('n_mc').value);
-    const out = { r: r, n: n, b1: [], b2: [], se1: [], rmse: [] };
-    for (let rep = 0; rep < REPS; rep++) {
-      const x1 = new Array(n), x2 = new Array(n), y = new Array(n), mu = new Array(n);
-      for (let i = 0; i < n; i++) {
-        x1[i] = randn();
-        x2[i] = r * x1[i] + Math.sqrt(1 - r * r) * randn();
-        mu[i] = B0 + B1 * x1[i] + B2 * x2[i];
-        y[i] = mu[i] + SIGMA * randn();
-      }
-      const m1 = mean(x1), m2 = mean(x2), my = mean(y);
-      let S11 = 0, S22 = 0, S12 = 0, S1y = 0, S2y = 0, Syy = 0;
-      for (let i = 0; i < n; i++) {
-        const a = x1[i] - m1, b = x2[i] - m2, c = y[i] - my;
-        S11 += a * a; S22 += b * b; S12 += a * b;
-        S1y += a * c; S2y += b * c; Syy += c * c;
-      }
-      const det = S11 * S22 - S12 * S12;
-      const b1 = (S22 * S1y - S12 * S2y) / det;
-      const b2 = (S11 * S2y - S12 * S1y) / det;
-      const b0 = my - b1 * m1 - b2 * m2;
-      const sse = Syy - b1 * S1y - b2 * S2y;
-      const s2 = sse / (n - 3);
-      out.b1.push(b1); out.b2.push(b2);
-      out.se1.push(Math.sqrt(s2 * S22 / det));
-      let e2 = 0;
-      for (let i = 0; i < n; i++) {
-        const d = b0 + b1 * x1[i] + b2 * x2[i] - mu[i];
-        e2 += d * d;
-      }
-      out.rmse.push(Math.sqrt(e2 / n));
-    }
-    res = out;
-  }
-
-  function draw() {
-    if (!res) return;
-    document.getElementById('rval_mc').textContent = res.r.toFixed(2);
-    document.getElementById('nval_mc').textContent = res.n;
-
-    const hist = { x: res.b1, type: 'histogram', nbinsx: 40,
-                   marker: { color: '#2980b9' }, name: 'β1 נאמד' };
-    Plotly.newPlot('demo-mc-hist', [hist], {
-      title: { text: 'התפלגות β1 הנאמד ב-300 דגימות', font: { size: 13 } },
-      xaxis: { title: 'β1 נאמד', range: [-6, 8] },
-      yaxis: { title: 'מספר דגימות' },
-      shapes: [{ type: 'line', x0: B1, x1: B1, y0: 0, y1: 1, yref: 'paper',
-                 line: { color: '#27ae60', width: 3, dash: 'dash' } }],
-      margin: { t: 40, b: 45, l: 50, r: 15 }
-    }, { displayModeBar: false, responsive: true });
-
-    const sc = { x: res.b1, y: res.b2, mode: 'markers', type: 'scatter',
-                 marker: { color: '#2980b9', size: 5, opacity: 0.45 }, name: 'דגימות' };
-    const truth = { x: [B1], y: [B2], mode: 'markers', type: 'scatter',
-                    marker: { color: '#c0392b', size: 13, symbol: 'star' }, name: 'האמת' };
-    Plotly.newPlot('demo-mc-sc', [sc, truth], {
-      title: { text: 'כל נקודה: (β1, β2) מדגימה אחת', font: { size: 13 } },
-      xaxis: { title: 'β1 נאמד', range: [-6, 8] },
-      yaxis: { title: 'β2 נאמד', range: [-6, 8] },
-      showlegend: false,
-      margin: { t: 40, b: 45, l: 50, r: 15 }
-    }, { displayModeBar: false, responsive: true });
-
-    const sumB = res.b1.map((v, i) => v + res.b2[i]);
-    const vif = 1 / (1 - res.r * res.r);
-    const el = document.getElementById('out_mc');
-    el.textContent = 'VIF = ' + vif.toFixed(1) +
-      '  ·  SD של β1 בין דגימות = ' + sd(res.b1).toFixed(2) +
-      '  ·  SE ממוצע = ' + mean(res.se1).toFixed(2) +
-      '  ·  SD של β1+β2 = ' + sd(sumB).toFixed(2) +
-      '  ·  שגיאת הניבוי (RMSE) = ' + mean(res.rmse).toFixed(2);
-    if (vif > 5) { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
-    else { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
-  }
-
-  function redo() { simulate(); draw(); }
-  ['r_mc', 'n_mc'].forEach(id => document.getElementById(id).addEventListener('input', redo));
-  document.getElementById('btn_mc').addEventListener('click', redo);
-  if (window.Reveal && Reveal.on) {
-    Reveal.on('slidechanged', function() {
-      setTimeout(function() {
-        try { Plotly.Plots.resize('demo-mc-hist'); Plotly.Plots.resize('demo-mc-sc'); } catch (e) {}
-      }, 150);
-    });
-  }
-  setTimeout(redo, 400);
-})();
-</script>
-</section>
-<section id="מה-ההדגמה-מראה" class="slide level2">
-<h2>מה ההדגמה מראה</h2>
-<div>
-<ul>
-<li class="fragment"><strong>המרכז לא זז.</strong> גם ב-<span class="math inline">\(r = 0.99\)</span> האומדנים מתרכזים סביב האמת: collinearity אינה יוצרת הטיה, היא מנפחת <strong>שונות</strong>.</li>
-<li class="fragment"><strong>הפיזור מתרחב</strong>, וה-SE הממוצע עוקב אחרי ה-SD האמיתי בין דגימות — כלומר המודל “יודע” שהוא לא בטוח.</li>
-<li class="fragment"><strong>הענן בתרשים הימני מתארך לאורך האלכסון השלילי:</strong> דגימה שבה <span class="math inline">\(\hat\beta_1\)</span> גבוה מדי היא דגימה שבה <span class="math inline">\(\hat\beta_2\)</span> נמוך מדי. ה<strong>סכום</strong> <span class="math inline">\(\hat\beta_1 + \hat\beta_2\)</span> נשאר מדויק.</li>
-<li class="fragment"><strong>שגיאת הניבוי כמעט לא משתנה.</strong> מבחינת ניבוי אין בעיה.</li>
-</ul>
-</div>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>מה לא לעשות</strong></p>
-</div>
-<div class="callout-content">
-<p>לא מוחקים מנבא רק כי ה-VIF שלו גבוה. collinearity אינה הפרת הנחה — היא <strong>מחסור במידע</strong>: הנתונים אינם יכולים להבחין בין האפקטים. אילו משתנים שייכים למודל נקבע לפי השאלה (ולפי הגרף), לא לפי ה-VIF.</p>
-</div>
 </div>
 </div>
 <div class="callout callout-tip callout-captioned callout-style-default">
@@ -583,23 +387,22 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>מה כן עושים</strong></p>
+<p><strong>משתנה דמה הוא מקרה פרטי</strong></p>
 </div>
 <div class="callout-content">
-<p>דוגמים מדגם גדול יותר או מגוון יותר; מדווחים על האפקט המשותף כאשר השאלה מאפשרת זאת; מאחדים למשתנה אחד (composite) כשהמנבאים מודדים באופן תאורטי אותו מבנה; או מקבלים ש<strong>השאלה על אפקט של <span class="math inline">\(X_1\)</span> בנפרד מ-<span class="math inline">\(X_2\)</span> אינה ניתנת למענה עם הנתונים האלה</strong>.</p>
+<p>כש-X מקבל רק את הערכים 0 ו-1, הקו עובר בין שתי נקודות בלבד, והשיפוע שלו הוא בדיוק ההפרש בין הממוצעים. מה שהכרתם עד עכשיו הוא הרגרסיה הרציפה בגרסה שבה יש רק שני ערכי X.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="השוואת-מודלים-האם-ה-residual-הצטמצם-מספיק" class="slide level2">
-<h2>השוואת מודלים: האם ה-residual הצטמצם מספיק?</h2>
-<p>מודל <strong>מצומצם</strong> (compact, <span class="math inline">\(C\)</span>) מול מודל <strong>מורחב</strong> (augmented, <span class="math inline">\(A\)</span>) שמוסיף <span class="math inline">\(q\)</span> מנבאים. ההשוואה היא בעד כמה ה-residual קטן:</p>
-<p><span class="math display">\[\text{PRE} = \frac{SSE_C - SSE_A}{SSE_C}, \qquad F = \frac{(SSE_C - SSE_A)/q}{SSE_A/(n - p_A - 1)}\]</span></p>
+<section id="residual-אותו-מושג-ניחוש-אחר" class="slide level2">
+<h2>Residual: אותו מושג, ניחוש אחר</h2>
+<p><span class="math display">\[e_i = y_i - \hat{y}_i\]</span></p>
 <div>
 <ul>
-<li class="fragment"><strong>הוספת מנבא לעולם לא מגדילה את ה-SSE.</strong> גם מנבא של רעש טהור מצמצם אותו מעט, בגלל שהוא מתאים את עצמו למקריות במדגם.</li>
-<li class="fragment">לכן השאלה איננה “האם ה-SSE ירד”, אלא <strong>“האם הוא ירד יותר ממה שהיינו מצפים ממנבא חסר תוכן”</strong>. זה מה שמבחן <span class="math inline">\(F\)</span> בודק.</li>
-<li class="fragment">בהינתן collinearity, שני מנבאים יכולים להיות מובהקים <strong>במשותף</strong> (<span class="math inline">\(F\)</span> גדול) ובלי שאף אחד מהם מובהק <strong>בנפרד</strong> — כי יחד הם מסבירים הרבה, אך הנתונים לא יודעים למי להעניק את הקרדיט.</li>
+<li class="fragment"><strong>Empty model:</strong> כולם מקבלים את אותו ניחוש, <span class="math inline">\(\hat{y}_i = \bar{y}\)</span>.</li>
+<li class="fragment"><strong>מודל קבוצות:</strong> כל נבדק מקבל את ממוצע הקבוצה שלו.</li>
+<li class="fragment"><strong>רגרסיה:</strong> כל ערך של X מקבל ניחוש משלו, <span class="math inline">\(\hat{y}_i = b_0 + b_1 X_i\)</span>. הניחוש מגיע מקו ולא מממוצע קבוצה.</li>
 </ul>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
@@ -608,10 +411,230 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>לקראת W11.V3</strong></p>
+<p><strong>חיבור לשבוע 5</strong></p>
 </div>
 <div class="callout-content">
-<p>מבחן <span class="math inline">\(F\)</span> עונה על שאלה אחת: האם ההצטמצמות מובהקת. הוא אינו עונה על שאלה אחרת וחשובה לא פחות: <strong>האם המודל המורחב ינבא טוב יותר נתונים חדשים</strong>. את זה נבדוק כשנדבר על overfitting.</p>
+<p>ה-variance של Y הוא ממוצע ריבועי ה-residuals <strong>במודל הריק</strong>. השאלה של השבוע: בכמה מתכווצים ה-residuals כשמחליפים את הממוצע הכללי בקו?</p>
+</div>
+</div>
+</div>
+</section>
+<section id="covariance-ממוצע-מכפלות-הסטיות" class="slide level2">
+<h2>Covariance: ממוצע מכפלות הסטיות</h2>
+<p><span class="math display">\[\text{cov}(X, Y) = \frac{1}{n}\sum_{i=1}^{n}(X_i - \bar{X})(Y_i - \bar{Y})\]</span></p>
+<p>(בפועל מחלקים ב-<span class="math inline">\(n-1\)</span>, כמו ב-variance.)</p>
+<div>
+<ul>
+<li class="fragment">נבדק שמעל הממוצע <strong>גם</strong> ב-X <strong>וגם</strong> ב-Y תורם מכפלה חיובית. כך גם נבדק שמתחת לממוצע בשניהם.</li>
+<li class="fragment">נבדק שמעל בציר אחד ומתחת בשני תורם מכפלה שלילית.</li>
+<li class="fragment">הממוצע של כל המכפלות אומר לנו לאיזה <strong>כיוון</strong> הענן נוטה. וכש-<span class="math inline">\(X = Y\)</span> מקבלים את ה-variance.</li>
+</ul>
+</div>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>היחידות חסרות פשר</strong></p>
+</div>
+<div class="callout-content">
+<p>ה-covariance נמדדת ב”יחידות X כפול יחידות Y”. אם גיל נמדד בחודשים ולא בשנים, ה-covariance גדלה פי 12 והקשר לא השתנה בכלום. לכן ערך של 45 אינו “גדול” או “קטן”, ואי אפשר להשוות בין שני מחקרים.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="correlation-covariance-מתוקנן" class="slide level2">
+<h2>Correlation: covariance מתוקנן</h2>
+<p><span class="math display">\[r = \frac{\text{cov}(X, Y)}{s_X \cdot s_Y} = \frac{1}{n}\sum_{i=1}^{n} z_{X_i} \cdot z_{Y_i}\]</span></p>
+<div>
+<ul>
+<li class="fragment">מחלקים בסטיות התקן של שני המשתנים, ולכן היחידות <strong>מתבטלות</strong>.</li>
+<li class="fragment">הטווח הוא <span class="math inline">\([-1, 1]\)</span>. הקצוות <span class="math inline">\(\pm 1\)</span> מתקבלים רק כשכל הנקודות יושבות בדיוק על קו ישר.</li>
+<li class="fragment"><span class="math inline">\(r\)</span> <strong>סימטרי</strong>: המתאם בין X ל-Y שווה למתאם בין Y ל-X.</li>
+<li class="fragment"><span class="math inline">\(r = 0\)</span> אומר שאין קשר <strong>ליניארי</strong>. קשר מעגלי או U-שטוח יכול להניב <span class="math inline">\(r \approx 0\)</span>.</li>
+</ul>
+</div>
+</section>
+<section id="שלושה-מספרים-סיפור-אחד" class="slide level2">
+<h2>שלושה מספרים, סיפור אחד</h2>
+<p><span class="math display">\[\hat{\beta}_1 = \frac{\text{cov}(X, Y)}{s_X^2} = r \cdot \frac{s_Y}{s_X} \qquad\qquad R^2 = r^2 = 1 - \frac{SSE_{\text{model}}}{SSE_{\text{empty}}}\]</span></p>
+<div>
+<ul>
+<li class="fragment"><strong>השיפוע</strong> הוא <span class="math inline">\(r\)</span> מתורגם ליחידות: כמה Y משתנה, ביחידות Y, לכל יחידת X.</li>
+<li class="fragment">ההבדל החשוב: השיפוע <strong>אינו סימטרי</strong> (רגרסיה של Y על X שונה מרגרסיה של X על Y), ואילו <span class="math inline">\(r\)</span> סימטרי.</li>
+<li class="fragment"><span class="math inline">\(R^2\)</span> הוא החלק מה-residuals של המודל הריק שנעלם. למשל <span class="math inline">\(r = 0.5\)</span> נותן <span class="math inline">\(R^2 = 0.25\)</span>: רבע מה-variance מוסבר.</li>
+<li class="fragment">ה-residual הטיפוסי מתכווץ לפי <span class="math inline">\(s_Y \sqrt{1 - r^2}\)</span>.</li>
+</ul>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>מה יבוא אחר כך</strong></p>
+</div>
+<div class="callout-content">
+<p>כמו כל פרמטר בקורס, גם <span class="math inline">\(\beta_1\)</span> יקבל posterior עם רוחב. המספר במדגם הוא רק נקודת המוצא.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="הדגמה-אינטראקטיבית-ענן-קו-ו-residuals" class="slide level2">
+<h2>הדגמה אינטראקטיבית: ענן, קו ו-residuals</h2>
+<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
+    <label>r אמיתי: <b id="rtrue_v1">0.60</b>
+      <input type="range" id="rtrue_s1" min="-0.95" max="0.95" step="0.05" value="0.6"></label>
+    <label>גודל המדגם n: <b id="n_v1">25</b>
+      <input type="range" id="n_s1" min="5" max="300" step="5" value="25"></label>
+    <label><input type="checkbox" id="res_c1" checked=""> הצג residuals</label>
+    <button id="resample_b1" style="padding:3px 10px;">דגום מחדש</button>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:10px;">
+    <div id="demo-cloud1" style="flex:1 1 300px; min-width:0; height:340px;"></div>
+    <div id="demo-rdist1" style="flex:1 1 300px; min-width:0; height:340px;"></div>
+  </div>
+  <div id="out_v1" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
+  <div id="out2_v1" style="text-align:center; padding:6px; font-size:0.85em;"></div>
+</div>
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<script>
+(function() {
+  const NMAX = 300, REPS = 400;
+  let z1 = [], z2 = [];
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  function newDraws() {
+    z1 = []; z2 = [];
+    for (let i = 0; i < NMAX; i++) { z1.push(randn()); z2.push(randn()); }
+  }
+  function corr(a, b) {
+    const n = a.length;
+    let ma = 0, mb = 0;
+    for (let i = 0; i < n; i++) { ma += a[i]; mb += b[i]; }
+    ma /= n; mb /= n;
+    let sab = 0, saa = 0, sbb = 0;
+    for (let i = 0; i < n; i++) {
+      sab += (a[i] - ma) * (b[i] - mb);
+      saa += (a[i] - ma) * (a[i] - ma);
+      sbb += (b[i] - mb) * (b[i] - mb);
+    }
+    return sab / Math.sqrt(saa * sbb);
+  }
+  function draw() {
+    const rt = parseFloat(document.getElementById('rtrue_s1').value);
+    const n = parseInt(document.getElementById('n_s1').value);
+    const showRes = document.getElementById('res_c1').checked;
+    document.getElementById('rtrue_v1').textContent = rt.toFixed(2);
+    document.getElementById('n_v1').textContent = n;
+
+    // נתונים: X ~ (50, 10), Y ~ (100, 15) עם מתאם אמיתי rt
+    const k = Math.sqrt(1 - rt * rt);
+    const x = [], y = [];
+    for (let i = 0; i < n; i++) {
+      x.push(50 + 10 * z1[i]);
+      y.push(100 + 15 * (rt * z1[i] + k * z2[i]));
+    }
+    let mx = 0, my = 0;
+    for (let i = 0; i < n; i++) { mx += x[i]; my += y[i]; }
+    mx /= n; my /= n;
+    let sxy = 0, sxx = 0, syy = 0;
+    for (let i = 0; i < n; i++) {
+      sxy += (x[i] - mx) * (y[i] - my);
+      sxx += (x[i] - mx) * (x[i] - mx);
+      syy += (y[i] - my) * (y[i] - my);
+    }
+    const cov = sxy / (n - 1);
+    const b1 = sxy / sxx, b0 = my - b1 * mx;
+    const r = sxy / Math.sqrt(sxx * syy);
+
+    // residuals
+    const rx = [], ry = [];
+    for (let i = 0; i < n; i++) {
+      rx.push(x[i], x[i], null);
+      ry.push(y[i], b0 + b1 * x[i], null);
+    }
+    const traces = [];
+    if (showRes) traces.push({ x: rx, y: ry, mode: 'lines', line: { color: '#e0a39c', width: 1 }, hoverinfo: 'skip', showlegend: false });
+    traces.push({ x: x, y: y, mode: 'markers', marker: { color: '#2980b9', size: 7, opacity: 0.8 }, showlegend: false });
+    traces.push({ x: [15, 85], y: [b0 + b1 * 15, b0 + b1 * 85], mode: 'lines', line: { color: '#c0392b', width: 3 }, showlegend: false });
+    Plotly.newPlot('demo-cloud1', traces, {
+      title: 'הענן, קו הרגרסיה וה-residuals',
+      xaxis: { title: 'X', range: [15, 85] },
+      yaxis: { title: 'Y', range: [40, 160] },
+      margin: { t: 40, b: 45, l: 50, r: 15 }
+    }, { displayModeBar: false });
+
+    // התפלגות r ב-REPS מדגמים חוזרים באותו n
+    const rs = [];
+    for (let j = 0; j < REPS; j++) {
+      const a = [], b = [];
+      for (let i = 0; i < n; i++) {
+        const u = randn(), v = randn();
+        a.push(u); b.push(rt * u + k * v);
+      }
+      rs.push(corr(a, b));
+    }
+    const sorted = rs.slice().sort((p, q) => p - q);
+    const lo = sorted[Math.floor(0.025 * REPS)], hi = sorted[Math.floor(0.975 * REPS)];
+    Plotly.newPlot('demo-rdist1', [{
+      x: rs, type: 'histogram', xbins: { start: -1, end: 1, size: 0.05 },
+      marker: { color: '#95a5a6' }, showlegend: false
+    }], {
+      title: 'r ב-' + REPS + ' מדגמים חוזרים בגודל n',
+      xaxis: { title: 'r במדגם', range: [-1, 1] },
+      yaxis: { title: 'שכיחות' },
+      margin: { t: 40, b: 45, l: 50, r: 15 },
+      shapes: [
+        { type: 'line', x0: rt, x1: rt, y0: 0, y1: 1, yref: 'paper', line: { color: '#27ae60', width: 3, dash: 'dash' } },
+        { type: 'line', x0: r, x1: r, y0: 0, y1: 1, yref: 'paper', line: { color: '#c0392b', width: 3 } }
+      ]
+    }, { displayModeBar: false });
+
+    const el = document.getElementById('out_v1');
+    el.textContent = 'r במדגם ' + r.toFixed(2) + '  ·  r אמיתי ' + rt.toFixed(2) +
+                     '  ·  שיפוע ' + b1.toFixed(2) + '  ·  R² ' + (r * r).toFixed(2) +
+                     '  ·  cov ' + cov.toFixed(1);
+    const wide = (hi - lo) > 0.8;
+    if (wide) { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
+    else { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
+    document.getElementById('out2_v1').textContent =
+      '95% מהמדגמים בגודל ' + n + ' נותנים r בין ' + lo.toFixed(2) + ' ל-' + hi.toFixed(2) +
+      '   (ירוק מקווקו: הערך האמיתי, אדום: המדגם שבענן)';
+  }
+  newDraws();
+  ['rtrue_s1', 'n_s1', 'res_c1'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  document.getElementById('resample_b1').addEventListener('click', function() { newDraws(); draw(); });
+  setTimeout(draw, 400);
+})();
+</script>
+</section>
+<section id="מה-ההדגמה-מראה" class="slide level2">
+<h2>מה ההדגמה מראה</h2>
+<div>
+<ul>
+<li class="fragment"><strong>r גדול בערכו המוחלט:</strong> הנקודות צמודות לקו, וה-residuals (הקווים האדומים) קצרים.</li>
+<li class="fragment"><strong>n קטן:</strong> ההיסטוגרמה רחבה מאוד. במדגם של 10 נבדקים, <span class="math inline">\(r\)</span> אמיתי של 0.5 יכול לצאת 0.1 וגם 0.9.</li>
+<li class="fragment"><strong>גם כשהקשר האמיתי הוא 0</strong>, מדגם קטן ייתן לפעמים <span class="math inline">\(r\)</span> של <span class="math inline">\(\pm 0.5\)</span>. מתאם מרשים במדגם קטן אינו ראיה לקשר.</li>
+<li class="fragment">הגדלת n מצמצמת את ההיסטוגרמה סביב הערך האמיתי, אבל לעולם לא מסירה אותה לגמרי.</li>
+</ul>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>למה posterior ולא נקודה</strong></p>
+</div>
+<div class="callout-content">
+<p>זו הסיבה שנדווח על <span class="math inline">\(\beta_1\)</span> ועל <span class="math inline">\(\rho\)</span> כהתפלגות עם רוחב, ולא כמספר אחד. הרוחב הזה הוא בדיוק מה שההיסטוגרמה בהדגמה מראה.</p>
 </div>
 </div>
 </div>
@@ -619,11 +642,12 @@
 <section id="סיכום-w11.v1" class="slide level2">
 <h2>סיכום W11.V1</h2>
 <ul>
-<li>מודל עם כמה מנבאים אמוד באותה דרך, אך כל מקדם מפורש <strong>בהחזקת שאר המנבאים קבועים</strong> — השוואה סטטיסטית, לא התערבות.</li>
-<li>גאומטרית, המודל הוא מישור (hyperplane); אדיטיביות פירושה שהשיפוע לאורך כל ציר זהה בכל נקודה על הציר האחר.</li>
-<li><strong>Collinearity</strong> מנפחת את שגיאות התקן פי <span class="math inline">\(\sqrt{\text{VIF}}\)</span> ומייצרת מקדמים לא יציבים בין דגימות, בלי להטות אותם ובלי לפגוע בניבוי.</li>
-<li>אין “לתקן” collinearity בהוצאת משתנים אוטומטית: זו בעיה של מידע, והפתרון תלוי בשאלה המחקרית.</li>
-<li>הצטמצמות ה-residual היא תמיד חיובית; השאלה היא אם היא גדולה מהצפוי ממנבא חסר תוכן — ואם היא תשרוד נתונים חדשים.</li>
+<li>הצורך ברגרסיה הרציפה נולד מהריבוד שקרס: מבלבל רציף נכנס למודל כקו, לא כרמות.</li>
+<li><span class="math inline">\(y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)</span> היא אותה משוואה בדיוק. כש-X רציף, <span class="math inline">\(\beta_1\)</span> הוא <strong>שיפוע</strong> ולא הפרש בין שתי קבוצות.</li>
+<li><strong>Covariance</strong> היא ממוצע מכפלות הסטיות, אך יחידותיה תלויות במשתנים ולכן אינן ניתנות לפירוש.</li>
+<li><strong>Correlation</strong> היא covariance מתוקנן, בטווח <span class="math inline">\([-1, 1]\)</span>. הקשרים: <span class="math inline">\(\hat{\beta}_1 = r \cdot s_Y / s_X\)</span> ו-<span class="math inline">\(R^2 = r^2\)</span>.</li>
+<li><strong>Residual</strong> הוא אותו מושג משבוע 5, רק שהניחוש הפרטני מגיע מקו.</li>
+<li>במדגם קטן <span class="math inline">\(r\)</span> הנאמד קופץ פראית סביב הערך האמיתי.</li>
 </ul>
 <div class="footer footer-default">
 

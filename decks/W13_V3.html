@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W13.V3 — עקומת ROC</title>
+  <title>W13.V3 — הרחבות, והחזרה ל-forest plot</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,70 +325,73 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W13.V3 — עקומת ROC</h1>
-  <p class="subtitle">מהסתברות מנובאת להחלטה בינארית, ומה עקומת ה-ROC אומרת ומה לא</p>
+  <h1 class="title">W13.V3 — הרחבות, והחזרה ל-forest plot</h1>
+  <p class="subtitle">יותר משני תנאים, אשכולות שאינם נבדקים, ומטא-אנליזה כמודל היררכי</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>לעבור מהסתברות מנובאת להחלטה בינארית באמצעות <strong>סף החלטה</strong>.</li>
-<li>לקרוא <strong>מטריצת בלבול</strong> ולחשב <strong>sensitivity</strong> ו-<strong>specificity</strong>, ולהבין את הפשרה ביניהם.</li>
-<li>להבין את <strong>עקומת ROC</strong> כאוסף של כל הספים האפשריים, ואת <strong>AUC</strong> כמדד כולל.</li>
-<li>לזכור ש-AUC מודד <strong>הפרדה</strong>, לא <strong>כיול</strong> (calibration).</li>
+<li>להבין שאותו מודל עובד גם ליותר משני תנאים ולאשכולות שאינם נבדקים.</li>
+<li>לקשר בין המודל ההיררכי לדגימת אשכולות (שבוע 8).</li>
+<li>להכיר את <strong>random slopes</strong> כרעיון בלבד.</li>
+<li>לזהות ש-<strong>random-effects meta-analysis</strong> משבוע 9 הוא בדיוק המודל ההיררכי, ושה-forest plot הוא תצוגה של partial pooling.</li>
+<li>להכיר את האזהרה המעשית: מעט אשכולות, מודל לא יציב.</li>
 </ul>
 </section>
-<section id="מהסתברות-מנובאת-להחלטה" class="slide level2">
-<h2>מהסתברות מנובאת להחלטה</h2>
-<p>רגרסיה לוגיסטית נותנת לכל נבדק הסתברות <span class="math inline">\(\hat p_i\)</span>. רופא, בית חולים או אלגוריתם צריכים <strong>החלטה</strong>: לטפל או לא, להפנות לבדיקה נוספת או לא.</p>
-<p><span class="math display">\[\hat y_i = \begin{cases} 1 &amp; \hat p_i \geq c \\ 0 &amp; \hat p_i &lt; c \end{cases}\]</span></p>
+<section id="מעבר-משני-תנאים-ליותר" class="slide level2">
+<h2>מעבר משני תנאים ליותר</h2>
+<p>הרעיון לא משתנה: לכל נבדק רמת בסיס משלו, שנמשכת מהתפלגות משותפת.</p>
+<p><span class="math display">\[y_{ij} = \beta_0 + \beta_{\text{cond}(j)} + u_i + \epsilon_{ij}, \qquad u_i \sim N(0, \tau^2)\]</span></p>
 <div>
 <ul>
-<li class="fragment"><span class="math inline">\(c\)</span> הוא <strong>סף ההחלטה</strong> (threshold). אין לו ערך “נכון” מתוך הנתונים.</li>
-<li class="fragment">הסף תלוי ב<strong>מחיר</strong> של כל סוג טעות: החמצת חולה, או אזעקת שווא.</li>
-<li class="fragment">ההחלטה נלקחת אחרי המודל, ואינה חלק ממנו. אותו מודל יכול לשרת ספים שונים.</li>
-</ul>
-</div>
-</section>
-<section id="מטריצת-הבלבול" class="slide level2">
-<h2>מטריצת הבלבול</h2>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: center;">המצב האמיתי: חולה</th>
-<th style="text-align: center;">המצב האמיתי: בריא</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>המודל חזה: חולה</strong></td>
-<td style="text-align: center;">true positive (TP)</td>
-<td style="text-align: center;">false positive (FP)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>המודל חזה: בריא</strong></td>
-<td style="text-align: center;">false negative (FN)</td>
-<td style="text-align: center;">true negative (TN)</td>
-</tr>
-</tbody>
-</table>
-<div>
-<ul>
-<li class="fragment"><strong>FP:</strong> אזעקת שווא. בריא שסומן כחולה.</li>
-<li class="fragment"><strong>FN:</strong> החמצה. חולה שסומן כבריא.</li>
-<li class="fragment">שתי הטעויות אינן שוות במחירן: בסקר לגילוי מוקדם FN הוא בדרך כלל חמור, ובבדיקה פולשנית יקרה דווקא FP.</li>
+<li class="fragment">שלושה תנאים, חמישה תנאים, או מדידות חוזרות לאורך זמן: אותו <span class="math inline">\(u_i\)</span>.</li>
+<li class="fragment">אין צורך ב”מבחן t מזווג מורחב”. המודל פשוט מכיל יותר פרמטרים של תנאים.</li>
+<li class="fragment">כל נבדק תורם מידע על ההבדלים בין התנאים, ורמת הבסיס שלו לא מפריעה.</li>
 </ul>
 </div>
 </section>
-<section id="sensitivity-ו-specificity" class="slide level2">
-<h2>sensitivity ו-specificity</h2>
-<p><span class="math display">\[\text{sensitivity} = \frac{TP}{TP + FN} \qquad\qquad \text{specificity} = \frac{TN}{TN + FP}\]</span></p>
+<section id="אשכולות-שאינם-נבדקים" class="slide level2">
+<h2>אשכולות שאינם נבדקים</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="דוגמאות">דוגמאות</h3>
+<ul>
+<li>תלמידים בתוך <strong>כיתות</strong>.</li>
+<li>מטופלים בתוך <strong>מרפאות</strong>.</li>
+<li>משתתפים בתוך <strong>מעבדות</strong> (מחקרי multi-site).</li>
+<li>תצפיות בתוך <strong>נבדקים</strong> (מה שראינו).</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="אותו-מבנה">אותו מבנה</h3>
+<ul>
+<li>“נבדק” הוא סתם אשכול שבו יש כמה תצפיות.</li>
+<li>לכל אשכול <span class="math inline">\(u_j\)</span> משלו, מהתפלגות משותפת.</li>
+<li><span class="math inline">\(\tau\)</span> מודד כמה האשכולות שונים זה מזה.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>חיבור לשבוע 8</strong></p>
+</div>
+<div class="callout-content">
+<p>דגימת אשכולות (cluster sampling) יוצרת בדיוק את התלות הזו. המודל ההיררכי הוא הדרך לנתח נתונים כאלה בלי להעמיד פנים שהתצפיות בלתי תלויות. ובנוסף, האשכולות שדגמנו הם מדגם מתוך אוכלוסייה של אשכולות, וזה מה שמאפשר להכליל מעבר אליהם.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="random-slopes-רק-כרעיון" class="slide level2">
+<h2>Random slopes: רק כרעיון</h2>
 <div>
 <ul>
-<li class="fragment"><strong>Sensitivity</strong> (או TPR): מבין החולים, איזה חלק זיהינו.</li>
-<li class="fragment"><strong>Specificity</strong>: מבין הבריאים, איזה חלק זיהינו כבריאים. ההשלמה שלה היא <span class="math inline">\(\text{FPR} = 1 - \text{specificity}\)</span>.</li>
-<li class="fragment"><strong>הפשרה:</strong> הורדת הסף מזהה יותר חולים (sensitivity עולה), אך גם מסמנת יותר בריאים כחולים (specificity יורדת). ההפך קורה בהעלאת הסף.</li>
+<li class="fragment">עד כאן, הנבדקים שונים ב<strong>רמת הבסיס</strong> בלבד. האפקט של התנאי זהה לכולם.</li>
+<li class="fragment">ברעיון של <strong>random slopes</strong>, גם <strong>גודל האפקט</strong> יכול להשתנות בין נבדקים: אצל אחד האפקט גדול, אצל אחר קטן.</li>
+<li class="fragment">אז יש לא רק התפלגות של רמות בסיס, אלא גם התפלגות של אפקטים.</li>
 </ul>
 </div>
 <div class="callout callout-warning callout-captioned callout-style-default">
@@ -397,179 +400,147 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>לא להתבלבל עם PPV</strong></p>
+<p><strong>לא נאמוד את זה בקורס</strong></p>
 </div>
 <div class="callout-content">
-<p>sensitivity ו-specificity נמדדות בתוך קבוצת החולים ובתוך קבוצת הבריאים, ולכן אינן תלויות בשכיחות המחלה. ה-<strong>positive predictive value</strong> (<span class="math inline">\(TP/(TP+FP)\)</span>) כן תלוי בשכיחות: באוכלוסייה שבה המחלה נדירה, גם בדיקה עם specificity גבוהה תפיק בעיקר FP.</p>
+<p>זה נושא מתקדם, והוא הרבה פחות יציב בנתונים קטנים. מספיק לדעת שהאפשרות קיימת ושהיא אותה לוגיקה: עוד פרמטר שיש לו התפלגות.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="עקומת-roc" class="slide level2">
-<h2>עקומת ROC</h2>
-<p>במקום לבחור סף אחד, בודקים <strong>את כולם</strong>. לכל סף <span class="math inline">\(c\)</span> מחשבים נקודה:</p>
-<p><span class="math display">\[\big(\,\text{FPR}(c),\ \text{TPR}(c)\,\big) = \big(\,1-\text{specificity},\ \text{sensitivity}\,\big)\]</span></p>
-<p>והעקומה היא אוסף הנקודות כשהסף עובר על כל הטווח.</p>
-<div>
-<ul>
-<li class="fragment"><strong>הפינה השמאלית העליונה:</strong> סיווג מושלם (sensitivity = 1, FPR = 0).</li>
-<li class="fragment"><strong>האלכסון:</strong> ניחוש אקראי. המודל לא מפריד בין החולים לבריאים.</li>
-<li class="fragment">ככל שהעקומה קרובה יותר לפינה, הפרדה טובה יותר.</li>
-<li class="fragment">הסף עצמו <strong>אינו מופיע</strong> בגרף: כל נקודה על העקומה היא סף אחר.</li>
-</ul>
-</div>
-</section>
-<section id="auc-שטח-מתחת-לעקומה" class="slide level2">
-<h2>AUC: שטח מתחת לעקומה</h2>
-<p><strong>AUC</strong> (area under the curve) מסכם את העקומה למספר אחד בין 0 ל-1.</p>
-<div>
-<ul>
-<li class="fragment"><strong>AUC = 0.5:</strong> אין הפרדה (האלכסון). <strong>AUC = 1:</strong> הפרדה מושלמת.</li>
-<li class="fragment"><strong>פירוש הסתברותי:</strong> AUC הוא ההסתברות שחולה שנבחר באקראי קיבל ציון גבוה יותר מבריא שנבחר באקראי.</li>
-<li class="fragment">למקרה של שתי התפלגויות נורמליות עם סטיית תקן 1 שממוצעיהן רחוקים <span class="math inline">\(d\)</span> זה מזה: <span class="math inline">\(\text{AUC} = \Phi(d/\sqrt{2})\)</span>.</li>
-</ul>
-</div>
-<p>מדד כולל נוח להשוואת מודלים, אך הוא <strong>מוותר</strong> על כל מידע על הסף שנבחר בפועל ועל מחיר הטעויות.</p>
-</section>
-<section id="auc-מודד-הפרדה-לא-כיול" class="slide level2">
-<h2>AUC מודד הפרדה, לא כיול</h2>
-<div class="callout callout-danger callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>הערה חשובה</strong></p>
-</div>
-<div class="callout-content">
-<p>AUC תלוי <strong>רק בסדר</strong> של הציונים. כל טרנספורמציה מונוטונית של ההסתברויות המנובאות (העלאה בריבוע, כפל ב-0.5) משאירה את ה-AUC בדיוק אותו דבר, וכמובן משנה לגמרי את ההסתברויות.</p>
-</div>
-</div>
-</div>
+<section id="החזרה-לשבוע-9-מטא-אנליזה-היא-המודל-הזה" class="slide level2">
+<h2>החזרה לשבוע 9: מטא-אנליזה היא המודל הזה</h2>
+<p><span class="math display">\[y_k \sim N(\theta_k,\, s_k^2), \qquad \theta_k \sim N(\mu,\, \tau^2)\]</span></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="הפרדה-discrimination">הפרדה (discrimination)</h3>
-<p>האם החולים מקבלים ציונים גבוהים יותר מהבריאים? זה מה ש-AUC מודד.</p>
+<h3 id="מה-שלמדנו-היום">מה שלמדנו היום</h3>
+<ul>
+<li>אשכול = נבדק או כיתה.</li>
+<li><span class="math inline">\(u_j\)</span> = הסטייה של האשכול מהממוצע.</li>
+<li><span class="math inline">\(\tau^2\)</span> = השונות בין האשכולות.</li>
+</ul>
 </div><div class="column" style="width:50%;">
-<h3 id="כיול-calibration">כיול (calibration)</h3>
-<p>האם כשהמודל אומר “70%”, אכן כ-70% מהאנשים האלה חולים? ל-AUC אין מה לומר על זה.</p>
-</div>
-</div>
-<div>
+<h3 id="מה-שראינו-בשבוע-9">מה שראינו בשבוע 9</h3>
 <ul>
-<li class="fragment">מודל יכול להפריד היטב ולהיות מכויל גרוע: למשל, מודל שנותן 0.9 לקבוצת סיכון גבוה ו-0.7 לקבוצת סיכון נמוכה, כשבפועל שכיחות המחלה בהן היא 30% ו-5%: הדירוג נכון, וההסתברויות שגויות לגמרי.</li>
-<li class="fragment">לכן במאמרי ניבוי מדווחים <strong>גם</strong> AUC <strong>וגם</strong> calibration (calibration plot).</li>
+<li>אשכול = <strong>מחקר</strong>.</li>
+<li><span class="math inline">\(\theta_k\)</span> = האפקט האמיתי של מחקר <span class="math inline">\(k\)</span>.</li>
+<li><span class="math inline">\(\tau^2\)</span> = השונות בין המחקרים (heterogeneity).</li>
 </ul>
 </div>
-</section>
-<section id="roc-כלי-של-עולם-הניבוי" class="slide level2">
-<h2>ROC כלי של עולם הניבוי</h2>
-<p>בשבוע 11 הבחנו בין <strong>prediction</strong> ל-<strong>inference</strong>. ROC שייך כולו לצד הראשון.</p>
-<div>
-<ul>
-<li class="fragment">ROC שואל: <strong>עד כמה המודל מנבא היטב</strong> את התוצאה. הוא לא שואל אם מנבא מסוים <strong>גורם</strong> לתוצאה.</li>
-<li class="fragment">AUC גבוה אינו מעיד שהמקדמים במודל הם אפקטים סיבתיים.</li>
-<li class="fragment">ולהפך: מנבא עם odds ratio גדול יכול לתרום מעט מאוד ל-AUC אם הוא נדיר או שהחפיפה בין הקבוצות נשארת גדולה. OR גדול אינו הפרדה טובה.</li>
-</ul>
 </div>
-<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>בקריאת ספרות</strong></p>
+<p><strong>פגשתם את המודל הזה לפני ארבעה שבועות</strong></p>
 </div>
 <div class="callout-content">
-<p>אם המאמר בונה מודל ניבוי, שאלו על AUC וכיול. אם הוא מעריך אפקט של חשיפה, ה-AUC אינו הרלוונטי, ואפשר לשאול מה מבנה ה-DAG.</p>
+<p>random-effects meta-analysis הוא partial pooling. ההבדל היחיד: את השונות התוך-אשכולית (<span class="math inline">\(s_k^2\)</span>, שגיאת התקן של המחקר) מקבלים מוכנה מהמאמר, במקום לאמוד אותה מהתצפיות הגולמיות.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-הסף-ההפרדה-ועקומת-ה-roc" class="slide level2">
-<h2>הדגמה אינטראקטיבית: הסף, ההפרדה ועקומת ה-ROC</h2>
-<p>בריאים ~ Normal(0, 1) וחולים ~ Normal(<span class="math inline">\(d\)</span>, 1), שכיחות שווה. הזיזו את המרחק בין ההתפלגויות ואת הסף.</p>
+<section id="ה-forest-plot-כתצוגה-של-partial-pooling" class="slide level2">
+<h2>ה-forest plot כתצוגה של partial pooling</h2>
+<div>
+<ul>
+<li class="fragment">כל <strong>מחקר</strong> הוא אשכול, עם אומדן וגודל אי-ודאות משלו.</li>
+<li class="fragment"><strong>המשקל</strong> של מחקר באומדן המשותף הוא <span class="math inline">\(1/(s_k^2 + \tau^2)\)</span>.</li>
+<li class="fragment">כש-<span class="math inline">\(\tau = 0\)</span>: fixed-effect, כלומר <strong>complete pooling</strong>. מחקרים גדולים שולטים.</li>
+<li class="fragment">כש-<span class="math inline">\(\tau\)</span> גדל: המשקלות מתיישרים, כל מחקר נחשב בערך אותו דבר, והכיווץ נעלם, כלומר מתקרבים ל-<strong>no pooling</strong>.</li>
+<li class="fragment">ה-<strong>shrinkage</strong> אומר: האפקט האמיתי של מחקר קטן ורועש קרוב לממוצע הכללי יותר ממה שהאומדן שלו מציע.</li>
+</ul>
+</div>
+</section>
+<section id="הדגמה-אינטראקטיבית-forest-plot-עם-שליטה-ב-τ" class="slide level2">
+<h2>הדגמה אינטראקטיבית: forest plot עם שליטה ב-τ</h2>
+<p>שמונה מחקרים. הריבועים האפורים הם האומדנים הגולמיים עם רווחי סמך. העיגולים הכחולים הם האומדנים <strong>אחרי partial pooling</strong>. היהלום האדום הוא האומדן המשותף.</p>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
   <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>מרחק בין הקבוצות (d): <b id="dval_roc">1.5</b>
-      <input type="range" id="d_roc" min="0" max="4" step="0.1" value="1.5"></label>
-    <label>סף ההחלטה (c): <b id="cval_roc">0.8</b>
-      <input type="range" id="c_roc" min="-3" max="7" step="0.1" value="0.8"></label>
+    <label>τ (השונות בין המחקרים): <b id="tauval_f">0.22</b>
+      <input type="range" id="tau_f" min="0" max="0.8" step="0.01" value="0.22"></label>
+    <button id="est_f" style="padding:2px 10px;">קבע τ לפי הנתונים</button>
   </div>
-  <div style="display:flex; flex-wrap:wrap; gap:10px; direction:ltr;">
-    <div id="demo-dist" style="flex:1 1 320px; height:340px;"></div>
-    <div id="demo-roc" style="flex:1 1 320px; height:340px;"></div>
-  </div>
-  <div id="out_roc" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; font-size:0.85em;"></div>
+  <div id="demo-forest" style="width:100%; height:470px;"></div>
+  <div id="out_f" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; background:#eef5fa; color:#185fa5;"></div>
+  <div id="est_txt_f" style="text-align:center; padding:4px; font-size:0.85em;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  function erf(x) {
-    const s = x < 0 ? -1 : 1; x = Math.abs(x);
-    const t = 1 / (1 + 0.3275911 * x);
-    const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
-    return s * y;
-  }
-  const Phi = z => 0.5 * (1 + erf(z / Math.SQRT2));
-  const phi = z => Math.exp(-z * z / 2) / Math.sqrt(2 * Math.PI);
+  const y = [0.72, 0.08, 0.50, 1.00, 0.22, -0.12, 0.60, 0.30];
+  const s = [0.12, 0.30, 0.20, 0.35, 0.15, 0.28, 0.10, 0.25];
+  const K = y.length;
+
+  // אומדן τ בשיטת DerSimonian-Laird
+  const w0 = s.map(x => 1 / (x * x));
+  const sw0 = w0.reduce((a, b) => a + b, 0);
+  const m0 = y.reduce((acc, yy, k) => acc + yy * w0[k], 0) / sw0;
+  const Q = y.reduce((acc, yy, k) => acc + w0[k] * (yy - m0) * (yy - m0), 0);
+  const C = sw0 - w0.reduce((acc, w) => acc + w * w, 0) / sw0;
+  const tauHat = Math.sqrt(Math.max(0, (Q - (K - 1)) / C));
 
   function draw() {
-    const d = parseFloat(document.getElementById('d_roc').value);
-    const c = parseFloat(document.getElementById('c_roc').value);
-    document.getElementById('dval_roc').textContent = d.toFixed(1);
-    document.getElementById('cval_roc').textContent = c.toFixed(1);
+    const tau = parseFloat(document.getElementById('tau_f').value);
+    const tau2 = tau * tau;
+    document.getElementById('tauval_f').textContent = tau.toFixed(2);
 
-    // צד שמאל: שתי ההתפלגויות
-    const xs = [], h = [], s = [];
-    for (let x = -4; x <= 8.001; x += 0.05) { xs.push(x); h.push(phi(x)); s.push(phi(x - d)); }
-    const tx = xs.filter(x => x >= c);
-    const distTraces = [
-      { x: xs, y: h, mode: 'lines', name: 'בריאים', line: { color: '#2980b9', width: 3 } },
-      { x: xs, y: s, mode: 'lines', name: 'חולים', line: { color: '#c0392b', width: 3 } },
-      { x: tx, y: tx.map(x => phi(x)), mode: 'lines', fill: 'tozeroy', name: 'FP: בריאים מעל הסף',
-        line: { width: 0 }, fillcolor: 'rgba(41,128,185,0.35)' },
-      { x: tx, y: tx.map(x => phi(x - d)), mode: 'lines', fill: 'tozeroy', name: 'TP: חולים מעל הסף',
-        line: { width: 0 }, fillcolor: 'rgba(192,57,43,0.35)' }
+    const w = s.map(x => 1 / (x * x + tau2));
+    const sw = w.reduce((a, b) => a + b, 0);
+    const mu = y.reduce((acc, yy, k) => acc + yy * w[k], 0) / sw;
+    const seMu = Math.sqrt(1 / sw);
+    const pct = w.map(x => 100 * x / sw);
+
+    // partial pooling: אומדן וסטיית תקן פוסטריורית לכל מחקר
+    const B = s.map(x => (x * x) / (x * x + tau2));
+    const shr = y.map((yy, k) => (1 - B[k]) * yy + B[k] * mu);
+    const shrSd = s.map((x, k) => Math.sqrt((1 - B[k]) * x * x + B[k] * B[k] * seMu * seMu));
+
+    const pos = y.map((_, k) => K - k);   // 8..1
+    const names = y.map((_, k) => 'Study ' + (k + 1));
+
+    const traces = [
+      { x: y, y: pos.map(p => p + 0.15), mode: 'markers', name: 'אומדן גולמי',
+        marker: { symbol: 'square', color: '#555', size: pct.map(p => 6 + 0.9 * p) },
+        error_x: { type: 'data', array: s.map(x => 1.96 * x), color: '#555', thickness: 1.5, width: 4 },
+        hovertext: y.map((v, k) => names[k] + ': ' + v.toFixed(2) + ', משקל ' + pct[k].toFixed(0) + '%'), hoverinfo: 'text' },
+      { x: shr, y: pos.map(p => p - 0.15), mode: 'markers', name: 'אחרי partial pooling',
+        marker: { symbol: 'circle', color: '#2980b9', size: 9 },
+        error_x: { type: 'data', array: shrSd.map(x => 1.96 * x), color: '#2980b9', thickness: 1.5, width: 4 },
+        hovertext: shr.map((v, k) => names[k] + ': ' + v.toFixed(2)), hoverinfo: 'text' },
+      { x: [mu], y: [-0.2], mode: 'markers', name: 'אומדן משותף',
+        marker: { symbol: 'diamond', color: '#c0392b', size: 15 },
+        error_x: { type: 'constant', value: 1.96 * seMu, color: '#c0392b', thickness: 3, width: 6 },
+        hoverinfo: 'skip' },
+      { x: pos.map(() => 1.55), y: pos, mode: 'text', text: pct.map(p => p.toFixed(0) + '%'),
+        textfont: { size: 12, color: '#333' }, showlegend: false, hoverinfo: 'skip' }
     ];
-    Plotly.newPlot('demo-dist', distTraces, {
-      xaxis: { title: 'ציון המודל', range: [-4, 8] },
-      yaxis: { title: 'צפיפות', range: [0, 0.5] },
-      margin: { t: 15, b: 50, l: 50, r: 10 },
-      legend: { orientation: 'h', y: -0.3, font: { size: 10 } },
-      shapes: [{ type: 'line', x0: c, x1: c, y0: 0, y1: 0.5, line: { color: '#2c3e50', width: 3, dash: 'dash' } }]
-    }, { displayModeBar: false });
+    const layout = {
+      xaxis: { title: 'גודל אפקט', range: [-0.9, 1.75], zeroline: true, zerolinecolor: '#999' },
+      yaxis: { tickvals: pos.concat([-0.2]), ticktext: names.concat(['Pooled']), range: [-1, K + 0.8] },
+      margin: { t: 30, b: 45, l: 70, r: 15 },
+      legend: { orientation: 'h', y: 1.08, x: 0 },
+      annotations: [{ x: 1.55, y: K + 0.6, text: 'משקל', showarrow: false, font: { size: 12 } }],
+      shapes: [{ type: 'line', x0: mu, x1: mu, y0: -0.6, y1: K + 0.4, line: { color: '#c0392b', width: 1.2, dash: 'dot' } }]
+    };
+    Plotly.newPlot('demo-forest', traces, layout, { displayModeBar: false });
 
-    // צד ימין: עקומת ROC
-    const fpr = [], tpr = [];
-    for (let t = -6; t <= d + 6.001; t += 0.05) { fpr.push(1 - Phi(t)); tpr.push(1 - Phi(t - d)); }
-    const curFPR = 1 - Phi(c), curTPR = 1 - Phi(c - d);
-    const auc = Phi(d / Math.SQRT2);
-    Plotly.newPlot('demo-roc', [
-      { x: [0, 1], y: [0, 1], mode: 'lines', name: 'ניחוש אקראי', line: { color: '#999', width: 1.5, dash: 'dot' } },
-      { x: fpr, y: tpr, mode: 'lines', name: 'עקומת ROC', line: { color: '#2c3e50', width: 3 } },
-      { x: [curFPR], y: [curTPR], mode: 'markers', name: 'הסף הנוכחי',
-        marker: { size: 14, color: '#f39c12', line: { color: '#000', width: 1.5 } } }
-    ], {
-      xaxis: { title: 'FPR = 1 − specificity', range: [0, 1] },
-      yaxis: { title: 'TPR = sensitivity', range: [0, 1.02] },
-      margin: { t: 15, b: 50, l: 55, r: 10 },
-      legend: { orientation: 'h', y: -0.3, font: { size: 10 } },
-      annotations: [{ x: 0.62, y: 0.12, text: 'AUC = ' + auc.toFixed(3), showarrow: false,
-                      font: { size: 15, color: '#2c3e50' } }]
-    }, { displayModeBar: false });
-
-    const el = document.getElementById('out_roc');
-    el.textContent = 'sensitivity ' + curTPR.toFixed(2) + '  ·  specificity ' + (1 - curFPR).toFixed(2) +
-                     '  ·  AUC ' + auc.toFixed(3);
-    if (d < 0.05) {
-      el.textContent += '  ·  אין הפרדה: העקומה על האלכסון, לכל סף';
-      el.style.background = '#fdecea'; el.style.color = '#a32d2d';
-    } else {
-      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
-    }
+    const el = document.getElementById('out_f');
+    el.textContent = 'אומדן משותף ' + mu.toFixed(2) + '  [' + (mu - 1.96 * seMu).toFixed(2) + ', ' + (mu + 1.96 * seMu).toFixed(2) + ']' +
+                     '  ·  המשקל הגדול ביותר ' + Math.max.apply(null, pct).toFixed(0) + '%, הקטן ביותר ' + Math.min.apply(null, pct).toFixed(0) + '%';
+    let note;
+    if (tau < 0.02) note = 'τ = 0: fixed-effect, כלומר complete pooling. המחקרים הגדולים שולטים והאומדנים הכחולים נדחסים אל היהלום.';
+    else if (tau > 0.6) note = 'τ גדול: המשקלות כמעט שווים והכיווץ כמעט נעלם, כלומר no pooling.';
+    else note = 'partial pooling: מחקרים קטנים ורועשים נמשכים חזק, מחקרים גדולים כמעט לא זזים.';
+    document.getElementById('est_txt_f').textContent = note + '  (τ שנאמד מהנתונים: ' + tauHat.toFixed(2) + ')';
   }
-  ['d_roc', 'c_roc'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  document.getElementById('tau_f').addEventListener('input', draw);
+  document.getElementById('est_f').addEventListener('click', function() {
+    document.getElementById('tau_f').value = tauHat.toFixed(2);
+    draw();
+  });
   setTimeout(draw, 400);
 })();
 </script>
@@ -578,33 +549,44 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment"><strong>הזזת הסף</strong> (בלי לגעת ב-<span class="math inline">\(d\)</span>) מזיזה את הנקודה <strong>לאורך אותה עקומה</strong>. ה-AUC לא משתנה: הוא תכונה של המודל ולא של הסף.</li>
-<li class="fragment"><strong>הגדלת <span class="math inline">\(d\)</span></strong> מרחיקה את העקומה מהאלכסון ומעלה את ה-AUC. כש-<span class="math inline">\(d = 0\)</span> העקומה שוכנת על האלכסון ו-AUC = 0.5.</li>
-<li class="fragment">העלאת הסף מקטינה את שני האזורים המוצללים יחד: פחות TP ופחות FP. אין סף שמשפר את שניהם.</li>
+<li class="fragment">הזיזו את <span class="math inline">\(\tau\)</span> ל-0: כל המחקרים נדחסים אל האומדן המשותף, והמשקלות נקבעים רק לפי גודל המחקר.</li>
+<li class="fragment">העלו את <span class="math inline">\(\tau\)</span>: המשקלות מתאזנים, מחקר קטן מקבל יותר משקל, והאומדן הכחול חוזר אל האומדן הגולמי.</li>
+<li class="fragment">מחקר קטן עם רווח סמך רחב (Study 4, Study 2) זז הרבה. מחקר גדול (Study 7) כמעט לא זז.</li>
+<li class="fragment">הלחצן “קבע <span class="math inline">\(\tau\)</span> לפי הנתונים” מראה מה מתקבל כשה-<span class="math inline">\(\tau\)</span> נאמד ולא נקבע ידנית. זה מה שהתוכנה עושה.</li>
+<li class="fragment">זו התמונה שראיתם בשבוע 9. עכשיו אתם יודעים מה היא מראה.</li>
 </ul>
 </div>
-<div class="callout callout-tip callout-captioned callout-style-default">
+</section>
+<section id="אזהרה-מעשית-מעט-אשכולות" class="slide level2">
+<h2>אזהרה מעשית: מעט אשכולות</h2>
+<div class="callout callout-danger callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>שימו לב</strong></p>
+<p><strong>מספר קטן של אשכולות הוא המצב שבו המודל הכי פחות יציב</strong></p>
 </div>
 <div class="callout-content">
-<p>ההדגמה עוסקת בהפרדה בלבד. גם אם הציונים על ציר ה-X היו הסתברויות מנובאות, ה-AUC לא היה מגלה לנו אם הן מכוילות.</p>
+<p>כדי לאמוד את <span class="math inline">\(\tau\)</span> צריך לראות כמה אשכולות שונים זה מזה. עם 3-5 אשכולות, זה כמו לאמוד סטיית תקן מחמש תצפיות.</p>
 </div>
 </div>
+</div>
+<div>
+<ul>
+<li class="fragment">האומדן של <span class="math inline">\(\tau\)</span> רועש מאוד, ולעיתים קרובות “קורס” לאפס. אז מקבלים complete pooling מבלי שזה היה נכון.</li>
+<li class="fragment">התוצאה רגישה מאוד ל-prior על <span class="math inline">\(\tau\)</span>. בגישה הבייסיאנית, prior חלש-אינפורמטיבי על <span class="math inline">\(\tau\)</span> (למשל half-normal) מייצב את האומדן.</li>
+<li class="fragment">שני מחקרים או שלוש כיתות אינם מספיקים כדי ללמוד “התפלגות של אשכולות”. במקרה כזה עדיף להודות בכך במקום להמציא דיוק.</li>
+</ul>
 </div>
 </section>
 <section id="סיכום-w13.v3" class="slide level2">
 <h2>סיכום W13.V3</h2>
 <ul>
-<li>רגרסיה לוגיסטית נותנת הסתברות; <strong>סף החלטה</strong> הופך אותה לסיווג, והבחירה בסף תלויה במחיר הטעויות.</li>
-<li><strong>מטריצת הבלבול</strong> נותנת TP, FP, TN, FN. <strong>Sensitivity</strong> ו-<strong>specificity</strong> מצויים בפשרה: העלאה של האחד מורידה את השני.</li>
-<li><strong>עקומת ROC</strong> היא אוסף כל הספים; <strong>AUC</strong> הוא הסתברות שחולה ידורג גבוה מבריא.</li>
-<li>AUC מודד <strong>הפרדה</strong>, לא <strong>כיול</strong>: מודל יכול להפריד מצוין ולתת הסתברויות שגויות.</li>
-<li>ROC הוא כלי של עולם ה-<strong>prediction</strong>. הוא לא מעיד על אפקטים סיבתיים של המנבאים.</li>
+<li>אותו מודל מכסה יותר משני תנאים ואשכולות שאינם נבדקים: כיתות, מרפאות, מעבדות. זה הפתרון לתלות שנוצרת בדגימת אשכולות (שבוע 8).</li>
+<li><strong>Random slopes</strong> הם הרחבה טבעית (גם האפקט משתנה בין אשכולות), אך לא נאמוד אותם בקורס.</li>
+<li><strong>Random-effects meta-analysis</strong> משבוע 9 הוא מודל היררכי עם מחקרים כאשכולות. ה-forest plot הוא תצוגה של partial pooling, ו-<span class="math inline">\(\tau^2\)</span> היא השונות בין האשכולות.</li>
+<li><strong>מעט אשכולות = אומדן לא יציב של <span class="math inline">\(\tau\)</span>.</strong> prior חלש-אינפורמטיבי עוזר, אבל אינו מחליף נתונים.</li>
 </ul>
 <div class="footer footer-default">
 

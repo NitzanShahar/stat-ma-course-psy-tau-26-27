@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W6.V2 — Interaction במודל הליניארי</title>
+  <title>W6.V2 — הערכה Bayesian של ההבדל</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,161 +325,168 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W6.V2 — Interaction במודל הליניארי</h1>
-  <p class="subtitle">איבר המכפלה, ‘ההבדל בין ההבדלים’ והכשל הקלאסי בספרות</p>
+  <h1 class="title">W6.V2 — הערכה Bayesian של ההבדל</h1>
+  <p class="subtitle">Prior, Posterior, Credible Interval ו-ROPE עבור הבדל בין קבוצות</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להוסיף את איבר המכפלה (Interaction) למודל הליניארי.</li>
-<li>להבין את הגדרת האינטראקציה: <strong>“ההבדל בין ההבדלים”</strong>.</li>
-<li>לזהות ולהימנע מ<strong>הכשל הנפוץ בספרות</strong> (בחינת אינטראקציה לפי אפקטים פשוטים).</li>
-<li>להכיר שלושה דפוסים מורפולוגיים של אינטראקציה.</li>
+<li>ליישם הסקה בסיאנית מלאה על פרמטר ההבדל (<span class="math inline">\(\beta_1\)</span>).</li>
+<li>להבין כיצד ה-Posterior עונה <strong>ישירות</strong> על שאלת החוקר.</li>
+<li>לחלץ <strong>Credible Interval</strong> עבור גודל האפקט.</li>
+<li>להכיר את מושג ה-<strong>ROPE</strong> (Region of Practical Equivalence) לקבלת החלטות מעשיות.</li>
+<li>להבין ולהדגים <strong>Posterior Predictive Simulation</strong>.</li>
 </ul>
 </section>
-<section id="המודל-הליניארי-עם-אינטראקציה" class="slide level2">
-<h2>המודל הליניארי עם אינטראקציה</h2>
-<p>אנו מוסיפים למודל את איבר המכפלה <span class="math inline">\(X_1 \cdot X_2\)</span>:</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 (X_1 \cdot X_2) + \epsilon_i\]</span></p>
+<section id="ההסקה-הבסיאנית-על-פרמטר-ההבדל-beta_1" class="slide level2">
+<h2>ההסקה הבסיאנית על פרמטר ההבדל (<span class="math inline">\(\beta_1\)</span>)</h2>
+<p>במודל הליניארי <span class="math inline">\(y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)</span>, הפרמטר המרכזי שמעניין אותנו הוא <strong><span class="math inline">\(\beta_1\)</span></strong>.</p>
 <div>
 <ul>
-<li class="fragment"><strong><span class="math inline">\(\beta_3\)</span>:</strong> פרמטר האינטראקציה!</li>
-<li class="fragment">מודד בכמה יחידות משתנה האפקט של <span class="math inline">\(X_1\)</span> כאשר <span class="math inline">\(X_2\)</span> עולה ביחידה אחת.</li>
-<li class="fragment"><strong>שקילות:</strong> <span class="math inline">\(\beta_3\)</span> מודד גם בכמה משתנה האפקט של <span class="math inline">\(X_2\)</span> כאשר <span class="math inline">\(X_1\)</span> עולה.</li>
+<li class="fragment"><strong>השאלה הבסיאנית:</strong> מהו טווח הערכים הסביר עבור <span class="math inline">\(\beta_1\)</span> (ההבדל האמיתי בטבע) לאור הנתונים שנאספו?</li>
+<li class="fragment">אנו מגדירים <strong>Prior</strong> על הפרמטרים: <span class="math inline">\(P(\beta_0, \beta_1, \sigma)\)</span>.</li>
+<li class="fragment">אנו מכפילים ב-Likelihood ומקבלים התפלגות <strong>Posterior משותפת</strong>.</li>
+<li class="fragment">מקבלים התפלגות שוליים (Marginal Posterior) עבור <span class="math inline">\(\beta_1\)</span> בלבד.</li>
 </ul>
 </div>
 </section>
-<section id="ההגדרה-היסודית-ההבדל-בין-ההבדלים" class="slide level2">
-<h2>ההגדרה היסודית: “ההבדל בין ההבדלים”</h2>
-<p>נביט בהפרש האפקט של <span class="math inline">\(X_1\)</span> בשני התנאים של <span class="math inline">\(X_2\)</span>:</p>
-<p><span class="math display">\[\Delta_1 = \text{Effect of } X_1 \text{ at } X_2=0\]</span> <span class="math display">\[\Delta_2 = \text{Effect of } X_1 \text{ at } X_2=1\]</span></p>
-<p><span class="math display">\[\beta_3 = \Delta_2 - \Delta_1\]</span></p>
+<section id="העוצמה-של-ה-posterior-הבסיאני" class="slide level2">
+<h2>העוצמה של ה-Posterior הבסיאני</h2>
+<p>בניגוד לערך p יחיד, ה-Posterior מספק <strong>התפלגות הסתברותית שלמה</strong> עבור ההבדל:</p>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>כלל ברזל</strong></p>
+<p><strong>מה ה-Posterior מאפשר לנו לומר?</strong></p>
 </div>
 <div class="callout-content">
-<p>פרמטר האינטראקציה נאמד ונאמד בדיוק כמו כל פרמטר אחר במודל הליניארי!</p>
+<p>“ההסתברות שההבדל בין הטיפול לביקורת גדול מ-0 היא 97.5%.”<br>
+“ההבדל הסביר ביותר הוא 4.2 יחידות, עם 95% רווח אמינות [1.8, 6.5].”</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הכשל-הנפוץ-ביותר-בספרות-המדעית" class="slide level2">
-<h2>הכשל הנפוץ ביותר בספרות המדעית!</h2>
-<p>חוקרים רבים טוענים לקיומה של אינטראקציה בדרך השגויה הבאה:</p>
-<div class="callout callout-danger callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="רווח-אמינות-credible-interval---hdci" class="slide level2">
+<h2>רווח אמינות (Credible Interval - HDCI)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="credible-interval">95% Credible Interval</h3>
+<ul>
+<li>הטווח המוכל בתוך ה-Posterior שמכיל 95% מההסתברות.</li>
+<li><strong>פרשנות ישירה:</strong> יש הסתברות של 95% שהפרמטר האמיתי בטבע נמצא בתוך הטווח הזה!</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="שונה-מרווח-סמך-שכיחותני">שונה מרווח סמך שכיחותני!</h3>
+<ul>
+<li>איננו מדברים על “חזרות היפותטיות על הניסוי”.</li>
+<li>מדברים ישירות על ההסתברות של הפרמטר החבוי.</li>
+</ul>
 </div>
-<p><strong>הטעות הקלאסית</strong></p>
 </div>
-<div class="callout-content">
-<p>“בקבוצה A האפקט היה מובהק (<span class="math inline">\(p &lt; 0.05\)</span>), ואילו בקבוצה B האפקט לא היה מובהק (<span class="math inline">\(p &gt; 0.05\)</span>), ולכן יש אינטראקציה!”</p>
-</div>
-</div>
-</div>
+</section>
+<section id="הערכת-אפקט-מעשי-rope" class="slide level2">
+<h2>הערכת אפקט מעשי: ROPE</h2>
+<p>לעתים הבדל זעיר (למשל <span class="math inline">\(\beta_1 = 0.01\)</span>) אינו בעל משמעות קלינית או מעשית.</p>
+<p><strong>ROPE (Region of Practical Equivalence):</strong> תחום סביב 0 (למשל <span class="math inline">\([-0.5, 0.5]\)</span>) המוגדר כהבדל שקשור זניח מעשית.</p>
 <div>
 <ul>
-<li class="fragment"><strong>מדוע זו טעות קשה?</strong> ההבדל בין “מובהק” ל”לא מובהק” אינו כשלעצמו מובהק סטטיסטית!</li>
-<li class="fragment"><strong>הדרך הנכונה:</strong> חובה לבחון ישירות את המובהקות/ה-Posterior של פרמטר האינטראקציה <strong><span class="math inline">\(\beta_3\)</span></strong>!</li>
+<li class="fragment">אם <strong>כל</strong> ה-Posterior נופל בתוך ה-ROPE <span class="math inline">\(\leftarrow\)</span> קובעים שאין הבדל מעשי.</li>
+<li class="fragment">אם <strong>כל</strong> ה-Posterior מחוץ ל-ROPE <span class="math inline">\(\leftarrow\)</span> קובעים שיש הבדל מעשי מובהק.</li>
+<li class="fragment">אם ה-Posterior חוצה את ה-ROPE <span class="math inline">\(\leftarrow\)</span> הנתונים אינם חד-משמעיים.</li>
 </ul>
 </div>
 </section>
-<section id="שלושה-דפוסים-של-אינטראקציה" class="slide level2">
-<h2>שלושה דפוסים של אינטראקציה</h2>
-<div class="columns">
-<div class="column" style="width:33%;">
-<h3 id="אדיטיבי-טהור">1. אדיטיבי טהור</h3>
+<section id="posterior-predictive-simulation" class="slide level2">
+<h2>Posterior Predictive Simulation</h2>
+<p>לאחר שקיבלנו את ה-Posterior על הפרמטרים, אנו מפיקים <strong>ניבויים לנתונים עתידיים</strong>:</p>
+<p><span class="math display">\[\tilde{y} \sim \text{Normal}(\tilde{\beta}_0 + \tilde{\beta}_1 X, \tilde{\sigma})\]</span></p>
+<div>
 <ul>
-<li>קווים מקבילים לחלוטין.</li>
-<li><span class="math inline">\(\beta_3 = 0\)</span>.</li>
+<li class="fragment">מכל דגימה מה-Posterior, אנו מייצרים סט נתונים סינתטי חדש.</li>
+<li class="fragment"><strong>מטרה:</strong> לבחון האם הנתונים שהמודל מייצר דומים לנתונים שנצפו בניסוי המקורי.</li>
+<li class="fragment">כלי עוצמתי לבדיקת איכות המודל (Model Checking).</li>
 </ul>
-</div><div class="column" style="width:33%;">
-<h3 id="אינטראקציה-של-הגברה">2. אינטראקציה של הגברה</h3>
-<ul>
-<li>האפקט קיים בשני התנאים, אך עוצמתו שונה.</li>
-<li>הקווים מתרחקים זה מזה.</li>
-</ul>
-</div><div class="column" style="width:33%;">
-<h3 id="crossover-interaction">3. Crossover Interaction</h3>
-<ul>
-<li>האפקט הופך את כיוונו בין התנאים!</li>
-<li>הקווים מצטלבים בצורת X.</li>
-</ul>
-</div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-שליטה-באינטראקציה-beta_3" class="slide level2">
-<h2>הדגמה אינטראקטיבית: שליטה באינטראקציה (<span class="math inline">\(\beta_3\)</span>)</h2>
+<section id="הדגמה-אינטראקטיבית-posterior-של-ההבדל-ו-rope" class="slide level2">
+<h2>הדגמה אינטראקטיבית: Posterior של ההבדל ו-ROPE</h2>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
   <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>β1 (אפקט A): <b id="b1val_in">2.0</b>
-      <input type="range" id="b1_in" min="-10" max="10" step="0.5" value="2"></label>
-    <label>β2 (אפקט B): <b id="b2val_in">10.0</b>
-      <input type="range" id="b2_in" min="-10" max="10" step="0.5" value="10"></label>
-    <label>β3 (אינטראקציה): <b id="b3val_in">8.0</b>
-      <input type="range" id="b3_in" min="-10" max="10" step="0.5" value="8"></label>
+    <label>ממוצע ה-Posterior: <b id="muval_rp">3.2</b>
+      <input type="range" id="mu_rp" min="-2" max="8" step="0.1" value="3.2"></label>
+    <label>אי-ודאות (SD): <b id="sdval_rp">1.1</b>
+      <input type="range" id="sd_rp" min="0.3" max="3" step="0.1" value="1.1"></label>
+    <label>רוחב ROPE (±): <b id="ropeval_rp">0.5</b>
+      <input type="range" id="rope_rp" min="0" max="2" step="0.1" value="0.5"></label>
   </div>
-  <div id="demo-inter" style="width:100%; height:340px;"></div>
-  <div id="pattern_in" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
+  <div id="demo-rope" style="width:100%; height:340px;"></div>
+  <div id="verdict_rp" style="text-align:center; font-weight:bold; font-size:1em; padding:8px; border-radius:6px; margin-top:6px;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  let b0 = 10;
-  function drawInteractionDemo() {
-    let b1 = parseFloat(document.getElementById('b1_in').value);
-    let b2 = parseFloat(document.getElementById('b2_in').value);
-    let b3 = parseFloat(document.getElementById('b3_in').value);
-    document.getElementById('b1val_in').textContent = b1.toFixed(1);
-    document.getElementById('b2val_in').textContent = b2.toFixed(1);
-    document.getElementById('b3val_in').textContent = b3.toFixed(1);
+  function erf(z) {
+    let t = 1/(1+0.3275911*Math.abs(z));
+    let y = 1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z);
+    return z >= 0 ? y : -y;
+  }
+  function normCdf(x, mu, sd) { return 0.5*(1+erf((x-mu)/(sd*Math.SQRT2))); }
 
-    let a1b1 = b0, a1b2 = b0 + b2;
-    let a2b1 = b0 + b1, a2b2 = b0 + b1 + b2 + b3;
+  function drawRopeDemo() {
+    let mu = parseFloat(document.getElementById('mu_rp').value);
+    let sd = parseFloat(document.getElementById('sd_rp').value);
+    let rope = parseFloat(document.getElementById('rope_rp').value);
+    document.getElementById('muval_rp').textContent = mu.toFixed(1);
+    document.getElementById('sdval_rp').textContent = sd.toFixed(1);
+    document.getElementById('ropeval_rp').textContent = rope.toFixed(1);
 
-    let trace1 = { x: ['B1', 'B2'], y: [a1b1, a1b2], mode: 'lines+markers', name: 'A1 (ביקורת)', line: {color: '#2980b9', width: 3}, marker: {size: 9} };
-    let trace2 = { x: ['B1', 'B2'], y: [a2b1, a2b2], mode: 'lines+markers', name: 'A2 (ניסוי)', line: {color: '#c0392b', width: 3}, marker: {size: 9} };
-
+    let x = [], y = [];
+    let lo = Math.min(-rope, mu - 4*sd), hi = Math.max(rope, mu + 4*sd);
+    for (let v = lo; v <= hi; v += (hi-lo)/200) {
+      x.push(v);
+      y.push((1/(sd*Math.sqrt(2*Math.PI))) * Math.exp(-0.5*Math.pow((v-mu)/sd, 2)));
+    }
+    let tracePost = { x: x, y: y, mode: 'lines', name: 'Posterior של β1', fill: 'tozeroy', fillcolor: 'rgba(39,174,96,0.25)', line: {color: '#27ae60', width: 3} };
     let layout = {
-      title: `β3 = ${b3.toFixed(1)}`,
-      xaxis: { title: 'גורם B' },
-      yaxis: { title: 'תוצאה מנובאת (Y)', range: [-15, 45] },
+      title: `Posterior עבור β1 מול ROPE [-${rope.toFixed(1)}, ${rope.toFixed(1)}]`,
+      xaxis: { title: 'גודל ההבדל (β1)' },
+      yaxis: { title: 'צפיפות הסתברות' },
+      shapes: [
+        { type: 'rect', xref: 'x', yref: 'paper', x0: -rope, x1: rope, y0: 0, y1: 1, fillcolor: 'rgba(192,57,43,0.15)', line: {width: 0} }
+      ],
       margin: { t: 40, b: 40, l: 45, r: 20 }
     };
-    Plotly.newPlot('demo-inter', [trace1, trace2], layout, {displayModeBar:false});
+    Plotly.newPlot('demo-rope', [tracePost], layout, {displayModeBar:false});
 
-    let effectAtB1 = a2b1 - a1b1, effectAtB2 = a2b2 - a1b2;
-    let pattern = document.getElementById('pattern_in');
-    if (Math.abs(b3) < 0.3) {
-      pattern.textContent = '1. אדיטיבי טהור — הקווים מקבילים (β3 ≈ 0)';
-      pattern.style.background = '#eef5fa'; pattern.style.color = '#185fa5';
-    } else if (effectAtB1 * effectAtB2 < 0) {
-      pattern.textContent = '3. Crossover Interaction — האפקט הופך כיוון בין התנאים!';
-      pattern.style.background = '#fdecea'; pattern.style.color = '#a32d2d';
+    let pInside = normCdf(rope, mu, sd) - normCdf(-rope, mu, sd);
+    let pOutside = 1 - pInside;
+    let verdict = document.getElementById('verdict_rp');
+    if (pInside > 0.95) {
+      verdict.textContent = `${(pInside*100).toFixed(0)}% מה-Posterior בתוך ה-ROPE → אין הבדל מעשי`;
+      verdict.style.background = '#eaf7ee'; verdict.style.color = '#1e7e34';
+    } else if (pOutside > 0.95) {
+      verdict.textContent = `${(pOutside*100).toFixed(0)}% מה-Posterior מחוץ ל-ROPE → יש הבדל מעשי מובהק`;
+      verdict.style.background = '#fdecea'; verdict.style.color = '#a32d2d';
     } else {
-      pattern.textContent = '2. אינטראקציה של הגברה — האפקט קיים בשני התנאים, בעוצמה שונה';
-      pattern.style.background = '#fdf3e3'; pattern.style.color = '#a1690a';
+      verdict.textContent = `הפוסטריור חוצה את ה-ROPE (${(pInside*100).toFixed(0)}% בפנים) → התוצאה אינה חד-משמעית`;
+      verdict.style.background = '#fdf3e3'; verdict.style.color = '#a1690a';
     }
   }
-  ['b1_in','b2_in','b3_in'].forEach(id => document.getElementById(id).addEventListener('input', drawInteractionDemo));
-  setTimeout(drawInteractionDemo, 400);
+  ['mu_rp','sd_rp','rope_rp'].forEach(id => document.getElementById(id).addEventListener('input', drawRopeDemo));
+  setTimeout(drawRopeDemo, 400);
 })();
 </script>
 </section>
 <section id="סיכום-w6.v2" class="slide level2">
 <h2>סיכום W6.V2</h2>
 <ul>
-<li>פרמטר האינטראקציה (<span class="math inline">\(\beta_3\)</span>) מודד את <strong>“ההבדל בין ההבדלים”</strong>.</li>
-<li>חובה לבחון ישירות את <span class="math inline">\(\beta_3\)</span> ולא להסתמך על השוואת אפקטים פשוטים.</li>
-<li>אינטראקציה משנה את מורפולוגיית הקווים במפתח הגרפי (מביאה לחוסר מקבילות או הצטלבות).</li>
+<li>ה-Posterior על <span class="math inline">\(\beta_1\)</span> מציג את התפלגות ההסתברות המלאה של ההבדל בין הקבוצות.</li>
+<li><strong>Credible Interval</strong> מוגדר כטווח בעל הסתברות של 95% להכיל את הפרמטר.</li>
+<li><strong>ROPE</strong> מאפשר להבחין בין הבדל סטטיסטי להבדל מעשי/קליני.</li>
+<li><strong>Posterior Predictive</strong> מאפשר לסמץ נתונים חדשים ולבחון את תקינות המודל.</li>
 </ul>
 <div class="footer footer-default">
 

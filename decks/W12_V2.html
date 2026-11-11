@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W12.V2 — שלושת מודלי ה-pooling ו-shrinkage</title>
+  <title>W12.V2 — interaction בין מנבאים רציפים</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,87 +325,41 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W12.V2 — שלושת מודלי ה-pooling ו-shrinkage</h1>
-  <p class="subtitle">ממוצע אחד לכולם, ממוצע נפרד לכל אחד, או פשרה חכמה ביניהם</p>
+  <h1 class="title">W12.V2 — interaction בין מנבאים רציפים</h1>
+  <p class="subtitle">משטח שהשיפוע שלו משתנה ברציפות, פירוש המקדמים אחרי מירכוז, ו-simple slopes</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להשוות שלושה מודלים על אותם נתונים: <strong>complete pooling</strong>, <strong>no pooling</strong> ו-<strong>partial pooling</strong>.</li>
-<li>לזהות ששניים מהם כבר מוכרים: ה-empty model (יחידה א) וה-categorical predictor (יחידה ב).</li>
-<li>להבין את הרעיון החדש: לפרמטרים יש התפלגות, וזה <strong>prior</strong> שגם אותו אומדים.</li>
-<li>להבין את <strong>shrinkage</strong>: מי נמשך חזק לכיוון הממוצע הכללי, ולמה זה אומדן טוב יותר ולא רמאות.</li>
+<li>להרחיב את איבר המכפלה ממשתנים קטגוריאליים (W7.V2) למשתנים <strong>רציפים</strong>.</li>
+<li>להבין את ההבדל המושגי: לא “שני קווים” אלא <strong>משטח שהשיפוע שלו משתנה ברציפות</strong>.</li>
+<li>לפרש את המקדמים בתלות במירכוז — ולקשר זאת ל-W11.V2.</li>
+<li>לנתח את האינטראקציה באמצעות <strong>simple slopes</strong> בערכים נבחרים של המשתנה המווסת (moderator).</li>
+<li>להכיר את הבעיה של <strong>כוח סטטיסטי</strong> באינטראקציות, ואת תרומתה לממצאים לא יציבים.</li>
 </ul>
 </section>
-<section id="הנתונים-כמה-אשכולות-ממוצע-לכל-אחד" class="slide level2">
-<h2>הנתונים: כמה אשכולות, ממוצע לכל אחד</h2>
-<p>נניח עשר כיתות, ובכל כיתה מדדנו כמה תלמידים. כיתות שונות בגודל המדגם שלהן.</p>
+<section id="מהמקרה-הקטגוריאלי-לרציף" class="slide level2">
+<h2>מהמקרה הקטגוריאלי לרציף</h2>
+<p>המודל זהה בצורתו למה שראיתם בשבוע 7, כאשר <span class="math inline">\(X\)</span> ו-<span class="math inline">\(W\)</span> (המווסת) רציפים:</p>
+<p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + \beta_2 W_i + \beta_3 (X_i \cdot W_i) + \varepsilon_i\]</span></p>
 <div>
 <ul>
-<li class="fragment">השאלה: <strong>מה הממוצע האמיתי של כל כיתה?</strong></li>
-<li class="fragment">כיתה עם 3 תלמידים ממוצעת רועש. כיתה עם 40 תלמידים ממוצעת יציב.</li>
-<li class="fragment">אפשר להשתמש באותו רעיון לנבדקים עם מספר לא שווה של ניסויים, למרפאות, או למעבדות.</li>
-</ul>
-</div>
-</section>
-<section id="מודל-1-complete-pooling" class="slide level2">
-<h2>מודל 1: complete pooling</h2>
-<p><span class="math display">\[y_{ij} = \mu + \epsilon_{ij}\]</span></p>
-<div>
-<ul>
-<li class="fragment">ממוצע <strong>אחד</strong> לכולם. מתעלמים מכך שיש אשכולות.</li>
-<li class="fragment">זה בדיוק ה-<strong>empty model</strong> מיחידה א.</li>
-<li class="fragment"><strong>יתרון:</strong> אומדן יציב, מבוסס על כל הנתונים.</li>
-<li class="fragment"><strong>חיסרון:</strong> מניח שכל האשכולות זהים. אם הם לא, מטעה לגבי כל אחד מהם.</li>
+<li class="fragment">בשבוע 7: <span class="math inline">\(\beta_3\)</span> הוא “ההבדל בין ההבדלים” — הפרש בין <strong>שני</strong> אפקטים, אחד בכל תנאי של <span class="math inline">\(B\)</span>.</li>
+<li class="fragment">כאן אין שני תנאים. ל-<span class="math inline">\(W\)</span> יש אינסוף ערכים, ולכן יש <strong>אינסוף אפקטים</strong> של <span class="math inline">\(X\)</span> — אחד לכל ערך של <span class="math inline">\(W\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\beta_3\)</span> הוא הקצב שבו האפקט של <span class="math inline">\(X\)</span> משתנה כאשר <span class="math inline">\(W\)</span> עולה ביחידה אחת.</li>
 </ul>
 </div>
 </section>
-<section id="מודל-2-no-pooling" class="slide level2">
-<h2>מודל 2: no pooling</h2>
-<p><span class="math display">\[y_{ij} = \mu_j + \epsilon_{ij}\]</span></p>
+<section id="אין-שני-קווים-יש-משטח" class="slide level2">
+<h2>אין שני קווים: יש משטח</h2>
+<p>מסדרים מחדש את המשוואה:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_2 W + \underbrace{(\beta_1 + \beta_3 W)}_{\text{השיפוע של } X} \cdot X + \varepsilon\]</span></p>
 <div>
 <ul>
-<li class="fragment">לכל אשכול ממוצע נפרד, שנאמד <strong>רק</strong> מהנתונים שלו.</li>
-<li class="fragment">זה בדיוק ה-<strong>categorical predictor</strong> מיחידה ב.</li>
-<li class="fragment"><strong>יתרון:</strong> לא מניח דבר על הקשר בין האשכולות.</li>
-<li class="fragment"><strong>חיסרון:</strong> אשכול קטן נותן אומדן רועש, ובלי שום הגנה מפני קיצוניות מקרית.</li>
-</ul>
-</div>
-</section>
-<section id="מודל-3-partial-pooling-ורק-זה-חדש" class="slide level2">
-<h2>מודל 3: partial pooling, ורק זה חדש</h2>
-<p><span class="math display">\[y_{ij} = \mu_j + \epsilon_{ij}, \qquad \mu_j \sim N(\mu, \tau^2)\]</span></p>
-<div>
-<ul>
-<li class="fragment">לכל אשכול ממוצע משלו, אבל <strong>הממוצעים עצמם מגיעים מהתפלגות משותפת</strong>.</li>
-<li class="fragment"><span class="math inline">\(\tau\)</span> קובע כמה האשכולות שונים זה מזה. גם הוא נאמד מהנתונים.</li>
-<li class="fragment">אם <span class="math inline">\(\tau \to 0\)</span> מקבלים complete pooling. אם <span class="math inline">\(\tau \to \infty\)</span> מקבלים no pooling.</li>
-</ul>
-</div>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>הרעיון החדש היחיד</strong></p>
-</div>
-<div class="callout-content">
-<p><strong>לפרמטרים עצמם יש התפלגות.</strong> בקורס בייסיאני זה טבעי: <span class="math inline">\(\mu_j \sim N(\mu,\tau^2)\)</span> הוא <strong>prior</strong>, ההבדל היחיד הוא שאת הפרמטרים שלו (<span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\tau\)</span>) אנחנו אומדים מהנתונים במקום לקבוע מראש.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="shrinkage-פשרה-שמשקללת-לפי-מידת-האמינות" class="slide level2">
-<h2>Shrinkage: פשרה שמשקללת לפי מידת האמינות</h2>
-<p>האומדן של אשכול <span class="math inline">\(j\)</span> ב-partial pooling הוא ממוצע משוקלל של הממוצע שלו עצמו והממוצע הכללי:</p>
-<p><span class="math display">\[\hat\mu_j = (1-B_j)\,\bar y_j + B_j\,\hat\mu, \qquad B_j = \frac{\sigma^2/n_j}{\sigma^2/n_j + \tau^2}\]</span></p>
-<div>
-<ul>
-<li class="fragment"><span class="math inline">\(B_j\)</span> גדול (אשכול נמשך חזק) כש-<strong><span class="math inline">\(n_j\)</span> קטן</strong> או כש-<strong><span class="math inline">\(\sigma\)</span> גדול</strong>: הנתונים של האשכול לא אמינים.</li>
-<li class="fragment"><span class="math inline">\(B_j\)</span> קטן (כמעט לא זז) כש-<strong><span class="math inline">\(n_j\)</span> גדול</strong>.</li>
-<li class="fragment"><span class="math inline">\(B_j\)</span> גדול גם כש-<strong><span class="math inline">\(\tau\)</span> קטן</strong>: אם האשכולות דומים, יש הרבה מה ללמוד מהאחרים.</li>
+<li class="fragment"><strong>השיפוע של <span class="math inline">\(X\)</span> הוא פונקציה ליניארית של <span class="math inline">\(W\)</span>:</strong> <span class="math inline">\(\beta_1 + \beta_3 W\)</span>.</li>
+<li class="fragment"><strong>וסימטרית:</strong> השיפוע של <span class="math inline">\(W\)</span> הוא <span class="math inline">\(\beta_2 + \beta_3 X\)</span>. אין הבדל מתמטי בין מי מהם “המווסת” — זו בחירה תאורטית.</li>
+<li class="fragment">גאומטרית, המישור של W12.V1 נעשה <strong>משטח מעוקל</strong>. כל חתך שלו בערך קבוע של <span class="math inline">\(W\)</span> הוא עדיין קו — אבל בשיפוע אחר בכל חתך.</li>
 </ul>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
@@ -414,156 +368,134 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>אין צורך לחשב</strong></p>
+<p><strong>השוואה לקטגוריאלי</strong></p>
 </div>
 <div class="callout-content">
-<p>התוכנה אומדת את <span class="math inline">\(\mu\)</span>, את <span class="math inline">\(\tau\)</span> ואת כל ה-<span class="math inline">\(\mu_j\)</span> בבת אחת. הנוסחה כאן רק כדי להבין את הכיוון.</p>
+<p>קטגוריאלי: שיפוע אחד בכל קבוצה, ושתי קבוצות → שני קווים. רציף: שיפוע שונה בכל ערך של <span class="math inline">\(W\)</span> → משפחת קווים רציפה. המקרה הקטגוריאלי הוא מקרה פרטי כש-<span class="math inline">\(W\)</span> מקבל רק שני ערכים.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="למה-זה-לא-רמאות" class="slide level2">
-<h2>למה זה לא רמאות</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="החשש">החשש</h3>
-<p>“אני מזיז את הנתונים של כיתה קטנה לכיוון הממוצע. אני מעוות את מה שמדדתי.”</p>
-</div><div class="column" style="width:50%;">
-<h3 id="התשובה">התשובה</h3>
-<p>האומדן של כל אשכול מוטה מעט, אבל <strong>הטעות הכוללת קטנה יותר בממוצע</strong>. אנחנו מוותרים על קצת הטיה כדי לחסוך הרבה שונות.</p>
+<section id="פירוש-המקדמים-תלוי-במירכוז" class="slide level2">
+<h2>פירוש המקדמים תלוי במירכוז</h2>
+<div>
+<ul>
+<li class="fragment"><span class="math inline">\(\beta_1\)</span> הוא השיפוע של <span class="math inline">\(X\)</span> <strong>כאשר <span class="math inline">\(W = 0\)</span></strong>. <span class="math inline">\(\beta_2\)</span> הוא השיפוע של <span class="math inline">\(W\)</span> כאשר <span class="math inline">\(X = 0\)</span>.</li>
+<li class="fragment">אם <span class="math inline">\(W\)</span> הוא למשל ציון בשאלון שנע בין 20 ל-80, אז “<span class="math inline">\(W = 0\)</span>” הוא ערך שאיש במדגם לא מקבל, ו-<span class="math inline">\(\beta_1\)</span> הוא <strong>אקסטרפולציה שאין לה משמעות</strong>.</li>
+<li class="fragment"><strong>הפתרון (W11.V2):</strong> ממרכזים. אחרי <span class="math inline">\(W_c = W - \bar{W}\)</span>, המקדם <span class="math inline">\(\beta_1\)</span> הוא האפקט של <span class="math inline">\(X\)</span> <strong>בערך הממוצע של <span class="math inline">\(W\)</span></strong> — ערך ממשי ואינפורמטיבי.</li>
+</ul>
 </div>
-</div>
-<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>פרדוקס Stein</strong></p>
+<p><strong>מה משתנה ומה לא</strong></p>
 </div>
 <div class="callout-content">
-<p>כבר ב-1961 הראו James ו-Stein שכשאומדים שלושה ממוצעים או יותר, כיווץ לכיוון ממוצע משותף מנצח את האומדים הנפרדים בטעות הריבועית הכוללת, <strong>גם כשהממוצעים לא קשורים זה לזה</strong>. זו התופעה שאתם רואים בהדגמה.</p>
+<p>מירכוז <strong>לא</strong> משנה את <span class="math inline">\(\beta_3\)</span>, את הניבוי או את ה-<span class="math inline">\(R^2\)</span>. הוא משנה את <span class="math inline">\(\beta_1\)</span> ו-<span class="math inline">\(\beta_2\)</span> (ואת שגיאות התקן שלהם), כי הוא משנה את השאלה שהם עונים עליה. לפני שמפרשים “אפקט ראשי” במודל עם אינטראקציה — שואלים: <strong>אפקט באיזה ערך של המשתנה האחר?</strong></p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-שלוש-שורות-ואשכולות-שנמשכים" class="slide level2">
-<h2>הדגמה אינטראקטיבית: שלוש שורות, ואשכולות שנמשכים</h2>
-<p>עשרה אשכולות בגדלים שונים (גודל העיגול וצבעו מציינים את מספר התצפיות). שנו את מספר התצפיות ואת השונות בין האשכולות.</p>
+<section id="הדגמה-אינטראקטיבית-השיפוע-של-x-משתנה-ברציפות" class="slide level2">
+<h2>הדגמה אינטראקטיבית: השיפוע של X משתנה ברציפות</h2>
+<p><span class="math inline">\(\beta_1 = 0.5\)</span> ו-<span class="math inline">\(\beta_2 = 0.3\)</span> קבועים. <span class="math inline">\(X\)</span> ממורכז. הזיזו את <span class="math inline">\(\beta_3\)</span> ואת ערך המווסת, והפעילו את מתג המירכוז.</p>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
   <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>ממוצע תצפיות לאשכול: <b id="nbarval_p">10</b>
-      <input type="range" id="nbar_p" min="2" max="40" step="1" value="10"></label>
-    <label>שונות בין האשכולות τ: <b id="tauval_p">5.0</b>
-      <input type="range" id="tau_p" min="0.5" max="15" step="0.5" value="5"></label>
-    <button id="resample_p" style="padding:2px 10px;">דגום מחדש</button>
+    <label>β3 (אינטראקציה): <b id="b3val_ct">0.4</b>
+      <input type="range" id="b3_ct" min="-1" max="1" step="0.1" value="0.4"></label>
+    <label>ערך המווסת (ביחידות SD מהממוצע): <b id="zval_ct">1.0</b>
+      <input type="range" id="z_ct" min="-2" max="2" step="0.1" value="1"></label>
+    <label><input type="checkbox" id="cent_ct" checked=""> W ממורכז (ממוצע 0)</label>
   </div>
-  <div id="demo-pool" style="width:100%; height:400px;"></div>
-  <div id="out_p" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; background:#eef5fa; color:#185fa5;"></div>
-  <div id="tauhat_p" style="text-align:center; padding:4px; font-size:0.85em;"></div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+    <div id="demo-ct-lines" style="flex:1 1 320px; height:310px;"></div>
+    <div id="demo-ct-slope" style="flex:1 1 320px; height:310px;"></div>
+  </div>
+  <div id="out_ct" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; font-size:0.9em;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  const J = 10, SIGMA = 10, MU = 50;
-  const SIZE_FACTORS = [0.25, 0.4, 0.6, 0.8, 1.0, 1.0, 1.3, 1.6, 2.0, 2.6];
-  let seed = 11, Z1, Z2;
-  function mulberry32(a) {
-    return function() {
-      a |= 0; a = a + 0x6D2B79F5 | 0;
-      let t = Math.imul(a ^ a >>> 15, 1 | a);
-      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    };
-  }
-  function makeNoise(s) {
-    const rnd = mulberry32(s);
-    function randn() {
-      let u = 0, v = 0;
-      while (u === 0) u = rnd();
-      while (v === 0) v = rnd();
-      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-    }
-    Z1 = []; Z2 = [];
-    for (let j = 0; j < J; j++) { Z1.push(randn()); Z2.push(randn()); }
-  }
+  const B0 = 0, B1 = 0.5, B2 = 0.3, RAWMEAN = 5;
+
   function draw() {
-    const nbar = parseInt(document.getElementById('nbar_p').value);
-    const tauTrue = parseFloat(document.getElementById('tau_p').value);
-    document.getElementById('nbarval_p').textContent = nbar;
-    document.getElementById('tauval_p').textContent = tauTrue.toFixed(1);
+    const b3 = parseFloat(document.getElementById('b3_ct').value);
+    const z = parseFloat(document.getElementById('z_ct').value);
+    const cent = document.getElementById('cent_ct').checked;
+    document.getElementById('b3val_ct').textContent = b3.toFixed(1);
+    document.getElementById('zval_ct').textContent = z.toFixed(1);
 
-    const n = SIZE_FACTORS.map(f => Math.max(1, Math.round(f * nbar)));
-    const muTrue = Z1.map(z => MU + tauTrue * z);
-    const ybar = muTrue.map((m, j) => m + (SIGMA / Math.sqrt(n[j])) * Z2[j]);
-    const v = n.map(nj => SIGMA * SIGMA / nj);
+    // תרשים שמאלי: משפחת קווים של Y מול X
+    const xs = [-2, 2];
+    const traces = [];
+    [-1, 0, 1].forEach(function(zz) {
+      traces.push({
+        x: xs, y: xs.map(x => B0 + B2 * zz + (B1 + b3 * zz) * x),
+        mode: 'lines', name: 'W = ' + (zz > 0 ? '+' : '') + zz + ' SD',
+        line: { color: '#95a5a6', width: 2, dash: 'dot' }
+      });
+    });
+    const slopeAtZ = B1 + b3 * z;
+    traces.push({
+      x: xs, y: xs.map(x => B0 + B2 * z + slopeAtZ * x),
+      mode: 'lines', name: 'W = ' + z.toFixed(1) + ' SD (נבחר)',
+      line: { color: '#c0392b', width: 4 }
+    });
+    Plotly.newPlot('demo-ct-lines', traces, {
+      title: { text: 'Y מנובא מול X, בערכים שונים של המווסת', font: { size: 13 } },
+      xaxis: { title: 'X (ממורכז)', range: [-2, 2] },
+      yaxis: { title: 'Y מנובא', range: [-6, 6] },
+      legend: { orientation: 'h', y: -0.28, font: { size: 10 } },
+      margin: { t: 40, b: 80, l: 45, r: 15 }
+    }, { displayModeBar: false, responsive: true });
 
-    // complete pooling: ממוצע משוקלל לפי n
-    const sumN = n.reduce((a, b) => a + b, 0);
-    const grand = ybar.reduce((s, y, j) => s + y * n[j], 0) / sumN;
+    // תרשים ימני: השיפוע של X כפונקציה של W
+    const off = cent ? 0 : RAWMEAN;           // ההיסט של סקאלת W המוצגת
+    const wr = cent ? [-4, 4] : [off - 5, off + 4];
+    const wcGrid = [];
+    for (let k = wr[0] - off; k <= wr[1] - off + 1e-9; k += 0.25) wcGrid.push(k);
+    const line = { x: wcGrid.map(w => w + off), y: wcGrid.map(w => B1 + b3 * w),
+                   mode: 'lines', name: 'שיפוע X', line: { color: '#2980b9', width: 3 } };
+    const chosen = { x: [z + off], y: [slopeAtZ], mode: 'markers', name: 'הערך הנבחר',
+                     marker: { color: '#c0392b', size: 13 } };
+    const printed = B1 + b3 * (0 - off);       // השיפוע ב-W=0 בסקאלה המוצגת: המקדם "בפלט"
+    const atZero = { x: [0], y: [printed], mode: 'markers', name: 'המקדם של X בפלט (W=0)',
+                     marker: { color: '#f39c12', size: 12, symbol: 'diamond' } };
+    Plotly.newPlot('demo-ct-slope', [line, chosen, atZero], {
+      title: { text: 'השיפוע של X כפונקציה של W', font: { size: 13 } },
+      xaxis: { title: cent ? 'W (ממורכז)' : 'W (גולמי, ממוצע 5, SD=1)', range: wr, zeroline: true },
+      yaxis: { title: 'השיפוע של X', range: [-7, 7] },
+      shapes: [{ type: 'rect', xref: 'x', yref: 'paper', x0: off - 2, x1: off + 2, y0: 0, y1: 1,
+                 fillcolor: 'rgba(41,128,185,0.10)', line: { width: 0 } }],
+      legend: { orientation: 'h', y: -0.28, font: { size: 10 } },
+      margin: { t: 40, b: 80, l: 45, r: 15 }
+    }, { displayModeBar: false, responsive: true });
 
-    // אומדן τ² בשיטת המומנטים (DerSimonian-Laird)
-    const w0 = v.map(x => 1 / x);
-    const sw = w0.reduce((a, b) => a + b, 0);
-    const m0 = ybar.reduce((s, y, j) => s + y * w0[j], 0) / sw;
-    const Q = ybar.reduce((s, y, j) => s + w0[j] * (y - m0) * (y - m0), 0);
-    const C = sw - w0.reduce((s, w) => s + w * w, 0) / sw;
-    const tau2 = Math.max(0, (Q - (J - 1)) / C);
-
-    // partial pooling
-    const w1 = v.map(x => 1 / (x + tau2));
-    const sw1 = w1.reduce((a, b) => a + b, 0);
-    const mu = ybar.reduce((s, y, j) => s + y * w1[j], 0) / sw1;
-    const B = v.map(x => x / (x + tau2));
-    const partial = ybar.map((y, j) => (1 - B[j]) * y + B[j] * mu);
-
-    const rmse = arr => Math.sqrt(arr.reduce((s, a, j) => s + (a - muTrue[j]) * (a - muTrue[j]), 0) / J);
-    const eNo = rmse(ybar), eP = rmse(partial), eC = rmse(ybar.map(() => grand));
-
-    const Y_NO = 3, Y_PA = 2, Y_CO = 1;
-    const hover = n.map((nj, j) => 'אשכול ' + (j + 1) + ', n = ' + nj);
-    const traces = [
-      { x: ybar, y: ybar.map(() => Y_NO), mode: 'markers', name: 'no pooling',
-        marker: { size: n.map(nj => 8 + 2.2 * Math.sqrt(nj)), color: n, colorscale: 'Viridis', showscale: false, line: { color: '#333', width: 1 } },
-        text: hover, hoverinfo: 'text' },
-      { x: partial, y: partial.map(() => Y_PA), mode: 'markers', name: 'partial pooling',
-        marker: { size: n.map(nj => 8 + 2.2 * Math.sqrt(nj)), color: n, colorscale: 'Viridis', showscale: false, line: { color: '#333', width: 1 } },
-        text: hover, hoverinfo: 'text' },
-      { x: ybar.map(() => grand), y: ybar.map(() => Y_CO), mode: 'markers', name: 'complete pooling',
-        marker: { size: 14, color: '#7f8c8d', symbol: 'diamond' }, hoverinfo: 'skip' },
-      { x: muTrue, y: muTrue.map(() => 3.6), mode: 'markers', name: 'הממוצע האמיתי',
-        marker: { size: 8, color: 'rgba(0,0,0,0)', line: { color: '#c0392b', width: 2 } }, hoverinfo: 'skip' }
-    ];
-    const arrows = [];
-    for (let j = 0; j < J; j++) {
-      arrows.push({ x: partial[j], y: Y_PA + 0.12, ax: ybar[j], ay: Y_NO - 0.12, xref: 'x', yref: 'y', axref: 'x', ayref: 'y',
-                    showarrow: true, arrowhead: 2, arrowsize: 1, arrowwidth: 1.5,
-                    arrowcolor: n[j] < 0.7 * nbar ? '#c0392b' : 'rgba(80,80,80,0.55)' });
-      arrows.push({ x: grand, y: Y_CO + 0.12, ax: partial[j], ay: Y_PA - 0.12, xref: 'x', yref: 'y', axref: 'x', ayref: 'y',
-                    showarrow: true, arrowhead: 2, arrowsize: 0.8, arrowwidth: 1, arrowcolor: 'rgba(150,150,150,0.35)' });
+    const el = document.getElementById('out_ct');
+    let txt = 'השיפוע של X בערך הנבחר: ' + slopeAtZ.toFixed(2) +
+              '  ·  המקדם של X בפלט: ' + printed.toFixed(2);
+    if (cent) {
+      txt += '  (=β1, השיפוע בממוצע של W)';
+      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
+    } else {
+      txt += '  (השיפוע ב-W=0, מחוץ לטווח הנתונים — האזור הכחול)';
+      el.style.background = '#fdecea'; el.style.color = '#a32d2d';
     }
-    const layout = {
-      xaxis: { title: 'ממוצע מוערך', range: [MU - 40, MU + 40] },
-      yaxis: { tickvals: [1, 2, 3, 3.6], ticktext: ['complete pooling', 'partial pooling', 'no pooling', 'true means'], range: [0.5, 4.1] },
-      margin: { t: 15, b: 45, l: 120, r: 15 },
-      showlegend: false,
-      annotations: arrows,
-      shapes: [{ type: 'line', x0: mu, x1: mu, y0: 0.6, y1: 3.4, line: { color: '#2980b9', width: 1.5, dash: 'dash' } }]
-    };
-    Plotly.newPlot('demo-pool', traces, layout, { displayModeBar: false });
-
-    const el = document.getElementById('out_p');
-    el.textContent = 'טעות (RMSE) מול הממוצעים האמיתיים:  no pooling ' + eNo.toFixed(2) +
-                     '  ·  partial pooling ' + eP.toFixed(2) + '  ·  complete pooling ' + eC.toFixed(2);
-    if (eP <= eNo && eP <= eC) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
-    else { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
-    document.getElementById('tauhat_p').textContent =
-      'τ אמיתי ' + tauTrue.toFixed(1) + '  ·  τ שנאמד מהנתונים ' + Math.sqrt(tau2).toFixed(1) +
-      '  ·  חץ אדום = אשכול קטן';
+    el.textContent = txt;
   }
-  makeNoise(seed);
-  ['nbar_p', 'tau_p'].forEach(id => document.getElementById(id).addEventListener('input', draw));
-  document.getElementById('resample_p').addEventListener('click', function() { seed += 1; makeNoise(seed); draw(); });
+
+  ['b3_ct', 'z_ct', 'cent_ct'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  document.getElementById('cent_ct').addEventListener('change', draw);
+  if (window.Reveal && Reveal.on) {
+    Reveal.on('slidechanged', function() {
+      setTimeout(function() {
+        try { Plotly.Plots.resize('demo-ct-lines'); Plotly.Plots.resize('demo-ct-slope'); } catch (e) {}
+      }, 150);
+    });
+  }
   setTimeout(draw, 400);
 })();
 </script>
@@ -572,20 +504,92 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment">האשכולות <strong>הקטנים</strong> (עיגולים קטנים, חצים אדומים) זזים הכי הרבה בדרך מ-no pooling ל-partial pooling. הגדולים כמעט לא זזים.</li>
-<li class="fragment">כש-<span class="math inline">\(\tau\)</span> קטן, כולם נצמדים לממוצע הכללי: partial pooling מתקרב ל-complete pooling.</li>
-<li class="fragment">כש-<span class="math inline">\(\tau\)</span> גדול וה-<span class="math inline">\(n\)</span> גדול, החצים כמעט נעלמים: partial pooling מתקרב ל-no pooling.</li>
-<li class="fragment">לחצו על “דגום מחדש” כמה פעמים: partial pooling <strong>בדרך כלל</strong> קרוב יותר לממוצעים האמיתיים, אבל לא בכל דגימה בנפרד.</li>
+<li class="fragment">כש-<span class="math inline">\(\beta_3 = 0\)</span> הקווים מקבילים: המודל אדיטיבי, והשיפוע של <span class="math inline">\(X\)</span> קבוע.</li>
+<li class="fragment">כש-<span class="math inline">\(\beta_3 \ne 0\)</span> הקווים מתפזרים כמניפה; <strong>השיפוע בתרשים הימני הוא קו ישר</strong> ב-<span class="math inline">\(W\)</span>, ו-<span class="math inline">\(\beta_3\)</span> הוא שיפוע הקו הזה.</li>
+<li class="fragment">במודל <strong>ללא מירכוז</strong>, המקדם של <span class="math inline">\(X\)</span> בפלט הוא השיפוע ב-<span class="math inline">\(W = 0\)</span> — נקודה רחוקה מהנתונים, שבה הערך (ולעיתים גם הסימן) שונה לחלוטין מהאפקט בערכים הממשיים של <span class="math inline">\(W\)</span>. אחרי מירכוז, אותה נקודה היא הממוצע.</li>
+<li class="fragment"><strong>ההתאמה לנתונים והניבוי זהים</strong> בשני המצבים; רק הפירוש של <span class="math inline">\(\beta_1\)</span> השתנה.</li>
 </ul>
+</div>
+</section>
+<section id="simple-slopes-אפקט-של-x-בערכים-נבחרים-של-w" class="slide level2">
+<h2>Simple slopes: אפקט של X בערכים נבחרים של W</h2>
+<p>הרעיון: לא מפרשים את <span class="math inline">\(\beta_3\)</span> לבדו, אלא מחשבים את השיפוע של <span class="math inline">\(X\)</span> בכמה ערכים אינפורמטיביים של <span class="math inline">\(W\)</span>:</p>
+<p><span class="math display">\[\hat\beta_{\text{simple}}(w) = \hat\beta_1 + \hat\beta_3 w, \qquad SE = \sqrt{Var(\hat\beta_1) + 2w\,Cov(\hat\beta_1,\hat\beta_3) + w^2\,Var(\hat\beta_3)}\]</span></p>
+<div>
+<ul>
+<li class="fragment">הבחירה המקובלת: <strong>ממוצע, ומינוס ואחד SD</strong> — או ערכים בעלי משמעות תוכנית (אחוזונים, סף קליני).</li>
+<li class="fragment">המירכוז שהוזכר קודם הופך את זה לפשוט: מרכזים את <span class="math inline">\(W\)</span> סביב הערך שמעניין אותנו, ו-<span class="math inline">\(\hat\beta_1\)</span> <strong>הוא</strong> ה-simple slope שם, עם שגיאת התקן שלו.</li>
+<li class="fragment">חלופה שאינה תלויה בבחירה שרירותית: <strong>Johnson-Neyman</strong> — מחשבים באילו טווחים של <span class="math inline">\(W\)</span> הרווח סמך של השיפוע אינו כולל אפס.</li>
+</ul>
+</div>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>אותו כשל מ-W7.V2</strong></p>
+</div>
+<div class="callout-content">
+<p>“ב-<span class="math inline">\(W\)</span> גבוה השיפוע מובהק, וב-<span class="math inline">\(W\)</span> נמוך לא, ולכן יש אינטראקציה” — טעות גם כאן. ההבדל בין מובהק ללא מובהק אינו מובהק. את קיום האינטראקציה בוחנים ב-<span class="math inline">\(\beta_3\)</span>; ה-simple slopes מתארים <strong>אופי</strong> של אינטראקציה שכבר קיימת.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="אזהרה-אינטראקציה-דורשת-הרבה-יותר-כוח" class="slide level2">
+<h2>אזהרה: אינטראקציה דורשת הרבה יותר כוח</h2>
+<div>
+<ul>
+<li class="fragment">במערך 2×2 מאוזן, שגיאת התקן של אינטראקציה גדולה פי <strong>2</strong> משגיאת התקן של אפקט ראשי (כי היא הפרש של הפרשים: ארבע ממוצעי תאים במקום שניים).</li>
+<li class="fragment">אם האינטראקציה קטנה בחצי מהאפקט הראשי — וזה כבר נדיב — היחס אפקט/שגיאה קטן פי 4, וצריך בערך <strong>פי 16 מהמדגם</strong> כדי להגיע לאותו כוח (Gelman).</li>
+<li class="fragment">ברציפים המצב חמור יותר: מדידה עם שגיאה (reliability &lt; 1) פוגעת ב-<span class="math inline">\(X\)</span> וב-<span class="math inline">\(W\)</span>, והמכפלה <span class="math inline">\(X \cdot W\)</span> יורשת את שניהם — ה-reliability של המכפלה נמוכה מזו של כל אחד מהם.</li>
+</ul>
+</div>
+<div class="callout callout-danger callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>ההשלכה לספרות</strong></p>
+</div>
+<div class="callout-content">
+<p>מחקר במדגם של 100-200 אנשים, שמחפש אינטראקציה ברציפים, הוא כמעט תמיד מחקר <strong>בלי כוח</strong> — ומחקר בלי כוח שמצא אינטראקציה מובהקת מדווח בדרך כלל אפקט מנופח, ולעיתים חיובי-שגוי. זו אחת הסיבות לכך שאינטראקציות מהספרות לא משוחזרות (ראו W8.V3, משבר הרפליקציה).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="עוד-סיבה-לחשד-אינטראקציה-מדומה" class="slide level2">
+<h2>עוד סיבה לחשד: אינטראקציה מדומה</h2>
+<div>
+<ul>
+<li class="fragment">אם <span class="math inline">\(X\)</span> ו-<span class="math inline">\(W\)</span> מתואמים, והאפקט האמיתי של <span class="math inline">\(X\)</span> הוא <strong>לא ליניארי</strong> (למשל <span class="math inline">\(X^2\)</span>), רגרסיה עם איבר <span class="math inline">\(X \cdot W\)</span> בלבד עלולה “לתפוס” את העקמומיות ולהציג אותה כאינטראקציה (Lubinski &amp; Humphreys, 1990).</li>
+<li class="fragment">אותו דבר בכיוון ההפוך: אינטראקציה אמיתית עלולה להיראות כאפקט ריבועי.</li>
+<li class="fragment"><strong>הבדיקה:</strong> להוסיף למודל גם את <span class="math inline">\(X^2\)</span> ו-<span class="math inline">\(W^2\)</span> ולשאול אם <span class="math inline">\(\beta_3\)</span> שורד.</li>
+</ul>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>כלל אצבע</strong></p>
+</div>
+<div class="callout-content">
+<p>אינטראקציה שנמצאה בסריקה חלקית של הנתונים, בלי השערה תאורטית לגבי <strong>כיוון וצורה</strong> מראש — מייצרת מרחב חיפוש (forking paths) גדול מאוד. ההשערה צריכה להגיד לא רק “יש אינטראקציה” אלא “השיפוע של <span class="math inline">\(X\)</span> <strong>עולה</strong> עם <span class="math inline">\(W\)</span>”.</p>
+</div>
+</div>
 </div>
 </section>
 <section id="סיכום-w12.v2" class="slide level2">
 <h2>סיכום W12.V2</h2>
 <ul>
-<li><strong>Complete pooling</strong> (ה-empty model) ו-<strong>no pooling</strong> (ה-categorical predictor) הם שני קצוות. <strong>Partial pooling</strong> הוא הפשרה ביניהם.</li>
-<li>הרעיון החדש היחיד: לפרמטרים יש התפלגות. זה <strong>prior</strong> על <span class="math inline">\(\mu_j\)</span>, ו-<span class="math inline">\(\tau\)</span> נאמד מהנתונים.</li>
-<li><strong>Shrinkage:</strong> אשכול עם מעט נתונים או שונות גדולה נמשך חזק לכיוון הממוצע הכללי. אשכול עם הרבה נתונים כמעט לא זז.</li>
-<li>זה לא רמאות: מוותרים על מעט הטיה, חוסכים הרבה שונות, והטעות הכוללת קטנה יותר. זה פרדוקס Stein.</li>
+<li>באינטראקציה בין רציפים אין שני קווים אלא <strong>משטח</strong>: השיפוע של <span class="math inline">\(X\)</span> הוא <span class="math inline">\(\beta_1 + \beta_3 W\)</span>, פונקציה ליניארית של המווסת.</li>
+<li><span class="math inline">\(\beta_1\)</span> הוא השיפוע בנקודה <span class="math inline">\(W = 0\)</span> — ולכן מירכוז (W11.V2) קובע מה המקדם בכלל אומר. הוא לא משנה את <span class="math inline">\(\beta_3\)</span> ואת הניבוי.</li>
+<li><strong>Simple slopes</strong> הם דרך לתאר את האינטראקציה בערכים נבחרים של <span class="math inline">\(W\)</span>; הקיום עצמו נבדק ב-<span class="math inline">\(\beta_3\)</span>, לא בהשוואת מובהקויות.</li>
+<li>אינטראקציה דורשת מדגם גדול בהרבה מאפקט ראשי, ובמיוחד כשהמדידה רועשת. חוסר כוח הוא סיבה נפוצה לממצאים לא יציבים.</li>
+<li>לפני שמאמינים לאינטראקציה, בודקים שהיא לא מסתירה אי-ליניאריות.</li>
 </ul>
 <div class="footer footer-default">
 

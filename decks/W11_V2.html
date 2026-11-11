@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W11.V2 — interaction בין מנבאים רציפים</title>
+  <title>W11.V2 — סטנדרטיזציה, מירכוז ונרמול</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,41 +325,27 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W11.V2 — interaction בין מנבאים רציפים</h1>
-  <p class="subtitle">משטח שהשיפוע שלו משתנה ברציפות, פירוש המקדמים אחרי מירכוז, ו-simple slopes</p>
+  <h1 class="title">W11.V2 — סטנדרטיזציה, מירכוז ונרמול</h1>
+  <p class="subtitle">איפה שמים את האפס, באילו יחידות מודדים, ומה נשאר זהה</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להרחיב את איבר המכפלה ממשתנים קטגוריאליים (W6.V2) למשתנים <strong>רציפים</strong>.</li>
-<li>להבין את ההבדל המושגי: לא “שני קווים” אלא <strong>משטח שהשיפוע שלו משתנה ברציפות</strong>.</li>
-<li>לפרש את המקדמים בתלות במירכוז — ולקשר זאת ל-W10.V2.</li>
-<li>לנתח את האינטראקציה באמצעות <strong>simple slopes</strong> בערכים נבחרים של המשתנה המווסת (moderator).</li>
-<li>להכיר את הבעיה של <strong>כוח סטטיסטי</strong> באינטראקציות, ואת תרומתה לממצאים לא יציבים.</li>
+<li>להבין מה עושה <strong>centering</strong> (מירכוז): מזיז את ראשית הצירים, משנה את ה-intercept ולא את השיפוע.</li>
+<li>להבין מה עושה <strong>z-scoring</strong> (תקנון): משנה גם את יחידות השיפוע והופך אותו ל-<strong>standardized coefficient</strong>.</li>
+<li>לדעת מתי כל אחד מהם מועיל ומתי מזיק.</li>
+<li>להבין למה <strong>מירכוז לפני interaction</strong> הוא כמעט חובה, ולחבר זאת לשבוע 7.</li>
+<li>לא לקרוא מקדמים סטנדרטיים כגדלי אפקט בין מדגמים שונים.</li>
 </ul>
 </section>
-<section id="מהמקרה-הקטגוריאלי-לרציף" class="slide level2">
-<h2>מהמקרה הקטגוריאלי לרציף</h2>
-<p>המודל זהה בצורתו למה שראיתם בשבוע 6, כאשר <span class="math inline">\(X\)</span> ו-<span class="math inline">\(W\)</span> (המווסת) רציפים:</p>
-<p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + \beta_2 W_i + \beta_3 (X_i \cdot W_i) + \varepsilon_i\]</span></p>
+<section id="שתי-שאלות-שרגרסיה-רציפה-מכריחה-לשאול" class="slide level2">
+<h2>שתי שאלות שרגרסיה רציפה מכריחה לשאול</h2>
+<p>במשתנה דמה לא הייתה ברירה: האפס היה קבוצת הייחוס והיחידה הייתה “מעבר בין קבוצות”. ב-X רציף שתי ההחלטות הן שלנו.</p>
 <div>
 <ul>
-<li class="fragment">בשבוע 6: <span class="math inline">\(\beta_3\)</span> הוא “ההבדל בין ההבדלים” — הפרש בין <strong>שני</strong> אפקטים, אחד בכל תנאי של <span class="math inline">\(B\)</span>.</li>
-<li class="fragment">כאן אין שני תנאים. ל-<span class="math inline">\(W\)</span> יש אינסוף ערכים, ולכן יש <strong>אינסוף אפקטים</strong> של <span class="math inline">\(X\)</span> — אחד לכל ערך של <span class="math inline">\(W\)</span>.</li>
-<li class="fragment"><span class="math inline">\(\beta_3\)</span> הוא הקצב שבו האפקט של <span class="math inline">\(X\)</span> משתנה כאשר <span class="math inline">\(W\)</span> עולה ביחידה אחת.</li>
-</ul>
-</div>
-</section>
-<section id="אין-שני-קווים-יש-משטח" class="slide level2">
-<h2>אין שני קווים: יש משטח</h2>
-<p>מסדרים מחדש את המשוואה:</p>
-<p><span class="math display">\[Y = \beta_0 + \beta_2 W + \underbrace{(\beta_1 + \beta_3 W)}_{\text{השיפוע של } X} \cdot X + \varepsilon\]</span></p>
-<div>
-<ul>
-<li class="fragment"><strong>השיפוע של <span class="math inline">\(X\)</span> הוא פונקציה ליניארית של <span class="math inline">\(W\)</span>:</strong> <span class="math inline">\(\beta_1 + \beta_3 W\)</span>.</li>
-<li class="fragment"><strong>וסימטרית:</strong> השיפוע של <span class="math inline">\(W\)</span> הוא <span class="math inline">\(\beta_2 + \beta_3 X\)</span>. אין הבדל מתמטי בין מי מהם “המווסת” — זו בחירה תאורטית.</li>
-<li class="fragment">גאומטרית, המישור של W11.V1 נעשה <strong>משטח מעוקל</strong>. כל חתך שלו בערך קבוע של <span class="math inline">\(W\)</span> הוא עדיין קו — אבל בשיפוע אחר בכל חתך.</li>
+<li class="fragment"><strong>איפה האפס?</strong> <span class="math inline">\(\beta_0\)</span> הוא הערך המנובא כש-<span class="math inline">\(X = 0\)</span>. אבל גיל 0, IQ 0 ושעות שינה 0 לא קיימים במדגם. ה-intercept הופך להארכה של הקו אל מקום שאין בו נתונים.</li>
+<li class="fragment"><strong>מה היחידה?</strong> אותו קשר בדיוק נותן שיפוע של 0.5 לשנה או 0.04 לחודש. המספר תלוי ביחידה שבחרנו.</li>
 </ul>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
@@ -368,134 +354,191 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>השוואה לקטגוריאלי</strong></p>
+<p><strong>הרעיון המרכזי</strong></p>
 </div>
 <div class="callout-content">
-<p>קטגוריאלי: שיפוע אחד בכל קבוצה, ושתי קבוצות → שני קווים. רציף: שיפוע שונה בכל ערך של <span class="math inline">\(W\)</span> → משפחת קווים רציפה. המקרה הקטגוריאלי הוא מקרה פרטי כש-<span class="math inline">\(W\)</span> מקבל רק שני ערכים.</p>
+<p>שני התיקונים הם <strong>טרנספורמציות ליניאריות של X</strong>. הם לא משנים את הקו, את ה-residuals או את הניבויים. הם משנים רק <strong>על איזו שאלה כל מקדם עונה</strong>.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="פירוש-המקדמים-תלוי-במירכוז" class="slide level2">
-<h2>פירוש המקדמים תלוי במירכוז</h2>
+<section id="centering-להזיז-את-האפס" class="slide level2">
+<h2>Centering: להזיז את האפס</h2>
+<p><span class="math display">\[X^{c}_i = X_i - c \qquad (\text{בדרך כלל } c = \bar{X})\]</span></p>
+<p>נציב <span class="math inline">\(X_i = X_i^c + c\)</span> במשוואה המקורית:</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 (X_i^c + c) + \epsilon_i = \underbrace{(\beta_0 + \beta_1 c)}_{\beta_0^{c}} + \beta_1 X_i^c + \epsilon_i\]</span></p>
 <div>
 <ul>
-<li class="fragment"><span class="math inline">\(\beta_1\)</span> הוא השיפוע של <span class="math inline">\(X\)</span> <strong>כאשר <span class="math inline">\(W = 0\)</span></strong>. <span class="math inline">\(\beta_2\)</span> הוא השיפוע של <span class="math inline">\(W\)</span> כאשר <span class="math inline">\(X = 0\)</span>.</li>
-<li class="fragment">אם <span class="math inline">\(W\)</span> הוא למשל ציון בשאלון שנע בין 20 ל-80, אז “<span class="math inline">\(W = 0\)</span>” הוא ערך שאיש במדגם לא מקבל, ו-<span class="math inline">\(\beta_1\)</span> הוא <strong>אקסטרפולציה שאין לה משמעות</strong>.</li>
-<li class="fragment"><strong>הפתרון (W10.V2):</strong> ממרכזים. אחרי <span class="math inline">\(W_c = W - \bar{W}\)</span>, המקדם <span class="math inline">\(\beta_1\)</span> הוא האפקט של <span class="math inline">\(X\)</span> <strong>בערך הממוצע של <span class="math inline">\(W\)</span></strong> — ערך ממשי ואינפורמטיבי.</li>
+<li class="fragment"><span class="math inline">\(\beta_1\)</span> <strong>לא משתנה</strong>: אותו קו, אותו שיפוע.</li>
+<li class="fragment"><span class="math inline">\(\beta_0^c = \beta_0 + \beta_1 c\)</span> משתנה: זה הערך המנובא ב-<span class="math inline">\(X = c\)</span>. כשמרכזים סביב הממוצע, <span class="math inline">\(\beta_0^c = \bar{y}\)</span>, כלומר <strong>הניחוש הטוב ביותר לנבדק ממוצע</strong>.</li>
+<li class="fragment">ההתאמה של המודל זהה: אותם residuals, אותו <span class="math inline">\(R^2\)</span>.</li>
 </ul>
 </div>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+</section>
+<section id="z-scoring-להזיז-את-האפס-ולשנות-את-היחידה" class="slide level2">
+<h2>Z-scoring: להזיז את האפס ולשנות את היחידה</h2>
+<p><span class="math display">\[z_i = \frac{X_i - \bar{X}}{s_X} \qquad\Longrightarrow\qquad \beta_1^{z} = \beta_1 \cdot s_X\]</span></p>
+<div>
+<ul>
+<li class="fragment">השיפוע עכשיו הוא: <strong>בכמה יחידות Y משתנה הערך המנובא כש-X עולה בסטיית תקן אחת</strong>.</li>
+<li class="fragment">אם גם Y עובר תקנון, מקבלים <strong>standardized coefficient</strong>:</li>
+</ul>
+<p><span class="math display">\[\beta^{std} = \beta_1 \cdot \frac{s_X}{s_Y}\]</span></p>
+<ul>
+<li class="fragment">ברגרסיה עם מנבא יחיד, <span class="math inline">\(\beta^{std} = r\)</span>. זה החיבור למצגת הקודמת: <span class="math inline">\(r\)</span> הוא השיפוע כששני הצירים מתוקננים.</li>
+<li class="fragment">ברגרסיה מרובה <span class="math inline">\(\beta^{std}\)</span> <strong>אינו</strong> <span class="math inline">\(r\)</span>, כי מפקחים על משתנים נוספים.</li>
+</ul>
 </div>
-<p><strong>מה משתנה ומה לא</strong></p>
-</div>
-<div class="callout-content">
-<p>מירכוז <strong>לא</strong> משנה את <span class="math inline">\(\beta_3\)</span>, את הניבוי או את ה-<span class="math inline">\(R^2\)</span>. הוא משנה את <span class="math inline">\(\beta_1\)</span> ו-<span class="math inline">\(\beta_2\)</span> (ואת שגיאות התקן שלהם), כי הוא משנה את השאלה שהם עונים עליה. לפני שמפרשים “אפקט ראשי” במודל עם אינטראקציה — שואלים: <strong>אפקט באיזה ערך של המשתנה האחר?</strong></p>
-</div>
+</section>
+<section id="מתי-זה-מועיל-ומתי-מזיק" class="slide level2">
+<h2>מתי זה מועיל ומתי מזיק</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="מועיל">מועיל</h3>
+<ul>
+<li><strong>ה-intercept מקבל פירוש</strong>: ניבוי לאדם ממוצע במקום לאדם שלא קיים.</li>
+<li><strong>prior אחיד על כל המקדמים</strong>: ב-posterior קל יותר להצדיק prior כמו Normal(0, 1) כשכל המנבאים באותה סקאלה.</li>
+<li><strong>מנבאים ביחידות שונות</strong> נראים על אותו ציר. בזהירות, ראו בהמשך.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="מזיק">מזיק</h3>
+<ul>
+<li><strong>מאבדים יחידות טבעיות</strong>: “נקודה לכל שעת שינה” ניתן לתקשר, “0.3 סטיות תקן” הרבה פחות.</li>
+<li><strong>z של משתנה דמה</strong> אינו הפרש בין קבוצות אלא “לכל סטיית תקן של הדמה”, מספר שאף אחד לא יודע לפרש.</li>
+<li><strong>המקדם תלוי במדגם</strong>: סטיית התקן משתנה ממדגם למדגם, ראו שקף אזהרה.</li>
+</ul>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-השיפוע-של-x-משתנה-ברציפות" class="slide level2">
-<h2>הדגמה אינטראקטיבית: השיפוע של X משתנה ברציפות</h2>
-<p><span class="math inline">\(\beta_1 = 0.5\)</span> ו-<span class="math inline">\(\beta_2 = 0.3\)</span> קבועים. <span class="math inline">\(X\)</span> ממורכז. הזיזו את <span class="math inline">\(\beta_3\)</span> ואת ערך המווסת, והפעילו את מתג המירכוז.</p>
+<section id="הדגמה-אינטראקטיבית-מה-זז-ומה-נשאר" class="slide level2">
+<h2>הדגמה אינטראקטיבית: מה זז ומה נשאר</h2>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
+  <div style="display:flex; flex-wrap:wrap; gap:18px; align-items:center; margin-bottom:6px; font-size:0.85em;">
+    <label><input type="radio" name="mode_v2" value="A" checked=""> אותם נתונים, טרנספורמציה של X</label>
+    <label><input type="radio" name="mode_v2" value="B"> מדגם אחר, אותו קו אמיתי (טווח X שונה)</label>
+  </div>
   <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>β3 (אינטראקציה): <b id="b3val_ct">0.4</b>
-      <input type="range" id="b3_ct" min="-1" max="1" step="0.1" value="0.4"></label>
-    <label>ערך המווסת (ביחידות SD מהממוצע): <b id="zval_ct">1.0</b>
-      <input type="range" id="z_ct" min="-2" max="2" step="0.1" value="1"></label>
-    <label><input type="checkbox" id="cent_ct" checked=""> W ממורכז (ממוצע 0)</label>
+    <label><span id="mlabel_v2">מרכז ה-X החדש</span>: <b id="mval_v2">40</b>
+      <input type="range" id="m_v2" min="-20" max="80" step="1" value="40"></label>
+    <label><span id="slabel_v2">סטיית התקן החדשה של X</span>: <b id="sval_v2">10.0</b>
+      <input type="range" id="s_v2" min="1" max="20" step="0.5" value="10"></label>
   </div>
-  <div style="display:flex; flex-wrap:wrap; gap:8px;">
-    <div id="demo-ct-lines" style="flex:1 1 320px; height:310px;"></div>
-    <div id="demo-ct-slope" style="flex:1 1 320px; height:310px;"></div>
+  <div id="presets_v2" style="display:flex; gap:8px; margin-bottom:6px; font-size:0.85em;">
+    <button id="p_raw_v2" style="padding:3px 10px;">גולמי</button>
+    <button id="p_cen_v2" style="padding:3px 10px;">מירכוז</button>
+    <button id="p_z_v2" style="padding:3px 10px;">תקנון (z)</button>
   </div>
-  <div id="out_ct" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; font-size:0.9em;"></div>
+  <div id="demo-std2" style="width:100%; height:320px;"></div>
+  <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;">
+    <div id="c0_v2" style="flex:1 1 150px; text-align:center; padding:8px; border-radius:6px; font-weight:bold;"></div>
+    <div id="c1_v2" style="flex:1 1 150px; text-align:center; padding:8px; border-radius:6px; font-weight:bold;"></div>
+    <div id="c2_v2" style="flex:1 1 150px; text-align:center; padding:8px; border-radius:6px; font-weight:bold;"></div>
+  </div>
+  <div style="font-size:0.75em; color:#666; margin-top:4px;">הרעש בהדגמה מכוון כך שאינו מתואם ל-X, כדי שהמקדמים יתאימו בדיוק לחישוב ולא יתערבבו בתנודות מדגם. הצבע הכחול מציין ערך זהה לנקודת ההתחלה (גולמי, מרכז 40, סטיית תקן 10), והאדום ערך ששונה.</div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  const B0 = 0, B1 = 0.5, B2 = 0.3, RAWMEAN = 5;
+  const n = 80, M0 = 40, S0 = 10;
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  // בסיס: zx מתוקנן בדיוק (ממוצע 0, סטיית תקן 1), ורעש e ללא מתאם ל-zx, סטיית תקן 5
+  let zx = [], e = [];
+  for (let i = 0; i < n; i++) { zx.push(randn()); e.push(randn()); }
+  let mz = zx.reduce((a, b) => a + b, 0) / n;
+  zx = zx.map(v => v - mz);
+  let sz = Math.sqrt(zx.reduce((a, b) => a + b * b, 0) / n);
+  zx = zx.map(v => v / sz);
+  let me = e.reduce((a, b) => a + b, 0) / n;
+  e = e.map(v => v - me);
+  let c = e.reduce((a, b, i) => a + b * zx[i], 0) / n;
+  e = e.map((v, i) => v - c * zx[i]);
+  let se = Math.sqrt(e.reduce((a, b) => a + b * b, 0) / n);
+  e = e.map(v => 5 * v / se);
 
-  function draw() {
-    const b3 = parseFloat(document.getElementById('b3_ct').value);
-    const z = parseFloat(document.getElementById('z_ct').value);
-    const cent = document.getElementById('cent_ct').checked;
-    document.getElementById('b3val_ct').textContent = b3.toFixed(1);
-    document.getElementById('zval_ct').textContent = z.toFixed(1);
-
-    // תרשים שמאלי: משפחת קווים של Y מול X
-    const xs = [-2, 2];
-    const traces = [];
-    [-1, 0, 1].forEach(function(zz) {
-      traces.push({
-        x: xs, y: xs.map(x => B0 + B2 * zz + (B1 + b3 * zz) * x),
-        mode: 'lines', name: 'W = ' + (zz > 0 ? '+' : '') + zz + ' SD',
-        line: { color: '#95a5a6', width: 2, dash: 'dot' }
-      });
-    });
-    const slopeAtZ = B1 + b3 * z;
-    traces.push({
-      x: xs, y: xs.map(x => B0 + B2 * z + slopeAtZ * x),
-      mode: 'lines', name: 'W = ' + z.toFixed(1) + ' SD (נבחר)',
-      line: { color: '#c0392b', width: 4 }
-    });
-    Plotly.newPlot('demo-ct-lines', traces, {
-      title: { text: 'Y מנובא מול X, בערכים שונים של המווסת', font: { size: 13 } },
-      xaxis: { title: 'X (ממורכז)', range: [-2, 2] },
-      yaxis: { title: 'Y מנובא', range: [-6, 6] },
-      legend: { orientation: 'h', y: -0.28, font: { size: 10 } },
-      margin: { t: 40, b: 80, l: 45, r: 15 }
-    }, { displayModeBar: false, responsive: true });
-
-    // תרשים ימני: השיפוע של X כפונקציה של W
-    const off = cent ? 0 : RAWMEAN;           // ההיסט של סקאלת W המוצגת
-    const wr = cent ? [-4, 4] : [off - 5, off + 4];
-    const wcGrid = [];
-    for (let k = wr[0] - off; k <= wr[1] - off + 1e-9; k += 0.25) wcGrid.push(k);
-    const line = { x: wcGrid.map(w => w + off), y: wcGrid.map(w => B1 + b3 * w),
-                   mode: 'lines', name: 'שיפוע X', line: { color: '#2980b9', width: 3 } };
-    const chosen = { x: [z + off], y: [slopeAtZ], mode: 'markers', name: 'הערך הנבחר',
-                     marker: { color: '#c0392b', size: 13 } };
-    const printed = B1 + b3 * (0 - off);       // השיפוע ב-W=0 בסקאלה המוצגת: המקדם "בפלט"
-    const atZero = { x: [0], y: [printed], mode: 'markers', name: 'המקדם של X בפלט (W=0)',
-                     marker: { color: '#f39c12', size: 12, symbol: 'diamond' } };
-    Plotly.newPlot('demo-ct-slope', [line, chosen, atZero], {
-      title: { text: 'השיפוע של X כפונקציה של W', font: { size: 13 } },
-      xaxis: { title: cent ? 'W (ממורכז)' : 'W (גולמי, ממוצע 5, SD=1)', range: wr, zeroline: true },
-      yaxis: { title: 'השיפוע של X', range: [-7, 7] },
-      shapes: [{ type: 'rect', xref: 'x', yref: 'paper', x0: off - 2, x1: off + 2, y0: 0, y1: 1,
-                 fillcolor: 'rgba(41,128,185,0.10)', line: { width: 0 } }],
-      legend: { orientation: 'h', y: -0.28, font: { size: 10 } },
-      margin: { t: 40, b: 80, l: 45, r: 15 }
-    }, { displayModeBar: false, responsive: true });
-
-    const el = document.getElementById('out_ct');
-    let txt = 'השיפוע של X בערך הנבחר: ' + slopeAtZ.toFixed(2) +
-              '  ·  המקדם של X בפלט: ' + printed.toFixed(2);
-    if (cent) {
-      txt += '  (=β1, השיפוע בממוצע של W)';
-      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
-    } else {
-      txt += '  (השיפוע ב-W=0, מחוץ לטווח הנתונים — האזור הכחול)';
-      el.style.background = '#fdecea'; el.style.color = '#a32d2d';
+  function build(mode, m, s) {
+    const x = [], y = [];
+    for (let i = 0; i < n; i++) {
+      const xi = m + s * zx[i];
+      x.push(xi);
+      // A: Y קבוע (50 + 5*zx + e). B: הקו האמיתי הוא y = 30 + 0.5*x + e
+      y.push(mode === 'A' ? 50 + 5 * zx[i] + e[i] : 30 + 0.5 * xi + e[i]);
     }
-    el.textContent = txt;
+    return { x: x, y: y };
   }
+  function fit(d) {
+    let mx = 0, my = 0;
+    for (let i = 0; i < n; i++) { mx += d.x[i]; my += d.y[i]; }
+    mx /= n; my /= n;
+    let sxy = 0, sxx = 0, syy = 0;
+    for (let i = 0; i < n; i++) {
+      sxy += (d.x[i] - mx) * (d.y[i] - my);
+      sxx += (d.x[i] - mx) * (d.x[i] - mx);
+      syy += (d.y[i] - my) * (d.y[i] - my);
+    }
+    const b1 = sxy / sxx;
+    return { b0: my - b1 * mx, b1: b1, r: sxy / Math.sqrt(sxx * syy) };
+  }
+  function mode() { return document.querySelector('input[name="mode_v2"]:checked').value; }
+  function badge(id, title, val, base) {
+    const el = document.getElementById(id);
+    const same = Math.abs(val - base) < 0.005;
+    el.innerHTML = title + ': ' + val.toFixed(2) + '<br><span style="font-size:0.8em;">' + (same ? 'ללא שינוי' : 'השתנה (בסיס ' + base.toFixed(2) + ')') + '</span>';
+    el.style.background = same ? '#eef5fa' : '#fdecea';
+    el.style.color = same ? '#185fa5' : '#a32d2d';
+  }
+  function draw() {
+    const md = mode();
+    const m = parseFloat(document.getElementById('m_v2').value);
+    const s = parseFloat(document.getElementById('s_v2').value);
+    document.getElementById('mval_v2').textContent = m.toFixed(0);
+    document.getElementById('sval_v2').textContent = s.toFixed(1);
+    document.getElementById('mlabel_v2').textContent = md === 'A' ? 'מרכז ה-X החדש' : 'מרכז ה-X במדגם';
+    document.getElementById('slabel_v2').textContent = md === 'A' ? 'סטיית התקן החדשה של X' : 'סטיית התקן של X במדגם';
+    document.getElementById('presets_v2').style.display = md === 'A' ? 'flex' : 'none';
 
-  ['b3_ct', 'z_ct', 'cent_ct'].forEach(id => document.getElementById(id).addEventListener('input', draw));
-  document.getElementById('cent_ct').addEventListener('change', draw);
-  if (window.Reveal && Reveal.on) {
-    Reveal.on('slidechanged', function() {
-      setTimeout(function() {
-        try { Plotly.Plots.resize('demo-ct-lines'); Plotly.Plots.resize('demo-ct-slope'); } catch (e) {}
-      }, 150);
-    });
+    const d = build(md, m, s), f = fit(d);
+    const base = fit(build(md, M0, S0));
+
+    const xmin = Math.min.apply(null, d.x), xmax = Math.max.apply(null, d.x);
+    const xlo = Math.min(0, xmin), xhi = Math.max(0, xmax);
+    const xpad = 0.08 * (xhi - xlo);
+    const ymin = Math.min.apply(null, d.y), ymax = Math.max.apply(null, d.y);
+    const span = ymax - ymin;
+    let ylo = ymin, yhi = ymax;
+    if (f.b0 > ymin - span && f.b0 < ymax + span) { ylo = Math.min(ylo, f.b0); yhi = Math.max(yhi, f.b0); }
+    const ypad = 0.1 * (yhi - ylo);
+    const X0 = xlo - xpad, X1 = xhi + xpad;
+
+    Plotly.newPlot('demo-std2', [
+      { x: d.x, y: d.y, mode: 'markers', marker: { color: '#2980b9', size: 7, opacity: 0.75 }, showlegend: false },
+      { x: [X0, X1], y: [f.b0 + f.b1 * X0, f.b0 + f.b1 * X1], mode: 'lines', line: { color: '#c0392b', width: 3 }, showlegend: false },
+      { x: [0], y: [f.b0], mode: 'markers+text', text: ['β0'], textposition: 'top right',
+        marker: { color: '#27ae60', size: 12, symbol: 'diamond' }, showlegend: false }
+    ], {
+      xaxis: { title: 'X', range: [X0, X1], zeroline: true, zerolinecolor: '#27ae60', zerolinewidth: 2 },
+      yaxis: { title: 'Y', range: [ylo - ypad, yhi + ypad] },
+      margin: { t: 15, b: 45, l: 50, r: 15 }
+    }, { displayModeBar: false });
+
+    badge('c0_v2', 'β0 (intercept)', f.b0, base.b0);
+    badge('c1_v2', 'β1 (slope)', f.b1, base.b1);
+    badge('c2_v2', 'β1 מתוקנן (= r)', f.r, base.r);
   }
+  function setPreset(m, s) {
+    document.getElementById('m_v2').value = m;
+    document.getElementById('s_v2').value = s;
+    draw();
+  }
+  ['m_v2', 's_v2'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  document.querySelectorAll('input[name="mode_v2"]').forEach(el => el.addEventListener('change', draw));
+  document.getElementById('p_raw_v2').addEventListener('click', function() { setPreset(40, 10); });
+  document.getElementById('p_cen_v2').addEventListener('click', function() { setPreset(0, 10); });
+  document.getElementById('p_z_v2').addEventListener('click', function() { setPreset(0, 1); });
   setTimeout(draw, 400);
 })();
 </script>
@@ -504,22 +547,48 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment">כש-<span class="math inline">\(\beta_3 = 0\)</span> הקווים מקבילים: המודל אדיטיבי, והשיפוע של <span class="math inline">\(X\)</span> קבוע.</li>
-<li class="fragment">כש-<span class="math inline">\(\beta_3 \ne 0\)</span> הקווים מתפזרים כמניפה; <strong>השיפוע בתרשים הימני הוא קו ישר</strong> ב-<span class="math inline">\(W\)</span>, ו-<span class="math inline">\(\beta_3\)</span> הוא שיפוע הקו הזה.</li>
-<li class="fragment">במודל <strong>ללא מירכוז</strong>, המקדם של <span class="math inline">\(X\)</span> בפלט הוא השיפוע ב-<span class="math inline">\(W = 0\)</span> — נקודה רחוקה מהנתונים, שבה הערך (ולעיתים גם הסימן) שונה לחלוטין מהאפקט בערכים הממשיים של <span class="math inline">\(W\)</span>. אחרי מירכוז, אותה נקודה היא הממוצע.</li>
-<li class="fragment"><strong>ההתאמה לנתונים והניבוי זהים</strong> בשני המצבים; רק הפירוש של <span class="math inline">\(\beta_1\)</span> השתנה.</li>
+<li class="fragment"><strong>מצב “אותם נתונים”:</strong> הזזת המרכז משנה את <span class="math inline">\(\beta_0\)</span> ואת שום דבר אחר. הכפתור “מירכוז” מציב מרכז 0: ה-intercept הופך ל-<span class="math inline">\(\bar{y}\)</span> והשיפוע נשאר 0.5.</li>
+<li class="fragment">הקטנת סטיית התקן של X (טרנספורמציה) <strong>מגדילה</strong> את השיפוע, כי יחידת X קטנה יותר. בכפתור “תקנון” סטיית התקן היא 1 והשיפוע הוא 5: בדיוק <span class="math inline">\(\beta_1 \cdot s_X\)</span>.</li>
+<li class="fragment"><strong><span class="math inline">\(\beta_1\)</span> המתוקנן אינו משתנה אף פעם</strong> תחת טרנספורמציה ליניארית. הוא תמיד <span class="math inline">\(r\)</span>.</li>
+<li class="fragment"><strong>מצב “מדגם אחר”:</strong> כאן הקו האמיתי קבוע. סטיית התקן של X משנה את <span class="math inline">\(\beta_1\)</span> המתוקנן (כלומר <span class="math inline">\(r\)</span>) ולא את השיפוע הגולמי. חכו לשקף האזהרה.</li>
 </ul>
 </div>
 </section>
-<section id="simple-slopes-אפקט-של-x-בערכים-נבחרים-של-w" class="slide level2">
-<h2>Simple slopes: אפקט של X בערכים נבחרים של W</h2>
-<p>הרעיון: לא מפרשים את <span class="math inline">\(\beta_3\)</span> לבדו, אלא מחשבים את השיפוע של <span class="math inline">\(X\)</span> בכמה ערכים אינפורמטיביים של <span class="math inline">\(W\)</span>:</p>
-<p><span class="math display">\[\hat\beta_{\text{simple}}(w) = \hat\beta_1 + \hat\beta_3 w, \qquad SE = \sqrt{Var(\hat\beta_1) + 2w\,Cov(\hat\beta_1,\hat\beta_3) + w^2\,Var(\hat\beta_3)}\]</span></p>
+<section id="המקרה-החשוב-מירכוז-לפני-interaction" class="slide level2">
+<h2>המקרה החשוב: מירכוז לפני interaction</h2>
+<p>נחזור ליחידה של שבוע 7:</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 (X_1 \cdot X_2) + \epsilon_i\]</span></p>
+<p>האפקט של <span class="math inline">\(X_1\)</span> הוא <span class="math inline">\(\beta_1 + \beta_3 X_2\)</span>, כלומר <span class="math inline">\(\beta_1\)</span> הוא האפקט של <span class="math inline">\(X_1\)</span> <strong>כאשר <span class="math inline">\(X_2 = 0\)</span></strong>.</p>
 <div>
 <ul>
-<li class="fragment">הבחירה המקובלת: <strong>ממוצע, ומינוס ואחד SD</strong> — או ערכים בעלי משמעות תוכנית (אחוזונים, סף קליני).</li>
-<li class="fragment">המירכוז שהוזכר קודם הופך את זה לפשוט: מרכזים את <span class="math inline">\(W\)</span> סביב הערך שמעניין אותנו, ו-<span class="math inline">\(\hat\beta_1\)</span> <strong>הוא</strong> ה-simple slope שם, עם שגיאת התקן שלו.</li>
-<li class="fragment">חלופה שאינה תלויה בבחירה שרירותית: <strong>Johnson-Neyman</strong> — מחשבים באילו טווחים של <span class="math inline">\(W\)</span> הרווח סמך של השיפוע אינו כולל אפס.</li>
+<li class="fragment">בשבוע 7 זה היה טבעי: <span class="math inline">\(X_2 = 0\)</span> הייתה קבוצת הייחוס. ברציף, <span class="math inline">\(X_2 = 0\)</span> הוא לפעמים מקום שאין בו אף אחד. אם <span class="math inline">\(X_2\)</span> הוא גיל, <span class="math inline">\(\beta_1\)</span> הוא האפקט של <span class="math inline">\(X_1\)</span> אצל גיל 0.</li>
+<li class="fragment">מרכזים <span class="math inline">\(X_2\)</span> סביב <span class="math inline">\(c\)</span>: מתקבל <span class="math inline">\(\beta_1^{c} = \beta_1 + \beta_3 c\)</span>, כלומר <strong>האפקט של <span class="math inline">\(X_1\)</span> אצל אדם ממוצע</strong>.</li>
+<li class="fragment"><span class="math inline">\(\beta_3\)</span> ו”ההבדל בין ההבדלים” <strong>לא משתנים</strong>.</li>
+<li class="fragment">גם משתנה דמה כדאי לקודד לפעמים <span class="math inline">\(-\tfrac{1}{2}/+\tfrac{1}{2}\)</span>, וכך האפקט הראשי הוא ממוצע שני האפקטים הפשוטים.</li>
+</ul>
+</div>
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>המודל לא השתנה, השאלה השתנתה</strong></p>
+</div>
+<div class="callout-content">
+<p>אחרי מירכוז הניבויים, ה-residuals ו-<span class="math inline">\(\beta_3\)</span> זהים. מה שהשתנה הוא הפירוש של האפקטים הראשיים. בלי מירכוז הם עונים על שאלה שאף אחד לא שאל (“מה האפקט אצל בן אדם ב-X2 = 0”), ולכן נעשים חסרי פשר.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="אזהרה-מקדם-סטנדרטי-אינו-גודל-אפקט-בין-מדגמים" class="slide level2">
+<h2>אזהרה: מקדם סטנדרטי אינו גודל אפקט בין מדגמים</h2>
+<p><span class="math display">\[\beta^{std} = \beta_1 \cdot \frac{s_X}{s_Y}\]</span></p>
+<div>
+<ul>
+<li class="fragment">שני מעבדות מוצאות <strong>בדיוק אותו</strong> אפקט אמיתי: 0.5 נקודות לכל שעה.</li>
+<li class="fragment">מעבדה A דגמה מבוגרים בטווח רחב (<span class="math inline">\(s_X = 10\)</span>). מעבדה B דגמה סטודנטים בלבד (<span class="math inline">\(s_X = 3\)</span>), עם אותו רעש.</li>
+<li class="fragment">התוצאה: <span class="math inline">\(r \approx 0.71\)</span> במעבדה A ו-<span class="math inline">\(r \approx 0.29\)</span> במעבדה B. המקדם המתוקנן קטן פי 2.5, והקשר האמיתי לא השתנה.</li>
 </ul>
 </div>
 <div class="callout callout-warning callout-captioned callout-style-default">
@@ -528,56 +597,10 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>אותו כשל מ-W6.V2</strong></p>
+<p><strong>הטווח, לא הקשר</strong></p>
 </div>
 <div class="callout-content">
-<p>“ב-<span class="math inline">\(W\)</span> גבוה השיפוע מובהק, וב-<span class="math inline">\(W\)</span> נמוך לא, ולכן יש אינטראקציה” — טעות גם כאן. ההבדל בין מובהק ללא מובהק אינו מובהק. את קיום האינטראקציה בוחנים ב-<span class="math inline">\(\beta_3\)</span>; ה-simple slopes מתארים <strong>אופי</strong> של אינטראקציה שכבר קיימת.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="אזהרה-אינטראקציה-דורשת-הרבה-יותר-כוח" class="slide level2">
-<h2>אזהרה: אינטראקציה דורשת הרבה יותר כוח</h2>
-<div>
-<ul>
-<li class="fragment">במערך 2×2 מאוזן, שגיאת התקן של אינטראקציה גדולה פי <strong>2</strong> משגיאת התקן של אפקט ראשי (כי היא הפרש של הפרשים: ארבע ממוצעי תאים במקום שניים).</li>
-<li class="fragment">אם האינטראקציה קטנה בחצי מהאפקט הראשי — וזה כבר נדיב — היחס אפקט/שגיאה קטן פי 4, וצריך בערך <strong>פי 16 מהמדגם</strong> כדי להגיע לאותו כוח (Gelman).</li>
-<li class="fragment">ברציפים המצב חמור יותר: מדידה עם שגיאה (reliability &lt; 1) פוגעת ב-<span class="math inline">\(X\)</span> וב-<span class="math inline">\(W\)</span>, והמכפלה <span class="math inline">\(X \cdot W\)</span> יורשת את שניהם — ה-reliability של המכפלה נמוכה מזו של כל אחד מהם.</li>
-</ul>
-</div>
-<div class="callout callout-danger callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>ההשלכה לספרות</strong></p>
-</div>
-<div class="callout-content">
-<p>מחקר במדגם של 100-200 אנשים, שמחפש אינטראקציה ברציפים, הוא כמעט תמיד מחקר <strong>בלי כוח</strong> — ומחקר בלי כוח שמצא אינטראקציה מובהקת מדווח בדרך כלל אפקט מנופח, ולעיתים חיובי-שגוי. זו אחת הסיבות לכך שאינטראקציות מהספרות לא משוחזרות (ראו W7.V3, משבר הרפליקציה).</p>
-</div>
-</div>
-</div>
-</section>
-<section id="עוד-סיבה-לחשד-אינטראקציה-מדומה" class="slide level2">
-<h2>עוד סיבה לחשד: אינטראקציה מדומה</h2>
-<div>
-<ul>
-<li class="fragment">אם <span class="math inline">\(X\)</span> ו-<span class="math inline">\(W\)</span> מתואמים, והאפקט האמיתי של <span class="math inline">\(X\)</span> הוא <strong>לא ליניארי</strong> (למשל <span class="math inline">\(X^2\)</span>), רגרסיה עם איבר <span class="math inline">\(X \cdot W\)</span> בלבד עלולה “לתפוס” את העקמומיות ולהציג אותה כאינטראקציה (Lubinski &amp; Humphreys, 1990).</li>
-<li class="fragment">אותו דבר בכיוון ההפוך: אינטראקציה אמיתית עלולה להיראות כאפקט ריבועי.</li>
-<li class="fragment"><strong>הבדיקה:</strong> להוסיף למודל גם את <span class="math inline">\(X^2\)</span> ו-<span class="math inline">\(W^2\)</span> ולשאול אם <span class="math inline">\(\beta_3\)</span> שורד.</li>
-</ul>
-</div>
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>כלל אצבע</strong></p>
-</div>
-<div class="callout-content">
-<p>אינטראקציה שנמצאה בסריקה חלקית של הנתונים, בלי השערה תאורטית לגבי <strong>כיוון וצורה</strong> מראש — מייצרת מרחב חיפוש (forking paths) גדול מאוד. ההשערה צריכה להגיד לא רק “יש אינטראקציה” אלא “השיפוע של <span class="math inline">\(X\)</span> <strong>עולה</strong> עם <span class="math inline">\(W\)</span>”.</p>
+<p>סטיית התקן של X (ושל Y) נקבעת גם על ידי שיטת הדגימה. השוואת מקדמים סטנדרטיים בין מחקרים מחליפה את ההבדל ביחס בין X ל-Y בהבדל בין האוכלוסיות שנדגמו. כדי להשוות בין מחקרים משווים מקדמים <strong>לא מתוקננים</strong>, ביחידות זהות.</p>
 </div>
 </div>
 </div>
@@ -585,11 +608,11 @@
 <section id="סיכום-w11.v2" class="slide level2">
 <h2>סיכום W11.V2</h2>
 <ul>
-<li>באינטראקציה בין רציפים אין שני קווים אלא <strong>משטח</strong>: השיפוע של <span class="math inline">\(X\)</span> הוא <span class="math inline">\(\beta_1 + \beta_3 W\)</span>, פונקציה ליניארית של המווסת.</li>
-<li><span class="math inline">\(\beta_1\)</span> הוא השיפוע בנקודה <span class="math inline">\(W = 0\)</span> — ולכן מירכוז (W10.V2) קובע מה המקדם בכלל אומר. הוא לא משנה את <span class="math inline">\(\beta_3\)</span> ואת הניבוי.</li>
-<li><strong>Simple slopes</strong> הם דרך לתאר את האינטראקציה בערכים נבחרים של <span class="math inline">\(W\)</span>; הקיום עצמו נבדק ב-<span class="math inline">\(\beta_3\)</span>, לא בהשוואת מובהקויות.</li>
-<li>אינטראקציה דורשת מדגם גדול בהרבה מאפקט ראשי, ובמיוחד כשהמדידה רועשת. חוסר כוח הוא סיבה נפוצה לממצאים לא יציבים.</li>
-<li>לפני שמאמינים לאינטראקציה, בודקים שהיא לא מסתירה אי-ליניאריות.</li>
+<li><strong>Centering</strong> מזיז את האפס: משנה את ה-intercept ולא את השיפוע. <span class="math inline">\(\beta_0^c = \beta_0 + \beta_1 c\)</span>.</li>
+<li><strong>Z-scoring</strong> משנה גם את היחידה: <span class="math inline">\(\beta_1^z = \beta_1 s_X\)</span>. עם Y מתוקנן מקבלים <span class="math inline">\(\beta^{std}\)</span>, ובמנבא יחיד זה <span class="math inline">\(r\)</span>.</li>
+<li>שני התיקונים הם טרנספורמציות ליניאריות ולא משנים את הקו, את ה-residuals או את הניבויים.</li>
+<li><strong>מירכוז לפני interaction:</strong> בלי מירכוז ה-main effects הם האפקט כשהמשתנה השני הוא 0, לרוב ערך חסר משמעות. אחרי מירכוז הם האפקט אצל אדם ממוצע, ו-<span class="math inline">\(\beta_3\)</span> נשאר זהה.</li>
+<li>מקדם סטנדרטי תלוי בסטיית התקן של המדגם, ולכן אינו גודל אפקט להשוואה בין מדגמים.</li>
 </ul>
 <div class="footer footer-default">
 

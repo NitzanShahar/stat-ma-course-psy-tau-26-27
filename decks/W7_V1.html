@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W7.V1 — אוכלוסייה תאורטית ושיטות דגימה</title>
+  <title>W7.V1 — רקע מדעי ו-2×2 אדיטיבי</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,72 +325,26 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W7.V1 — אוכלוסייה תאורטית ושיטות דגימה</h1>
-  <p class="subtitle">לאיזו אוכלוסייה הממצא שלכם בכלל חל, ומה ההבדל בין דגימה אקראית להקצאה אקראית</p>
+  <h1 class="title">W7.V1 — רקע מדעי ו-2×2 אדיטיבי</h1>
+  <p class="subtitle">המערך הפקטוריאלי, מודל אדיטיבי, Dummy Coding vs Effect Coding</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להפריד בין שלוש אוכלוסיות שמתבלבלות כרונית: <strong>האוכלוסייה התאורטית</strong>, <strong>מסגרת הדגימה</strong> ו<strong>המדגם שהושג</strong>.</li>
-<li>להכיר את שיטות הדגימה המרכזיות ואת מה שכל אחת קונה.</li>
-<li>לחדד את ההבדל בין <strong>random sampling</strong> ל-<strong>random assignment</strong> — שתי אקראיות שונות לגמרי.</li>
-<li>להבין למה הפער בין הטענה המילולית למודל הסטטיסטי הוא בעיה בפני עצמה.</li>
+<li>להבין מדוע <strong>המערך הפקטוריאלי</strong> הוא מההמצאות החזקות במדע.</li>
+<li>לבנות מודל <span class="math inline">\(2 \times 2\)</span> <strong>אדיטיבי</strong> (ללא אינטראקציה).</li>
+<li>להשוות לעומק בין <strong>Dummy Coding</strong> (<span class="math inline">\(0/1\)</span>) ל-<strong>Effect Coding</strong> (<span class="math inline">\(-1/1\)</span>).</li>
+<li>לראות כיצד משתנה משמעות החותך (<span class="math inline">\(\beta_0\)</span>) בין שיטות הקידוד.</li>
 </ul>
 </section>
-<section id="שלוש-אוכלוסיות-לא-אחת" class="slide level2">
-<h2>שלוש אוכלוסיות, לא אחת</h2>
+<section id="למה-המערך-הפקטוריאלי-הוא-המצאה-מרכזית" class="slide level2">
+<h2>למה המערך הפקטוריאלי הוא המצאה מרכזית?</h2>
 <div>
-<ul>
-<li class="fragment"><strong>האוכלוסייה התאורטית</strong> — הקבוצה שעליה אתם <em>רוצים</em> לטעון משהו. “מבוגרים”, “אנשים עם ADHD”, “לומדי שפה שנייה”.</li>
-<li class="fragment"><strong>מסגרת הדגימה (sampling frame)</strong> — הקבוצה שממנה בפועל <em>יכולתם</em> לדגום. סטודנטים בפקולטה, נרשמים לפאנל מקוון, מטופלים במרפאה אחת.</li>
-<li class="fragment"><strong>המדגם שהושג</strong> — מי שבסוף הסכים, הגיע, ולא נשר.</li>
-</ul>
-</div>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>הנקודה</strong></p>
-</div>
-<div class="callout-content">
-<p>ההסקה הסטטיסטית שלכם תקפה למסגרת הדגימה. הטענה שאתם כותבים באבסטרקט היא על האוכלוסייה התאורטית. הפער בין השתיים אינו מתוקן על ידי שום מבחן.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="דוגמה-אנשים-מקבלים-החלטות-גרועות-תחת-לחץ-זמן" class="slide level2">
-<h2>דוגמה: “אנשים מקבלים החלטות גרועות תחת לחץ זמן”</h2>
-<p>נניח שהניסוי רץ על 80 סטודנטים לתואר ראשון בפסיכולוגיה, בני 20-24, שהשתתפו תמורת נקודות קורס.</p>
-<div>
-<ul>
-<li class="fragment"><strong>האוכלוסייה התאורטית שבטענה:</strong> בני אדם.</li>
-<li class="fragment"><strong>מסגרת הדגימה:</strong> סטודנטים שנרשמו לפול הניסויים בסמסטר מסוים.</li>
-<li class="fragment"><strong>מה שבאמת נמדד:</strong> התנהגות של צעירים משכילים במעבדה, במשימה בת שתים עשרה דקות.</li>
-</ul>
-</div>
-<p>הממצא יכול להיות אמיתי לחלוטין — ועדיין לא לתמוך בטענה שנכתבה.</p>
-</section>
-<section id="שיטות-דגימה" class="slide level2">
-<h2>שיטות דגימה</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="דגימה-הסתברותית">דגימה הסתברותית</h3>
-<ul>
-<li><strong>אקראית פשוטה</strong> — לכל פרט סיכוי שווה.</li>
-<li><strong>שכבות (stratified)</strong> — מחלקים לשכבות ודוגמים בתוך כל אחת.</li>
-<li><strong>אשכולות (cluster)</strong> — דוגמים כיתות, מרפאות, יישובים — ואז את כולם בתוכם.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="דגימה-לא-הסתברותית">דגימה לא הסתברותית</h3>
-<ul>
-<li><strong>נוחות</strong> — מי שזמין. רוב מחקר הפסיכולוגיה.</li>
-<li><strong>כדור שלג</strong> — משתתפים מגייסים משתתפים.</li>
-<li><strong>מכסות</strong> — ממלאים מכסה לכל קטגוריה, בלי אקראיות בתוכה.</li>
-</ul>
-</div>
+<ol type="1">
+<li class="fragment"><strong>חיסכון במשאבים ונבדקים:</strong> אותם נבדקים מאפשרים לבחון שתי שאלות מחקריות נפרדות במקביל.</li>
+<li class="fragment"><strong>בחינת תלות בין אפקטים:</strong> הדרך היחידה במדע לדעת אם האפקט של משתנה <span class="math inline">\(A\)</span> תלוי בנוכחות משתנה <span class="math inline">\(B\)</span>.</li>
+</ol>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -398,48 +352,112 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Note</strong></p>
+<p><strong>דוגמה מחקרית</strong></p>
 </div>
 <div class="callout-content">
-<p>דגימת אשכולות מייצרת תלות בין תצפיות בתוך אשכול — וזו בדיוק הסיבה למודל ההיררכי שנלמד בשבוע 12.</p>
+<p>בחינת תרופה (קיימת/חדשה) בשילוב סוג טיפול נפשי (CBT/דינמי) על מדד חרדה.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="שתי-אקראיות-שונות-לחלוטין" class="slide level2">
-<h2>שתי אקראיות שונות לחלוטין</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="random-sampling">Random sampling</h3>
-<p><strong>מי נכנס למחקר</strong></p>
-<p>קונה לכם <strong>תקפות חיצונית</strong> — הזכות להכליל מהמדגם לאוכלוסייה.</p>
-</div><div class="column" style="width:50%;">
-<h3 id="random-assignment">Random assignment</h3>
-<p><strong>מי מקבל איזה תנאי</strong></p>
-<p>קונה לכם <strong>תקפות פנימית</strong> — הזכות לומר שההבדל נגרם על ידי המניפולציה.</p>
-</div>
-</div>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>הבלבול הנפוץ</strong></p>
-</div>
-<div class="callout-content">
-<p>ניסוי מעבדה קלאסי הוא <strong>הקצאה אקראית בתוך מדגם נוחות</strong>: תקפות פנימית מצוינת, תקפות חיצונית לא ידועה. נחזור לזה לעומק בשבוע 9.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="הבהרה-שני-מושגי-דגימה-בקורס" class="slide level2">
-<h2>הבהרה: שני מושגי “דגימה” בקורס</h2>
+<section id="מודל-22-אדיטיבי-ללא-אינטראקציה" class="slide level2">
+<h2>מודל 2×2 אדיטיבי (ללא אינטראקציה)</h2>
+<p>המודל הליניארי עבור שני מנבאים דיכוטומיים <span class="math inline">\(X_1\)</span> ו-<span class="math inline">\(X_2\)</span>:</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon_i\]</span></p>
 <div>
 <ul>
-<li class="fragment"><strong>Sampling distribution</strong> (יחידה א) — אובייקט מתמטי. איך ייראה האומדן אילו היינו חוזרים על אותה דגימה אינסוף פעמים.</li>
-<li class="fragment"><strong>Sampling design</strong> (כאן) — החלטה מעשית. מי בכלל נכנס למדגם.</li>
+<li class="fragment">המודל מניח שההשפעה של <span class="math inline">\(X_1\)</span> קבועה ואינה תלויה בערכו של <span class="math inline">\(X_2\)</span>.</li>
+<li class="fragment"><strong>אדיטיביות:</strong> התחזית לכל תא היא פשוט סכום ההשפעות הנפרדות.</li>
 </ul>
+</div>
+</section>
+<section id="סוגיית-הקידוד-dummy-coding-01" class="slide level2">
+<h2>סוגיית הקידוד: Dummy Coding (<span class="math inline">\(0/1\)</span>)</h2>
+<p>נניח <span class="math inline">\(X_1 \in \{0, 1\}\)</span> ו-<span class="math inline">\(X_2 \in \{0, 1\}\)</span>:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">\(X_2 = 0\)</span></th>
+<th><span class="math inline">\(X_2 = 1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong><span class="math inline">\(X_1 = 0\)</span></strong></td>
+<td><span class="math inline">\(\beta_0\)</span></td>
+<td><span class="math inline">\(\beta_0 + \beta_2\)</span></td>
+</tr>
+<tr class="even">
+<td><strong><span class="math inline">\(X_1 = 1\)</span></strong></td>
+<td><span class="math inline">\(\beta_0 + \beta_1\)</span></td>
+<td><span class="math inline">\(\beta_0 + \beta_1 + \beta_2\)</span></td>
+</tr>
+</tbody>
+</table>
+<div>
+<ul>
+<li class="fragment"><strong><span class="math inline">\(\beta_0\)</span>:</strong> ממוצע תא הייחוס (<span class="math inline">\(X_1=0, X_2=0\)</span>).</li>
+<li class="fragment"><strong><span class="math inline">\(\beta_1\)</span>:</strong> האפקט של <span class="math inline">\(X_1\)</span> כאשר <span class="math inline">\(X_2=0\)</span>.</li>
+<li class="fragment"><strong><span class="math inline">\(\beta_2\)</span>:</strong> האפקט של <span class="math inline">\(X_2\)</span> כאשר <span class="math inline">\(X_1=0\)</span>.</li>
+</ul>
+</div>
+</section>
+<section id="סוגיית-הקידוד-effect-coding--11" class="slide level2">
+<h2>סוגיית הקידוד: Effect Coding (<span class="math inline">\(-1/1\)</span>)</h2>
+<p>נציב כעת <span class="math inline">\(X_1 \in \{-1, 1\}\)</span> ו-<span class="math inline">\(X_2 \in \{-1, 1\}\)</span>:</p>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">\(X_2 = -1\)</span></th>
+<th><span class="math inline">\(X_2 = 1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong><span class="math inline">\(X_1 = -1\)</span></strong></td>
+<td><span class="math inline">\(\beta_0 - \beta_1 - \beta_2\)</span></td>
+<td><span class="math inline">\(\beta_0 - \beta_1 + \beta_2\)</span></td>
+</tr>
+<tr class="even">
+<td><strong><span class="math inline">\(X_1 = 1\)</span></strong></td>
+<td><span class="math inline">\(\beta_0 + \beta_1 - \beta_2\)</span></td>
+<td><span class="math inline">\(\beta_0 + \beta_1 + \beta_2\)</span></td>
+</tr>
+</tbody>
+</table>
+<div>
+<ul>
+<li class="fragment"><strong><span class="math inline">\(\beta_0\)</span>:</strong> <strong>הממוצע הכללי</strong> של כל התאים (Grand Mean)!</li>
+<li class="fragment"><strong><span class="math inline">\(\beta_1\)</span>:</strong> האפקט הראשי (Main Effect) של <span class="math inline">\(X_1\)</span> ביחס לממוצע הכללי.</li>
+<li class="fragment"><strong><span class="math inline">\(\beta_2\)</span>:</strong> האפקט הראשי (Main Effect) של <span class="math inline">\(X_2\)</span> ביחס לממוצע הכללי.</li>
+</ul>
+</div>
+</section>
+<section id="השוואה-בין-הקידודים" class="slide level2">
+<h2>השוואה בין הקידודים</h2>
+<div class="compare-card">
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="dummy-coding-01">Dummy Coding (<span class="math inline">\(0/1\)</span>)</h3>
+<ul>
+<li><span class="math inline">\(\beta_0\)</span> = ממוצע קבוצת הייחוס</li>
+<li>שימושי כשיש קבוצת ביקורת ברורה</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="effect-coding--11">Effect Coding (<span class="math inline">\(-1/1\)</span>)</h3>
+<ul>
+<li><span class="math inline">\(\beta_0\)</span> = הממוצע הכללי (Grand Mean)</li>
+<li>שימושי לניתוח שונות (ANOVA) ואפקטים ראשיים</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
@@ -447,127 +465,61 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>אל תבלבלו</strong></p>
+<p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>התפלגות הדגימה מניחה שהמדגם נלקח מהאוכלוסייה שעליה מדברים. שיטת הדגימה היא מה שקובע אם ההנחה הזו נכונה.</p>
+<p>תחזיות המודל לכל ארבעת התאים זהות לחלוטין בשתי השיטות!</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-איך-דגימה-מוטה-מזיזה-את-האומדן" class="slide level2">
-<h2>הדגמה: איך דגימה מוטה מזיזה את האומדן</h2>
+<section id="הדגמה-אינטראקטיבית-מודל-22-אדיטיבי" class="slide level2">
+<h2>הדגמה אינטראקטיבית: מודל 2×2 אדיטיבי</h2>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
   <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>סיכוי הדגימה של קבוצה B: <b id="pbval">1.00</b>
-      <input type="range" id="pb" min="0.05" max="1" step="0.05" value="1"></label>
-    <label>גודל המדגם: <b id="nval">200</b>
-      <input type="range" id="nn" min="40" max="600" step="20" value="200"></label>
+    <label>β0 (בסיס A1B1): <b id="b0val_22">10.0</b>
+      <input type="range" id="b0_22" min="0" max="20" step="0.5" value="10"></label>
+    <label>β1 (אפקט A): <b id="b1val_22">8.0</b>
+      <input type="range" id="b1_22" min="-10" max="15" step="0.5" value="8"></label>
+    <label>β2 (אפקט B): <b id="b2val_22">5.0</b>
+      <input type="range" id="b2_22" min="-10" max="15" step="0.5" value="5"></label>
   </div>
-  <div id="demo-samp" style="width:100%; height:330px;"></div>
-  <div id="bias_out" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
+  <div id="demo-2x2-add" style="width:100%; height:340px;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  const muA = 100, muB = 115, sd = 10;
-  function randn() {
-    let u = 0, v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-  function draw() {
-    const pB = parseFloat(document.getElementById('pb').value);
-    const n  = parseInt(document.getElementById('nn').value);
-    document.getElementById('pbval').textContent = pB.toFixed(2);
-    document.getElementById('nval').textContent = n;
+  function draw2x2Additive() {
+    let b0 = parseFloat(document.getElementById('b0_22').value);
+    let b1 = parseFloat(document.getElementById('b1_22').value);
+    let b2 = parseFloat(document.getElementById('b2_22').value);
+    document.getElementById('b0val_22').textContent = b0.toFixed(1);
+    document.getElementById('b1val_22').textContent = b1.toFixed(1);
+    document.getElementById('b2val_22').textContent = b2.toFixed(1);
 
-    // האוכלוסייה: חצי A וחצי B. הדגימה מקבלת את B רק בהסתברות pB.
-    let sample = [];
-    let guard = 0;
-    while (sample.length < n && guard < 200000) {
-      guard++;
-      const isB = Math.random() < 0.5;
-      if (isB && Math.random() > pB) continue;
-      sample.push((isB ? muB : muA) + sd * randn());
-    }
-    const mean = sample.reduce((a, b) => a + b, 0) / sample.length;
-    const truth = (muA + muB) / 2;
+    let trace1 = { x: ['B1', 'B2'], y: [b0, b0+b2], mode: 'lines+markers', name: 'A1', line: {color: '#2980b9', width: 3}, marker: {size: 9} };
+    let trace2 = { x: ['B1', 'B2'], y: [b0+b1, b0+b1+b2], mode: 'lines+markers', name: 'A2', line: {color: '#e67e22', width: 3}, marker: {size: 9} };
 
-    const trace = { x: sample, type: 'histogram', nbinsx: 34,
-                    marker: { color: '#2980b9' }, name: 'המדגם' };
-    const layout = {
-      xaxis: { title: 'ציון', range: [60, 155] },
-      yaxis: { title: 'שכיחות' },
-      margin: { t: 20, b: 45, l: 50, r: 20 },
-      shapes: [
-        { type: 'line', x0: truth, x1: truth, y0: 0, y1: 1, yref: 'paper',
-          line: { color: '#27ae60', width: 3, dash: 'dash' } },
-        { type: 'line', x0: mean, x1: mean, y0: 0, y1: 1, yref: 'paper',
-          line: { color: '#c0392b', width: 3 } }
-      ]
+    let layout = {
+      title: 'מודל 2×2 אדיטיבי: הקווים תמיד מקבילים (אין אינטראקציה)',
+      xaxis: { title: 'גורם B' },
+      yaxis: { title: 'תוצאה מנובאת (Y)', range: [-2, 45] },
+      margin: { t: 40, b: 40, l: 45, r: 20 }
     };
-    Plotly.newPlot('demo-samp', [trace], layout, { displayModeBar: false });
-
-    const bias = mean - truth;
-    const el = document.getElementById('bias_out');
-    el.textContent = 'ממוצע האוכלוסייה ' + truth.toFixed(1) +
-                     '  ·  ממוצע המדגם ' + mean.toFixed(1) +
-                     '  ·  הטיה ' + bias.toFixed(1);
-    if (Math.abs(bias) < 1.5) {
-      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
-    } else {
-      el.style.background = '#fdecea'; el.style.color = '#a32d2d';
-    }
+    Plotly.newPlot('demo-2x2-add', [trace1, trace2], layout, {displayModeBar:false});
   }
-  ['pb', 'nn'].forEach(id => document.getElementById(id).addEventListener('input', draw));
-  setTimeout(draw, 400);
+  ['b0_22','b1_22','b2_22'].forEach(id => document.getElementById(id).addEventListener('input', draw2x2Additive));
+  setTimeout(draw2x2Additive, 400);
 })();
 </script>
-</section>
-<section id="מה-ההדגמה-מראה" class="slide level2">
-<h2>מה ההדגמה מראה</h2>
-<div>
-<ul>
-<li class="fragment">כשסיכוי הדגימה של קבוצה B יורד, ממוצע המדגם מתרחק מממוצע האוכלוסייה — <strong>באופן שיטתי</strong>.</li>
-<li class="fragment"><strong>הגדלת המדגם לא עוזרת.</strong> ההטיה נשארת; רק שגיאת התקן קטנה, כלומר אתם נעשים בטוחים יותר בתשובה השגויה.</li>
-<li class="fragment">זה ההבדל בין שגיאה מקרית להטיה: רק הראשונה מתכנסת עם n.</li>
-</ul>
-</div>
-</section>
-<section id="הפער-בין-הטענה-למודל" class="slide level2">
-<h2>הפער בין הטענה למודל</h2>
-<p>Yarkoni (2022) טוען שהמשבר בפסיכולוגיה אינו רק סטטיסטי אלא <strong>פער בין הטענה המילולית למודל שנאמד</strong>.</p>
-<div>
-<ul>
-<li class="fragment">הטענה: “לחץ זמן פוגע בקבלת החלטות”.</li>
-<li class="fragment">המודל: הבדל ממוצע בין שני תנאים, במשימה אחת, בדגימת נוחות אחת, במעבדה אחת.</li>
-<li class="fragment">המודל מתייחס למשימה, למדגם ולמעבדה כקבועים — אך הטענה מתייחסת אליהם כאל מקריים.</li>
-</ul>
-</div>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Important</strong></p>
-</div>
-<div class="callout-content">
-<p>זו הסיבה שהמעבר לגישה בייסיאנית אינו פותר את הבעיה. prior לא מרחיב את האוכלוסייה שממנה דגמתם.</p>
-</div>
-</div>
-</div>
 </section>
 <section id="סיכום-w7.v1" class="slide level2">
 <h2>סיכום W7.V1</h2>
 <ul>
-<li>שלוש אוכלוסיות, לא אחת: תאורטית, מסגרת הדגימה, והמדגם שהושג.</li>
-<li>שיטת הדגימה קובעת אם התפלגות הדגימה מיחידה א בכלל רלוונטית.</li>
-<li><strong>Random sampling</strong> קונה תקפות חיצונית; <strong>random assignment</strong> קונה תקפות פנימית. אלה שני דברים שונים.</li>
-<li>הטיית דגימה אינה מתוקנת על ידי הגדלת המדגם — רק נעשית בטוחה יותר.</li>
-<li>הפער בין הטענה המילולית למודל הנאמד הוא בעיה בפני עצמה, ואינו סטטיסטי במהותו.</li>
+<li>המערך הפקטוריאלי מאפשר לבחון מספר גורמים במקביל ולזהות תלות ביניהם.</li>
+<li><strong>מודל אדיטיבי</strong> מניח שההשפעות של המנבאים פשוט מסתכמות (קווים מקבילים).</li>
+<li><strong>Dummy Coding</strong> מפרש את <span class="math inline">\(\beta_0\)</span> כקבוצת ייחוס.</li>
+<li><strong>Effect Coding</strong> מפרש את <span class="math inline">\(\beta_0\)</span> כהממוצע הכללי.</li>
 </ul>
 <div class="footer footer-default">
 

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W13.V2 — רגרסיה לוגיסטית: Bernoulli עם predictors</title>
+  <title>W13.V2 — שלושת מודלי ה-pooling ו-shrinkage</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,34 +325,63 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W13.V2 — רגרסיה לוגיסטית: Bernoulli עם predictors</h1>
-  <p class="subtitle">אותו מודל משבוע 1, כשההסתברות תלויה במנבאים</p>
+  <h1 class="title">W13.V2 — שלושת מודלי ה-pooling ו-shrinkage</h1>
+  <p class="subtitle">ממוצע אחד לכולם, ממוצע נפרד לכל אחד, או פשרה חכמה ביניהם</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>לראות ברגרסיה לוגיסטית את <strong>Bernoulli משבוע 1, עם predictors</strong>: אותו מודל, אותו likelihood.</li>
-<li>להבין מה <strong>פונקציית הקישור</strong> (logit) פותרת, ולמה אי אפשר להריץ רגרסיה ליניארית על משתנה 0/1.</li>
-<li>לקשר את ה-likelihood של המודל ל-<strong>maximum likelihood</strong> מיחידה א.</li>
-<li>לפרש את המקדמים: <span class="math inline">\(\beta_1\)</span> כשינוי ב-log-odds ו-<span class="math inline">\(e^{\beta_1}\)</span> כ-odds ratio.</li>
-<li>להבין למה עקומת ה-S גורמת לכך ש”האפקט” בסקאלת ההסתברות אינו מספר אחד.</li>
+<li>להשוות שלושה מודלים על אותם נתונים: <strong>complete pooling</strong>, <strong>no pooling</strong> ו-<strong>partial pooling</strong>.</li>
+<li>לזהות ששניים מהם כבר מוכרים: ה-empty model (יחידה א) וה-categorical predictor (יחידה ב).</li>
+<li>להבין את הרעיון החדש: לפרמטרים יש התפלגות, וזה <strong>prior</strong> שגם אותו אומדים.</li>
+<li>להבין את <strong>shrinkage</strong>: מי נמשך חזק לכיוון הממוצע הכללי, ולמה זה אומדן טוב יותר ולא רמאות.</li>
 </ul>
 </section>
-<section id="זוכרים-את-שבוע-1" class="slide level2">
-<h2>זוכרים את שבוע 1?</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="שבוע-1-בלי-predictors">שבוע 1: בלי predictors</h3>
-<p><span class="math display">\[y_i \sim \text{Bernoulli}(p)\]</span></p>
-<p><span class="math display">\[L(p) = \prod_{i} p^{y_i}(1-p)^{1-y_i}\]</span></p>
-<p>פרמטר אחד, <span class="math inline">\(p\)</span>, משותף לכולם.</p>
-</div><div class="column" style="width:50%;">
-<h3 id="שבוע-13-עם-predictors">שבוע 13: עם predictors</h3>
-<p><span class="math display">\[y_i \sim \text{Bernoulli}(p_i)\]</span></p>
-<p><span class="math display">\[L(\boldsymbol\beta) = \prod_{i} p_i^{y_i}(1-p_i)^{1-y_i}\]</span></p>
-<p>לכל תצפית <span class="math inline">\(p_i\)</span> משלה, שתלוי ב-<span class="math inline">\(X_i\)</span>.</p>
+<section id="הנתונים-כמה-אשכולות-ממוצע-לכל-אחד" class="slide level2">
+<h2>הנתונים: כמה אשכולות, ממוצע לכל אחד</h2>
+<p>נניח עשר כיתות, ובכל כיתה מדדנו כמה תלמידים. כיתות שונות בגודל המדגם שלהן.</p>
+<div>
+<ul>
+<li class="fragment">השאלה: <strong>מה הממוצע האמיתי של כל כיתה?</strong></li>
+<li class="fragment">כיתה עם 3 תלמידים ממוצעת רועש. כיתה עם 40 תלמידים ממוצעת יציב.</li>
+<li class="fragment">אפשר להשתמש באותו רעיון לנבדקים עם מספר לא שווה של ניסויים, למרפאות, או למעבדות.</li>
+</ul>
 </div>
+</section>
+<section id="מודל-1-complete-pooling" class="slide level2">
+<h2>מודל 1: complete pooling</h2>
+<p><span class="math display">\[y_{ij} = \mu + \epsilon_{ij}\]</span></p>
+<div>
+<ul>
+<li class="fragment">ממוצע <strong>אחד</strong> לכולם. מתעלמים מכך שיש אשכולות.</li>
+<li class="fragment">זה בדיוק ה-<strong>empty model</strong> מיחידה א.</li>
+<li class="fragment"><strong>יתרון:</strong> אומדן יציב, מבוסס על כל הנתונים.</li>
+<li class="fragment"><strong>חיסרון:</strong> מניח שכל האשכולות זהים. אם הם לא, מטעה לגבי כל אחד מהם.</li>
+</ul>
+</div>
+</section>
+<section id="מודל-2-no-pooling" class="slide level2">
+<h2>מודל 2: no pooling</h2>
+<p><span class="math display">\[y_{ij} = \mu_j + \epsilon_{ij}\]</span></p>
+<div>
+<ul>
+<li class="fragment">לכל אשכול ממוצע נפרד, שנאמד <strong>רק</strong> מהנתונים שלו.</li>
+<li class="fragment">זה בדיוק ה-<strong>categorical predictor</strong> מיחידה ב.</li>
+<li class="fragment"><strong>יתרון:</strong> לא מניח דבר על הקשר בין האשכולות.</li>
+<li class="fragment"><strong>חיסרון:</strong> אשכול קטן נותן אומדן רועש, ובלי שום הגנה מפני קיצוניות מקרית.</li>
+</ul>
+</div>
+</section>
+<section id="מודל-3-partial-pooling-ורק-זה-חדש" class="slide level2">
+<h2>מודל 3: partial pooling, ורק זה חדש</h2>
+<p><span class="math display">\[y_{ij} = \mu_j + \epsilon_{ij}, \qquad \mu_j \sim N(\mu, \tau^2)\]</span></p>
+<div>
+<ul>
+<li class="fragment">לכל אשכול ממוצע משלו, אבל <strong>הממוצעים עצמם מגיעים מהתפלגות משותפת</strong>.</li>
+<li class="fragment"><span class="math inline">\(\tau\)</span> קובע כמה האשכולות שונים זה מזה. גם הוא נאמד מהנתונים.</li>
+<li class="fragment">אם <span class="math inline">\(\tau \to 0\)</span> מקבלים complete pooling. אם <span class="math inline">\(\tau \to \infty\)</span> מקבלים no pooling.</li>
+</ul>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
@@ -360,92 +389,23 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>זה כל הסיפור</strong></p>
+<p><strong>הרעיון החדש היחיד</strong></p>
 </div>
 <div class="callout-content">
-<p>רגרסיה לוגיסטית היא <strong>בדיוק</strong> מודל Bernoulli מהשבוע הראשון, כשההסתברות <span class="math inline">\(p\)</span> אינה מספר אחד אלא פונקציה של מנבאים. אם נאפס את כל המנבאים נחזור אל שבוע 1 והאומדן יהיה שוב פשוט <span class="math inline">\(\hat p = \bar y\)</span>.</p>
+<p><strong>לפרמטרים עצמם יש התפלגות.</strong> בקורס בייסיאני זה טבעי: <span class="math inline">\(\mu_j \sim N(\mu,\tau^2)\)</span> הוא <strong>prior</strong>, ההבדל היחיד הוא שאת הפרמטרים שלו (<span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\tau\)</span>) אנחנו אומדים מהנתונים במקום לקבוע מראש.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="המודל-המייצר" class="slide level2">
-<h2>המודל המייצר</h2>
-<p><span class="math display">\[y_i \sim \text{Bernoulli}(p_i)\]</span></p>
-<p><span class="math display">\[\text{logit}(p_i) = \beta_0 + \beta_1 X_i \quad\Longleftrightarrow\quad p_i = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_i)}}\]</span></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="המודל-הליניארי">המודל הליניארי</h3>
-<p><span class="math inline">\(y_i \sim \text{Normal}(\mu_i, \sigma)\)</span></p>
-<p><span class="math inline">\(\mu_i = \beta_0 + \beta_1 X_i\)</span></p>
-</div><div class="column" style="width:50%;">
-<h3 id="המודל-הלוגיסטי">המודל הלוגיסטי</h3>
-<p><span class="math inline">\(y_i \sim \text{Bernoulli}(p_i)\)</span></p>
-<p><span class="math inline">\(\text{logit}(p_i) = \beta_0 + \beta_1 X_i\)</span></p>
-</div>
-</div>
+<section id="shrinkage-פשרה-שמשקללת-לפי-מידת-האמינות" class="slide level2">
+<h2>Shrinkage: פשרה שמשקללת לפי מידת האמינות</h2>
+<p>האומדן של אשכול <span class="math inline">\(j\)</span> ב-partial pooling הוא ממוצע משוקלל של הממוצע שלו עצמו והממוצע הכללי:</p>
+<p><span class="math display">\[\hat\mu_j = (1-B_j)\,\bar y_j + B_j\,\hat\mu, \qquad B_j = \frac{\sigma^2/n_j}{\sigma^2/n_j + \tau^2}\]</span></p>
 <div>
 <ul>
-<li class="fragment">שני חלקים, בדיוק כמו במודל הליניארי: <strong>התפלגות</strong> לתצפית, ו<strong>מודל ליניארי</strong> לפרמטר שלה.</li>
-<li class="fragment">מה שהשתנה: ההתפלגות (Bernoulli במקום Normal) ו<strong>פונקציית הקישור</strong> שמחברת בין הפרמטר לחלק הליניארי.</li>
-</ul>
-</div>
-</section>
-<section id="למה-לא-רגרסיה-ליניארית-על-01" class="slide level2">
-<h2>למה לא רגרסיה ליניארית על 0/1</h2>
-<p>מריצים <span class="math inline">\(y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)</span> כשה-<span class="math inline">\(y\)</span> הוא 0 או 1. מה משתבש?</p>
-<div>
-<ul>
-<li class="fragment"><strong>ניבויים מחוץ לטווח.</strong> הקו הישר ימשיך מעבר ל-1 ומתחת ל-0. “הסתברות של 1.3” אינה משמעותית.</li>
-<li class="fragment"><strong>שונות לא קבועה.</strong> עבור Bernoulli, <span class="math inline">\(\text{Var}(y \mid X) = p(1-p)\)</span>: היא תלויה ב-<span class="math inline">\(p\)</span>, ולכן ב-<span class="math inline">\(X\)</span>. ההנחה של שונות קבועה נשברת מעצם הבנייה.</li>
-<li class="fragment"><strong>שגיאות לא נורמליות.</strong> בכל ערך של <span class="math inline">\(X\)</span> השארית יכולה לקבל רק שני ערכים.</li>
-</ul>
-</div>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>אבל</strong></p>
-</div>
-<div class="callout-content">
-<p>קו ישר על 0/1 (linear probability model) נמצא בשימוש, ובטווח צר של הסתברויות בינוניות הוא לא נורא. הבעיה היא כשהמנבאים מזיזים את <span class="math inline">\(p\)</span> לקצוות.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="פונקציית-הקישור" class="slide level2">
-<h2>פונקציית הקישור</h2>
-<p>הפתרון: לא מדגמים את <span class="math inline">\(p\)</span> ישירות אלא את <strong>ה-logit</strong> שלו, שחי על כל הישר.</p>
-<p><span class="math display">\[\text{logit}(p) = \ln\frac{p}{1-p} \qquad\qquad \text{logit}^{-1}(\eta) = \frac{1}{1+e^{-\eta}}\]</span></p>
-<div>
-<ul>
-<li class="fragment">החלק הליניארי <span class="math inline">\(\eta_i = \beta_0 + \beta_1 X_i\)</span> מקבל כל ערך ממשי.</li>
-<li class="fragment">ה-logit ההפוך (הפונקציה הלוגיסטית) דוחס אותו בחזרה ל-<span class="math inline">\((0,1)\)</span>, ולכן <span class="math inline">\(p_i\)</span> <strong>תמיד</strong> הסתברות חוקית.</li>
-<li class="fragment">כפי שראינו ב-W13.V1: log-odds הוא הסקאלה הטבעית לשילוב עם מודל ליניארי.</li>
-</ul>
-</div>
-</section>
-<section id="ה-likelihood-וההקשר-ל-maximum-likelihood" class="slide level2">
-<h2>ה-likelihood, וההקשר ל-maximum likelihood</h2>
-<p>עבור ההתפלגות של כל תצפית, לוקחים את ה-log ומסכמים:</p>
-<p><span class="math display">\[\ell(\boldsymbol\beta) = \sum_{i=1}^{n} \Big[ y_i \ln p_i + (1-y_i)\ln(1-p_i) \Big], \qquad p_i = \text{logit}^{-1}(\beta_0 + \beta_1 X_i)\]</span></p>
-<div>
-<ul>
-<li class="fragment">מחפשים את ה-<span class="math inline">\(\boldsymbol\beta\)</span> שמעניק לנתונים שהתקבלו את ה-likelihood הגבוה ביותר: זה בדיוק <strong>maximum likelihood</strong> מיחידה א.</li>
-<li class="fragment">בשבוע 1 היה לזה פתרון סגור (<span class="math inline">\(\hat p = \bar y\)</span>). כאן <strong>אין</strong> פתרון סגור, ולכן התוכנה מחפשת אותו בצורה נומרית (אלגוריתם איטרטיבי).</li>
-<li class="fragment">בגישה הבייסיאנית: מוסיפים prior על ה-<span class="math inline">\(\boldsymbol\beta\)</span>, וה-posterior מתקבל כמו בשבועות הקודמים: prior כפול likelihood.</li>
-</ul>
-</div>
-</section>
-<section id="פירוש-המקדמים" class="slide level2">
-<h2>פירוש המקדמים</h2>
-<p><span class="math display">\[\text{logit}(p_i) = \beta_0 + \beta_1 X_i\]</span></p>
-<div>
-<ul>
-<li class="fragment"><strong><span class="math inline">\(\beta_0\)</span>:</strong> ה-log-odds כש-<span class="math inline">\(X = 0\)</span>. ההסתברות המתאימה היא <span class="math inline">\(\text{logit}^{-1}(\beta_0)\)</span>.</li>
-<li class="fragment"><strong><span class="math inline">\(\beta_1\)</span>:</strong> השינוי ב-<strong>log-odds</strong> כש-<span class="math inline">\(X\)</span> עולה ביחידה אחת.</li>
-<li class="fragment"><strong><span class="math inline">\(e^{\beta_1}\)</span>:</strong> ה-<strong>odds ratio</strong> בין שני ערכים של <span class="math inline">\(X\)</span> שמרוחקים יחידה אחת.</li>
+<li class="fragment"><span class="math inline">\(B_j\)</span> גדול (אשכול נמשך חזק) כש-<strong><span class="math inline">\(n_j\)</span> קטן</strong> או כש-<strong><span class="math inline">\(\sigma\)</span> גדול</strong>: הנתונים של האשכול לא אמינים.</li>
+<li class="fragment"><span class="math inline">\(B_j\)</span> קטן (כמעט לא זז) כש-<strong><span class="math inline">\(n_j\)</span> גדול</strong>.</li>
+<li class="fragment"><span class="math inline">\(B_j\)</span> גדול גם כש-<strong><span class="math inline">\(\tau\)</span> קטן</strong>: אם האשכולות דומים, יש הרבה מה ללמוד מהאחרים.</li>
 </ul>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
@@ -454,57 +414,60 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>דוגמה</strong></p>
+<p><strong>אין צורך לחשב</strong></p>
 </div>
 <div class="callout-content">
-<p><span class="math inline">\(\hat\beta_1 = 0.7\)</span> ⇒ <span class="math inline">\(e^{0.7} \approx 2.0\)</span>. כל יחידה נוספת ב-<span class="math inline">\(X\)</span> מכפילה את ה-odds פי 2. <strong>לא</strong> את ההסתברות.</p>
+<p>התוכנה אומדת את <span class="math inline">\(\mu\)</span>, את <span class="math inline">\(\tau\)</span> ואת כל ה-<span class="math inline">\(\mu_j\)</span> בבת אחת. הנוסחה כאן רק כדי להבין את הכיוון.</p>
 </div>
 </div>
 </div>
-<p>הפירוש של <span class="math inline">\(\beta_1\)</span> הוא באמת “אפקט קבוע”, אבל על סקאלת ה-log-odds. השאלה היא מה קורה בסקאלת ההסתברות.</p>
 </section>
-<section id="עקומת-ה-s-והשיפוע-שלא-קבוע" class="slide level2">
-<h2>עקומת ה-S, והשיפוע שלא קבוע</h2>
-<p><span class="math display">\[\frac{dp}{dX} = \beta_1 \cdot p(1-p)\]</span></p>
-<div>
-<ul>
-<li class="fragment">השיפוע <strong>מקסימלי</strong> כש-<span class="math inline">\(p = 0.5\)</span>, שם הוא <span class="math inline">\(\beta_1/4\)</span>.</li>
-<li class="fragment">כשהעקומה קרובה ל-0 או ל-1 השיפוע נעשה זעיר: אותה יחידת <span class="math inline">\(X\)</span> כמעט לא מזיזה הסתברות.</li>
-<li class="fragment">לכן אין “האפקט של <span class="math inline">\(X\)</span> על ההסתברות” כמספר אחד. <strong>האפקט בסקאלת ההסתברות תלוי בנקודת המוצא.</strong></li>
-</ul>
+<section id="למה-זה-לא-רמאות" class="slide level2">
+<h2>למה זה לא רמאות</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="החשש">החשש</h3>
+<p>“אני מזיז את הנתונים של כיתה קטנה לכיוון הממוצע. אני מעוות את מה שמדדתי.”</p>
+</div><div class="column" style="width:50%;">
+<h3 id="התשובה">התשובה</h3>
+<p>האומדן של כל אשכול מוטה מעט, אבל <strong>הטעות הכוללת קטנה יותר בממוצע</strong>. אנחנו מוותרים על קצת הטיה כדי לחסוך הרבה שונות.</p>
 </div>
-<div class="callout callout-important callout-captioned callout-style-default">
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>שני דברים ששונים</strong></p>
+<p><strong>פרדוקס Stein</strong></p>
 </div>
 <div class="callout-content">
-<p>ה-odds ratio קבוע לכל אורך העקומה (<span class="math inline">\(e^{\beta_1}\)</span>). הפרש ההסתברויות משתנה. אותו OR יכול להיות עלייה גדולה בהסתברות באמצע ועלייה זעירה בקצה.</p>
+<p>כבר ב-1961 הראו James ו-Stein שכשאומדים שלושה ממוצעים או יותר, כיווץ לכיוון ממוצע משותף מנצח את האומדים הנפרדים בטעות הריבועית הכוללת, <strong>גם כשהממוצעים לא קשורים זה לזה</strong>. זו התופעה שאתם רואים בהדגמה.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-עקומה-לוגיסטית-על-נתוני-01" class="slide level2">
-<h2>הדגמה אינטראקטיבית: עקומה לוגיסטית על נתוני 0/1</h2>
-<p>הנקודות הן 60 תצפיות שנוצרו ממודל אמיתי. הזיזו את <span class="math inline">\(\beta_0\)</span> ו-<span class="math inline">\(\beta_1\)</span> וראו איך ה-log-likelihood משתנה. הכפתור מוצא את ה-MLE.</p>
+<section id="הדגמה-אינטראקטיבית-שלוש-שורות-ואשכולות-שנמשכים" class="slide level2">
+<h2>הדגמה אינטראקטיבית: שלוש שורות, ואשכולות שנמשכים</h2>
+<p>עשרה אשכולות בגדלים שונים (גודל העיגול וצבעו מציינים את מספר התצפיות). שנו את מספר התצפיות ואת השונות בין האשכולות.</p>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
   <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>β0 (חותך): <b id="b0val_lg">0.0</b>
-      <input type="range" id="b0_lg" min="-4" max="4" step="0.1" value="0"></label>
-    <label>β1 (שיפוע): <b id="b1val_lg">0.30</b>
-      <input type="range" id="b1_lg" min="-2" max="2" step="0.05" value="0.3"></label>
-    <button id="mle_lg" style="padding:4px 12px; cursor:pointer;">הצג MLE</button>
+    <label>ממוצע תצפיות לאשכול: <b id="nbarval_p">10</b>
+      <input type="range" id="nbar_p" min="2" max="40" step="1" value="10"></label>
+    <label>שונות בין האשכולות τ: <b id="tauval_p">5.0</b>
+      <input type="range" id="tau_p" min="0.5" max="15" step="0.5" value="5"></label>
+    <button id="resample_p" style="padding:2px 10px;">דגום מחדש</button>
   </div>
-  <div style="direction:ltr;"><div id="demo-logit" style="width:100%; height:370px;"></div></div>
-  <div id="out_lg" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; font-size:0.85em;"></div>
+  <div id="demo-pool" style="width:100%; height:400px;"></div>
+  <div id="out_p" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; background:#eef5fa; color:#185fa5;"></div>
+  <div id="tauhat_p" style="text-align:center; padding:4px; font-size:0.85em;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  // נתונים קבועים (seed) שנוצרו ממודל β0=-0.5, β1=0.6
+  const J = 10, SIGMA = 10, MU = 50;
+  const SIZE_FACTORS = [0.25, 0.4, 0.6, 0.8, 1.0, 1.0, 1.3, 1.6, 2.0, 2.6];
+  let seed = 11, Z1, Z2;
   function mulberry32(a) {
     return function() {
       a |= 0; a = a + 0x6D2B79F5 | 0;
@@ -513,113 +476,94 @@
       return ((t ^ t >>> 14) >>> 0) / 4294967296;
     };
   }
-  const sig = z => 1 / (1 + Math.exp(-z));
-  const rand = mulberry32(20260930);
-  const X = [], Y = [], Yj = [];
-  for (let i = 0; i < 60; i++) {
-    const x = -6 + 12 * rand();
-    const y = rand() < sig(-0.5 + 0.6 * x) ? 1 : 0;
-    X.push(x); Y.push(y);
-    Yj.push(y + (rand() - 0.5) * 0.06);
-  }
-
-  function logLik(b0, b1) {
-    let s = 0;
-    for (let i = 0; i < X.length; i++) {
-      let p = sig(b0 + b1 * X[i]);
-      p = Math.min(Math.max(p, 1e-12), 1 - 1e-12);
-      s += Y[i] * Math.log(p) + (1 - Y[i]) * Math.log(1 - p);
+  function makeNoise(s) {
+    const rnd = mulberry32(s);
+    function randn() {
+      let u = 0, v = 0;
+      while (u === 0) u = rnd();
+      while (v === 0) v = rnd();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
     }
-    return s;
+    Z1 = []; Z2 = [];
+    for (let j = 0; j < J; j++) { Z1.push(randn()); Z2.push(randn()); }
   }
-
-  function fitMLE() {
-    let b0 = 0, b1 = 0;
-    for (let it = 0; it < 30; it++) {
-      let g0 = 0, g1 = 0, h00 = 0, h01 = 0, h11 = 0;
-      for (let i = 0; i < X.length; i++) {
-        const p = sig(b0 + b1 * X[i]), w = p * (1 - p);
-        g0 += Y[i] - p; g1 += (Y[i] - p) * X[i];
-        h00 += w; h01 += w * X[i]; h11 += w * X[i] * X[i];
-      }
-      const det = h00 * h11 - h01 * h01;
-      b0 += (h11 * g0 - h01 * g1) / det;
-      b1 += (-h01 * g0 + h00 * g1) / det;
-    }
-    return [b0, b1];
-  }
-  const mle = fitMLE();
-  const llMax = logLik(mle[0], mle[1]);
-
   function draw() {
-    const b0 = parseFloat(document.getElementById('b0_lg').value);
-    const b1 = parseFloat(document.getElementById('b1_lg').value);
-    document.getElementById('b0val_lg').textContent = b0.toFixed(1);
-    document.getElementById('b1val_lg').textContent = b1.toFixed(2);
+    const nbar = parseInt(document.getElementById('nbar_p').value);
+    const tauTrue = parseFloat(document.getElementById('tau_p').value);
+    document.getElementById('nbarval_p').textContent = nbar;
+    document.getElementById('tauval_p').textContent = tauTrue.toFixed(1);
 
-    const gx = [], gy = [];
-    for (let x = -7; x <= 7.001; x += 0.1) { gx.push(x); gy.push(sig(b0 + b1 * x)); }
+    const n = SIZE_FACTORS.map(f => Math.max(1, Math.round(f * nbar)));
+    const muTrue = Z1.map(z => MU + tauTrue * z);
+    const ybar = muTrue.map((m, j) => m + (SIGMA / Math.sqrt(n[j])) * Z2[j]);
+    const v = n.map(nj => SIGMA * SIGMA / nj);
 
+    // complete pooling: ממוצע משוקלל לפי n
+    const sumN = n.reduce((a, b) => a + b, 0);
+    const grand = ybar.reduce((s, y, j) => s + y * n[j], 0) / sumN;
+
+    // אומדן τ² בשיטת המומנטים (DerSimonian-Laird)
+    const w0 = v.map(x => 1 / x);
+    const sw = w0.reduce((a, b) => a + b, 0);
+    const m0 = ybar.reduce((s, y, j) => s + y * w0[j], 0) / sw;
+    const Q = ybar.reduce((s, y, j) => s + w0[j] * (y - m0) * (y - m0), 0);
+    const C = sw - w0.reduce((s, w) => s + w * w, 0) / sw;
+    const tau2 = Math.max(0, (Q - (J - 1)) / C);
+
+    // partial pooling
+    const w1 = v.map(x => 1 / (x + tau2));
+    const sw1 = w1.reduce((a, b) => a + b, 0);
+    const mu = ybar.reduce((s, y, j) => s + y * w1[j], 0) / sw1;
+    const B = v.map(x => x / (x + tau2));
+    const partial = ybar.map((y, j) => (1 - B[j]) * y + B[j] * mu);
+
+    const rmse = arr => Math.sqrt(arr.reduce((s, a, j) => s + (a - muTrue[j]) * (a - muTrue[j]), 0) / J);
+    const eNo = rmse(ybar), eP = rmse(partial), eC = rmse(ybar.map(() => grand));
+
+    const Y_NO = 3, Y_PA = 2, Y_CO = 1;
+    const hover = n.map((nj, j) => 'אשכול ' + (j + 1) + ', n = ' + nj);
     const traces = [
-      { x: X, y: Yj, mode: 'markers', name: 'תצפיות (0/1)',
-        marker: { size: 8, color: Y.map(v => v ? '#c0392b' : '#2980b9'), opacity: 0.7 }, hoverinfo: 'skip' },
-      { x: gx, y: gy, mode: 'lines', name: 'p = logit⁻¹(β0 + β1·X)', line: { color: '#2c3e50', width: 3 } }
+      { x: ybar, y: ybar.map(() => Y_NO), mode: 'markers', name: 'no pooling',
+        marker: { size: n.map(nj => 8 + 2.2 * Math.sqrt(nj)), color: n, colorscale: 'Viridis', showscale: false, line: { color: '#333', width: 1 } },
+        text: hover, hoverinfo: 'text' },
+      { x: partial, y: partial.map(() => Y_PA), mode: 'markers', name: 'partial pooling',
+        marker: { size: n.map(nj => 8 + 2.2 * Math.sqrt(nj)), color: n, colorscale: 'Viridis', showscale: false, line: { color: '#333', width: 1 } },
+        text: hover, hoverinfo: 'text' },
+      { x: ybar.map(() => grand), y: ybar.map(() => Y_CO), mode: 'markers', name: 'complete pooling',
+        marker: { size: 14, color: '#7f8c8d', symbol: 'diamond' }, hoverinfo: 'skip' },
+      { x: muTrue, y: muTrue.map(() => 3.6), mode: 'markers', name: 'הממוצע האמיתי',
+        marker: { size: 8, color: 'rgba(0,0,0,0)', line: { color: '#c0392b', width: 2 } }, hoverinfo: 'skip' }
     ];
-    const shapes = [];
-    let slopeTxt = '';
-
-    if (Math.abs(b1) >= 0.05) {
-      // נקודת p = 0.5
-      const x50 = -b0 / b1;
-      if (x50 >= -7 && x50 <= 7) {
-        traces.push({ x: [x50], y: [0.5], mode: 'markers', name: 'p = 0.5 (X = ' + x50.toFixed(2) + ')',
-                      marker: { size: 14, symbol: 'star', color: '#f39c12', line: { color: '#000', width: 1 } } });
-        shapes.push({ type: 'line', x0: x50, x1: x50, y0: 0, y1: 0.5, line: { color: '#f39c12', width: 1.5, dash: 'dot' } });
-      }
-      // שיפוע מקומי בשלוש נקודות: p = 0.2, 0.5, 0.9
-      const pts = [[0.2, '#8e44ad'], [0.5, '#27ae60'], [0.9, '#16a085']];
-      pts.forEach(function(pt) {
-        const p = pt[0];
-        const x = (Math.log(p / (1 - p)) - b0) / b1;
-        const slope = b1 * p * (1 - p);
-        if (x >= -7 && x <= 7) {
-          const h = 1.0;
-          traces.push({ x: [x - h, x + h], y: [p - slope * h, p + slope * h], mode: 'lines',
-                        name: 'שיפוע ב-p=' + p.toFixed(1) + ': ' + slope.toFixed(3), line: { color: pt[1], width: 4 } });
-          traces.push({ x: [x], y: [p], mode: 'markers', showlegend: false, hoverinfo: 'skip',
-                        marker: { size: 9, color: pt[1] } });
-        }
-      });
-      slopeTxt = '  ·  OR ליחידה = ' + Math.exp(b1).toFixed(2) + '  ·  שיפוע מקסימלי β1/4 = ' + (b1 / 4).toFixed(3);
-    } else {
-      slopeTxt = '  ·  β1 ≈ 0: ההסתברות קבועה בכל X (חזרה לשבוע 1)';
+    const arrows = [];
+    for (let j = 0; j < J; j++) {
+      arrows.push({ x: partial[j], y: Y_PA + 0.12, ax: ybar[j], ay: Y_NO - 0.12, xref: 'x', yref: 'y', axref: 'x', ayref: 'y',
+                    showarrow: true, arrowhead: 2, arrowsize: 1, arrowwidth: 1.5,
+                    arrowcolor: n[j] < 0.7 * nbar ? '#c0392b' : 'rgba(80,80,80,0.55)' });
+      arrows.push({ x: grand, y: Y_CO + 0.12, ax: partial[j], ay: Y_PA - 0.12, xref: 'x', yref: 'y', axref: 'x', ayref: 'y',
+                    showarrow: true, arrowhead: 2, arrowsize: 0.8, arrowwidth: 1, arrowcolor: 'rgba(150,150,150,0.35)' });
     }
-
     const layout = {
-      xaxis: { title: 'X', range: [-7, 7] },
-      yaxis: { title: 'P(y = 1)', range: [-0.08, 1.08] },
-      margin: { t: 15, b: 50, l: 55, r: 15 },
-      legend: { orientation: 'h', y: -0.28 },
-      shapes: shapes
+      xaxis: { title: 'ממוצע מוערך', range: [MU - 40, MU + 40] },
+      yaxis: { tickvals: [1, 2, 3, 3.6], ticktext: ['complete pooling', 'partial pooling', 'no pooling', 'true means'], range: [0.5, 4.1] },
+      margin: { t: 15, b: 45, l: 120, r: 15 },
+      showlegend: false,
+      annotations: arrows,
+      shapes: [{ type: 'line', x0: mu, x1: mu, y0: 0.6, y1: 3.4, line: { color: '#2980b9', width: 1.5, dash: 'dash' } }]
     };
-    Plotly.newPlot('demo-logit', traces, layout, { displayModeBar: false });
+    Plotly.newPlot('demo-pool', traces, layout, { displayModeBar: false });
 
-    const ll = logLik(b0, b1);
-    const el = document.getElementById('out_lg');
-    el.textContent = 'log-likelihood = ' + ll.toFixed(1) + '  (המקסימום האפשרי: ' + llMax.toFixed(1) + ')' + slopeTxt;
-    if (llMax - ll < 1.5) {
-      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
-    } else {
-      el.style.background = '#fdf3e3'; el.style.color = '#a1690a';
-    }
+    const el = document.getElementById('out_p');
+    el.textContent = 'טעות (RMSE) מול הממוצעים האמיתיים:  no pooling ' + eNo.toFixed(2) +
+                     '  ·  partial pooling ' + eP.toFixed(2) + '  ·  complete pooling ' + eC.toFixed(2);
+    if (eP <= eNo && eP <= eC) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
+    else { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
+    document.getElementById('tauhat_p').textContent =
+      'τ אמיתי ' + tauTrue.toFixed(1) + '  ·  τ שנאמד מהנתונים ' + Math.sqrt(tau2).toFixed(1) +
+      '  ·  חץ אדום = אשכול קטן';
   }
-
-  document.getElementById('mle_lg').addEventListener('click', function() {
-    document.getElementById('b0_lg').value = mle[0];
-    document.getElementById('b1_lg').value = mle[1];
-    draw();
-  });
-  ['b0_lg', 'b1_lg'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  makeNoise(seed);
+  ['nbar_p', 'tau_p'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  document.getElementById('resample_p').addEventListener('click', function() { seed += 1; makeNoise(seed); draw(); });
   setTimeout(draw, 400);
 })();
 </script>
@@ -628,33 +572,20 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment"><strong><span class="math inline">\(\beta_1\)</span></strong> קובע את התלילות ואת הכיוון; <strong><span class="math inline">\(\beta_0\)</span></strong> מזיז את העקומה ימינה ושמאלה. הנקודה שבה <span class="math inline">\(p = 0.5\)</span> נמצאת ב-<span class="math inline">\(X = -\beta_0/\beta_1\)</span>.</li>
-<li class="fragment">שלושת קווי המשיק <strong>בעלי שיפועים שונים</strong>, גם כש-<span class="math inline">\(\beta_1\)</span> קבוע: זה השיפוע <span class="math inline">\(\beta_1 p(1-p)\)</span>. הוא הכי תלול באמצע, ושטוח בקצוות.</li>
-<li class="fragment">ככל שהעקומה מתקרבת לנתונים, ה-log-likelihood עולה. ה-MLE הוא הנקודה בה הוא מקסימלי.</li>
+<li class="fragment">האשכולות <strong>הקטנים</strong> (עיגולים קטנים, חצים אדומים) זזים הכי הרבה בדרך מ-no pooling ל-partial pooling. הגדולים כמעט לא זזים.</li>
+<li class="fragment">כש-<span class="math inline">\(\tau\)</span> קטן, כולם נצמדים לממוצע הכללי: partial pooling מתקרב ל-complete pooling.</li>
+<li class="fragment">כש-<span class="math inline">\(\tau\)</span> גדול וה-<span class="math inline">\(n\)</span> גדול, החצים כמעט נעלמים: partial pooling מתקרב ל-no pooling.</li>
+<li class="fragment">לחצו על “דגום מחדש” כמה פעמים: partial pooling <strong>בדרך כלל</strong> קרוב יותר לממוצעים האמיתיים, אבל לא בכל דגימה בנפרד.</li>
 </ul>
-</div>
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>רמז לקריאת מאמרים</strong></p>
-</div>
-<div class="callout-content">
-<p>כשמאמר אומר “כל יחידה בציון מעלה את הסיכוי ב-X%”, בדקו אם הכוונה ל-odds או להסתברות. במודל לוגיסטי ה-<span class="math inline">\(e^{\beta}\)</span> הוא תמיד על ה-odds.</p>
-</div>
-</div>
 </div>
 </section>
 <section id="סיכום-w13.v2" class="slide level2">
 <h2>סיכום W13.V2</h2>
 <ul>
-<li>רגרסיה לוגיסטית היא <strong>מודל Bernoulli עם predictors</strong>: אותו <span class="math inline">\(y_i \sim \text{Bernoulli}(p_i)\)</span> ואותו likelihood משבוע 1, כש-<span class="math inline">\(\text{logit}(p_i) = \beta_0 + \beta_1 X_i\)</span>.</li>
-<li>ה-logit פותר את בעיית הטווח (ניבויים בין 0 ל-1) ואת בעיית השונות הלא קבועה של רגרסיה ליניארית על 0/1.</li>
-<li>האומדן בא מ-<strong>maximum likelihood</strong> (או posterior בגישה בייסיאנית), ללא פתרון סגור.</li>
-<li><span class="math inline">\(\beta_1\)</span> הוא שינוי ב-<strong>log-odds</strong>, ו-<span class="math inline">\(e^{\beta_1}\)</span> הוא <strong>odds ratio</strong> ליחידה.</li>
-<li>עקומת ה-S גורמת לכך שהשפעת ה-<span class="math inline">\(X\)</span> על ההסתברות <strong>תלויה בנקודת המוצא</strong>: “האפקט” אינו מספר אחד.</li>
+<li><strong>Complete pooling</strong> (ה-empty model) ו-<strong>no pooling</strong> (ה-categorical predictor) הם שני קצוות. <strong>Partial pooling</strong> הוא הפשרה ביניהם.</li>
+<li>הרעיון החדש היחיד: לפרמטרים יש התפלגות. זה <strong>prior</strong> על <span class="math inline">\(\mu_j\)</span>, ו-<span class="math inline">\(\tau\)</span> נאמד מהנתונים.</li>
+<li><strong>Shrinkage:</strong> אשכול עם מעט נתונים או שונות גדולה נמשך חזק לכיוון הממוצע הכללי. אשכול עם הרבה נתונים כמעט לא זז.</li>
+<li>זה לא רמאות: מוותרים על מעט הטיה, חוסכים הרבה שונות, והטעות הכוללת קטנה יותר. זה פרדוקס Stein.</li>
 </ul>
 <div class="footer footer-default">
 

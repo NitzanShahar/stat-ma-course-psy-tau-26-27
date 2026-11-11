@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W9.V2 — DAG: confounding, collider ו-backdoor criterion</title>
+  <title>W9.V2 — מטא-אנליזה: מהמחקר הבודד לאומדן המשותף</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,266 +325,157 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W9.V2 — DAG: confounding, collider ו-backdoor criterion</h1>
-  <p class="subtitle">ריבוד הוא אותה פעולה בדיוק בשני המקרים, עם תוצאה הפוכה</p>
+  <h1 class="title">W9.V2 — מטא-אנליזה: מהמחקר הבודד לאומדן המשותף</h1>
+  <p class="subtitle">גודל אפקט סטנדרטי, שקלול לפי דיוק, והטרוגניות בין מחקרים</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>לקרוא <strong>DAG</strong>: מה גרף מקודד, ומה הוא בכלל לא אומר.</li>
-<li>להכיר את שלושת המבנים היסודיים: <strong>chain</strong> (mediator), <strong>fork</strong> (confounder) ו-<strong>collider</strong>.</li>
-<li>לספור ביד, בטבלה של 400 מועמדים, איך התניה על collider <strong>יוצרת</strong> קשר שלא קיים.</li>
-<li>להבין את הניגוד המרכזי: <strong>ריבוד (stratification) מסיר קשר מדומה ב-confounding, ויוצר אותו ב-collider</strong>.</li>
-<li>לנסח את ה-<strong>backdoor criterion</strong> ולראות איפה כלי הריבוד מגיע לקצה.</li>
+<li>להבין למה צריך <strong>standardized effect size</strong> (Cohen’s d, Hedges’ g) כדי לאחד מחקרים עם סולמות שונים.</li>
+<li>להבין ששונות הדגימה של גודל האפקט תלויה בגודל המדגם, ולכן מחקרים שונים מדויקים במידה שונה.</li>
+<li>לגזור את <strong>inverse-variance weighting</strong> מה-likelihood, ולראות למה דיוק הוא אינפורמציה.</li>
+<li>להבחין בין <strong>fixed effect</strong> ל-<strong>random effects</strong>, ולקרוא <strong>heterogeneity</strong> (<span class="math inline">\(\tau^2\)</span>, <span class="math inline">\(I^2\)</span>).</li>
+<li>לקרוא <strong>forest plot</strong>: ריבועים, קווי רווח סמך ומעוין.</li>
 </ul>
 </section>
-<section id="מה-גרף-מקודד-ומה-לא" class="slide level2">
-<h2>מה גרף מקודד, ומה לא</h2>
+<section id="הבעיה-מחקרים-שונים-סולמות-שונים" class="slide level2">
+<h2>הבעיה: מחקרים שונים, סולמות שונים</h2>
+<p>שלושה מחקרים בודקים את אותה התערבות. הראשון מודד חרדה ב-0-63, השני ב-0-21, השלישי בשאלון של 1-5.</p>
 <div>
 <ul>
-<li class="fragment"><strong>צמתים</strong> הם משתנים. <strong>חץ</strong> מ-A ל-B אומר: A <em>עשוי</em> להשפיע ישירות על B.</li>
-<li class="fragment"><strong>היעדר חץ</strong> הוא הטענה החזקה: A אינו משפיע ישירות על B. זו ההנחה שאתם מתחייבים אליה.</li>
-<li class="fragment">הגרף <strong>directed</strong> (חצים עם כיוון) ו-<strong>acyclic</strong> (אין מעגלים: אף משתנה לא גורם לעצמו).</li>
-<li class="fragment">הגרף <strong>לא-פרמטרי</strong> בהגדרה: הוא לא אומר דבר על צורת הקשר (ליניארי? סף? אינטראקציה?), על גודלו או על סימנו.</li>
+<li class="fragment">הפרש של 5 נקודות במחקר הראשון ושל 2 נקודות בשני אינם ניתנים להשוואה או לחיבור.</li>
+<li class="fragment">הפתרון: להביע את ההפרש ביחידות של <strong>סטיית התקן</strong>, כלומר בלי יחידות.</li>
+<li class="fragment">כך מקבלים גודל אפקט (<strong>effect size</strong>) שאפשר לשים על אותו ציר.</li>
 </ul>
 </div>
-<div class="callout callout-important callout-captioned callout-style-default">
+</section>
+<section id="cohens-d-ו-hedges-g" class="slide level2">
+<h2>Cohen’s d ו-Hedges’ g</h2>
+<p><span class="math display">\[d = \frac{\bar X_1 - \bar X_2}{s_p}, \qquad s_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}}\]</span></p>
+<p><span class="math inline">\(d\)</span> הוא ההפרש בין הממוצעים ביחידות של סטיית התקן המשותפת. ב-<strong>Hedges’ g</strong> מתקנים הטיה קטנה במדגמים קטנים:</p>
+<p><span class="math display">\[g = J \cdot d, \qquad J \approx 1 - \frac{3}{4(n_1+n_2) - 9}\]</span></p>
+<div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>מאין מגיע הגרף</strong></p>
+<p><strong>בפועל</strong></p>
 </div>
 <div class="callout-content">
-<p>מהידע התאורטי שלכם, <strong>לא מהנתונים</strong>. שני גרפים שונים לגמרי יכולים להפיק בדיוק אותה טבלה. כמה מהר נראה את זה בהדגמה.</p>
+<p>עבור <span class="math inline">\(n\)</span> גדול <span class="math inline">\(J \approx 1\)</span> ו-<span class="math inline">\(g \approx d\)</span>. בקורס נשתמש ב-<span class="math inline">\(g\)</span> כברירת מחדל, ו”גודל האפקט” יתייחס ל-<span class="math inline">\(g\)</span> אלא אם נאמר אחרת.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="שלושה-מבנים-יסודיים" class="slide level2 smaller">
-<h2>שלושה מבנים יסודיים</h2>
-<div class="columns">
-<div class="column" style="width:33%;">
-<h3 id="chain-mediator">Chain (mediator)</h3>
-<svg viewbox="0 0 220 140" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
-  <defs><marker id="ah1" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
-  <line x1="57" y1="70" x2="86" y2="70" stroke="#333" stroke-width="2.5" marker-end="url(#ah1)"></line>
-  <line x1="132" y1="70" x2="161" y2="70" stroke="#333" stroke-width="2.5" marker-end="url(#ah1)"></line>
-  <circle cx="35" cy="70" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="35" y="77" text-anchor="middle" font-size="18" font-weight="bold">X</text>
-  <circle cx="110" cy="70" r="20" fill="#fdf3e3" stroke="#a1690a" stroke-width="2"></circle><text x="110" y="77" text-anchor="middle" font-size="18" font-weight="bold">M</text>
-  <circle cx="185" cy="70" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="185" y="77" text-anchor="middle" font-size="18" font-weight="bold">Y</text>
-</svg>
+<section id="שונות-הדגימה-של-גודל-האפקט" class="slide level2">
+<h2>שונות הדגימה של גודל האפקט</h2>
+<p>גודל האפקט שמחקר מדווח הוא <strong>אומדן</strong>, ולכן יש לו שגיאת דגימה. עבור שתי קבוצות בגודל <span class="math inline">\(n_1, n_2\)</span>:</p>
+<p><span class="math display">\[v = \widehat{\text{Var}}(d) \approx \frac{n_1+n_2}{n_1 n_2} + \frac{d^2}{2(n_1+n_2)}\]</span></p>
+<div>
 <ul>
-<li><strong>בלי ריבוד:</strong> X ו-Y קשורים. הקשר עובר דרך M.</li>
-<li><strong>ריבוד לפי M:</strong> חוסם את הנתיב. הקשר נעלם.</li>
+<li class="fragment">המחובר הראשון דומיננטי: השונות <strong>יורדת בערך כ-<span class="math inline">\(1/n\)</span></strong>.</li>
+<li class="fragment">מחקר עם 200 נבדקים בכל קבוצה מדויק פי עשרה ממחקר עם 20 בכל קבוצה, במונחי שונות.</li>
+<li class="fragment">זו התפלגות הדגימה מיחידה א, רק שהאומדן כאן הוא גודל אפקט ולא ממוצע.</li>
 </ul>
-</div><div class="column" style="width:33%;">
-<h3 id="fork-confounder">Fork (confounder)</h3>
-<svg viewbox="0 0 220 140" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
-  <defs><marker id="ah2" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
-  <line x1="94.4" y1="45.6" x2="52" y2="88" stroke="#333" stroke-width="2.5" marker-end="url(#ah2)"></line>
-  <line x1="125.6" y1="45.6" x2="168" y2="88" stroke="#333" stroke-width="2.5" marker-end="url(#ah2)"></line>
-  <circle cx="110" cy="30" r="20" fill="#fdf3e3" stroke="#a1690a" stroke-width="2"></circle><text x="110" y="37" text-anchor="middle" font-size="18" font-weight="bold">C</text>
-  <circle cx="35" cy="105" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="35" y="112" text-anchor="middle" font-size="18" font-weight="bold">X</text>
-  <circle cx="185" cy="105" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="185" y="112" text-anchor="middle" font-size="18" font-weight="bold">Y</text>
-</svg>
-<ul>
-<li><strong>בלי ריבוד:</strong> קשר <strong>מדומה</strong>. C גורם לשניהם.</li>
-<li><strong>ריבוד לפי C:</strong> חוסם. הקשר המדומה נעלם.</li>
-</ul>
-</div><div class="column" style="width:33%;">
-<h3 id="collider">Collider</h3>
-<svg viewbox="0 0 220 140" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
-  <defs><marker id="ah3" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
-  <line x1="50.6" y1="45.6" x2="93" y2="88" stroke="#333" stroke-width="2.5" marker-end="url(#ah3)"></line>
-  <line x1="169.4" y1="45.6" x2="127" y2="88" stroke="#333" stroke-width="2.5" marker-end="url(#ah3)"></line>
-  <circle cx="35" cy="30" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="35" y="37" text-anchor="middle" font-size="18" font-weight="bold">X</text>
-  <circle cx="185" cy="30" r="20" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle><text x="185" y="37" text-anchor="middle" font-size="18" font-weight="bold">Y</text>
-  <circle cx="110" cy="105" r="20" fill="#fdecea" stroke="#c0392b" stroke-width="2"></circle><text x="110" y="112" text-anchor="middle" font-size="18" font-weight="bold">K</text>
-</svg>
-<ul>
-<li><strong>בלי ריבוד:</strong> אין קשר. הנתיב <strong>סגור</strong> כברירת מחדל.</li>
-<li><strong>ריבוד לפי K:</strong> <strong>פותח</strong> את הנתיב. קשר מדומה נוצר.</li>
-</ul>
-</div>
 </div>
 </section>
-<section id="collider-ביד-400-מועמדים" class="slide level2 smaller">
-<h2>Collider ביד: 400 מועמדים</h2>
-<p>מועמדים לתוכנית דוקטורט. <strong>ציונים גבוהים</strong> ו<strong>מכתבי המלצה חזקים</strong> הם בלתי תלויים לחלוטין: 100 מועמדים בכל שילוב. כלל הקבלה: מתקבלים אם יש <strong>לפחות אחד</strong> משני היתרונות.</p>
+<section id="inverse-variance-weighting-דיוק-הוא-אינפורמציה" class="slide level2">
+<h2>Inverse-variance weighting: דיוק הוא אינפורמציה</h2>
+<p>כל מחקר <span class="math inline">\(i\)</span> נותן אומדן <span class="math inline">\(y_i\)</span> עם שונות ידועה בקירוב <span class="math inline">\(v_i\)</span>. אם כולם מודדים אותו אפקט <span class="math inline">\(\theta\)</span>, ה-likelihood של <span class="math inline">\(\theta\)</span> (כמו ב-likelihood של ממוצע נורמלי מיחידה א):</p>
+<p><span class="math display">\[\log L(\theta) = -\sum_{i=1}^{k} \frac{(y_i-\theta)^2}{2 v_i} + \text{const}\]</span></p>
+<p>גוזרים ומשווים לאפס:</p>
+<p><span class="math display">\[\hat\theta = \frac{\sum w_i\, y_i}{\sum w_i}, \qquad w_i = \frac{1}{v_i}, \qquad \text{Var}(\hat\theta) = \frac{1}{\sum w_i}\]</span></p>
+<div>
+<ul>
+<li class="fragment"><strong>אומדן ה-ML הוא ממוצע משוקלל</strong>, והמשקל של כל מחקר הוא <strong>הדיוק</strong> שלו (<span class="math inline">\(1/v_i\)</span>).</li>
+<li class="fragment">מחקר גדול, עם שונות קטנה, מקבל משקל גדול. זו לא החלטה שרירותית אלא תוצאה ישירה של ה-likelihood.</li>
+<li class="fragment">הדיוקים <strong>מצטברים</strong>: <span class="math inline">\(\text{Var}(\hat\theta) = 1/\sum w_i\)</span>. כל מחקר מוסיף אינפורמציה.</li>
+<li class="fragment">עם prior שטוח, ה-posterior הוא בדיוק ה-likelihood, אז אותם מספרים מתקבלים גם בגישה הבייסיאנית.</li>
+</ul>
+</div>
+</section>
+<section id="fixed-effect-מול-random-effects" class="slide level2">
+<h2>Fixed effect מול random effects</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="כל-400-המועמדים">כל 400 המועמדים</h3>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th>מכתבים חזקים</th>
-<th>מכתבים חלשים</th>
-<th>סה”כ</th>
-<th>% מכתבים חזקים</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ציונים גבוהים</td>
-<td>100</td>
-<td>100</td>
-<td>200</td>
-<td><strong>50%</strong></td>
-</tr>
-<tr class="even">
-<td>ציונים נמוכים</td>
-<td>100</td>
-<td>100</td>
-<td>200</td>
-<td><strong>50%</strong></td>
-</tr>
-</tbody>
-</table>
+<h3 id="fixed-effect">Fixed effect</h3>
+<p><span class="math display">\[y_i = \theta + \epsilon_i, \quad \epsilon_i \sim N(0, v_i)\]</span></p>
+<ul>
+<li><strong>אפקט אמיתי אחד</strong> משותף לכל המחקרים.</li>
+<li>ההבדלים בין המחקרים נובעים רק משגיאת דגימה.</li>
+<li>המשקל: <span class="math inline">\(w_i = 1/v_i\)</span>.</li>
+</ul>
 </div><div class="column" style="width:50%;">
-<h3 id="רק-300-המתקבלים">רק 300 המתקבלים</h3>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th>מכתבים חזקים</th>
-<th>מכתבים חלשים</th>
-<th>סה”כ</th>
-<th>% מכתבים חזקים</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ציונים גבוהים</td>
-<td>100</td>
-<td>100</td>
-<td>200</td>
-<td><strong>50%</strong></td>
-</tr>
-<tr class="even">
-<td>ציונים נמוכים</td>
-<td>100</td>
-<td>0</td>
-<td>100</td>
-<td><strong>100%</strong></td>
-</tr>
-</tbody>
-</table>
+<h3 id="random-effects">Random effects</h3>
+<p><span class="math display">\[y_i = \theta_i + \epsilon_i, \quad \theta_i \sim N(\mu, \tau^2)\]</span></p>
+<ul>
+<li>לכל מחקר אפקט אמיתי משלו, מתוך <strong>התפלגות של אפקטים אמיתיים</strong>.</li>
+<li><span class="math inline">\(\mu\)</span> הוא ממוצע ההתפלגות ו-<span class="math inline">\(\tau^2\)</span> הפיזור שלה.</li>
+<li>המשקל: <span class="math inline">\(w_i^* = 1/(v_i + \tau^2)\)</span>.</li>
+</ul>
 </div>
 </div>
 <div>
 <ul>
-<li class="fragment"><strong>באוכלוסייה אין קשר:</strong> 50% בשתי השורות.</li>
-<li class="fragment"><strong>בקרב המתקבלים הקשר שלילי וחזק:</strong> מי שציוניו נמוכים חייב מכתבים חזקים, אחרת לא היה מתקבל. הפער: <strong>50 נקודות אחוז</strong>.</li>
-<li class="fragment">100 המועמדים בשילוב “נמוך + חלש” <strong>נעלמו מהטבלה</strong>. אלה הם שהיו מאזנים אותה.</li>
+<li class="fragment">כש-<span class="math inline">\(\tau^2\)</span> גדל, המשקלות <strong>מתקרבים זה לזה</strong>: מחקר גדול מאבד את הדומיננטיות שלו, כי גם הוא מודד אפקט אמיתי מקומי.</li>
+<li class="fragment">רווח הסמך של האומדן המשותף <strong>מתרחב</strong>.</li>
 </ul>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>נחזור לזה</strong></p>
+</div>
+<div class="callout-content">
+<p>random effects הוא בעצם <strong>מודל היררכי</strong>: מחקרים בתוך התפלגות. נפגוש אותו שוב, בצורה מלאה, בשבוע 13.</p>
+</div>
+</div>
 </div>
 </section>
-<section id="למה-זה-קורה" class="slide level2">
-<h2>למה זה קורה</h2>
-<p>התניה על קבלה = “בתוך אלה שהתקבלו”. כשאתם יודעים שמועמד התקבל, שני היתרונות <strong>מתחרים</strong> על ההסבר.</p>
+<section id="heterogeneity-כמה-המחקרים-באמת-שונים" class="slide level2">
+<h2>Heterogeneity: כמה המחקרים באמת שונים</h2>
 <div>
 <ul>
-<li class="fragment">מתקבל עם ציונים נמוכים? בהכרח יש לו מכתבים חזקים. ההסבר היחיד.</li>
-<li class="fragment">מתקבל עם ציונים גבוהים? כבר הוסבר. המכתבים יכולים להיות כל דבר.</li>
-<li class="fragment">זה <strong>explaining away</strong>: מידע על סיבה אחת מפחית את הצורך בשנייה.</li>
+<li class="fragment"><strong><span class="math inline">\(Q\)</span></strong> מודד את הפיזור של האומדנים סביב האומדן המשותף, ממושקל בדיוקים. תחת אפקט אחד משותף, <span class="math inline">\(E[Q] = k-1\)</span>.</li>
+<li class="fragment"><strong><span class="math inline">\(\tau^2\)</span></strong> היא שונות האפקטים האמיתיים בין המחקרים. <span class="math inline">\(\tau\)</span> נמדד באותן יחידות כמו גודל האפקט, ולכן קל לפרש: <span class="math inline">\(\tau = 0.2\)</span> עם <span class="math inline">\(\mu = 0.4\)</span> אומר שהאפקטים האמיתיים נעים בערך בין 0 ל-0.8.</li>
+<li class="fragment"><strong><span class="math inline">\(I^2\)</span></strong> הוא החלק בפיזור הנצפה שאינו נובע משגיאת דגימה:</li>
 </ul>
 </div>
+<p><span class="math display">\[I^2 = \max\left(0,\; \frac{Q-(k-1)}{Q}\right)\]</span></p>
 <div class="callout callout-warning callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>זה לא רק קבלה לתוכנית</strong></p>
+<p><strong>זהירות עם <span class="math inline">\(I^2\)</span></strong></p>
 </div>
 <div class="callout-content">
-<p>כל מסנן שמושפע משני משתנים הוא collider: מי שמתפרסם (מובהק <strong>או</strong> גדול), מי שמגיע למרפאה (תסמין א <strong>או</strong> ב), מי שנשאר במדגם (טיפול <strong>וגם</strong> תוצאה, כפי שראינו ב-W9.V1). המדגם עצמו יכול להיות ההתניה.</p>
+<p><span class="math inline">\(I^2\)</span> תלוי בדיוק של המחקרים, לא רק ב-<span class="math inline">\(\tau\)</span>. עם מחקרים גדולים מאוד אפילו <span class="math inline">\(\tau\)</span> קטן נותן <span class="math inline">\(I^2\)</span> גבוה, ועם מחקרים קטנים <span class="math inline">\(I^2\)</span> נמוך גם כש-<span class="math inline">\(\tau\)</span> גדול. מדווחים גם <span class="math inline">\(\tau\)</span>, ובאופן אידיאלי גם <strong>prediction interval</strong>: הטווח שבו צפוי האפקט האמיתי של מחקר חדש.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="אותו-כלי-על-confounding" class="slide level2 smaller">
-<h2>אותו כלי על confounding</h2>
-<p>400 ילדים. <strong>X</strong> = מידת נעל, <strong>Y</strong> = קריאה טובה. <strong>C</strong> = גיל. הגיל משפיע על שניהם. אין שום השפעה של נעל על קריאה.</p>
+<section id="איך-קוראים-forest-plot" class="slide level2">
+<h2>איך קוראים forest plot</h2>
 <div class="columns">
-<div class="column" style="width:42%;">
-<h3 id="כל-400-הילדים">כל 400 הילדים</h3>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th>קריאה טובה</th>
-<th>קריאה חלשה</th>
-<th>סה”כ</th>
-<th>% טובה</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>נעל גדולה</td>
-<td>136</td>
-<td>64</td>
-<td>200</td>
-<td><strong>68%</strong></td>
-</tr>
-<tr class="even">
-<td>נעל קטנה</td>
-<td>64</td>
-<td>136</td>
-<td>200</td>
-<td><strong>32%</strong></td>
-</tr>
-</tbody>
-</table>
-<p>פער של <strong>36 נקודות אחוז</strong>.</p>
-</div><div class="column" style="width:58%;">
-<h3 id="מחולקים-לפי-גיל-ריבוד">מחולקים לפי גיל (ריבוד)</h3>
-<table>
-<thead>
-<tr class="header">
-<th>גיל</th>
-<th>נעל</th>
-<th>טובה</th>
-<th>חלשה</th>
-<th>% טובה</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>6-7</td>
-<td>גדולה</td>
-<td>8</td>
-<td>32</td>
-<td><strong>20%</strong></td>
-</tr>
-<tr class="even">
-<td>6-7</td>
-<td>קטנה</td>
-<td>32</td>
-<td>128</td>
-<td><strong>20%</strong></td>
-</tr>
-<tr class="odd">
-<td>9-10</td>
-<td>גדולה</td>
-<td>128</td>
-<td>32</td>
-<td><strong>80%</strong></td>
-</tr>
-<tr class="even">
-<td>9-10</td>
-<td>קטנה</td>
-<td>32</td>
-<td>8</td>
-<td><strong>80%</strong></td>
-</tr>
-</tbody>
-</table>
-<p>בתוך כל רובד: <strong>פער אפס</strong>.</p>
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>שורה = מחקר.</strong> הנקודה היא האומדן <span class="math inline">\(y_i\)</span>.</li>
+<li><strong>הקו האופקי</strong> הוא רווח הסמך של המחקר.</li>
+<li><strong>גודל הריבוע</strong> מייצג את המשקל: מחקר גדול, ריבוע גדול.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><strong>הקו האנכי</strong> הוא אפקט אפס (no effect).</li>
+<li><strong>המעוין בתחתית</strong> הוא האומדן המשותף. מרכזו הוא האומדן, <strong>רוחבו</strong> הוא רווח הסמך.</li>
+<li>מעוין שאינו חוצה את קו האפס: האפקט המשותף שונה מאפס.</li>
+</ul>
 </div>
 </div>
 <div class="callout callout-tip callout-captioned callout-style-default">
@@ -593,224 +484,166 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הפעם הריבוד תיקן</strong></p>
+<p><strong>שלוש שאלות לכל forest plot</strong></p>
 </div>
 <div class="callout-content">
-<p>הקשר המקורי היה מדומה: ילדים גדולים יותר גם נועלים נעל גדולה וגם קוראים טוב יותר. פיצול לפי הגיל חושף שאין דבר.</p>
+<ol type="1">
+<li>האם רווחי הסמך של המחקרים חופפים זה לזה ולמעוין? (רמז להטרוגניות)</li>
+<li>אילו מחקרים גדולים ואילו קטנים, והאם התוצאה נשענת על מחקר אחד?</li>
+<li>האם המעוין רחב? (כמה אינפורמציה יש בסך הכל)</li>
+</ol>
 </div>
 </div>
 </div>
 </section>
-<section id="הניגוד-המרכזי" class="slide level2">
-<h2>הניגוד המרכזי</h2>
-<table>
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>בלי ריבוד</th>
-<th>עם ריבוד</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Confounding</strong> (נעל וקריאה, מבלבל: גיל)</td>
-<td>פער של +36 נק’</td>
-<td><strong>0</strong>: הקשר המדומה <strong>נעלם</strong></td>
-</tr>
-<tr class="even">
-<td><strong>Collider</strong> (ציונים ומכתבים, קולידר: קבלה)</td>
-<td>פער של 0</td>
-<td><strong>−50</strong> נק’: קשר מדומה <strong>נוצר</strong></td>
-</tr>
-</tbody>
-</table>
-<div>
-<ul>
-<li class="fragment">זו <strong>אותה פעולה טכנית בדיוק</strong>: מפצלים את הטבלה לפי משתנה שלישי ומסתכלים בכל חלק.</li>
-<li class="fragment">התוצאה <strong>הפוכה</strong>. מה שקובע אם זה תיקון או נזק הוא לא הטבלה, אלא <strong>מי גורם למי בגרף</strong>.</li>
-<li class="fragment">ברגרסיה (שבועות 10-11) שני המקרים נראים זהים: “הוספתי מנבא”. ההבדל בין תיקון להרס נעלם מהעין. לכן מלמדים את זה <strong>כאן</strong>, בטבלאות, כשעוד אפשר לראות כל תא.</li>
-</ul>
-</div>
-</section>
-<section id="ה-backdoor-criterion" class="slide level2">
-<h2>ה-backdoor criterion</h2>
-<p><strong>Backdoor path</strong> מ-X ל-Y: כל נתיב שמתחיל בחץ <strong>שנכנס</strong> ל-X (<code>X ← ...</code>). נתיב סיבתי מתחיל בחץ שיוצא מ-X.</p>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>הקריטריון</strong></p>
-</div>
-<div class="callout-content">
-<p>קבוצת משתנים Z מספיקה לזיהוי האפקט של X על Y אם: <strong>(1)</strong> היא חוסמת כל backdoor path מ-X ל-Y, <strong>(2)</strong> אין בה צאצא של X (בפרט: mediator).</p>
-</div>
-</div>
-</div>
-<div>
-<ul>
-<li class="fragment">נתיב <strong>נחסם</strong> אם מרבדים על <strong>non-collider</strong> שעליו (chain או fork).</li>
-<li class="fragment">נתיב עם <strong>collider</strong> חסום מעצמו, כל עוד לא מרבדים עליו, <strong>ולא על אף צאצא שלו</strong>.</li>
-<li class="fragment"><strong>אל תרבדו על mediator</strong> אם רוצים את האפקט הכולל: זה חוסם את האפקט עצמו.</li>
-</ul>
-</div>
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>שני מקרי קצה</strong></p>
-</div>
-<div class="callout-content">
-<p>בניסוי אקראי אין חצים נכנסים ל-X, כלומר אין backdoor paths, ו-Z ריקה. בנעל וקריאה: <code>X ← גיל → Y</code>, ולכן Z = {גיל}.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="הדגמה-מתי-הריבוד-מתקן-ומתי-הוא-הורס" class="slide level2">
-<h2>הדגמה: מתי הריבוד מתקן, ומתי הוא הורס</h2>
-
-<style>
-  .dm-tb { border-collapse: collapse; font-size: 0.6em; flex: 1 1 0; min-width: 150px; background: #fff; }
-  .dm-tb th, .dm-tb td { border: 1px solid #ccc; padding: 3px 5px; text-align: center; }
-  .dm-tb th { background: #f4f4f4; }
-  .dm-tb caption { font-weight: bold; padding: 3px; caption-side: top; }
-</style>
-<div style="background:#fff; padding:14px; border-radius:8px; border:1px solid #ddd; margin-top:4px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:6px; font-size:0.8em;">
-    <label>מבנה: <b id="stval">confounder</b>
-      <input type="range" id="st" min="1" max="3" step="1" value="1"></label>
-    <label>עוצמת הקשרים: <b id="sgval">0.80</b>
-      <input type="range" id="sg" min="0" max="1" step="0.05" value="0.8"></label>
-    <span id="gtxt" style="font-size:0.95em;"></span>
+<section id="הדגמה-forest-plot-אינטראקטיבי" class="slide level2">
+<h2>הדגמה: forest plot אינטראקטיבי</h2>
+<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
+  <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-bottom:6px; font-size:0.78em;">
+    <label>מספר מחקרים: <b id="fk_v">10</b>
+      <input type="range" id="fk" min="3" max="20" step="1" value="10"></label>
+    <label>n מינימלי לקבוצה: <b id="fnmin_v">20</b>
+      <input type="range" id="fnmin" min="10" max="300" step="10" value="20"></label>
+    <label>n מקסימלי לקבוצה: <b id="fnmax_v">200</b>
+      <input type="range" id="fnmax" min="10" max="500" step="10" value="200"></label>
+    <label>הטרוגניות τ: <b id="ftau_v">0.20</b>
+      <input type="range" id="ftau" min="0" max="0.8" step="0.05" value="0.2"></label>
   </div>
-  <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:stretch;">
-    <div id="tables" style="display:flex; gap:8px; flex:2 1 540px;"></div>
-    <div id="demo-dag" style="flex:1 1 250px; height:200px;"></div>
+  <div style="font-size:0.78em; margin-bottom:4px;">
+    ריבועים לפי משקל:
+    <label><input type="radio" name="fwm" value="fixed"> fixed effect</label>
+    <label><input type="radio" name="fwm" value="random" checked=""> random effects</label>
+    &nbsp;·&nbsp; האפקט הממוצע האמיתי μ = 0.40 (קו ירוק מקווקו)
   </div>
-  <div id="banner" style="text-align:center; font-weight:bold; padding:7px; border-radius:6px; margin-top:8px; font-size:0.8em;"></div>
-  <div style="font-size:0.7em; text-align:center; margin-top:4px; color:#555;">עברו בין מבנה 1 ל-3 ושימו לב שהמספרים בטבלאות <b>אינם משתנים</b>. רק ההחלטה הנכונה משתנה.</div>
+  <div id="demo-forest" style="width:100%; height:440px;"></div>
+  <div id="forest_out" style="text-align:center; font-weight:bold; font-size:0.85em; padding:8px; border-radius:6px; margin-top:6px;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  const N = 800;
-  const GRAPH = { 1: 'X ← Z → Y', 2: 'X → Z ← Y', 3: 'X → Z → Y' };
-  const NAME = { 1: 'confounder', 2: 'collider', 3: 'mediator' };
-  const ZDESC = { 1: 'Z = גיל', 2: 'Z = קבלה', 3: 'Z = מתווך' };
-  const OK = { bg: '#e6f4ea', fg: '#1e7e34', bar: '#27ae60' };
-  const BAD = { bg: '#fdecea', fg: '#a32d2d', bar: '#c0392b' };
-  const NEU = { bg: '#eef5fa', fg: '#185fa5', bar: '#2980b9' };
-  const $ = id => document.getElementById(id);
-
-  // p[x][y][z]: ההסתברות המשותפת בכל אחד משמונת התאים
-  function joint(st, s) {
-    const p = [[[0, 0], [0, 0]], [[0, 0], [0, 0]]];
-    for (let x = 0; x < 2; x++) for (let y = 0; y < 2; y++) for (let z = 0; z < 2; z++) {
-      let v;
-      if (st === 1) {            // X ← Z → Y
-        const a = 0.5 + 0.4 * s * (z ? 1 : -1);
-        v = 0.5 * (x ? a : 1 - a) * (y ? a : 1 - a);
-      } else if (st === 2) {     // X → Z ← Y
-        const k = 0.5 + 0.48 * s * (x + y - 1);
-        v = 0.25 * (z ? k : 1 - k);
-      } else {                   // X → Z → Y
-        const m = 0.5 + 0.4 * s * (x ? 1 : -1);
-        const yy = 0.5 + 0.4 * s * (z ? 1 : -1);
-        v = 0.5 * (z ? m : 1 - m) * (y ? yy : 1 - yy);
-      }
-      p[x][y][z] = v;
-    }
-    return p;
+  function g(id) { return document.getElementById(id); }
+  function mulberry32(a) {
+    return function() {
+      var t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
   }
-
-  function stats(p, zs) {
-    const n = [[0, 0], [0, 0]];
-    let mass = 0;
-    for (let x = 0; x < 2; x++) for (let y = 0; y < 2; y++) {
-      n[x][y] = zs.reduce((a, z) => a + p[x][y][z], 0);
-      mass += n[x][y];
-    }
-    const p1 = n[1][1] / (n[1][0] + n[1][1]);
-    const p0 = n[0][1] / (n[0][0] + n[0][1]);
-    return { n: n, p1: p1, p0: p0, rd: p1 - p0, mass: mass };
+  const rng = mulberry32(20260930);
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = rng();
+    while (v === 0) v = rng();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   }
+  // הגרלה אחת קבועה: הסליידרים משנים רק את הפרמטרים, כך שהמחקרים "זזים" בצורה רציפה
+  const KMAX = 20, MU = 0.4;
+  const Z = [], E = [], U = [];
+  for (let i = 0; i < KMAX; i++) { Z.push(randn()); E.push(randn()); U.push(rng()); }
 
-  const pp = v => (v >= 0 ? '+' : '') + Math.round(v * 100);
-
-  function tbl(title, S, col) {
-    const f = v => Math.round(N * v);
-    return '<table class="dm-tb"><caption>' + title + '</caption>' +
-      '<tr><th></th><th>Y=1</th><th>Y=0</th><th>% Y=1</th></tr>' +
-      '<tr><th>X=1</th><td>' + f(S.n[1][1]) + '</td><td>' + f(S.n[1][0]) + '</td><td>' + Math.round(S.p1 * 100) + '%</td></tr>' +
-      '<tr><th>X=0</th><td>' + f(S.n[0][1]) + '</td><td>' + f(S.n[0][0]) + '</td><td>' + Math.round(S.p0 * 100) + '%</td></tr>' +
-      '<tr><td colspan="4" style="background:' + col.bg + '; color:' + col.fg + '; font-weight:bold;">הפרש: ' + pp(S.rd) + ' נק\'</td></tr>' +
-      '</table>';
+  function diamond(lo, est, hi, yc) {
+    return { x: [lo, est, hi, est, lo], y: [yc, yc + 0.4, yc, yc - 0.4, yc] };
   }
 
   function draw() {
-    const st = parseInt($('st').value);
-    const s = parseFloat($('sg').value);
-    $('stval').textContent = NAME[st];
-    $('sgval').textContent = s.toFixed(2);
-    $('gtxt').innerHTML = '<span dir="ltr" style="font-weight:bold;">' + GRAPH[st] + '</span> &nbsp;(' + ZDESC[st] + ')';
+    const k = parseInt(g('fk').value);
+    const nmin = parseInt(g('fnmin').value);
+    const nmax = Math.max(nmin, parseInt(g('fnmax').value));
+    const tau = parseFloat(g('ftau').value);
+    g('fk_v').textContent = k;
+    g('fnmin_v').textContent = nmin;
+    g('fnmax_v').textContent = nmax;
+    g('ftau_v').textContent = tau.toFixed(2);
+    const model = document.querySelector('input[name="fwm"]:checked').value;
 
-    const p = joint(st, s);
-    const all = stats(p, [0, 1]);
-    const z1 = stats(p, [1]);
-    const z0 = stats(p, [0]);
-    const strat = (z1.mass * z1.rd + z0.mass * z0.rd) / (z1.mass + z0.mass);
-    const truth = (st === 3) ? all.rd : 0;   // באפקט הכולל דרך mediator, האפקט הסיבתי הוא הקשר הגולמי
-
-    const crudeOK = Math.abs(all.rd - truth) < 0.03;
-    const stratOK = Math.abs(strat - truth) < 0.03;
-    let cCrude, cStrat, msg, cBan;
-    if (crudeOK && stratOK) {
-      cCrude = NEU; cStrat = NEU; cBan = NEU;
-      msg = 'הקשרים חלשים מדי: שתי המדידות מסכימות, ואין מה לתקן ואין מה להרוס.';
-    } else if (!crudeOK && stratOK) {
-      cCrude = BAD; cStrat = OK; cBan = OK;
-      msg = 'הריבוד תיקן: בלי ריבוד הקשר מדומה. בתוך רבדים הוא נעלם.';
-    } else if (crudeOK && !stratOK && st === 2) {
-      cCrude = OK; cStrat = BAD; cBan = BAD;
-      msg = 'הריבוד הרס: באוכלוסייה אין קשר, ובתוך רבדי Z נוצר קשר שלא היה.';
-    } else {
-      cCrude = OK; cStrat = BAD; cBan = BAD;
-      msg = 'הריבוד הרס: Z הוא mediator, והריבוד חסם את האפקט הסיבתי עצמו (over-control).';
+    // סימולציה של k מחקרים
+    const y = [], v = [], n = [];
+    for (let i = 0; i < k; i++) {
+      const ni = Math.round(nmin + U[i] * (nmax - nmin));
+      const theta = MU + tau * Z[i];
+      const vgen = 2 / ni + theta * theta / (4 * ni);
+      const d = theta + Math.sqrt(vgen) * E[i];
+      const J = 1 - 3 / (8 * ni - 9);
+      const gi = J * d;
+      const vi = J * J * (2 / ni + d * d / (4 * ni));
+      y.push(gi); v.push(vi); n.push(ni);
     }
 
-    $('tables').innerHTML =
-      tbl('מדידה א: כל האוכלוסייה', all, cCrude) +
-      tbl('מדידה ב: רובד Z=1', z1, cStrat) +
-      tbl('מדידה ב: רובד Z=0', z0, cStrat);
+    // fixed effect
+    const w = v.map(x => 1 / x);
+    const sw = w.reduce((a, b) => a + b, 0);
+    const fe = w.reduce((a, wi, i) => a + wi * y[i], 0) / sw;
+    const seFE = 1 / Math.sqrt(sw);
+    // heterogeneity (DerSimonian-Laird)
+    const Q = w.reduce((a, wi, i) => a + wi * Math.pow(y[i] - fe, 2), 0);
+    const df = k - 1;
+    const C = sw - w.reduce((a, wi) => a + wi * wi, 0) / sw;
+    const tau2 = Math.max(0, (Q - df) / C);
+    const I2 = Q > 0 ? Math.max(0, (Q - df) / Q) : 0;
+    // random effects
+    const wr = v.map(x => 1 / (x + tau2));
+    const swr = wr.reduce((a, b) => a + b, 0);
+    const re = wr.reduce((a, wi, i) => a + wi * y[i], 0) / swr;
+    const seRE = 1 / Math.sqrt(swr);
 
-    const ban = $('banner');
-    ban.textContent = msg + '   (האפקט הסיבתי האמיתי: ' + pp(truth) + ' נק\')';
-    ban.style.background = cBan.bg; ban.style.color = cBan.fg;
+    const ws = model === 'fixed' ? w : wr;
+    const sws = model === 'fixed' ? sw : swr;
+    const wmax = Math.max.apply(null, ws);
 
-    const trace = {
-      type: 'bar', orientation: 'h',
-      y: ['האפקט האמיתי', 'בלי ריבוד', 'עם ריבוד'],
-      x: [truth * 100, all.rd * 100, strat * 100],
-      text: [pp(truth), pp(all.rd), pp(strat)], textposition: 'outside', cliponaxis: false,
-      marker: { color: ['#34495e', cCrude.bar, cStrat.bar] }
+    const ypos = [], lo = [], hi = [], sizes = [], ticktext = [];
+    for (let i = 0; i < k; i++) {
+      const yp = k - i;
+      const se = Math.sqrt(v[i]);
+      ypos.push(yp);
+      lo.push(y[i] - 1.96 * se);
+      hi.push(y[i] + 1.96 * se);
+      sizes.push(5 + 24 * Math.sqrt(ws[i] / wmax));
+      ticktext.push('Study ' + (i + 1) + ' (n=' + n[i] + ', ' + (100 * ws[i] / sws).toFixed(0) + '%)');
+    }
+
+    const studies = {
+      x: y, y: ypos, mode: 'markers', type: 'scatter',
+      marker: { symbol: 'square', size: sizes, color: '#2980b9' },
+      error_x: { type: 'data', symmetric: false,
+                 array: hi.map((h, i) => h - y[i]), arrayminus: y.map((yy, i) => yy - lo[i]),
+                 color: '#2980b9', thickness: 1.5, width: 3 },
+      hovertemplate: 'g = %{x:.2f}<extra></extra>', showlegend: false
     };
+    const dFE = diamond(fe - 1.96 * seFE, fe, fe + 1.96 * seFE, -0.6);
+    const dRE = diamond(re - 1.96 * seRE, re, re + 1.96 * seRE, -1.8);
+    const trFE = { x: dFE.x, y: dFE.y, mode: 'lines', fill: 'toself', fillcolor: 'rgba(230,126,34,0.75)',
+                   line: { color: '#a1690a', width: 1 }, hoverinfo: 'skip', showlegend: false };
+    const trRE = { x: dRE.x, y: dRE.y, mode: 'lines', fill: 'toself', fillcolor: 'rgba(192,57,43,0.75)',
+                   line: { color: '#7b241c', width: 1 }, hoverinfo: 'skip', showlegend: false };
+
     const layout = {
-      xaxis: { title: 'הפרש באחוזים (נק\')', range: [-45, 85], zeroline: true },
-      yaxis: { autorange: 'reversed' },
-      margin: { t: 10, b: 45, l: 95, r: 20 }
+      xaxis: { title: 'Hedges g', range: [-1.6, 2.4], zeroline: false },
+      yaxis: { range: [-2.6, k + 1], tickvals: ypos.concat([-0.6, -1.8]),
+               ticktext: ticktext.concat(['Fixed effect', 'Random effects']),
+               tickfont: { size: 10 }, showgrid: false, zeroline: false },
+      margin: { t: 10, b: 45, l: 190, r: 20 },
+      shapes: [
+        { type: 'line', x0: 0, x1: 0, y0: -2.6, y1: k + 1, line: { color: '#555', width: 1.5 } },
+        { type: 'line', x0: MU, x1: MU, y0: -2.6, y1: k + 1, line: { color: '#27ae60', width: 2, dash: 'dash' } }
+      ]
     };
-    Plotly.newPlot('demo-dag', [trace], layout, { displayModeBar: false });
-  }
+    g('demo-forest').style.height = Math.max(330, 110 + 16 * (k + 3)) + 'px';
+    Plotly.newPlot('demo-forest', [studies, trFE, trRE], layout, { displayModeBar: false });
 
-  ['st', 'sg'].forEach(id => $(id).addEventListener('input', draw));
+    const el = g('forest_out');
+    el.textContent =
+      'Fixed: ' + fe.toFixed(2) + ' [' + (fe - 1.96 * seFE).toFixed(2) + ', ' + (fe + 1.96 * seFE).toFixed(2) + ']' +
+      '  ·  Random: ' + re.toFixed(2) + ' [' + (re - 1.96 * seRE).toFixed(2) + ', ' + (re + 1.96 * seRE).toFixed(2) + ']' +
+      '  ·  Q = ' + Q.toFixed(1) + ' (df = ' + df + ')' +
+      '  ·  I² = ' + (100 * I2).toFixed(0) + '%' +
+      '  ·  τ נאמד = ' + Math.sqrt(tau2).toFixed(2) + ' (אמיתי: ' + tau.toFixed(2) + ')';
+    if (I2 < 0.25) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
+    else if (I2 < 0.6) { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
+    else { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
+  }
+  ['fk', 'fnmin', 'fnmax', 'ftau'].forEach(id => g(id).addEventListener('input', draw));
+  document.querySelectorAll('input[name="fwm"]').forEach(r => r.addEventListener('change', draw));
   setTimeout(draw, 400);
 })();
 </script>
@@ -819,10 +652,10 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment"><strong>Confounder:</strong> בלי ריבוד יש קשר חזק. בתוך כל רובד הוא מתאפס. <strong>הריבוד תיקן</strong>.</li>
-<li class="fragment"><strong>Collider:</strong> בלי ריבוד אין קשר. בתוך כל רובד הוא מופיע. <strong>הריבוד הרס</strong>.</li>
-<li class="fragment"><strong>Mediator:</strong> בלי ריבוד רואים את האפקט הכולל. בתוך הרבדים הוא נעלם, כי חסמנו את הנתיב שדרכו האפקט עובר. <strong>גם כאן הריבוד הרס.</strong></li>
-<li class="fragment">שימו לב: <strong>הטבלאות של confounder ושל mediator זהות במספרים.</strong> הנתונים אינם יכולים לומר מה נכון לעשות. <strong>הגרף הוא זה שמחליט.</strong></li>
+<li class="fragment"><strong>הגדילו את טווח ה-<span class="math inline">\(n\)</span></strong> (למשל 20 עד 400): המחקרים הגדולים מקבלים ריבועים גדולים ורווחי סמך צרים, והמעוין נצמד אליהם.</li>
+<li class="fragment"><strong>הגדילו את <span class="math inline">\(\tau\)</span> מ-0 ל-0.6</strong>: ה-<span class="math inline">\(I^2\)</span> עולה; ב-random effects הריבועים מתקרבים בגודלם ומעוין ה-random effects <strong>מתרחב</strong> ביחס למעוין ה-fixed, שנשאר צר ומטעה.</li>
+<li class="fragment"><strong>הפחיתו את מספר המחקרים ל-3 עד 5</strong>: האומדן ל-<span class="math inline">\(\tau^2\)</span> עצמו לא יציב. בפועל, כשיש מעט מחקרים אי אפשר להסתמך על האומדן של ההטרוגניות.</li>
+<li class="fragment">כש-<span class="math inline">\(\tau = 0\)</span> שני המעוינים כמעט חופפים, כי שני המודלים מתלכדים.</li>
 </ul>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
@@ -831,70 +664,10 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הלקח</strong></p>
+<p><strong>הנקודה</strong></p>
 </div>
 <div class="callout-content">
-<p>אין כלל טכני “תמיד לרבד” או “אל תרבד”. השאלה היחידה: מה מקומו של Z בגרף ביחס ל-X ול-Y.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="ה-cliffhanger-הגרף-אמר-לרבד-לפי-גיל" class="slide level2">
-<h2>ה-cliffhanger: הגרף אמר לרבד לפי גיל</h2>
-<p>הגרף אמר מה לפקח. הוא לא אמר <strong>איך</strong>. בדוגמת הנעל חילקנו את הגיל לשתי קבוצות. אבל גיל הוא משתנה רציף, ובמציאות יש יותר ממבלבל אחד.</p>
-<table>
-<thead>
-<tr class="header">
-<th>מבלבלים</th>
-<th>רמות</th>
-<th>רבדים</th>
-<th>תצפיות ממוצעות לרובד (n=400)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>גיל</td>
-<td>10</td>
-<td>10</td>
-<td>40</td>
-</tr>
-<tr class="even">
-<td>+ מין</td>
-<td>2</td>
-<td>20</td>
-<td>20</td>
-</tr>
-<tr class="odd">
-<td>+ מעמד סוציו-אקונומי</td>
-<td>5</td>
-<td>100</td>
-<td><strong>4</strong></td>
-</tr>
-<tr class="even">
-<td>+ עוד שלושה משתנים בינריים</td>
-<td>2 × 2 × 2</td>
-<td>800</td>
-<td><strong>0.5</strong></td>
-</tr>
-</tbody>
-</table>
-<div>
-<ul>
-<li class="fragment">חלוקה גסה של גיל משאירה <strong>residual confounding</strong> בתוך הרבדים.</li>
-<li class="fragment">חלוקה עדינה מחלקת את המדגם לרבדים ריקים.</li>
-<li class="fragment">בכל רובד צריך <em>גם</em> ילדים עם נעל גדולה <em>וגם</em> עם נעל קטנה, אחרת אין מה להשוות.</li>
-</ul>
-</div>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>הריבוד קורס</strong></p>
-</div>
-<div class="callout-content">
-<p>הידיעה <strong>מה</strong> לפקח קיימת. חסר כלי שמפקח על כמה מבלבלים, גם רציפים, <strong>בלי לחתוך</strong> את המדגם לרבדים. זו בדיוק השאלה ששבוע 10 פותח בה.</p>
+<p>בחירה ב-fixed effect כשיש הטרוגניות אמיתית מייצרת <strong>ביטחון-יתר</strong>: רווח סמך צר מדי לשאלה “מה האפקט הצפוי במחקר חדש”.</p>
 </div>
 </div>
 </div>
@@ -902,11 +675,11 @@
 <section id="סיכום-w9.v2" class="slide level2">
 <h2>סיכום W9.V2</h2>
 <ul>
-<li>גרף (<strong>DAG</strong>) הוא לא-פרמטרי: הוא מקודד מי גורם למי, לא באיזו צורה ובאיזו עוצמה. הוא בא מתאוריה, לא מנתונים.</li>
-<li>שלושה מבנים: <strong>chain</strong> ו-<strong>fork</strong> פתוחים כברירת מחדל וריבוד חוסם אותם. <strong>Collider</strong> סגור כברירת מחדל, וריבוד <strong>פותח</strong> אותו.</li>
-<li><strong>אותה פעולה, תוצאה הפוכה:</strong> ריבוד מסיר קשר מדומה ב-confounding ויוצר אותו ב-collider. לכן החלטה על פיקוח באה מהגרף, לא מהטבלה.</li>
-<li><strong>Backdoor criterion:</strong> חוסמים את כל הנתיבים שנכנסים ל-X, בלי לפתוח collider ובלי לרבד על צאצא של X.</li>
-<li>ריבוד קורס כשהמבלבלים רבים או רציפים. <strong>שבוע 10</strong> נפתח כתשובה לשאלה איך מפקחים בלי לחתוך.</li>
+<li><strong>Cohen’s d ו-Hedges’ g</strong> מאפשרים לשים על ציר אחד מחקרים עם סולמות שונים, והשונות שלהם יורדת בערך כ-<span class="math inline">\(1/n\)</span>.</li>
+<li><strong>Inverse-variance weighting</strong> הוא לא כלל אצבע: הוא נובע ישירות מה-likelihood. דיוק הוא אינפורמציה, ולכן מחקר גדול נשקל יותר.</li>
+<li><strong>fixed effect</strong> מניח אפקט אמיתי אחד; <strong>random effects</strong> מניח התפלגות של אפקטים אמיתיים (<span class="math inline">\(\mu\)</span>, <span class="math inline">\(\tau^2\)</span>), ומייצר משקלות מאוזנים יותר ורווח סמך רחב יותר. נחזור אליו כמודל היררכי בשבוע 13.</li>
+<li><strong><span class="math inline">\(\tau\)</span></strong> מודד את ההטרוגניות ביחידות גודל האפקט; <strong><span class="math inline">\(I^2\)</span></strong> תלוי גם בדיוק המחקרים, ולכן מדווחים את שניהם.</li>
+<li>ב-<strong>forest plot</strong>: ריבוע = מחקר (גודלו הוא משקלו), קו = רווח סמך, מעוין = האומדן המשותף.</li>
 </ul>
 <div class="footer footer-default">
 

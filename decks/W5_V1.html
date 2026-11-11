@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W5.V1 — מודל מייצר גאוסיאני עם קבוצות</title>
+  <title>ההתפלגות הגאוסיינית</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -323,178 +323,533 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center" dir="rtl">
+<section id="title-slide" class="quarto-title-block center" dir="rtl" data-unit="a">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W5.V1 — מודל מייצר גאוסיאני עם קבוצות</h1>
-  <p class="subtitle">השוואת קבוצות, Dummy Coding והתמוטטות ההפרדה המלאכותית</p>
+  <p class="week-label">שבוע 5 · Continuous estimates</p>
+  <h1 class="title">ההתפלגות הגאוסיינית</h1>
+  <div class="title-rule"></div>
+  <p class="subtitle">מפרמטרים לתצפיות: לוח גלטון וצפיפות הסתברות</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
-<section id="מטרות-המצגת" class="slide level2">
-<h2>מטרות המצגת</h2>
-<ul>
-<li>להבין מדוע <strong>השוואת קבוצות</strong> היא כלי מרכזי במדע אמפירי.</li>
-<li>לבנות מודל מייצר גאוסיאני שבו התוחלת תלויה בקבוצה.</li>
-<li>להכיר את טכניקת <strong>Dummy Coding</strong> (<span class="math inline">\(0/1\)</span>).</li>
-<li>לראות כיצד השוואת קבוצות הופכת באופן מלא ל<strong>רגרסיה ליניארית</strong>.</li>
-<li>להבין את <strong>המודל הריק</strong> (Empty Model) ואת תפקיד <strong>השאריות</strong> (Residuals).</li>
-<li>לראות את <strong>מטריצת התכנון</strong> (Design Matrix).</li>
-</ul>
-</section>
-<section id="למה-השוואת-קבוצות-היא-כלי-מרכזי" class="slide level2">
-<h2>למה השוואת קבוצות היא כלי מרכזי?</h2>
+<section id="איפה-עצרנו" class="slide level2">
+<h2>איפה עצרנו</h2>
+<div class="centered-content">
 <div>
 <ul>
-<li class="fragment"><strong>השאלה המדעית:</strong> האם התערבות, טיפול או שיוך קבוצתי משנים את המשתנה הנמדד?</li>
-<li class="fragment"><strong>ניסוי קלאסי:</strong> קבוצת ניסוי (Treatment) מול קבוצת ביקורת (Control).</li>
-<li class="fragment"><strong>תצפית:</strong> אנו רואים ערכים שונים בשתי הקבוצות, אך הנתונים כוללים רעש.</li>
-<li class="fragment"><strong>האתגר:</strong> האם ההבדל הנצפה נובע משינוי במנגנון המייצר החבוי בטבע, או מרעש דגימה מקרי?</li>
+<li class="fragment">בשלושת השבועות הקודמים היה פרמטר אחד, <span class="math inline">\(\theta\)</span>, וכל תצפית הייתה הצלחה או כישלון.</li>
+<li class="fragment">אבל רוב מה שמודדים בפסיכולוגיה <strong>רציף</strong>: זמן תגובה, ציון בשאלון, משקל לידה, הערכה של משך זמן.</li>
+<li class="fragment">היום: איך נראה מודל מייצר של משתנה רציף, ומאיפה מגיעה עקומת הפעמון.</li>
 </ul>
 </div>
+</div>
 </section>
-<section id="המודל-המייצר-גאוסיאן-המותנה-בקבוצה" class="slide level2">
-<h2>המודל המייצר: גאוסיאן המותנה בקבוצה</h2>
-<p>ביחידה א’ העדכנו פרמטר יחיד למעבדת נתונים אחת: <span class="math inline">\(y_i \sim \text{Normal}(\mu, \sigma)\)</span>.</p>
-<p>כעת, המודל המייצר בטבע מניח <strong>תוחלת שונה לכל קבוצה</strong>:</p>
-<p><span class="math display">\[y_i \sim \text{Normal}(\mu_j, \sigma)\]</span></p>
+<section id="קצת-היסטוריה" class="slide level2 part-gate">
+<h2>קצת היסטוריה</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-title">קצת היסטוריה</div>
+  <div class="gate-why">גאוס, כוכב לכת אבוד, ומאיפה בא הפעמון</div>
+</div>
+</section>
+<section id="קצת-היסטוריה-1" class="slide level2">
+<h2>קצת היסטוריה</h2>
+<div class="side-figure">
+<div>
 <div>
 <ul>
-<li class="fragment"><span class="math inline">\(\mu_1\)</span>: התוחלת החבויה בטבע עבור קבוצה 1 (למשל, ביקורת).</li>
-<li class="fragment"><span class="math inline">\(\mu_2\)</span>: התוחלת החבויה בטבע עבור קבוצה 2 (למשל, ניסוי).</li>
-<li class="fragment"><span class="math inline">\(\sigma\)</span>: סטיית התקן של הרעש (מניחים בשלב זה שונויות שוות).</li>
+<li class="fragment">קרל פרידריך גאוס (1777–1855), בן למשפחה ענייה בבראונשווייג שבגרמניה.</li>
+<li class="fragment">בגיל 19 פתר בעיה שעמדה פתוחה מימי היוונים: בניית מצולע משוכלל בן 17 צלעות בסרגל ובמחוגה.</li>
+<li class="fragment">המוטו שלו: “מעט, אבל בשל”. פרסם רק מה שנראה לו שלם.</li>
+<li class="fragment">רוב חייו מדד את השמיים ואת פני הארץ, ופגש כל יום את אותה בעיה: מדידות חוזרות של אותו דבר אף פעם לא מסכימות זו עם זו.</li>
 </ul>
 </div>
-</section>
-<section id="הפיכת-מילים-למספרים-dummy-coding" class="slide level2">
-<h2>הפיכת מילים למספרים: Dummy Coding</h2>
-<p>מחשב ומשוואות מתמטיות אינם יודעים לעבוד עם המילים “ניסוי” ו”ביקורת”.</p>
-<p>אנו מציבים משתנה מספרי בינארי <span class="math inline">\(X_i\)</span>:</p>
-<p><span class="math display">\[X_i = \begin{cases} 0 &amp; \text{קבוצת ביקורת (Control)} \ 1 &amp; \text{קבוצת ניסוי (Treatment)} \end{cases}\]</span></p>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
 </div>
-<p><strong>שיוך קבוצת יחוס (Baseline)</strong></p>
-</div>
-<div class="callout-content">
-<p>הקבוצה שראתה <span class="math inline">\(X=0\)</span> נקראת <strong>קבוצת הייחוס</strong> (Reference Group). החותך במודל הליניארי יייצג את התוחלת שלה.</p>
-</div>
+<div class="person-head stacked">
+<p><img data-src="W5_V1%20Gauss.webp" class="portrait"> <img data-src="W5_V1%20Gauss%20חתימה.png" class="signature"></p>
 </div>
 </div>
 </section>
-<section id="הניסוח-כרגרסיה-ליניארית" class="slide level2">
-<h2>הניסוח כרגרסיה ליניארית</h2>
-<p>ברגע שהשתמשנו ב-Dummy Coding, המודל המייצר נכתב כמשוואת רגרסיה:</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \quad \epsilon_i \sim \text{Normal}(0, \sigma)\]</span></p>
+<section id="קצת-היסטוריה-2" class="slide level2">
+<h2>קצת היסטוריה</h2>
+<div class="centered-content">
 <div>
 <ul>
-<li class="fragment"><strong>החותך (<span class="math inline">\(\beta_0\)</span>):</strong> התוחלת של קבוצת הייחוס (<span class="math inline">\(X=0\)</span>), כלומר <span class="math inline">\(\beta_0 = \mu_{\text{control}}\)</span>.</li>
-<li class="fragment"><strong>השיפוע (<span class="math inline">\(\beta_1\)</span>):</strong> ההפרש בין התוחלות (<span class="math inline">\(\mu_{\text{treatment}} - \mu_{\text{control}}\)</span>), כלומר <span class="math inline">\(\beta_1 = \Delta\mu\)</span>.</li>
-<li class="fragment"><strong>השארית (<span class="math inline">\(\epsilon_i\)</span>):</strong> הסטייה האינדיבידואלית של תצפית <span class="math inline">\(i\)</span> מממוצע הקבוצה שלה.</li>
-</ul>
-</div>
-</section>
-<section id="המודל-הריק-empty-model-והשאריות" class="slide level2">
-<h2>המודל הריק (Empty Model) והשאריות</h2>
-<p>מה קורה אם אנו מניחים שאין כלל הבדל בין הקבוצות (<span class="math inline">\(\beta_1 = 0\)</span>)?</p>
-<p>אנו מקבלים את <strong>המודל הריק</strong>:</p>
-<p><span class="math display">\[y_i = \beta_0 + \epsilon_i\]</span></p>
-<div>
-<ul>
-<li class="fragment">במודל הריק, החיזוי לכל התצפיות הוא הממוצע הכללי <span class="math inline">\(\bar{y}\)</span>.</li>
-<li class="fragment"><strong>השארית (<span class="math inline">\(e_i = y_i - \hat{y}_i\)</span>):</strong> המרחק בין התצפית בפועל לבין חיזוי המודל.</li>
-<li class="fragment">המודל הליניארי המלא עם המנבא <span class="math inline">\(X\)</span> שואף <strong>להקטין את גודל השאריות</strong> לעומת המודל הריק.</li>
-</ul>
-</div>
-</section>
-<section id="מטריצת-התכנון-design-matrix" class="slide level2">
-<h2>מטריצת התכנון (Design Matrix)</h2>
-<p>מאחורי הקלעים, כל מודל ליניארי מיוצג במטריצה <span class="math inline">\(X\)</span>:</p>
-<p><span class="math display">\[\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}\]</span></p>
-<p><span class="math display">\[\begin{bmatrix} y_1 \ y_2 \ y_3 \ y_4 \end{bmatrix} = \begin{bmatrix} 1 &amp; 0 \ 1 &amp; 0 \ 1 &amp; 1 \ 1 &amp; 1 \end{bmatrix} \begin{bmatrix} \beta_0 \ \beta_1 \end{bmatrix} + \begin{bmatrix} \epsilon_1 \ \epsilon_2 \ \epsilon_3 \ \epsilon_4 \end{bmatrix}\]</span></p>
-<p>הטור הראשון הוא עמודת ה-1-ים עבור החותך (<span class="math inline">\(\beta_0\)</span>), והטור השני הוא המשתנה הבינארי <span class="math inline">\(X_i\)</span>.</p>
-</section>
-<section id="התמוטטות-ההפרדה-המלאכותית" class="slide level2">
-<h2>התמוטטות ההפרדה המלאכותית!</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="הראייה-הישנה">הראייה הישנה</h3>
-<ul>
-<li>מבחן t למדגמים בלתי תלויים הוא כלי נפרד.</li>
-<li>רגרסיה ליניארית היא כלי נפרד לגמרי.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="הראייה-המודרנית">הראייה המודרנית</h3>
-<ul>
-<li><strong>t-test אינו אלא רגרסיה ליניארית</strong> עם מנבא קטגוריאלי בינארי!</li>
-<li>קו הרגרסיה מחבר בדיוק בין ממוצע קבוצה 0 לממוצע קבוצה 1.</li>
+<li class="fragment"><strong>1 בינואר 1801:</strong> מתגלה גרם שמיים חדש, Ceres. אחרי כמה שבועות הוא נעלם באור השמש.</li>
+<li class="fragment">נשארו מעט תצפיות, על קטע קצר של המסלול, וכולן עם שגיאות מדידה.</li>
+<li class="fragment">גאוס, בן 24, חישב מהן מסלול שלם וניבא איפה Ceres יופיע. בסוף 1801 מצאו אותו כמעט בדיוק שם.</li>
+<li class="fragment"><strong>הרעיון:</strong> לא לבחור תצפית אחת “נכונה”, אלא לחפש את הערך שמתאים לכל התצפיות יחד. זה הערך שסכום ריבועי המרחקים ממנו הוא הקטן ביותר.</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-רגרסיה-עם-מנבא-קטגוריאלי" class="slide level2">
-<h2>הדגמה אינטראקטיבית: רגרסיה עם מנבא קטגוריאלי</h2>
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:12px; font-size:0.85em;">
-    <label>β0 (ביקורת): <b id="b0val_cr">10.0</b>
-      <input type="range" id="b0_cr" min="4" max="20" step="0.5" value="10" style="vertical-align:middle;"></label>
-    <label>β1 (הפרש): <b id="b1val_cr">5.0</b>
-      <input type="range" id="b1_cr" min="-10" max="12" step="0.5" value="5" style="vertical-align:middle;"></label>
-    <button id="resample_cr" style="padding:6px 12px; background:#2c3e50; color:#fff; border:none; border-radius:4px; cursor:pointer;">מדגם חדש</button>
+<section id="קצת-היסטוריה-3" class="slide level2 stacked-cards">
+<h2>קצת היסטוריה</h2>
+<div class="centered-content">
+<div class="soft-card fragment">
+  <h3>1809 · גאוס</h3>
+  <p>הוא הניח שהממוצע של כמה מדידות הוא הערך הטוב ביותר, ושאל: באיזו צורה צריכות להתפזר השגיאות, כדי שהממוצע יהיה הערך <b>הסביר ביותר</b>? התשובה היחידה: עקומת פעמון.</p>
+</div>
+<div class="soft-card fragment">
+  <h3>1810 · לפלס</h3>
+  <p>שגיאה של מדידה היא סכום של הרבה הפרעות קטנות: רעד ביד, ריצוד באוויר, עין עייפה. סכום של הרבה הפרעות קטנות ובלתי תלויות מתפלג כפעמון, כמעט בלי קשר לצורה של כל הפרעה. זה משפט הגבול המרכזי.</p>
+</div>
+<p class="fragment" style="text-align:center; margin-top:.6em;">שני טיעונים, ועקומה אחת. היום קוראים לה <b>התפלגות גאוסיינית</b>, או <b>נורמלית</b>.</p>
+</div>
+</section>
+<section id="קצת-היסטוריה-4" class="slide level2 example-slide">
+<h2>קצת היסטוריה</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <label><input type="checkbox" id="qt-bell"> הפעמון</label>
+    <span class="demo-readout" id="qt-out"></span>
   </div>
-  <div id="demo-cat-reg" style="width:100%; height:380px;"></div>
+  <svg id="qt-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="היקפי החזה של 5,738 חיילים סקוטים"></svg>
 </div>
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
-(function() {
-  let n_cr = 15, noise0_cr, noise1_cr, jx0_cr, jx1_cr;
-  function resample_cr() {
-    noise0_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*4);
-    noise1_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*4);
-    jx0_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*0.12);
-    jx1_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*0.12);
-  }
-  function drawCatReg() {
-    let b0 = parseFloat(document.getElementById('b0_cr').value);
-    let b1 = parseFloat(document.getElementById('b1_cr').value);
-    document.getElementById('b0val_cr').textContent = b0.toFixed(1);
-    document.getElementById('b1val_cr').textContent = b1.toFixed(1);
-
-    let y0 = noise0_cr.map(e => b0 + e);
-    let y1 = noise1_cr.map(e => b0 + b1 + e);
-    let x0 = jx0_cr.map(j => 0 + j);
-    let x1 = jx1_cr.map(j => 1 + j);
-
-    let trace0 = { x: x0, y: y0, mode: 'markers', name: 'ביקורת (X=0)', marker: {color: '#2980b9', size: 9} };
-    let trace1 = { x: x1, y: y1, mode: 'markers', name: 'ניסוי (X=1)', marker: {color: '#e67e22', size: 9} };
-    let traceLine = { x: [0, 1], y: [b0, b0+b1], mode: 'lines+markers', name: `קו הרגרסיה (β0 + β1·X)`, line: {color: '#c0392b', width: 3} };
-
-    let layout = {
-      title: `y = β0 + β1·X  →  β0 = ${b0.toFixed(1)}, β1 = ${b1.toFixed(1)}`,
-      xaxis: { title: 'משתנה קטגוריאלי (X)', tickvals: [0, 1], ticktext: ['ביקורת (0)', 'ניסוי (1)'], range: [-0.4, 1.4] },
-      yaxis: { title: 'משתנה תלוי (Y)' },
-      margin: { t: 40, b: 40, l: 45, r: 20 },
-      legend: { orientation: 'h', y: -0.2 }
-    };
-    Plotly.newPlot('demo-cat-reg', [trace0, trace1, traceLine], layout, {displayModeBar:false});
-  }
-  document.getElementById('b0_cr').addEventListener('input', drawCatReg);
-  document.getElementById('b1_cr').addEventListener('input', drawCatReg);
-  document.getElementById('resample_cr').addEventListener('click', () => { resample_cr(); drawCatReg(); });
-  resample_cr();
-  setTimeout(drawCatReg, 400);
-})();
+  (function () {
+    const svg = document.getElementById('qt-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    // Quetelet (1846): היקף חזה באינצ'ים, ומספר החיילים בכל ערך
+    const D = [[33, 3], [34, 18], [35, 81], [36, 185], [37, 420], [38, 749], [39, 1073], [40, 1079], [41, 934], [42, 658], [43, 370], [44, 92], [45, 50], [46, 21], [47, 4], [48, 1]];
+    const N = D.reduce((a, d) => a + d[1], 0), M = D.reduce((a, d) => a + d[0] * d[1], 0) / N;
+    const SD = Math.sqrt(D.reduce((a, d) => a + d[1] * (d[0] - M) ** 2, 0) / N);
+    const x0 = 70, x1 = 960, yb = 270, yt = 16, lo = 32, hi = 49;
+    const X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0), top = 1200, Y = c => yb - c / top * (yb - yt);
+    const bell = v => N * Math.exp(-.5 * ((v - M) / SD) ** 2) / (SD * Math.sqrt(2 * Math.PI));
+    function draw() {
+      let s = '';
+      [0, 250, 500, 750, 1000].forEach(c => {
+        s += `<line x1="${x0}" y1="${Y(c)}" x2="${x1}" y2="${Y(c)}" stroke="var(--rule)"/>
+              <text x="${x0 - 10}" y="${Y(c) + 6}" text-anchor="end" font-size="16" fill="var(--ink-soft)">${c.toLocaleString('en')}</text>`;
+      });
+      const bw = (X(1) - X(0)) * .86;
+      D.forEach(([v, c]) => {
+        s += `<rect x="${X(v) - bw / 2}" y="${Y(c)}" width="${bw}" height="${yb - Y(c)}" fill="var(--seen)" opacity=".75"/>
+              <text x="${X(v)}" y="${yb + 24}" text-anchor="middle" font-size="16" fill="var(--ink-soft)">${v}</text>`;
+      });
+      if ($('qt-bell').checked) {
+        let d = '';
+        for (let i = 0; i <= 300; i++) { const v = lo + i / 300 * (hi - lo); d += (i ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(bell(v)).toFixed(1); }
+        s += `<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="8 6"/>`;
+      }
+      s += `<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="${(x0 + x1) / 2}" y="${yb + 50}" text-anchor="middle" direction="rtl" font-size="17" fill="var(--ink-soft)">היקף החזה (אינץ')</text>
+            <text x="22" y="${(yb + yt) / 2}" text-anchor="middle" direction="rtl" font-size="17" fill="var(--ink-soft)" transform="rotate(-90 22 ${(yb + yt) / 2})">מספר חיילים</text>`;
+      svg.innerHTML = s;
+      $('qt-out').innerHTML = `<span class="ltr">${N.toLocaleString('en')}</span> חיילים · ממוצע <span class="ltr">${M.toFixed(1)}</span> · סטיית תקן <span class="ltr">${SD.toFixed(1)}</span>`;
+    }
+    $('qt-bell').onchange = draw;
+    draw();
+  })();
 </script>
+<div class="demo-note">
+<p>1846: אדולף קטלה (Quetelet) לקח את חוק השגיאות של האסטרונומים והחיל אותו על בני אדם: היקפי החזה של 5,738 חיילים סקוטים.<br>אבל אצל אנשים הפיזור הוא לא שגיאה של מדידה. זה <strong>הבדלים אמיתיים בין אנשים</strong>.</p>
+</div>
 </section>
-<section id="סיכום-w5.v1" class="slide level2">
-<h2>סיכום W5.V1</h2>
+<section id="לוח-גלטון" class="slide level2 part-gate">
+<h2>לוח גלטון</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-title">לוח גלטון</div>
+  <div class="gate-why">מנגנון פשוט שמייצר פעמון</div>
+</div>
+</section>
+<section id="לוח-גלטון-1" class="slide level2 example-slide">
+<h2>לוח גלטון</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <label>שורות: <select id="gb-rows"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option selected="">9</option><option>12</option><option>16</option></select></label>
+    <button class="demo-btn" data-b="1">כדור</button>
+    <button class="demo-btn" data-b="10">10 כדורים</button>
+    <button class="demo-btn" data-b="100">100 כדורים</button>
+    <button class="demo-btn" data-b="1000">1,000 כדורים</button>
+    <button id="gb-reset" class="demo-btn ghost">איפוס</button>
+    <label><input type="checkbox" id="gb-ways"> מספר הדרכים</label>
+    <label><input type="checkbox" id="gb-bell"> הפעמון</label>
+  </div>
+  <svg id="gb-svg" viewbox="0 0 1000 440" style="width:100%; height:auto; display:block;" aria-label="לוח גלטון: כדורים נופלים דרך שורות של מוטות"></svg>
+  <div class="demo-readout" id="gb-out" style="text-align:center; font-size:.5em; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('gb-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    const cx = 500, yTop = 46, pegH = 220, binTop = 300, binBot = 404;
+    let R, dx, dy, counts, balls = [], N = 0, raf = null, last = 0, spawnLeft = 0, spawnGap = 0, spawnClock = 0, speed = 7;
+    const C = (n, k) => { let r = 1; for (let i = 1; i <= k; i++) r = r * (n - k + i) / i; return Math.round(r); };
+    const binX = k => cx + (k - R / 2) * dx;
+
+    function reset() {
+      R = +$('gb-rows').value;
+      dx = Math.min(64, 780 / (R + 1)); dy = pegH / R;
+      counts = Array(R + 1).fill(0); balls = []; N = 0; spawnLeft = 0;
+      draw();
+    }
+    function newBall() { const p = []; for (let i = 0; i < R; i++) p.push(Math.random() < .5 ? 1 : 0); balls.push({ p, t: 0 }); }
+    // מיקום הכדור: t=0 מעל המשפך, t=i+1 על המוט בשורה i, t=R+1 בתוך התא
+    function pos(b) {
+      const pts = [[cx, yTop - 40]];
+      let s = 0;
+      for (let i = 0; i < R; i++) { pts.push([cx + (s - i / 2) * dx, yTop + i * dy - 7]); s += b.p[i]; }
+      pts.push([binX(s), binTop + 10]);
+      const i = Math.min(Math.floor(b.t), pts.length - 2), u = Math.min(1, b.t - i);
+      const [ax, ay] = pts[i], [bx, by] = pts[i + 1];
+      return [ax + (bx - ax) * u, ay + (by - ay) * u - (i > 0 && i <= R ? 10 * Math.sin(Math.PI * u) : 0), s];
+    }
+    function frame(ts) {
+      const dt = Math.min(.05, (ts - (last || ts)) / 1000); last = ts;
+      if (spawnLeft > 0) { spawnClock += dt; while (spawnLeft > 0 && spawnClock >= spawnGap) { spawnClock -= spawnGap; newBall(); spawnLeft--; } }
+      balls.forEach(b => { b.t += dt * speed; });
+      balls = balls.filter(b => { if (b.t >= R + 1) { counts[pos(b)[2]]++; N++; return false; } return true; });
+      draw();
+      raf = (balls.length || spawnLeft > 0) ? requestAnimationFrame(frame) : null;
+      if (!raf) last = 0;
+    }
+    function drop(m) {
+      if (m >= 1000) {
+        for (let j = 0; j < m; j++) { let s = 0; for (let i = 0; i < R; i++) s += Math.random() < .5 ? 1 : 0; counts[s]++; }
+        N += m; draw(); return;
+      }
+      speed = m === 1 ? 6 : m === 10 ? 9 : 16;
+      spawnGap = m === 1 ? 0 : m === 10 ? .12 : .03;
+      spawnLeft += m; spawnClock = spawnGap;
+      if (!raf) raf = requestAnimationFrame(frame);
+    }
+    function draw() {
+      let s = `<path d="M${cx - 120},${yTop - 70} L${cx - 14},${yTop - 22} M${cx + 120},${yTop - 70} L${cx + 14},${yTop - 22}" stroke="var(--ink-faint)" stroke-width="3" fill="none"/>`;
+      for (let i = 0; i < R; i++) for (let j = 0; j <= i; j++) s += `<circle cx="${cx + (j - i / 2) * dx}" cy="${yTop + i * dy}" r="4.5" fill="var(--ink-faint)"/>`;
+      for (let k = 0; k <= R + 1; k++) { const x = cx + (k - .5 - R / 2) * dx; s += `<line x1="${x}" y1="${binTop}" x2="${x}" y2="${binBot}" stroke="var(--ink-soft)" stroke-width="2"/>`; }
+      const pm = C(R, Math.floor(R / 2)) / 2 ** R, top = Math.max(1, ...counts, N * pm * 1.15), H = binBot - binTop - 6;
+      counts.forEach((c, k) => {
+        if (!c) return;
+        const h = c / top * H;
+        s += `<rect x="${binX(k) - dx * .4}" y="${binBot - h}" width="${dx * .8}" height="${h}" rx="3" fill="var(--seen)" opacity=".8"/>`;
+      });
+      if ($('gb-bell').checked && N) {
+        const sd = Math.sqrt(R) / 2; let d = '';
+        for (let i = 0; i <= 200; i++) {
+          const k = -.5 + i / 200 * (R + 1), v = N * Math.exp(-.5 * ((k - R / 2) / sd) ** 2) / (sd * Math.sqrt(2 * Math.PI));
+          d += (i ? 'L' : 'M') + binX(k).toFixed(1) + ',' + (binBot - Math.min(v / top, 1.4) * H).toFixed(1);
+        }
+        s += `<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="8 6"/>`;
+      }
+      s += `<line x1="${binX(-.5)}" y1="${binBot}" x2="${binX(R + .5)}" y2="${binBot}" stroke="var(--ink)" stroke-width="2"/>`;
+      if ($('gb-ways').checked) for (let k = 0; k <= R; k++) {
+        s += `<text x="${binX(k)}" y="${binBot + 26}" text-anchor="middle" font-size="${R > 12 ? 12 : 17}" font-weight="700" fill="var(--curve)">${C(R, k).toLocaleString('en')}</text>`;
+      }
+      balls.forEach(b => { const [x, y] = pos(b); s += `<circle cx="${x}" cy="${y}" r="7" fill="var(--seen)" stroke="#fff" stroke-width="1.5"/>`; });
+      svg.innerHTML = s;
+      $('gb-out').innerHTML = N ? `כדורים בתאים: <span class="ltr">${N.toLocaleString('en')}</span>` : 'כל כדור פוגש מוט בכל שורה, ונופל ימינה או שמאלה, חצי-חצי';
+    }
+    svg.closest('.demo-panel').querySelectorAll('[data-b]').forEach(b => b.onclick = () => drop(+b.dataset.b));
+    $('gb-reset').onclick = reset; $('gb-rows').onchange = reset;
+    $('gb-ways').onchange = draw; $('gb-bell').onchange = draw;
+    reset();
+  })();
+</script>
+<div class="demo-note">
+<p>נסו שורה אחת, אחר כך 2, ואז 9. מה במנגנון גורם לתאים שבמרכז להתמלא יותר מהתאים שבקצוות?</p>
+</div>
+</section>
+<section id="לוח-גלטון-2" class="slide level2">
+<h2>לוח גלטון</h2>
+<div class="centered-content">
+<div class="side-figure">
+<div>
+<div>
 <ul>
-<li>מנבא קטגוריאלי מומר למספר בעזרת <strong>Dummy Coding</strong> (<span class="math inline">\(0/1\)</span>).</li>
-<li><strong><span class="math inline">\(\beta_0\)</span></strong> מייצג את ממוצע קבוצת הייחוס.</li>
-<li><strong><span class="math inline">\(\beta_1\)</span></strong> מייצג את <strong>ההבדל בין הממוצעים</strong> (<span class="math inline">\(\Delta\mu\)</span>).</li>
-<li>השוואת קבוצות ו-t-test הם מקרים פרטיים של המודל הליניארי.</li>
+<li class="fragment">כדי להגיע לתא הקיצוני, הכדור צריך ליפול ימינה <strong>בכל</strong> שורה. יש לזה דרך אחת בלבד.</li>
+<li class="fragment">לתא שבמרכז מגיעים בהרבה מסלולים שונים: קצת ימינה, קצת שמאלה, בכל סדר.</li>
+<li class="fragment"><strong>ערכים שקרובים למרכז יכולים לקרות ביותר דרכים</strong>, ולכן נצפה בהם יותר.</li>
+<li class="fragment">כל מספר במשולש הוא סכום שני המספרים שמעליו: מספר המסלולים שמגיעים לאותה נקודה. אלה שבילי הנתונים מהשבוע הראשון.</li>
 </ul>
+</div>
+</div>
+<div>
+<svg id="pt-svg" viewbox="0 0 330 250" style="width:430px; height:auto; display:block;" aria-label="משולש של מספרי מסלולים"></svg>
+<script>
+  (function () {
+    const svg = document.getElementById('pt-svg');
+    if (!svg) return;
+    const C = (n, k) => { let r = 1; for (let i = 1; i <= k; i++) r = r * (n - k + i) / i; return Math.round(r); };
+    let s = '';
+    for (let n = 0; n <= 5; n++) for (let k = 0; k <= n; k++) {
+      const x = 165 + (k - n / 2) * 52, y = 24 + n * 42, last = n === 5;
+      s += `<text x="${x}" y="${y}" text-anchor="middle" font-size="${last ? 26 : 22}" font-weight="${last ? 700 : 400}" fill="${last ? 'var(--curve)' : 'var(--ink-soft)'}">${C(n, k)}</text>`;
+    }
+    svg.innerHTML = s;
+  })();
+</script>
+</div>
+</div>
+</div>
+</section>
+<section id="לוח-גלטון-3" class="slide level2">
+<h2>לוח גלטון</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment">פרנסיס גלטון בנה את הלוח ב-1873, כדי להראות בלי מתמטיקה איך הרבה אירועים אקראיים קטנים יוצרים יחד צורה קבועה.</li>
+<li class="fragment">כל מוט הוא ניסוי ברנולי עם <span class="math inline">\(\theta = \tfrac12\)</span>. התא שהכדור מגיע אליו הוא <strong>מספר ההצלחות</strong> (הפניות ימינה).</li>
+<li class="fragment">1733: אברהם דה מואבר הראה שכשמספר השורות גדל, הצורה מתקרבת לעקומה חלקה. זו ההופעה הראשונה של הפעמון.</li>
+<li class="fragment">ובעיניים של לפלס: כל שורה מוסיפה דחיפה קטנה ימינה או שמאלה, והמיקום הסופי הוא <strong>סכום</strong> של הרבה דחיפות קטנות.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="צפיפות-הסתברות" class="slide level2 part-gate">
+<h2>צפיפות הסתברות</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span><span class="later"></span></div>
+  <div class="gate-title">צפיפות הסתברות</div>
+  <div class="gate-why">ממשתנה בדיד למשתנה רציף</div>
+</div>
+</section>
+<section id="צפיפות-הסתברות-1" class="slide level2 example-slide">
+<h2>צפיפות הסתברות</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <label>שורות בלוח: <input type="range" id="dn-r" min="1" max="100" step="1" value="4"> <span class="ltr demo-readout" id="dn-rv"></span></label>
+    <label><input type="checkbox" id="dn-curve"> העקומה הרציפה</label>
+  </div>
+  <svg id="dn-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="ההתפלגות של לוח עם יותר ויותר שורות, ותאים צרים יותר ויותר"></svg>
+  <div class="demo-readout" id="dn-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('dn-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    // מוסיפים שורות, ומקטינים כל צעד כך שהרוחב הכולל של הפעמון נשאר קבוע (סטיית תקן 15 על סולם 0–100)
+    const SD = 15, x0 = 70, x1 = 960, yb = 250, yt = 14, top = .03;
+    const X = v => x0 + v / 100 * (x1 - x0), Y = d => yb - Math.min(d, top * 1.05) / top * (yb - yt);
+    const lgam = n => { let s = 0; for (let i = 2; i <= n; i++) s += Math.log(i); return s; };
+    const pdf = v => Math.exp(-.5 * ((v - 50) / SD) ** 2) / (SD * Math.sqrt(2 * Math.PI));
+    function draw() {
+      const R = +$('dn-r').value, h = 2 * SD / Math.sqrt(R);
+      $('dn-rv').textContent = R;
+      let s = '', mid = 0;
+      for (let k = 0; k <= R; k++) {
+        const v = 50 + (k - R / 2) * h; if (v < -h || v > 100 + h) continue;
+        const P = Math.exp(lgam(R) - lgam(k) - lgam(R - k) - R * Math.log(2)), d = P / h;
+        if (k === Math.floor(R / 2)) mid = P;
+        const w = Math.max(1, (X(h) - X(0)) * .9);
+        s += `<rect x="${X(v) - w / 2}" y="${Y(d)}" width="${w}" height="${yb - Y(d)}" fill="var(--seen)" opacity=".75"/>`;
+      }
+      if ($('dn-curve').checked) {
+        let d = '';
+        for (let i = 0; i <= 300; i++) { const v = i / 3; d += (i ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(pdf(v)).toFixed(1); }
+        s += `<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="8 6"/>`;
+      }
+      s += `<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      [0, 25, 50, 75, 100].forEach(v => { s += `<text x="${X(v)}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<text x="22" y="${(yb + yt) / 2}" text-anchor="middle" direction="rtl" font-size="17" fill="var(--ink-soft)" transform="rotate(-90 22 ${(yb + yt) / 2})">צפיפות</text>`;
+      svg.innerHTML = s;
+      $('dn-out').innerHTML = `רוחב כל תא: <span class="ltr">${h.toFixed(2)}</span> · הסיכוי ליפול בתא האמצעי: <span class="ltr">${(100 * mid).toFixed(1)}%</span> · הגובה שלו (סיכוי ÷ רוחב): <span class="ltr">${(mid / h).toFixed(4)}</span>`;
+    }
+    $('dn-r').oninput = draw; $('dn-curve').onchange = draw;
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>עוד שורות בלוח, ובכל פעם מקטינים את הצעד כך שהרוחב הכולל נשאר קבוע. התאים נעשים צרים, והסיכוי ליפול בתא אחד שואף לאפס. אבל <strong>הגובה</strong>, הסיכוי לחלק לרוחב התא, מתייצב על עקומה אחת.</p>
+</div>
+</section>
+<section id="צפיפות-הסתברות-2" class="slide level2">
+<h2>צפיפות הסתברות</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment">במשתנה רציף, הסיכוי לערך מדויק אחד הוא 0. אין סיכוי שתינוק ישקול <strong>בדיוק</strong> 3.000000… ק”ג.</li>
+<li class="fragment">לכן שואלים על <strong>צפיפות</strong> (<span class="term">density</span>): כמה צפוף הסיכוי סביב כל ערך. גבוה יותר = סביר יותר.</li>
+<li class="fragment"><strong>סיכוי</strong> יש רק לטווח של ערכים: השטח מתחת לעקומה. השטח כולו שווה 1.</li>
+<li class="fragment">הצפיפות היא סולם יחסי, כמו “מספר הדרכים” בלוח. היא יכולה להיות גם גדולה מ-1.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="פונקציית-צפיפות-הסתברות" class="slide level2">
+<h2>פונקציית צפיפות הסתברות</h2>
+<div class="centered-content">
+<p>את העקומה אפשר לחשב בנוסחה, בלי לוח: <span class="term">probability density function</span>.</p>
+<div class="ltr">
+<p><span class="math display">\[p(y \mid \mu, \sigma) = \frac{1}{\sigma\sqrt{2\pi}}\; e^{-\frac{(y-\mu)^2}{2\sigma^2}}\]</span></p>
+</div>
+<div>
+<ul>
+<li class="fragment"><strong>נכנסים:</strong> שני פרמטרים, <span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span>, וערך אפשרי של <span class="math inline">\(y\)</span>. <strong>יוצא:</strong> הצפיפות של <span class="math inline">\(y\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\mu\)</span> הוא <strong>המרכז</strong> (<span class="term">location</span>), ו-<span class="math inline">\(\sigma\)</span> הוא <strong>הרוחב</strong> (<span class="term">scale</span>, סטיית התקן).</li>
+<li class="fragment">את הנוסחה לא צריך לזכור. מה שחשוב: <span class="math inline">\((y-\mu)^2\)</span>. ככל ש-<span class="math inline">\(y\)</span> רחוק יותר מ-<span class="math inline">\(\mu\)</span>, הצפיפות יורדת, ומהר.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="פונקציית-צפיפות-הסתברות-1" class="slide level2 example-slide">
+<h2>פונקציית צפיפות הסתברות</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <label>μ: <input type="range" id="pd-mu" min="2" max="5" step="0.1" value="3.4"> <span class="ltr demo-readout" id="pd-muv"></span></label>
+    <label>σ: <input type="range" id="pd-sd" min="0.2" max="1.2" step="0.05" value="0.5"> <span class="ltr demo-readout" id="pd-sdv"></span></label>
+    <label>y: <input type="range" id="pd-y" min="1" max="6" step="0.05" value="2.6"> <span class="ltr demo-readout" id="pd-yv"></span></label>
+  </div>
+  <svg id="pd-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="פונקציית הצפיפות של משקל לידה"></svg>
+  <div class="demo-readout" id="pd-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('pd-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    const x0 = 70, x1 = 960, yb = 245, yt = 30, lo = 1, hi = 6, top = 2.1, HW = .1;
+    const X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0), Y = d => yb - d / top * (yb - yt);
+    const pdf = (v, m, s) => Math.exp(-.5 * ((v - m) / s) ** 2) / (s * Math.sqrt(2 * Math.PI));
+    const Phi = z => { const t = 1 / (1 + .2316419 * Math.abs(z)), d = .3989423 * Math.exp(-z * z / 2), p = d * t * (.3193815 + t * (-.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; };
+    function draw() {
+      const m = +$('pd-mu').value, sd = +$('pd-sd').value, y = +$('pd-y').value;
+      $('pd-muv').textContent = m.toFixed(1); $('pd-sdv').textContent = sd.toFixed(2); $('pd-yv').textContent = y.toFixed(2);
+      let s = '';
+      [0, .5, 1, 1.5, 2].forEach(d => {
+        s += `<line x1="${x0}" y1="${Y(d)}" x2="${x1}" y2="${Y(d)}" stroke="var(--rule)"/>
+              <text x="${x0 - 10}" y="${Y(d) + 6}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${d}</text>`;
+      });
+      let a = `M${X(y - HW)},${yb}`;
+      for (let i = 0; i <= 40; i++) { const v = y - HW + i / 40 * 2 * HW; a += `L${X(v).toFixed(1)},${Y(pdf(v, m, sd)).toFixed(1)}`; }
+      s += `<path d="${a}L${X(y + HW)},${yb}Z" fill="var(--seen)" opacity=".35"/>`;
+      let d = '';
+      for (let i = 0; i <= 400; i++) { const v = lo + i / 400 * (hi - lo); d += (i ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(Math.min(pdf(v, m, sd), top * 1.1)).toFixed(1); }
+      s += `<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="3"/>
+            <line x1="${X(m)}" y1="${yb}" x2="${X(m)}" y2="${yt - 10}" stroke="var(--hidden)" stroke-width="2" stroke-dasharray="6 5"/>
+            <text x="${X(m)}" y="${yt - 14}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">μ</text>`;
+      const py = pdf(y, m, sd);
+      s += `<line x1="${X(y)}" y1="${yb}" x2="${X(y)}" y2="${Y(py)}" stroke="var(--seen)" stroke-width="3"/>
+            <circle cx="${X(y)}" cy="${Y(py)}" r="7" fill="var(--seen)"/>
+            <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      for (let v = 1; v <= 6; v++) s += `<text x="${X(v)}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${v}</text>`;
+      s += `<text x="${(x0 + x1) / 2}" y="${yb + 50}" text-anchor="middle" direction="rtl" font-size="17" fill="var(--ink-soft)">משקל לידה (ק"ג)</text>
+            <text x="22" y="${(yb + yt) / 2}" text-anchor="middle" direction="rtl" font-size="17" fill="var(--ink-soft)" transform="rotate(-90 22 ${(yb + yt) / 2})">צפיפות</text>`;
+      svg.innerHTML = s;
+      const P = Phi((y + HW - m) / sd) - Phi((y - HW - m) / sd);
+      $('pd-out').innerHTML = `הצפיפות ב-y: <span class="ltr">p(${y.toFixed(2)} | μ=${m.toFixed(1)}, σ=${sd.toFixed(2)}) = ${py.toFixed(3)}</span> · הסיכוי למשקל בין <span class="ltr">${(y - HW).toFixed(2)}</span> ל-<span class="ltr">${(y + HW).toFixed(2)}</span> (השטח הכחול): <span class="ltr">${(100 * P).toFixed(1)}%</span>`;
+    }
+    ['pd-mu', 'pd-sd', 'pd-y'].forEach(id => $(id).oninput = draw);
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>הזיזו את <span class="math inline">\(\mu\)</span>: העקומה זזה ולא משנה צורה. הזיזו את <span class="math inline">\(\sigma\)</span>: היא מתרחבת ונעשית נמוכה, או מצטמצמת ונעשית גבוהה, כי השטח תמיד 1. עם <span class="math inline">\(\sigma\)</span> קטן הצפיפות עולה מעל 1, ובכל זאת השטח הכחול, שהוא סיכוי, נשאר קטן מ-1.</p>
+</div>
+</section>
+<section id="המודל-המייצר" class="slide level2 part-gate">
+<h2>המודל המייצר</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span></div>
+  <div class="gate-title">המודל המייצר</div>
+  <div class="gate-why">מפרמטרים לתצפיות</div>
+</div>
+</section>
+<section id="המודל-המייצר-1" class="slide level2">
+<h2>המודל המייצר</h2>
+<div class="centered-content">
+<div class="flow-diagram">
+<div class="flow-node hidden-node">
+<p><strong>פרמטרים (<span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma\)</span>)</strong> · החוקיות החבויה בטבע</p>
+</div>
+<div class="flow-arrow">
+<p>▼</p>
+</div>
+<div class="flow-node">
+<p><strong>המודל המייצר</strong> · <span class="math inline">\(y \sim \text{Normal}(\mu,\ \sigma)\)</span></p>
+</div>
+<div class="flow-arrow">
+<p>▼</p>
+</div>
+<div class="flow-node seen-node">
+<p><strong>תצפיות (<span class="math inline">\(y\)</span>)</strong> · משקל של כל תינוק שנולד</p>
+</div>
+</div>
+<div class="fragment" style="text-align:center; font-size:.8em; margin-top:.6em;">
+<p>שני ערכים קבועים, <span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span>, קובעים כמה סביר כל ערך של <span class="math inline">\(y\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="המודל-המייצר-2" class="slide level2 example-slide">
+<h2>המודל המייצר</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <label>μ: <input type="range" id="gn-mu" min="2" max="5" step="0.1" value="3.4"> <span class="ltr demo-readout" id="gn-muv"></span></label>
+    <label>σ: <input type="range" id="gn-sd" min="0.2" max="1.2" step="0.05" value="0.5"> <span class="ltr demo-readout" id="gn-sdv"></span></label>
+    <button class="demo-btn" data-g="1">תינוק</button>
+    <button class="demo-btn" data-g="10">10 תינוקות</button>
+    <button class="demo-btn" data-g="100">100 תינוקות</button>
+    <button class="demo-btn" data-g="1000">1,000 תינוקות</button>
+    <button id="gn-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <svg id="gn-svg" viewbox="0 0 1000 320" style="width:100%; height:auto; display:block;" aria-label="תצפיות שנוצרות מהמודל המייצר"></svg>
+  <div class="demo-readout" id="gn-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('gn-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    const x0 = 70, x1 = 960, yb = 220, yt = 14, lo = 1, hi = 6, BW = .2;
+    const X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
+    const pdf = (v, m, s) => Math.exp(-.5 * ((v - m) / s) ** 2) / (s * Math.sqrt(2 * Math.PI));
+    const randn = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+    let ys = [], jit = [], fresh = 0;
+    function draw() {
+      const m = +$('gn-mu').value, sd = +$('gn-sd').value, n = ys.length;
+      $('gn-muv').textContent = m.toFixed(1); $('gn-sdv').textContent = sd.toFixed(2);
+      const B = Math.round((hi - lo) / BW), cnt = Array(B).fill(0);
+      ys.forEach(v => { const i = Math.floor((v - lo) / BW); if (i >= 0 && i < B) cnt[i]++; });
+      const dens = cnt.map(c => n ? c / n / BW : 0), top = Math.max(pdf(m, m, sd) * 1.12, ...dens.map(d => d * 1.05));
+      const Y = d => yb - d / top * (yb - yt);
+      let s = '';
+      dens.forEach((d, i) => { if (d) s += `<rect x="${X(lo + i * BW) + 1}" y="${Y(d)}" width="${X(BW) - X(0) - 2}" height="${yb - Y(d)}" fill="var(--seen)" opacity=".6"/>`; });
+      let p = '';
+      for (let i = 0; i <= 400; i++) { const v = lo + i / 400 * (hi - lo); p += (i ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(pdf(v, m, sd)).toFixed(1); }
+      s += `<path d="${p}" fill="none" stroke="var(--ink)" stroke-width="3"/>
+            <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      const from = Math.max(0, n - 400);
+      for (let i = from; i < n; i++) {
+        const isNew = i >= n - fresh && fresh <= 10;
+        s += `<circle cx="${X(ys[i])}" cy="${yb + 18 + jit[i] * 34}" r="${isNew ? 7 : 4}" fill="${isNew ? 'var(--curve)' : 'var(--seen)'}" opacity="${isNew ? 1 : .55}"/>`;
+      }
+      for (let v = 1; v <= 6; v++) s += `<text x="${X(v)}" y="${yb + 80}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${v}</text>`;
+      s += `<text x="${(x0 + x1) / 2}" y="${yb + 100}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)">משקל לידה (ק"ג)</text>`;
+      svg.innerHTML = s;
+      let out = 'עוד אין תצפיות';
+      if (n) {
+        const mean = ys.reduce((a, b) => a + b, 0) / n;
+        out = `תצפיות: <span class="ltr">${n.toLocaleString('en')}</span> · האחרונה: <span class="ltr">${ys[n - 1].toFixed(2)}</span> ק"ג · הממוצע שלהן: <span class="ltr">${mean.toFixed(2)}</span>`;
+        if (n > 1) out += ` · סטיית התקן שלהן: <span class="ltr">${Math.sqrt(ys.reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1)).toFixed(2)}</span>`;
+      }
+      $('gn-out').innerHTML = out;
+    }
+    function gen(k) { const m = +$('gn-mu').value, sd = +$('gn-sd').value; for (let i = 0; i < k; i++) { ys.push(m + sd * randn()); jit.push(Math.random()); } fresh = k; draw(); }
+    function reset() { ys = []; jit = []; fresh = 0; draw(); }
+    svg.closest('.demo-panel').querySelectorAll('[data-g]').forEach(b => b.onclick = () => gen(+b.dataset.g));
+    $('gn-reset').onclick = reset; $('gn-mu').oninput = reset; $('gn-sd').oninput = reset;
+    reset();
+  })();
+</script>
+<div class="demo-note">
+<p>כאן המחשב יודע את <span class="math inline">\(\mu\)</span> ואת <span class="math inline">\(\sigma\)</span>, ומייצר מהם תצפיות. כל נקודה היא תינוק אחד, וההיסטוגרמה מתקרבת לעקומה ככל שיש יותר תצפיות.<br>במחקר אמיתי הכיוון הפוך: יש תצפיות, ו-<span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span> חבויים. זה הנושא של המצגת הבאה.</p>
+</div>
+</section>
+<section id="סיכום" class="slide level2 summary-slide">
+<h2>סיכום</h2>
+<div>
+<ul>
+<li class="fragment"><strong>גאוס (1809):</strong> אם הממוצע הוא הערך הטוב ביותר, השגיאות מתפזרות כפעמון. <strong>לפלס (1810):</strong> סכום של הרבה הפרעות קטנות מתפזר כפעמון.</li>
+<li class="fragment"><strong>לוח גלטון:</strong> כל מוט הוא ניסוי ברנולי. ערכים שקרובים למרכז יכולים לקרות ביותר דרכים, ולכן הם שכיחים יותר.</li>
+<li class="fragment"><strong>משתנה רציף:</strong> הסיכוי לערך מדויק הוא 0. <strong>צפיפות</strong> אומרת כמה סביר כל ערך יחסית לאחרים, ו<strong>סיכוי</strong> יש רק לטווח: השטח מתחת לעקומה.</li>
+<li class="fragment"><strong>ההתפלגות הגאוסיינית:</strong> <span class="math inline">\(y \sim \text{Normal}(\mu, \sigma)\)</span>. <span class="math inline">\(\mu\)</span> קובע את המרכז, <span class="math inline">\(\sigma\)</span> את הרוחב.</li>
+<li class="fragment"><strong>המודל המייצר:</strong> מ-<span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span> אל התצפיות. בשבוע הזה נלך בכיוון ההפוך.</li>
+</ul>
+</div>
 <div class="footer footer-default">
 
 </div>

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W5.V3 — הערכה Frequentist והקישור ל-t-test</title>
+  <title>הסקה במודל הריק</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -323,100 +323,595 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center" dir="rtl">
+<section id="title-slide" class="quarto-title-block center" dir="rtl" data-unit="a">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W5.V3 — הערכה Frequentist והקישור ל-t-test</h1>
-  <p class="subtitle">Sampling Distribution, SE, t-statistic והשוואת פלטים צד לצד</p>
+  <p class="week-label">שבוע 5 · Continuous estimates</p>
+  <h1 class="title">הסקה במודל הריק</h1>
+  <div class="title-rule"></div>
+  <p class="subtitle">הערכה Bayesian והערכה Frequentist של μ ו-σ</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
-<section id="מטרות-המצגת" class="slide level2">
-<h2>מטרות המצגת</h2>
-<ul>
-<li>להבין את הגישה השכיחותנית להערכת ההבדל בין קבוצות.</li>
-<li>להגדיר את <strong>התפלגות הדגימה של ההפרש</strong> (<span class="math inline">\(SE(\hat{\beta}_1)\)</span>).</li>
-<li>לגזור את <strong>סטטיסטי t</strong> ודרגות החופש.</li>
-<li><strong>השקף המרכזי בשבוע:</strong> להציג צד לצד פלט t-test ופלט רגרסיה ולהיווכח בזהות המוחלטת!</li>
-</ul>
+<section id="שתי-דרכים" class="slide level2 stacked-cards">
+<h2>שתי דרכים</h2>
+<div class="centered-content">
+<div class="compare-card bayes fragment">
+<h3>
+Bayesian
+</h3>
+<p>רוצים את הסיכוי לפרמטרים <strong>בהינתן התצפיות</strong>. מכפילים את ה-<span class="term">likelihood</span> ב-<span class="term">prior</span>, ומקבלים <span class="term">posterior</span>: התפלגות שלמה על <span class="math inline">\(\mu\)</span> ועל <span class="math inline">\(\sigma\)</span>.</p>
+</div>
+<div class="compare-card freq fragment">
+<h3>
+Frequentist
+</h3>
+<p>מוצאים את השיא של ה-<span class="term">likelihood</span> בנוסחה קצרה, בלי לחשב את המפה. את הוודאות מעריכים בעזרת <strong>התפלגות דגימה</strong>: מה היה קורה אילו חזרנו על המחקר שוב ושוב.</p>
+</div>
+</div>
 </section>
-<section id="הגישה-השכיחותנית-מחשבה-היפותטית" class="slide level2">
-<h2>הגישה השכיחותנית: מחשבה היפותטית</h2>
-<p>בגישה השכיחותנית, הפרמטר <span class="math inline">\(\beta_1\)</span> הוא מספר קבוע ולא ידוע בטבע.</p>
+<section id="הנתונים" class="slide level2 example-slide">
+<h2>הנתונים</h2>
+<div class="demo-panel">
+  <svg id="dt-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="20 הערכות זמן של סרטון באורך 120 שניות"></svg>
+</div>
+<script>
+  // ── הנתונים והחישובים המשותפים לכל המצגת ──
+  (function () {
+    // 20 נבדקים צפו בסרטון מותח באורך 120 שניות, והעריכו כמה זמן הוא נמשך (בשניות)
+    const YS = [152, 107, 173, 139, 91, 158, 128, 183, 145, 104, 170, 66, 143, 176, 108, 138, 169, 100, 154, 173];
+    const n = YS.length, MEAN = YS.reduce((a, b) => a + b, 0) / n;
+    const SS = YS.reduce((a, y) => a + (y - MEAN) ** 2, 0), S = Math.sqrt(SS / (n - 1)), SMLE = Math.sqrt(SS / n);
+    // ה-posterior על רשת, עם prior אחיד על μ (60–220) ועל σ (5–100)
+    const MU = [], SG = [];
+    for (let m = 60; m <= 220.0001; m += .5) MU.push(m);
+    for (let s = 5; s <= 100.0001; s += .5) SG.push(s);
+    const ll = (m, s) => -n * Math.log(s) - (SS + n * (MEAN - m) ** 2) / (2 * s * s);
+    let top = -Infinity; const L = SG.map(s => MU.map(m => { const v = ll(m, s); if (v > top) top = v; return v; }));
+    let tot = 0; const P = L.map(r => r.map(v => { const p = Math.exp(v - top); tot += p; return p; }));
+    P.forEach(r => r.forEach((v, i) => r[i] = v / tot));
+    const pMu = MU.map((_, i) => P.reduce((a, r) => a + r[i], 0)), pSg = P.map(r => r.reduce((a, b) => a + b, 0));
+    const quant = (xs, ps) => { const c = []; ps.reduce((a, p, i) => (c[i] = a + p), 0); return q => xs[c.findIndex(v => v >= q)]; };
+    // גודל האפקט d = (μ − 120) / σ: התפלגות על כל הזוגות
+    const D = []; P.forEach((r, j) => r.forEach((p, i) => { if (p > 1e-12) D.push([(MU[i] - 120) / SG[j], p]); }));
+    D.sort((a, b) => a[0] - b[0]);
+    window.W4V3 = { YS, n, MEAN, S, SMLE, MU, SG, P, pMu, pSg, D,
+      qMu: quant(MU, pMu), qSg: quant(SG, pSg), qD: quant(D.map(d => d[0]), D.map(d => d[1])),
+      pdMu: pMu.reduce((a, p, i) => a + (MU[i] > 120 ? p : 0), 0) };
+    // צעדים בתוך שקף: מצייר מחדש בכל fragment
+    window.W4V3.steps = function (id, draw) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const sync = () => { const sec = el.closest('section'); draw(sec ? sec.querySelectorAll('.fragment.visible').length : 0); };
+      const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready'].forEach(e => Reveal.on(e, sync)); sync(); };
+      if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
+    };
+  })();
+  (function () {
+    const svg = document.getElementById('dt-svg'), V = window.W4V3;
+    if (!svg) return;
+    const yb = 300, yt = 20, Y = v => yb - v / 260 * (yb - yt), x0 = 110, x1 = 560;
+    let s = '';
+    [0, 60, 120, 180, 240].forEach(v => { s += `<line x1="${x0 - 14}" y1="${Y(v)}" x2="${x1}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${x0 - 22}" y="${Y(v) + 5}" text-anchor="end" font-size="16" fill="var(--ink-soft)">${v}</text>`; });
+    s += `<line x1="${x0 - 14}" y1="${yt}" x2="${x0 - 14}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+          <text x="24" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)" transform="rotate(-90 24 ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>
+          <line x1="${x0 - 14}" y1="${Y(120)}" x2="${x1}" y2="${Y(120)}" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="8 6"/>
+          <text x="${x1 + 10}" y="${Y(120) + 6}" text-anchor="end" direction="rtl" font-size="17" fill="var(--ink)">משך הסרטון: 120</text>`;
+    V.YS.forEach((y, i) => { s += `<circle cx="${x0 + 20 + i * (x1 - x0 - 40) / 19}" cy="${Y(y)}" r="7" fill="var(--seen)" opacity=".85"/>`; });
+    s += `<text x="${x1 + 10}" y="${Y(250)}" text-anchor="end" direction="rtl" font-size="17" fill="var(--seen)" font-weight="700">20 נבדקים, הערכה אחת לכל נבדק</text>`;
+    svg.innerHTML = s;
+  })();
+</script>
 <div>
 <ul>
-<li class="fragment"><strong>השאלה השכיחותנית:</strong> מה היה קורה לאומדן שלנו (<span class="math inline">\(\hat{\beta}_1 = \bar{y}_1 - \bar{y}_0\)</span>) אילו היינו חוזרים על הניסוי שוב ושוב באותם תנאים בדיוק?</li>
-<li class="fragment">ההתפלגות ההיפותטית של האומדנים הללו נקראת <strong>התפלגות הדגימה</strong> (Sampling Distribution).</li>
+<li class="fragment">נבדקים צפו בסרטון מותח באורך <strong>120 שניות</strong>, ואחר כך העריכו כמה זמן הוא נמשך.</li>
+<li class="fragment">תאוריה של עוררות רגשית: אירועים מעוררים נחווים כארוכים יותר. האם <span class="math inline">\(\mu\)</span>, ההערכה הממוצעת באוכלוסייה, גדולה מ-120?</li>
+<li class="fragment">המודל הריק: <span class="math inline">\(y_i \sim \text{Normal}(\mu, \sigma)\)</span>. שני פרמטרים חבויים, ואין שום משתנה מנבא.</li>
 </ul>
 </div>
 </section>
-<section id="שגיאת-התקן-של-ההפרש-se" class="slide level2">
-<h2>שגיאת התקן של ההפרש (<span class="math inline">\(SE\)</span>)</h2>
-<p>סטיית התקן של התפלגות הדגימה הזו נקראת <strong>שגיאת התקן של ההפרש</strong>:</p>
-<p><span class="math display">\[SE(\hat{\beta}_1) = \sqrt{s_p^2 \left(\frac{1}{n_1} + \frac{1}{n_2}\right)}\]</span></p>
+<section id="הערכה-bayesian" class="slide level2 part-gate">
+<h2>הערכה Bayesian</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="now"></span><span class="later"></span></div>
+  <div class="gate-title">הערכה Bayesian</div>
+  <div class="gate-why">מה הסיכוי לכל ערך של μ ו-σ, בהינתן התצפיות?</div>
+</div>
+</section>
+<section id="הערכה-bayesian-1" class="slide level2">
+<h2>הערכה Bayesian</h2>
+<div class="centered-content">
+<div class="ltr">
+<p><span class="math display">\[
+\begin{aligned}
+y_i &amp;\sim \text{Normal}(\mu,\ \sigma) &amp;&amp; \text{likelihood} \\
+\mu &amp;\sim \text{Uniform}(60,\ 220) &amp;&amp; \text{prior} \\
+\sigma &amp;\sim \text{Uniform}(5,\ 100) &amp;&amp; \text{prior}
+\end{aligned}
+\]</span></p>
+</div>
 <div>
 <ul>
-<li class="fragment"><span class="math inline">\(SE\)</span> מודדת כמה אומדן ההפרש שלנו צפוי לתנוד בין מדגמים שונים עקב רעש מקרי.</li>
-<li class="fragment">ככל שגודל המדגם (<span class="math inline">\(n\)</span>) גדל <span class="math inline">\(\leftarrow\)</span> <span class="math inline">\(SE\)</span> קטנה והאומדן מדויק יותר.</li>
+<li class="fragment">כמו בשבוע 2: <span class="term">posterior</span> ∝ <span class="term">likelihood</span> × <span class="term">prior</span>, לכל זוג <span class="math inline">\((\mu, \sigma)\)</span>.</li>
+<li class="fragment">עם <span class="term">prior</span> אחיד, מפת ה-<span class="term">posterior</span> נראית בדיוק כמו מפת ה-<span class="term">likelihood</span> מהמצגת הקודמת. ההבדל: עכשיו מחלקים בסכום, וזו התפלגות. הנפח שמתחתיה הוא 1.</li>
 </ul>
 </div>
+</div>
 </section>
-<section id="גזירת-סטטיסטי-t" class="slide level2">
-<h2>גזירת סטטיסטי t</h2>
-<p>תחת השערת האפס (<span class="math inline">\(H_0: \beta_1 = 0\)</span>), יחס ה-t מוגדר כסטיית האומדן מ-0 ביחידות של שגיאת תקן:</p>
-<p><span class="math display">\[t = \frac{\hat{\beta}_1 - 0}{SE(\hat{\beta}_1)}\]</span></p>
+<section id="הערכה-bayesian-2" class="slide level2 example-slide">
+<h2>הערכה Bayesian</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <button id="jp-mu" class="demo-btn">μ לבדו</button>
+    <button id="jp-sg" class="demo-btn">σ לבדו</button>
+    <button id="jp-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <svg id="jp-svg" viewbox="0 0 1000 400" style="width:100%; height:auto; display:block;" aria-label="ה-posterior המשותף של μ ו-σ, וההתפלגויות של כל אחד מהם לבדו"></svg>
+  <div class="demo-readout" id="jp-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('jp-svg'), V = window.W4V3;
+    if (!svg || !V) return;
+    const $ = id => document.getElementById(id);
+    // המפה: μ אופקי (90–190), σ אנכי (10–80). מתחתיה μ לבדו, ומימינה σ לבדו.
+    const mX0 = 250, mX1 = 750, mY0 = 20, mY1 = 270, mu0 = 90, mu1 = 190, s0 = 10, s1 = 80;
+    const MX = m => mX0 + (m - mu0) / (mu1 - mu0) * (mX1 - mX0), SY = s => mY1 - (s - s0) / (s1 - s0) * (mY1 - mY0);
+    const i0 = V.MU.indexOf(mu0), i1 = V.MU.indexOf(mu1), j0 = V.SG.indexOf(s0), j1 = V.SG.indexOf(s1);
+    const W = i1 - i0 + 1, H = j1 - j0 + 1, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const g = cv.getContext('2d'), img = g.createImageData(W, H);
+    let pk = 0; V.P.forEach(r => r.forEach(v => { if (v > pk) pk = v; }));
+    for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) {
+      const r = V.P[j1 - j][i0 + i] / pk, k = 4 * (j * W + i);
+      img.data[k] = 252 + (91 - 252) * r; img.data[k + 1] = 252 + (63 - 252) * r; img.data[k + 2] = 250 + (168 - 250) * r; img.data[k + 3] = 255;
+    }
+    g.putImageData(img, 0, 0);
+    const URL = cv.toDataURL();
+    let showMu = false, showSg = false;
+    function draw() {
+      let s = `<image href="${URL}" x="${mX0}" y="${mY0}" width="${mX1 - mX0}" height="${mY1 - mY0}" preserveAspectRatio="none"/>
+               <rect x="${mX0}" y="${mY0}" width="${mX1 - mX0}" height="${mY1 - mY0}" fill="none" stroke="var(--ink-faint)"/>`;
+      [100, 120, 140, 160, 180].forEach(m => { s += `<text x="${MX(m)}" y="${mY1 + 20}" text-anchor="middle" font-size="14" fill="var(--ink-soft)">${m}</text>`; });
+      [20, 40, 60, 80].forEach(v => { s += `<text x="${mX0 - 10}" y="${SY(v) + 5}" text-anchor="end" font-size="14" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<text x="${mX0 - 40}" y="${(mY0 + mY1) / 2}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">σ</text>`;
+      if (showMu) {
+        const top = Math.max(...V.pMu), yb = 385, h = 80; let d = '';
+        V.MU.forEach((m, i) => { if (m >= mu0 && m <= mu1) d += (d ? 'L' : 'M') + MX(m).toFixed(1) + ',' + (yb - V.pMu[i] / top * h).toFixed(1); });
+        s += `<path d="${d}L${MX(mu1)},${yb}L${MX(mu0)},${yb}Z" fill="var(--hidden-bg)" stroke="var(--hidden)" stroke-width="3"/>
+              <line x1="${mX0}" y1="${yb}" x2="${mX1}" y2="${yb}" stroke="var(--ink)" stroke-width="1.5"/>
+              <text x="${mX1 + 14}" y="${yb - 4}" text-anchor="start" font-size="18" font-weight="700" fill="var(--hidden)">μ</text>`;
+        for (let k = 0; k < 6; k++) s += `<line x1="${mX0 + (k + .5) * (mX1 - mX0) / 6}" y1="${mY1 + 28}" x2="${mX0 + (k + .5) * (mX1 - mX0) / 6}" y2="${yb - h - 6}" stroke="var(--hidden)" stroke-width="1.5" stroke-dasharray="3 5" opacity=".6"/>`;
+      } else s += `<text x="${(mX0 + mX1) / 2}" y="${mY1 + 44}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">μ</text>`;
+      if (showSg) {
+        const top = Math.max(...V.pSg), xb = 790, w = 140; let d = '';
+        V.SG.forEach((v, j) => { if (v >= s0 && v <= s1) d += (d ? 'L' : 'M') + (xb + V.pSg[j] / top * w).toFixed(1) + ',' + SY(v).toFixed(1); });
+        s += `<path d="${d}L${xb},${SY(s1)}L${xb},${SY(s0)}Z" fill="var(--hidden-bg)" stroke="var(--hidden)" stroke-width="3"/>
+              <line x1="${xb}" y1="${mY0}" x2="${xb}" y2="${mY1}" stroke="var(--ink)" stroke-width="1.5"/>`;
+      }
+      svg.innerHTML = s;
+      $('jp-out').innerHTML = showMu || showSg
+        ? 'כדי לקבל את μ לבדו, סוכמים את כל המפה לאורך σ: בכל עמודה, את כל הערכים מלמטה עד למעלה. כך אי-הוודאות על σ נכנסת לתוך ההתפלגות של μ.'
+        : 'כל נקודה במפה היא זוג (μ, σ). ככל שהצבע כהה יותר, הזוג סביר יותר בהינתן התצפיות.';
+    }
+    $('jp-mu').onclick = () => { showMu = true; draw(); };
+    $('jp-sg').onclick = () => { showSg = true; draw(); };
+    $('jp-reset').onclick = () => { showMu = showSg = false; draw(); };
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>מה שמעניין אותנו הוא בדרך כלל <span class="math inline">\(\mu\)</span> לבדו. לפעולה של סיכום המפה לאורך הפרמטר השני קוראים <span class="term">marginalization</span>.</p>
+</div>
+</section>
+<section id="דיווח-bayesian" class="slide level2 example-slide">
+<h2>דיווח Bayesian</h2>
+<div class="demo-panel" id="bp-panel"><svg id="bp-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="התצפיות עם קווים מה-posterior, וה-posterior של μ"></svg></div>
+<div class="rep-step">
+  <div class="r-stack rep-text">
+    <p class="fragment fade-in-then-out"><b>משמאל:</b> התצפיות, ועליהן 150 קווים שנדגמו מה-<span class="term">posterior</span>. כל קו הוא ערך אפשרי של μ. <b>מימין:</b> ה-<span class="term">posterior</span> של μ לבדו.</p>
+    <p class="fragment fade-in-then-out"><b>הערך הסביר ביותר:</b> החציון של ה-<span class="term">posterior</span>, <span class="ltr">139</span> שניות.</p>
+    <p class="fragment fade-in-then-out"><b>הערכת ודאות:</b> יש 90% סיכוי ש-μ נמצא בין <span class="ltr">125.5</span> ל-<span class="ltr">152</span> שניות (90% CI).</p>
+    <p class="fragment fade-in"><b>הערכת כיוון:</b> הסיכוי ש-μ גדול ממשך הסרטון, 120 שניות: <span class="ltr">pd = 98.8%</span>.</p>
+  </div>
+</div>
+<style>
+  .reveal .rep-step { margin-top: .3em; }
+  .reveal .rep-text { font-size: .8em; line-height: 1.45; }
+  .reveal .rep-text > p { margin: 0 !important; justify-self: stretch; text-align: start; }
+</style>
+<script>
+  (function () {
+    const V = window.W4V3, svg = document.getElementById('bp-svg');
+    if (!V || !svg) return;
+    const yb = 270, yt = 16, Y = v => yb - (v - 40) / 220 * (yb - yt), dx0 = 80, dx1 = 330;
+    const px0 = 420, px1 = 960, lo = 100, hi = 180, PX = m => px0 + (m - lo) / (hi - lo) * (px1 - px0);
+    const top = Math.max(...V.pMu), PY = p => yb - p / top * (yb - yt - 30);
+    const med = V.qMu(.5), a = V.qMu(.05), b = V.qMu(.95);
+    // 150 קווים: הכמותונים של ה-posterior, בסדר מעורבב
+    const lines = Array.from({ length: 150 }, (_, i) => V.qMu((i + .5) / 150));
+    const area = (from, to) => { let d = ''; V.MU.forEach((m, i) => { if (m >= Math.max(from, lo) && m <= Math.min(to, hi)) d += (d ? 'L' : 'M') + PX(m).toFixed(1) + ',' + PY(V.pMu[i]).toFixed(1); }); return d + `L${PX(Math.min(to, hi))},${yb}L${PX(Math.max(from, lo))},${yb}Z`; };
+    V.steps('bp-panel', k => {
+      let s = '';
+      [60, 120, 180, 240].forEach(v => { s += `<line x1="${dx0 - 10}" y1="${Y(v)}" x2="${dx1}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${dx0 - 18}" y="${Y(v) + 5}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<line x1="${dx0 - 10}" y1="${yt}" x2="${dx0 - 10}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      lines.forEach(m => { s += `<line x1="${dx0 - 10}" y1="${Y(m)}" x2="${dx1}" y2="${Y(m)}" stroke="var(--ink)" stroke-width="1" opacity=".06"/>`; });
+      V.YS.forEach((y, i) => { s += `<circle cx="${dx0 + 8 + i * (dx1 - dx0 - 16) / 19}" cy="${Y(y)}" r="5" fill="var(--seen)" opacity=".85"/>`; });
+      if (k >= 2) s += `<line x1="${dx0 - 10}" y1="${Y(med)}" x2="${dx1}" y2="${Y(med)}" stroke="var(--ink)" stroke-width="3"/>`;
+      // ה-posterior של μ
+      if (k === 3) s += `<path d="${area(a, b)}" fill="var(--hidden)" opacity=".3"/>`;
+      if (k >= 4) s += `<path d="${area(120, hi)}" fill="var(--hidden)" opacity=".3"/>
+            <line x1="${PX(120)}" y1="${yt}" x2="${PX(120)}" y2="${yb}" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="7 5"/>
+            <text x="${PX(120) - 8}" y="${yt + 14}" text-anchor="start" direction="rtl" font-size="15" fill="var(--ink-soft)">משך הסרטון</text>`;
+      let d = ''; V.MU.forEach((m, i) => { if (m >= lo && m <= hi) d += (d ? 'L' : 'M') + PX(m).toFixed(1) + ',' + PY(V.pMu[i]).toFixed(1); });
+      s += `<path d="${d}" fill="none" stroke="var(--hidden)" stroke-width="4"/>
+            <line x1="${px0}" y1="${yb}" x2="${px1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      for (let m = lo; m <= hi; m += 10) s += `<text x="${PX(m)}" y="${yb + 22}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${m}</text>`;
+      s += `<text x="${px1 + 18}" y="${yb + 22}" text-anchor="middle" font-size="17" font-weight="700" fill="var(--hidden)">μ</text>`;
+      if (k >= 2) s += `<line x1="${PX(med)}" y1="${yb}" x2="${PX(med)}" y2="${PY(V.pMu[V.MU.indexOf(med)])}" stroke="var(--ink)" stroke-width="3"/>`;
+      if (k === 3) s += `<line x1="${PX(a)}" y1="${yb - 8}" x2="${PX(b)}" y2="${yb - 8}" stroke="var(--hidden)" stroke-width="6" stroke-linecap="round"/>`;
+      if (k >= 4) s += `<text x="${PX(150)}" y="${PY(top * .5)}" text-anchor="middle" font-size="28" font-weight="700" fill="var(--hidden)">${(100 * V.pdMu).toFixed(1)}%</text>`;
+      svg.innerHTML = s;
+    });
+  })();
+</script>
+</section>
+<section id="דיווח-bayesian-1" class="slide level2 example-slide">
+<h2>דיווח Bayesian</h2>
+<div class="demo-panel"><svg id="bs-svg" viewbox="0 0 1000 270" style="width:100%; height:auto; display:block;" aria-label="ה-posterior של σ ושל גודל האפקט"></svg></div>
+<script>
+  (function () {
+    const V = window.W4V3, svg = document.getElementById('bs-svg');
+    if (!V || !svg) return;
+    const yb = 210, yt = 30;
+    function panel(x0, x1, xs, ps, lo, hi, ticks, label, ref, title, B) {
+      const X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
+      // הצפיפות: היסטוגרמה חלקה על 60 תאים
+      const w = (hi - lo) / B, h0 = Array(B).fill(0);
+      xs.forEach((v, i) => { const k = Math.floor((v - lo) / w); if (k >= 0 && k < B) h0[k] += ps[i]; });
+      // החלקה קלה: הרשת יוצרת שיניים בהתפלגות של d
+      const h = h0.map((v, k) => (2 * v + (h0[k - 1] ?? v) + (h0[k + 1] ?? v)) / 4);
+      const top = Math.max(...h), Y = p => yb - p / top * (yb - yt);
+      let d = ''; h.forEach((p, k) => { d += (k ? 'L' : 'M') + X(lo + (k + .5) * w).toFixed(1) + ',' + Y(p).toFixed(1); });
+      const q = t => { let c = 0; for (let i = 0; i < xs.length; i++) { c += ps[i]; if (c >= t) return xs[i]; } return xs[xs.length - 1]; };
+      const med = q(.5), a = q(.05), b = q(.95);
+      let s = `<text x="${(x0 + x1) / 2}" y="18" text-anchor="middle" direction="rtl" font-size="18" font-weight="700" fill="var(--ink)">${title}</text>
+        <path d="${d}L${X(hi - w / 2)},${yb}L${X(lo + w / 2)},${yb}Z" fill="var(--hidden-bg)"/>
+        <path d="${d}" fill="none" stroke="var(--hidden)" stroke-width="3.5"/>
+        <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      ticks.forEach(t => { s += `<text x="${X(t)}" y="${yb + 20}" text-anchor="middle" direction="ltr" font-size="14" fill="var(--ink-soft)">${t}</text>`; });
+      if (ref !== null) s += `<line x1="${X(ref)}" y1="${yt}" x2="${X(ref)}" y2="${yb}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 5"/>`;
+      s += `<line x1="${X(a)}" y1="${yb + 32}" x2="${X(b)}" y2="${yb + 32}" stroke="var(--hidden)" stroke-width="6" stroke-linecap="round"/>
+        <line x1="${X(med)}" y1="${yb}" x2="${X(med)}" y2="${yt + 10}" stroke="var(--ink)" stroke-width="2.5"/>
+        <text x="${(x0 + x1) / 2}" y="${yb + 56}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--hidden)">${label}: median ${med.toFixed(label === 'd' ? 2 : 1)}, 90% CI [${a.toFixed(label === 'd' ? 2 : 1)}, ${b.toFixed(label === 'd' ? 2 : 1)}]</text>`;
+      return s;
+    }
+    svg.innerHTML = panel(540, 960, V.SG, V.pSg, 15, 75, [20, 30, 40, 50, 60, 70], 'σ', null, 'σ: כמה הנבדקים שונים זה מזה', 60) +
+      panel(40, 460, V.D.map(d => d[0]), V.D.map(d => d[1]), -.6, 1.6, [-.5, 0, .5, 1, 1.5], 'd', 0, 'גודל האפקט (d)', 50);
+  })();
+</script>
 <div>
 <ul>
-<li class="fragment">סטטיסטי <span class="math inline">\(t\)</span> עוקב אחר התפלגות <span class="math inline">\(t\)</span> עם <span class="math inline">\(df = n_1 + n_2 - 2\)</span> דרגות חופש.</li>
-<li class="fragment"><strong>p-value:</strong> ההסתברות לקבל אומדן קיצוני כזה או יותר, בהנחה שהשערת האפס נכונה בטבע.</li>
+<li class="fragment"><strong><span class="math inline">\(\sigma\)</span>:</strong> הנבדקים שונים זה מזה בכ-35 שניות. גם על זה יש לנו התפלגות שלמה, ולא רק מספר.</li>
+<li class="fragment"><strong>גודל האפקט</strong> (<span class="term">Cohen’s d</span>): כמה רחוק <span class="math inline">\(\mu\)</span> מ-120, ביחידות של סטיית תקן. מחשבים אותו לכל זוג <span class="math inline">\((\mu, \sigma)\)</span> במפה, וכך מקבלים גם לו <span class="term">posterior</span>.</li>
+<li class="fragment">גודל אפקט לא תלוי ביחידות, ולכן אפשר להשוות בעזרתו בין מחקרים שמדדו דברים שונים.</li>
 </ul>
 </div>
 </section>
-<section id="השקף-החשוב-ביותר-פלט-t-test-מול-פלט-רגרסיה" class="slide level2">
-<h2>השקף החשוב ביותר: פלט t-test מול פלט רגרסיה</h2>
-<p>השוואת פלטים על אותם נתוני בדיקה בדיוק:</p>
-<div class="compare-card">
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="independent-samples-t-test">Independent Samples t-test</h3>
+<section id="דיווח-bayesian-2" class="slide level2">
+<h2>דיווח Bayesian</h2>
+<div class="centered-content">
+<div class="soft-card ltr" style="text-align:left; font-family:'Frank Ruhl Libre', serif; font-size:.68em; line-height:1.55;">
+  <p style="margin:0">“Twenty participants watched a 120-second suspense clip and estimated its duration. Estimates ranged from 66 to 183 s. A Bayesian model with flat priors suggested that the mean estimate was 139 s (posterior median; 90% CI [125.5, 152.0]), with a 98.8% probability of exceeding the true duration (pd). The standardized effect was d = 0.55 (90% CI [0.15, 0.95]).”</p>
+</div>
+<div style="margin-top:.5em;">
 <ul>
-<li><span class="math inline">\(\Delta\bar{y} = 4.20\)</span></li>
-<li><span class="math inline">\(SE = 1.05\)</span></li>
-<li><span class="math inline">\(t(28) = 4.00\)</span></li>
-<li><span class="math inline">\(p &lt; 0.001\)</span></li>
+<li class="fragment">כל המספרים הם תיאורים של אותו <span class="term">posterior</span>: איפה הוא, כמה הוא רחב, וכמה ממנו נמצא מעבר ל-120.</li>
+<li class="fragment">המשפט “יש 90% סיכוי ש-<span class="math inline">\(\mu\)</span> בין 125.5 ל-152” נכון כאן מילה במילה.</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<h3 id="linear-regression-y-beta_0-beta_1-x">Linear Regression (<span class="math inline">\(y = \beta_0 + \beta_1 X\)</span>)</h3>
-<ul>
-<li><span class="math inline">\(\hat{\beta}_1 = 4.20\)</span></li>
-<li><span class="math inline">\(SE(\hat{\beta}_1) = 1.05\)</span></li>
-<li><span class="math inline">\(t(28) = 4.00\)</span></li>
-<li><span class="math inline">\(p &lt; 0.001\)</span></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>המספרים זהים לחלוטין!</strong></p>
-</div>
-<div class="callout-content">
-<p>מבחן t אינו אלא מקרה פרטי של מודל ליניארי עם מנבא בינארי.</p>
-</div>
 </div>
 </div>
 </section>
-<section id="סיכום-שבוע-5" class="slide level2">
-<h2>סיכום שבוע 5</h2>
+<section id="הערכה-frequentist" class="slide level2 part-gate">
+<h2>הערכה Frequentist</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="now"></span></div>
+  <div class="gate-title">הערכה Frequentist</div>
+  <div class="gate-why">בלי מחשב ובלי prior: שיא בנוסחה, וודאות מדגימות חוזרות</div>
+</div>
+</section>
+<section id="השיא-בלי-מפה" class="slide level2 example-slide">
+<h2>השיא בלי מפה</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <label>μ מועמד: <input type="range" id="ms-mu" min="60" max="220" step="0.5" value="90"> <span class="ltr demo-readout" id="ms-muv"></span></label>
+    <button id="ms-go" class="demo-btn">חיפוש</button>
+    <label><input type="checkbox" id="ms-mean"> הממוצע</label>
+  </div>
+  <svg id="ms-svg" viewbox="0 0 1000 340" style="width:100%; height:auto; display:block;" aria-label="המרחקים של התצפיות מ-μ מועמד, וממוצע ריבועי המרחקים"></svg>
+  <div class="demo-readout" id="ms-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const V = window.W4V3, svg = document.getElementById('ms-svg');
+    if (!V || !svg) return;
+    const $ = id => document.getElementById(id);
+    const yb = 310, yt = 16, Y = v => yb - (v - 40) / 220 * (yb - yt), dx0 = 110, dx1 = 470, cx0 = 600, cx1 = 960;
+    const mse = m => V.YS.reduce((a, y) => a + (y - m) ** 2, 0) / V.n, top = Math.max(mse(40), mse(260)), CX = e => cx0 + e / top * (cx1 - cx0);
+    let timer = null;
+    function draw() {
+      const m = +$('ms-mu').value; $('ms-muv').textContent = m.toFixed(1);
+      let s = '';
+      [60, 120, 180, 240].forEach(v => { s += `<line x1="${dx0 - 14}" y1="${Y(v)}" x2="${cx1}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${dx0 - 22}" y="${Y(v) + 5}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<line x1="${dx0 - 14}" y1="${yt}" x2="${dx0 - 14}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <line x1="${cx0}" y1="${yt}" x2="${cx0}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="${(cx0 + cx1) / 2}" y="${yb + 24}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--curve)">MSE</text>
+            <text x="22" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)" transform="rotate(-90 22 ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>`;
+      V.YS.forEach((y, i) => {
+        const x = dx0 + 6 + i * (dx1 - dx0 - 12) / 19;
+        s += `<line x1="${x}" y1="${Y(y)}" x2="${x}" y2="${Y(m)}" stroke="var(--curve)" stroke-width="2.5" opacity=".7"/>
+              <circle cx="${x}" cy="${Y(y)}" r="6" fill="var(--seen)"/>`;
+      });
+      s += `<line x1="${dx0 - 14}" y1="${Y(m)}" x2="${cx1}" y2="${Y(m)}" stroke="var(--hidden)" stroke-width="2.5" stroke-dasharray="6 5"/>`;
+      if ($('ms-mean').checked) s += `<line x1="${dx0 - 14}" y1="${Y(V.MEAN)}" x2="${cx1}" y2="${Y(V.MEAN)}" stroke="var(--seen)" stroke-width="2"/><text x="${dx1}" y="${Y(V.MEAN) - 8}" text-anchor="start" direction="rtl" font-size="15" fill="var(--seen)">הממוצע</text>`;
+      let d = ''; for (let v = 40; v <= 260; v += 1) d += (d ? 'L' : 'M') + CX(Math.min(mse(v), top * 1.02)).toFixed(1) + ',' + Y(v).toFixed(1);
+      s += `<path d="${d}" fill="none" stroke="var(--curve)" stroke-width="3.5"/>
+            <circle cx="${CX(mse(m))}" cy="${Y(m)}" r="8" fill="var(--curve)"/>`;
+      svg.innerHTML = s;
+      $('ms-out').innerHTML = `<span class="ltr">μ = ${m.toFixed(1)}</span> · ממוצע ריבועי המרחקים: <span class="ltr">MSE = ${mse(m).toFixed(0)}</span>`;
+    }
+    $('ms-go').onclick = () => {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        const el = $('ms-mu'), m = +el.value, next = m + (V.MEAN - m) * .18;
+        el.value = Math.abs(next - V.MEAN) < .3 ? V.MEAN : next; draw();
+        if (Math.abs(+el.value - V.MEAN) < .3) clearInterval(timer);
+      }, 60);
+    };
+    $('ms-mu').oninput = () => { clearInterval(timer); draw(); };
+    $('ms-mean').onchange = draw;
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>הקווים האדומים הם המרחקים של התצפיות מ-<span class="math inline">\(\mu\)</span> המועמד. ה-<span class="term">MSE</span> (<span class="term">mean squared error</span>) הוא הממוצע של ריבועי המרחקים. הוא הכי קטן בדיוק במקום שבו ה-<span class="term">likelihood</span> הכי גבוה.</p>
+</div>
+</section>
+<section id="השיא-בלי-מפה-1" class="slide level2">
+<h2>השיא בלי מפה</h2>
+<div class="centered-content">
+<div>
 <ul>
-<li>מנבא קטגוריאלי בינארי הופך למודל ליניארי בעזרת <strong>Dummy Coding</strong>.</li>
-<li><strong><span class="math inline">\(\beta_0\)</span></strong> הוא ממוצע קבוצת הייחוס; <strong><span class="math inline">\(\beta_1\)</span></strong> הוא ההפרש בין הממוצעים.</li>
-<li>הגישה הבסיאנית מעריכה את ה-Posterior הקיים על ההפרש (<span class="math inline">\(\beta_1\)</span>).</li>
-<li>הגישה השכיחותנית בוחנת את התפלגות הדגימה של האומדן ומפיקה t-statistic.</li>
-<li><strong>השורה התחתונה:</strong> t-test ורגרסיה הם אותו כלי ניתוח בדיוק!</li>
+<li class="fragment"><p>את השיא של ה-<span class="term">likelihood</span> לא צריך לחפש. יש לו נוסחה:</p>
+<div class="ltr">
+<p><span class="math display">\[\hat\mu = \bar y = \frac{1}{n}\sum_{i=1}^{n} y_i = 138.9\]</span></p>
+</div></li>
+<li class="fragment"><p>זה גם הערך שבו ה-<span class="term">MSE</span> הכי קטן: הריבועים הפחותים של גאוס.</p></li>
+<li class="fragment"><p>גם ל-<span class="math inline">\(\sigma\)</span> יש נוסחה. השיא במפה הוא השורש של ה-<span class="term">MSE</span> סביב הממוצע:</p>
+<div class="ltr">
+<p><span class="math display">\[\hat\sigma_{\text{MLE}} = \sqrt{\frac{1}{n}\sum_{i=1}^{n} (y_i - \bar y)^2} = 32.2\]</span></p>
+</div></li>
 </ul>
+</div>
+</div>
+</section>
+<section id="סטיית-התקן-ו-n1" class="slide level2">
+<h2>סטיית התקן ו-n−1</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><p>את <span class="math inline">\(\sigma\)</span> היינו רוצים למדוד כמרחק מ-<span class="math inline">\(\mu\)</span>, <strong>הערך האמיתי</strong>. אבל אותו אנחנו לא יודעים, ולכן מודדים מרחקים מהממוצע <span class="math inline">\(\bar y\)</span>.</p></li>
+<li class="fragment"><p>הממוצע הוא, מעצם הגדרתו, הנקודה <strong>הקרובה ביותר</strong> לתצפיות. לכן המרחקים ממנו תמיד קצת קטנים מהמרחקים מ-<span class="math inline">\(\mu\)</span>.</p></li>
+<li class="fragment"><p><strong>דוגמה:</strong> שתי תצפיות, 4 ו-6. הממוצע 5, וסכום ריבועי המרחקים ממנו <span class="math inline">\(1 + 1 = 2\)</span>. אם <span class="math inline">\(\mu\)</span> האמיתי הוא 4.5, הסכום ממנו <span class="math inline">\(0.25 + 2.25 = 2.5\)</span>.</p></li>
+<li class="fragment"><p><strong>התיקון:</strong> מחלקים ב-<span class="math inline">\(n-1\)</span> במקום ב-<span class="math inline">\(n\)</span>. עם תצפית אחת, <span class="math inline">\(n - 1 = 0\)</span>: מתצפית אחת אי אפשר ללמוד כלום על הפיזור.</p>
+<div class="ltr">
+<p><span class="math display">\[s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n} (y_i - \bar y)^2} = 33.1\]</span></p>
+</div></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="סטיית-התקן-ו-n1-1" class="slide level2 example-slide">
+<h2>סטיית התקן ו-n−1</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <label>נבדקים בכל מחקר (n): <select id="bi-n"><option>2</option><option selected="">3</option><option>5</option><option>10</option><option>30</option></select></label>
+    <button class="demo-btn" data-r="1">מחקר אחד</button>
+    <button class="demo-btn" data-r="100">100 מחקרים</button>
+    <button class="demo-btn" data-r="10000">10,000 מחקרים</button>
+    <button id="bi-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <svg id="bi-svg" viewbox="0 0 1000 320" style="width:100%; height:auto; display:block;" aria-label="המחקר האחרון, והממוצע של שני אומדני השונות על פני מחקרים"></svg>
+  <div class="demo-readout" id="bi-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('bi-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id);
+    // אוכלוסייה מדומה: μ = 140, σ = 30, ולכן σ² = 900
+    const MU = 140, SD = 30, V2 = SD * SD;
+    const yb = 290, yt = 16, Y = v => yb - (v - 40) / 200 * (yb - yt), dx0 = 100, dx1 = 400;
+    const randn = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+    let R = 0, sumN = 0, sumN1 = 0, last = null;
+    function draw() {
+      const n = +$('bi-n').value;
+      let s = '';
+      [60, 100, 140, 180, 220].forEach(v => { s += `<line x1="${dx0 - 14}" y1="${Y(v)}" x2="${dx1}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${dx0 - 22}" y="${Y(v) + 5}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<line x1="${dx0 - 14}" y1="${yt}" x2="${dx0 - 14}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <line x1="${dx0 - 14}" y1="${Y(MU)}" x2="${dx1}" y2="${Y(MU)}" stroke="var(--hidden)" stroke-width="3"/>
+            <text x="${dx1 + 8}" y="${Y(MU) + 5}" text-anchor="start" font-size="15" font-weight="700" fill="var(--hidden)">μ</text>
+            <text x="${(dx0 + dx1) / 2}" y="${yb + 24}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)">המחקר האחרון</text>`;
+      if (last) {
+        const m = last.reduce((a, b) => a + b, 0) / n;
+        s += `<line x1="${dx0 - 14}" y1="${Y(m)}" x2="${dx1}" y2="${Y(m)}" stroke="var(--seen)" stroke-width="2.5" stroke-dasharray="6 5"/>
+              <text x="${dx1 + 8}" y="${Y(m) + 5 + (Math.abs(Y(m) - Y(MU)) < 20 ? (Y(m) > Y(MU) ? 14 : -14) : 0)}" text-anchor="end" direction="rtl" font-size="15" fill="var(--seen)">הממוצע</text>`;
+        last.forEach((y, i) => {
+          const x = dx0 + 20 + i * (dx1 - dx0 - 40) / Math.max(1, n - 1);
+          s += `<line x1="${x - 4}" y1="${Y(y)}" x2="${x - 4}" y2="${Y(MU)}" stroke="var(--hidden)" stroke-width="2.5" opacity=".6"/>
+                <line x1="${x + 4}" y1="${Y(y)}" x2="${x + 4}" y2="${Y(m)}" stroke="var(--seen)" stroke-width="2.5" opacity=".8"/>
+                <circle cx="${x}" cy="${Y(y)}" r="${n > 10 ? 4 : 7}" fill="var(--seen)"/>`;
+        });
+      }
+      // שני האומדנים, בממוצע על כל המחקרים
+      const bx0 = 560, bx1 = 960, by = 270, bh = 230, top = 1200, BY = v => by - v / top * bh;
+      const bars = [['חלוקה ב-n', R ? sumN / R : 0, 'var(--curve)'], ['חלוקה ב-n−1', R ? sumN1 / R : 0, 'var(--seen)']];
+      bars.forEach(([lab, v, c], i) => {
+        const x = bx0 + 60 + i * 180;
+        if (R) s += `<rect x="${x}" y="${BY(v)}" width="120" height="${by - BY(v)}" fill="${c}" opacity=".75"/>
+                     <text x="${x + 60}" y="${BY(v) - 8}" text-anchor="middle" font-size="17" font-weight="700" fill="${c}">${v.toFixed(0)}</text>`;
+        s += `<text x="${x + 60}" y="${by + 24}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink)">${lab}</text>`;
+      });
+      s += `<line x1="${bx0}" y1="${by}" x2="${bx1}" y2="${by}" stroke="var(--ink)" stroke-width="2"/>
+            <line x1="${bx0}" y1="${BY(V2)}" x2="${bx1}" y2="${BY(V2)}" stroke="var(--hidden)" stroke-width="3" stroke-dasharray="8 6"/>
+            <text x="${bx1}" y="${BY(V2) - 8}" text-anchor="end" direction="ltr" font-size="16" font-weight="700" fill="var(--hidden)">σ² = ${V2}</text>
+            <text x="${(bx0 + bx1) / 2}" y="${yt + 4}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)">הממוצע של אומדן השונות, על פני כל המחקרים</text>`;
+      svg.innerHTML = s;
+      $('bi-out').innerHTML = R ? `מחקרים: <span class="ltr">${R.toLocaleString('en')}</span>` : 'כל מחקר: n נבדקים מאוכלוסייה שבה μ = 140 ו-σ = 30';
+    }
+    function run(r) {
+      const n = +$('bi-n').value;
+      for (let j = 0; j < r; j++) {
+        const y = Array.from({ length: n }, () => MU + SD * randn()), m = y.reduce((a, b) => a + b, 0) / n, ss = y.reduce((a, v) => a + (v - m) ** 2, 0);
+        sumN += ss / n; sumN1 += ss / (n - 1); R++; last = y;
+      }
+      draw();
+    }
+    function reset() { R = 0; sumN = 0; sumN1 = 0; last = null; draw(); }
+    svg.closest('.demo-panel').querySelectorAll('[data-r]').forEach(b => b.onclick = () => run(+b.dataset.r));
+    $('bi-reset').onclick = reset; $('bi-n').onchange = reset;
+    reset();
+  })();
+</script>
+<div class="demo-note">
+<p>משמאל: המרחקים של כל נבדק מ-<span class="math inline">\(\mu\)</span> האמיתי (סגול) ומהממוצע של המחקר (כחול). הכחולים קצרים יותר. מימין: על פני הרבה מחקרים, חלוקה ב-<span class="math inline">\(n\)</span> נותנת שונות קטנה מדי, וחלוקה ב-<span class="math inline">\(n-1\)</span> פוגעת בדיוק. נסו <span class="math inline">\(n=2\)</span>, ואז <span class="math inline">\(n=30\)</span>.</p>
+</div>
+</section>
+<section id="התפלגות-הדגימה-של-הממוצע" class="slide level2">
+<h2>התפלגות הדגימה של הממוצע</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><p>כמו בשבוע שעבר: אילו חזרנו על המחקר שוב ושוב, כל פעם עם 20 נבדקים, הממוצע היה משתנה. הרוחב של ההתפלגות הזו הוא ה-<span class="term">standard error</span>:</p>
+<div class="ltr">
+<p><span class="math display">\[SE = \frac{s}{\sqrt{n}} = \frac{33.1}{\sqrt{20}} = 7.39\]</span></p>
+</div></li>
+<li class="fragment"><p>כאן <span class="math inline">\(s\)</span> הוא אומדן, ולא <span class="math inline">\(\sigma\)</span> האמיתי. לכן משתמשים בהתפלגות <span class="math inline">\(t\)</span> של גוסט, עם <span class="math inline">\(n - 1 = 19\)</span> דרגות חופש.</p></li>
+<li class="fragment"><p><strong>ההשערה ברת-ההפרכה</strong> (<span class="term">null hypothesis</span>): הזמן נתפס נכון, <span class="math inline">\(\mu = 120\)</span>. כמה רחוק הממוצע שלנו ממנה, ביחידות SE:</p>
+<div class="ltr">
+<p><span class="math display">\[t = \frac{\bar y - 120}{SE} = \frac{138.9 - 120}{7.39} = 2.55\]</span></p>
+</div></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="רווח-סמך-וערך-p" class="slide level2 example-slide">
+<h2>רווח סמך וערך p</h2>
+<div class="demo-panel" id="tp-panel"><svg id="tp-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="התפלגות t עם 19 דרגות חופש, הערך שנצפה והזנבות"></svg></div>
+<div class="rep-step">
+  <div class="r-stack rep-text">
+    <p class="fragment fade-in-then-out"><b>אם μ = 120,</b> ערכי t ממחקרים חוזרים היו מתפזרים כך: התפלגות t עם 19 דרגות חופש.</p>
+    <p class="fragment fade-in-then-out"><b>במחקר שלנו</b> יצא <span class="ltr">t = 2.55</span>.</p>
+    <p class="fragment fade-in-then-out"><b>ערך p:</b> הסיכוי לקבל t רחוק מ-0 לפחות כמו שלנו, לשני הכיוונים, אם μ = 120: <span class="ltr">p = .020</span>. קטן מ-.05, ולכן דוחים את ההשערה ברת-ההפרכה.</p>
+    <p class="fragment fade-in"><b>רווח סמך 95%:</b> <span class="ltr">138.9 ± 2.09 × 7.39</span>, כלומר <span class="ltr">[123.4, 154.3]</span>. המספר 2.09 הוא הערך של t שתוחם 95% מהשטח (בפעמון היה 1.96). 120 מחוץ לרווח, בהתאם ל-p.</p>
+  </div>
+</div>
+<script>
+  (function () {
+    const V = window.W4V3, svg = document.getElementById('tp-svg');
+    if (!V || !svg) return;
+    // צפיפות t עם 19 דרגות חופש (בלי הקבוע, כי מציירים לפי הגובה היחסי)
+    const DF = 19, T = 2.55, Q = 2.093, x0 = 60, x1 = 960, yb = 250, yt = 20, lo = -4.2, hi = 4.2;
+    const f = t => Math.pow(1 + t * t / DF, -(DF + 1) / 2), X = t => x0 + (t - lo) / (hi - lo) * (x1 - x0), Y = v => yb - v * (yb - yt);
+    const path = (a, b) => { let d = ''; for (let i = 0; i <= 200; i++) { const t = a + i / 200 * (b - a); d += (i ? 'L' : 'M') + X(t).toFixed(1) + ',' + Y(f(t)).toFixed(1); } return d; };
+    V.steps('tp-panel', k => {
+      let s = `<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      for (let t = -4; t <= 4; t++) s += `<text x="${X(t)}" y="${yb + 22}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--ink-soft)">${t}</text>`;
+      s += `<text x="${x1}" y="${yb + 44}" text-anchor="end" font-size="16" font-style="italic" fill="var(--ink-soft)">t</text>`;
+      if (k >= 3) s += `<path d="${path(T, hi)}L${X(hi)},${yb}L${X(T)},${yb}Z" fill="var(--curve)" opacity=".45"/>
+                         <path d="${path(lo, -T)}L${X(-T)},${yb}L${X(lo)},${yb}Z" fill="var(--curve)" opacity=".45"/>`;
+      if (k >= 4) s += `<path d="${path(-Q, Q)}L${X(Q)},${yb}L${X(-Q)},${yb}Z" fill="var(--seen)" opacity=".18"/>
+                         <text x="${X(0)}" y="${Y(.35)}" text-anchor="middle" font-size="24" font-weight="700" fill="var(--seen)">95%</text>`;
+      s += `<path d="${path(lo, hi)}" fill="none" stroke="var(--ink)" stroke-width="3.5"/>`;
+      if (k >= 2) s += `<line x1="${X(T)}" y1="${yb}" x2="${X(T)}" y2="${yt + 30}" stroke="var(--curve)" stroke-width="4"/>
+                         <text x="${X(T)}" y="${yt + 20}" text-anchor="middle" direction="ltr" font-size="18" font-weight="700" fill="var(--curve)">t = 2.55</text>`;
+      if (k >= 3) s += `<text x="${X(3.4)}" y="${Y(.12)}" text-anchor="middle" direction="ltr" font-size="17" font-weight="700" fill="var(--curve)">1%</text>
+                         <text x="${X(-3.4)}" y="${Y(.12)}" text-anchor="middle" direction="ltr" font-size="17" font-weight="700" fill="var(--curve)">1%</text>`;
+      svg.innerHTML = s;
+    });
+  })();
+</script>
+</section>
+<section id="גודל-אפקט-ו-σ" class="slide level2">
+<h2>גודל אפקט ו-σ</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><p><strong>גודל האפקט</strong> (<span class="term">Cohen’s d</span>): כמה רחוק הממוצע מ-120, ביחידות של סטיית תקן:</p>
+<div class="ltr">
+<p><span class="math display">\[d = \frac{\bar y - 120}{s} = \frac{138.9 - 120}{33.1} = 0.57\]</span></p>
+</div></li>
+<li class="fragment"><p>ערך p תלוי בגודל המדגם, וגודל האפקט לא. עם 2,000 נבדקים, גם <span class="math inline">\(d = 0.05\)</span> ייתן p קטן.</p></li>
+<li class="fragment"><p>גם ל-<span class="math inline">\(\sigma\)</span> יש רווח סמך, מהתפלגות אחרת (<span class="math inline">\(\chi^2\)</span>): ‏<span class="math inline">\([25.1,\ 48.3]\)</span> שניות. בפסיכולוגיה כמעט לא מדווחים עליו.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="דיווח-frequentist" class="slide level2">
+<h2>דיווח Frequentist</h2>
+<div class="centered-content">
+<div class="soft-card ltr" style="text-align:left; font-family:'Frank Ruhl Libre', serif; font-size:.68em; line-height:1.55;">
+  <p style="margin:0">“Twenty participants watched a 120-second suspense clip and estimated its duration. Estimates ranged from 66 to 183 s. The mean estimate (M = 138.9 s, SD = 33.1) was significantly longer than the true duration, t(19) = 2.55, p = .020, d = 0.57, 95% CI [123.4, 154.3].”</p>
+</div>
+<div style="margin-top:.5em;">
+<ul>
+<li class="fragment">כל המספרים כאן מגיעים משני מספרים: הממוצע ו-<span class="math inline">\(s\)</span>. השאר הן נוסחאות.</li>
+<li class="fragment">רווח הסמך <strong>אינו</strong> “95% סיכוי ש-<span class="math inline">\(\mu\)</span> בין 123.4 ל-154.3”. ה-95% שייך לשיטה: אילו חזרנו על המחקר שוב ושוב, כ-95% מהרווחים היו מכילים את <span class="math inline">\(\mu\)</span>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="אותם-נתונים-שני-דיווחים" class="slide level2 stacked-cards">
+<h2>אותם נתונים, שני דיווחים</h2>
+<div class="centered-content">
+<div class="compare-card bayes fragment">
+<h3>
+Bayesian
+</h3>
+<p>החציון של ה-<span class="term">posterior</span>: 139 שניות · 90% CI ‏<span class="math inline">\([125.5,\ 152.0]\)</span> · ‏pd = 98.8% · ‏<span class="math inline">\(d = 0.55\)</span></p>
+</div>
+<div class="compare-card freq fragment">
+<h3>
+Frequentist
+</h3>
+<p>‏<span class="math inline">\(M = 138.9\)</span> שניות · 95% CI ‏<span class="math inline">\([123.4,\ 154.3]\)</span> · ‏<span class="math inline">\(t(19) = 2.55\)</span>, ‏<span class="math inline">\(p = .020\)</span> · ‏<span class="math inline">\(d = 0.57\)</span></p>
+</div>
+<div class="fragment" style="text-align:center; margin-top:.6em; font-size:.85em;">
+<p>המספרים כמעט זהים. ההבדל הוא במה שמותר להגיד עליהם.</p>
+</div>
+</div>
+</section>
+<section id="נקודות-ודגשים" class="slide level2">
+<h2>נקודות ודגשים</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><strong>הממוצע הוא נקודת המפגש.</strong> עם <span class="term">prior</span> אחיד, השיא של ה-<span class="term">posterior</span>, ה-MLE והריבועים הפחותים הם אותו מספר. ההבדל בין הגישות הוא איך מתארים את אי-הוודאות סביבו.</li>
+<li class="fragment"><strong>לרוב ההבדלים בין הגישות קטנים</strong>, במיוחד כשיש הרבה נתונים. אבל לא תמיד: במדגם קטן, או כשהפרמטר קרוב לגבול.</li>
+<li class="fragment"><strong>אין שום משמעות סטטיסטית מיוחדת ל-5%.</strong> זו מוסכמה חברתית.</li>
+<li class="fragment"><strong>הגישה ה-Frequentist זמינה יותר</strong>, כי היא נוסחאות. הגישה ה-Bayesian נותנת את התשובה לשאלה שבאמת שאלנו.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="סיכום" class="slide level2 summary-slide">
+<h2>סיכום</h2>
+<div>
+<ul>
+<li class="fragment"><strong>המודל הריק:</strong> <span class="math inline">\(y_i \sim \text{Normal}(\mu, \sigma)\)</span>. שני פרמטרים חבויים: מרכז ורוחב.</li>
+<li class="fragment"><strong>Bayesian:</strong> <span class="term">posterior</span> ∝ <span class="term">likelihood</span> × <span class="term">prior</span> על כל הזוגות <span class="math inline">\((\mu, \sigma)\)</span>. סוכמים לאורך <span class="math inline">\(\sigma\)</span> ומקבלים את <span class="math inline">\(\mu\)</span> לבדו (<span class="term">marginalization</span>). מדווחים: חציון, CI, pd, וגודל אפקט.</li>
+<li class="fragment"><strong>Frequentist:</strong> <span class="math inline">\(\hat\mu = \bar y\)</span>, השיא של ה-<span class="term">likelihood</span> וה-MSE הקטן ביותר. לסטיית התקן מחלקים ב-<span class="math inline">\(n-1\)</span>, כי המרחקים מהממוצע קטנים מהמרחקים מ-<span class="math inline">\(\mu\)</span>.</li>
+<li class="fragment"><strong>ודאות Frequentist:</strong> <span class="math inline">\(SE = s/\sqrt{n}\)</span>, התפלגות <span class="math inline">\(t\)</span>, ערך p מול ההשערה ברת-ההפרכה, ורווח סמך.</li>
+<li class="fragment"><strong>גודל אפקט:</strong> <span class="math inline">\(d\)</span> = המרחק מערך הייחוס, ביחידות של סטיית תקן.</li>
+</ul>
+</div>
 <div class="footer footer-default">
 
 </div>

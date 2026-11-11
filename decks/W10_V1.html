@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W10.V1 — covariance, correlation ומקדם Pearson</title>
+  <title>W10.V1 — randomization: למה הקצאה אקראית פותרת את הבעיה</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,29 +325,31 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W10.V1 — covariance, correlation ומקדם Pearson</h1>
-  <p class="subtitle">אותה מכונה משבועות 4-6, רק ש-X כבר לא 0/1</p>
+  <h1 class="title">W10.V1 — randomization: למה הקצאה אקראית פותרת את הבעיה</h1>
+  <p class="subtitle">איך מסלקים מבלבלים שמדדתם, ושלא מדדתם, ושלא חשבתם עליהם, ומה עוד צריך כדי שהניסוי יעבוד</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>לחבר את שבוע 9 לשבוע 10: מבלבל רציף דורש מכונה, וזו <strong>אותה מכונה</strong> של שבועות 4-6.</li>
-<li>לעבור ממשתנה דמה למשתנה רציף במודל <span class="math inline">\(y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)</span> ולהבין מה <span class="math inline">\(\beta_1\)</span> אומר עכשיו.</li>
-<li>להגדיר <strong>covariance</strong> ולהבין למה היחידות שלה חסרות פשר.</li>
-<li>להגדיר <strong>correlation</strong> כ-covariance מתוקנן, ולקשר בין <span class="math inline">\(r\)</span>, השיפוע ו-<span class="math inline">\(R^2\)</span>.</li>
-<li>לראות למה <span class="math inline">\(r\)</span> במדגם קטן קופץ פראית סביב הערך האמיתי.</li>
+<li>להפריד שוב בין <strong>random sampling</strong> ל-<strong>random assignment</strong>, והפעם לראות למה השנייה היא זו שמאפשרת טענה סיבתית.</li>
+<li>להבין <strong>בשפת הגרף</strong> למה randomization סוגרת את כל ה-backdoor paths בלי לפקח על שום דבר.</li>
+<li>להכיר מה עוד נדרש כדי שניסוי אקראי יעבוד: <strong>blinding</strong>, <strong>allocation concealment</strong>, ו-<strong>intention-to-treat</strong> מול <strong>per-protocol</strong>.</li>
+<li>לזהות ש-<strong>attrition</strong> דיפרנציאלית היא <strong>collider</strong> שמחזיר הטיה לניסוי אקראי מושלם.</li>
 </ul>
 </section>
-<section id="איפה-עצרנו-בשבוע-9" class="slide level2">
-<h2>איפה עצרנו בשבוע 9</h2>
-<div>
-<ul>
-<li class="fragment">הגרף הסיבתי (DAG) אמר: כדי להעריך את האפקט חייבים <strong>לפקח על גיל</strong>.</li>
-<li class="fragment">ניסינו <strong>ריבוד</strong>: לחתוך את הנבדקים לשכבות לפי גיל ולהשוות בתוך כל שכבה.</li>
-<li class="fragment">הריבוד קורס. גיל הוא עשרות רמות; ועוד מבלבל, ועוד אחד. למשל: 40 רמות גיל × 3 מבלבלים בינאריים = 320 תאים, על מדגם של 200 נבדקים.</li>
-<li class="fragment">רוב התאים ריקים, והשאר מכילים שניים-שלושה נבדקים.</li>
-</ul>
+<section id="חזרה-מכוונת-שתי-אקראיות-שונות-לגמרי" class="slide level2">
+<h2>חזרה מכוונת: שתי אקראיות שונות לגמרי</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="random-sampling">Random sampling</h3>
+<p><strong>מי נכנס למחקר</strong></p>
+<p>קונה <strong>תקפות חיצונית</strong> (external validity): הזכות להכליל מהמדגם לאוכלוסייה.</p>
+</div><div class="column" style="width:50%;">
+<h3 id="random-assignment">Random assignment</h3>
+<p><strong>מי מקבל איזה תנאי</strong></p>
+<p>קונה <strong>תקפות פנימית</strong> (internal validity): הזכות לומר שההבדל נגרם על ידי המניפולציה.</p>
+</div>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
@@ -355,79 +357,22 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>המכונה שחסרה</strong></p>
+<p><strong>למה חוזרים על זה עכשיו</strong></p>
 </div>
 <div class="callout-content">
-<p>צריך דרך להתאים לגיל <strong>בלי לחתוך אותו לקבוצות</strong>: להכניס אותו למודל כמשתנה רציף, כלומר כקו. זו לא מכונה חדשה. זו המכונה של empty model, המודל האדיטיבי וה-interaction, עם X אחר.</p>
+<p>בשבוע 8 זו הייתה הבחנה מושגית. בשבוע הזה היא נושכת: <strong>כל</strong> היכולת שלכם לטעון “זה גרם לזה” תלויה בשנייה, ולא בראשונה. ניסוי בדגימת נוחות עם הקצאה אקראית נותן טענה סיבתית מצוינת, על אוכלוסייה שאינכם יודעים מהי.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="אותה-משוואה-x-אחר" class="slide level2">
-<h2>אותה משוואה, X אחר</h2>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_i + \epsilon_i\]</span></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="כש-x-הוא-משתנה-דמה-01">כש-X הוא משתנה דמה (0/1)</h3>
-<ul>
-<li><span class="math inline">\(\beta_0\)</span> = ממוצע קבוצת הייחוס.</li>
-<li><span class="math inline">\(\beta_1\)</span> = <strong>ההפרש</strong> בין שני הממוצעים.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="כש-x-רציף">כש-X רציף</h3>
-<ul>
-<li><span class="math inline">\(\beta_0\)</span> = הערך המנובא כש-<span class="math inline">\(X = 0\)</span>.</li>
-<li><span class="math inline">\(\beta_1\)</span> = <strong>שיפוע (slope)</strong>: בכמה יחידות Y משתנה הערך המנובא כש-X עולה ביחידה אחת.</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>משתנה דמה הוא מקרה פרטי</strong></p>
-</div>
-<div class="callout-content">
-<p>כש-X מקבל רק את הערכים 0 ו-1, הקו עובר בין שתי נקודות בלבד, והשיפוע שלו הוא בדיוק ההפרש בין הממוצעים. מה שהכרתם עד עכשיו הוא הרגרסיה הרציפה בגרסה שבה יש רק שני ערכי X.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="residual-אותו-מושג-ניחוש-אחר" class="slide level2">
-<h2>Residual: אותו מושג, ניחוש אחר</h2>
-<p><span class="math display">\[e_i = y_i - \hat{y}_i\]</span></p>
+<section id="הבעיה-כשהמשתתפים-בוחרים-לעצמם" class="slide level2">
+<h2>הבעיה: כשהמשתתפים בוחרים לעצמם</h2>
+<p>נניח שמציעים לסטודנטים תוכנית mindfulness, ומשווים רווחה נפשית בין מי שבחר להצטרף למי שלא.</p>
 <div>
 <ul>
-<li class="fragment"><strong>Empty model:</strong> כולם מקבלים את אותו ניחוש, <span class="math inline">\(\hat{y}_i = \bar{y}\)</span>.</li>
-<li class="fragment"><strong>מודל קבוצות:</strong> כל נבדק מקבל את ממוצע הקבוצה שלו.</li>
-<li class="fragment"><strong>רגרסיה:</strong> כל ערך של X מקבל ניחוש משלו, <span class="math inline">\(\hat{y}_i = b_0 + b_1 X_i\)</span>. הניחוש מגיע מקו ולא מממוצע קבוצה.</li>
-</ul>
-</div>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>חיבור לשבוע 4</strong></p>
-</div>
-<div class="callout-content">
-<p>ה-variance של Y הוא ממוצע ריבועי ה-residuals <strong>במודל הריק</strong>. השאלה של השבוע: בכמה מתכווצים ה-residuals כשמחליפים את הממוצע הכללי בקו?</p>
-</div>
-</div>
-</div>
-</section>
-<section id="covariance-ממוצע-מכפלות-הסטיות" class="slide level2">
-<h2>Covariance: ממוצע מכפלות הסטיות</h2>
-<p><span class="math display">\[\text{cov}(X, Y) = \frac{1}{n}\sum_{i=1}^{n}(X_i - \bar{X})(Y_i - \bar{Y})\]</span></p>
-<p>(בפועל מחלקים ב-<span class="math inline">\(n-1\)</span>, כמו ב-variance.)</p>
-<div>
-<ul>
-<li class="fragment">נבדק שמעל הממוצע <strong>גם</strong> ב-X <strong>וגם</strong> ב-Y תורם מכפלה חיובית. כך גם נבדק שמתחת לממוצע בשניהם.</li>
-<li class="fragment">נבדק שמעל בציר אחד ומתחת בשני תורם מכפלה שלילית.</li>
-<li class="fragment">הממוצע של כל המכפלות אומר לנו לאיזה <strong>כיוון</strong> הענן נוטה. וכש-<span class="math inline">\(X = Y\)</span> מקבלים את ה-variance.</li>
+<li class="fragment">מי שבוחר להצטרף הוא כנראה מי ש<strong>מוטיבציה</strong> גבוהה אצלו, פנוי יותר, ומתעניין בעצמו.</li>
+<li class="fragment">אותה מוטיבציה גם מעלה את הרווחה הנפשית <strong>בלי קשר לתוכנית</strong>.</li>
+<li class="fragment">ההבדל שנמדוד מערבב שני דברים: אפקט התוכנית, ואפקט ההבדל המוקדם בין מי שבוחר למי שלא.</li>
 </ul>
 </div>
 <div class="callout callout-warning callout-captioned callout-style-default">
@@ -436,181 +381,211 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>היחידות חסרות פשר</strong></p>
+<p><strong>הבעיה הקשה באמת</strong></p>
 </div>
 <div class="callout-content">
-<p>ה-covariance נמדדת ב”יחידות X כפול יחידות Y”. אם גיל נמדד בחודשים ולא בשנים, ה-covariance גדלה פי 12 והקשר לא השתנה בכלום. לכן ערך של 45 אינו “גדול” או “קטן”, ואי אפשר להשוות בין שני מחקרים.</p>
+<p>המוטיבציה <strong>לא נמדדה</strong>. כדי לרבד לפיה (כפי שנראה ב-W10.V2), צריך לדעת אותה. ומה עם מה שלא חשבתם עליו בכלל, כמו מצב הרוח באותו שבוע, או עומס בבחינות?</p>
 </div>
 </div>
 </div>
 </section>
-<section id="correlation-covariance-מתוקנן" class="slide level2">
-<h2>Correlation: covariance מתוקנן</h2>
-<p><span class="math display">\[r = \frac{\text{cov}(X, Y)}{s_X \cdot s_Y} = \frac{1}{n}\sum_{i=1}^{n} z_{X_i} \cdot z_{Y_i}\]</span></p>
+<section id="מה-randomization-עושה-לגרף" class="slide level2">
+<h2>מה randomization עושה לגרף</h2>
+<div style="display:flex; flex-wrap:wrap; gap:18px; justify-content:center;">
+  <div style="text-align:center; flex:1 1 300px; max-width:360px;">
+    <div style="font-weight:bold; margin-bottom:4px;">הקצאה עצמית</div>
+    <svg viewbox="0 0 340 200" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
+      <defs><marker id="ah_a" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
+      <line x1="152.8" y1="54.8" x2="73.6" y2="131.9" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ah_a)"></line>
+      <line x1="187.2" y1="54.8" x2="266.4" y2="131.9" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ah_a)"></line>
+      <line x1="81" y1="150" x2="259" y2="150" stroke="#333" stroke-width="2.5" marker-end="url(#ah_a)"></line>
+      <circle cx="170" cy="38" r="24" fill="#fdf3e3" stroke="#a1690a" stroke-width="2" stroke-dasharray="5,4"></circle>
+      <text x="170" y="45" text-anchor="middle" font-size="20" font-weight="bold">U</text>
+      <circle cx="55" cy="150" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
+      <text x="55" y="157" text-anchor="middle" font-size="20" font-weight="bold">X</text>
+      <circle cx="285" cy="150" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
+      <text x="285" y="157" text-anchor="middle" font-size="20" font-weight="bold">Y</text>
+      <text x="215" y="30" font-size="13" fill="#a1690a">מוטיבציה (לא נמדדה)</text>
+      <text x="55" y="192" text-anchor="middle" font-size="13">טיפול</text>
+      <text x="285" y="192" text-anchor="middle" font-size="13">תוצאה</text>
+    </svg>
+  </div>
+  <div style="text-align:center; flex:1 1 300px; max-width:360px;">
+    <div style="font-weight:bold; margin-bottom:4px;">הקצאה אקראית</div>
+    <svg viewbox="0 0 340 200" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
+      <defs><marker id="ah_b" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
+      <line x1="152.8" y1="54.8" x2="73.6" y2="131.9" stroke="#bbb" stroke-width="2.5" stroke-dasharray="6,5"></line>
+      <text x="108" y="100" text-anchor="middle" font-size="26" font-weight="bold" fill="#c0392b">✕</text>
+      <line x1="187.2" y1="54.8" x2="266.4" y2="131.9" stroke="#333" stroke-width="2.5" marker-end="url(#ah_b)"></line>
+      <line x1="81" y1="150" x2="259" y2="150" stroke="#333" stroke-width="2.5" marker-end="url(#ah_b)"></line>
+      <line x1="30" y1="62" x2="30" y2="124" stroke="#27ae60" stroke-width="2.5" marker-end="url(#ah_b)"></line>
+      <circle cx="30" cy="38" r="22" fill="#e6f4ea" stroke="#27ae60" stroke-width="2"></circle>
+      <text x="30" y="45" text-anchor="middle" font-size="18" font-weight="bold">R</text>
+      <circle cx="170" cy="38" r="24" fill="#fdf3e3" stroke="#a1690a" stroke-width="2" stroke-dasharray="5,4"></circle>
+      <text x="170" y="45" text-anchor="middle" font-size="20" font-weight="bold">U</text>
+      <circle cx="55" cy="150" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
+      <text x="55" y="157" text-anchor="middle" font-size="20" font-weight="bold">X</text>
+      <circle cx="285" cy="150" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
+      <text x="285" y="157" text-anchor="middle" font-size="20" font-weight="bold">Y</text>
+      <text x="62" y="30" font-size="13" fill="#27ae60">מטבע</text>
+      <text x="215" y="30" font-size="13" fill="#a1690a">מוטיבציה (לא נמדדה)</text>
+    </svg>
+  </div>
+</div>
 <div>
 <ul>
-<li class="fragment">מחלקים בסטיות התקן של שני המשתנים, ולכן היחידות <strong>מתבטלות</strong>.</li>
-<li class="fragment">הטווח הוא <span class="math inline">\([-1, 1]\)</span>. הקצוות <span class="math inline">\(\pm 1\)</span> מתקבלים רק כשכל הנקודות יושבות בדיוק על קו ישר.</li>
-<li class="fragment"><span class="math inline">\(r\)</span> <strong>סימטרי</strong>: המתאם בין X ל-Y שווה למתאם בין Y ל-X.</li>
-<li class="fragment"><span class="math inline">\(r = 0\)</span> אומר שאין קשר <strong>ליניארי</strong>. קשר מעגלי או U-שטוח יכול להניב <span class="math inline">\(r \approx 0\)</span>.</li>
+<li class="fragment">ב-randomization, <strong>X נקבע על ידי מטבע</strong> (R) ולא על ידי שום דבר אחר. כל החצים שנכנסו ל-X נמחקו.</li>
+<li class="fragment">אין חצים נכנסים ל-X, לכן אין <strong>backdoor paths</strong>, ולכן אין צורך לפקח על דבר.</li>
 </ul>
 </div>
-</section>
-<section id="שלושה-מספרים-סיפור-אחד" class="slide level2">
-<h2>שלושה מספרים, סיפור אחד</h2>
-<p><span class="math display">\[\hat{\beta}_1 = \frac{\text{cov}(X, Y)}{s_X^2} = r \cdot \frac{s_Y}{s_X} \qquad\qquad R^2 = r^2 = 1 - \frac{SSE_{\text{model}}}{SSE_{\text{empty}}}\]</span></p>
-<div>
-<ul>
-<li class="fragment"><strong>השיפוע</strong> הוא <span class="math inline">\(r\)</span> מתורגם ליחידות: כמה Y משתנה, ביחידות Y, לכל יחידת X.</li>
-<li class="fragment">ההבדל החשוב: השיפוע <strong>אינו סימטרי</strong> (רגרסיה של Y על X שונה מרגרסיה של X על Y), ואילו <span class="math inline">\(r\)</span> סימטרי.</li>
-<li class="fragment"><span class="math inline">\(R^2\)</span> הוא החלק מה-residuals של המודל הריק שנעלם. למשל <span class="math inline">\(r = 0.5\)</span> נותן <span class="math inline">\(R^2 = 0.25\)</span>: רבע מה-variance מוסבר.</li>
-<li class="fragment">ה-residual הטיפוסי מתכווץ לפי <span class="math inline">\(s_Y \sqrt{1 - r^2}\)</span>.</li>
-</ul>
-</div>
-<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>מה יבוא אחר כך</strong></p>
+<p><strong>הטענה הייחודית</strong></p>
 </div>
 <div class="callout-content">
-<p>כמו כל פרמטר בקורס, גם <span class="math inline">\(\beta_1\)</span> יקבל posterior עם רוחב. המספר במדגם הוא רק נקודת המוצא.</p>
+<p>Randomization סוגרת את הנתיבים דרך מבלבלים שמדדתם, שלא מדדתם, <strong>ושלא חשבתם עליהם</strong>. אין שום שיטת פיקוח אחרת שמבטיחה את זה.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-ענן-קו-ו-residuals" class="slide level2">
-<h2>הדגמה אינטראקטיבית: ענן, קו ו-residuals</h2>
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>r אמיתי: <b id="rtrue_v1">0.60</b>
-      <input type="range" id="rtrue_s1" min="-0.95" max="0.95" step="0.05" value="0.6"></label>
-    <label>גודל המדגם n: <b id="n_v1">25</b>
-      <input type="range" id="n_s1" min="5" max="300" step="5" value="25"></label>
-    <label><input type="checkbox" id="res_c1" checked=""> הצג residuals</label>
-    <button id="resample_b1" style="padding:3px 10px;">דגום מחדש</button>
+<section id="הדגמה-ניסוי-עם-מבלבל-שלא-נמדד" class="slide level2">
+<h2>הדגמה: ניסוי עם מבלבל שלא נמדד</h2>
+<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:6px;">
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.8em;">
+    <label>עוצמת המבלבל U: <b id="gval">0.60</b>
+      <input type="range" id="g" min="0" max="1" step="0.05" value="0.6"></label>
+    <label>האפקט האמיתי של X: <b id="tval">3</b>
+      <input type="range" id="t" min="0" max="10" step="1" value="3"></label>
+    <label>משתתפים בכל ניסוי: <b id="nval">200</b>
+      <input type="range" id="nn" min="50" max="500" step="50" value="200"></label>
   </div>
-  <div style="display:flex; flex-wrap:wrap; gap:10px;">
-    <div id="demo-cloud1" style="flex:1 1 300px; min-width:0; height:340px;"></div>
-    <div id="demo-rdist1" style="flex:1 1 300px; min-width:0; height:340px;"></div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:6px; font-size:0.8em;">
+    <span>מצב:</span>
+    <button id="m_self" style="padding:4px 12px; border-radius:6px; border:1px solid #c0392b; cursor:pointer;">הקצאה עצמית</button>
+    <button id="m_rand" style="padding:4px 12px; border-radius:6px; border:1px solid #2980b9; cursor:pointer;">הקצאה אקראית</button>
+    <button id="m_both" style="padding:4px 12px; border-radius:6px; border:1px solid #555; cursor:pointer;">שתיהן יחד</button>
+    <button id="reseed" style="padding:4px 12px; border-radius:6px; border:1px solid #999; cursor:pointer; margin-right:auto;">הגרל 300 ניסויים מחדש</button>
   </div>
-  <div id="out_v1" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
-  <div id="out2_v1" style="text-align:center; padding:6px; font-size:0.85em;"></div>
+  <div id="demo-rand" style="width:100%; height:300px;"></div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;">
+    <div id="out_self" style="flex:1 1 300px; text-align:center; font-weight:bold; padding:7px; border-radius:6px; font-size:0.8em;"></div>
+    <div id="out_rand" style="flex:1 1 300px; text-align:center; font-weight:bold; padding:7px; border-radius:6px; font-size:0.8em;"></div>
+  </div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  const NMAX = 300, REPS = 400;
-  let z1 = [], z2 = [];
-  function randn() {
-    let u = 0, v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-  function newDraws() {
-    z1 = []; z2 = [];
-    for (let i = 0; i < NMAX; i++) { z1.push(randn()); z2.push(randn()); }
-  }
-  function corr(a, b) {
-    const n = a.length;
-    let ma = 0, mb = 0;
-    for (let i = 0; i < n; i++) { ma += a[i]; mb += b[i]; }
-    ma /= n; mb /= n;
-    let sab = 0, saa = 0, sbb = 0;
-    for (let i = 0; i < n; i++) {
-      sab += (a[i] - ma) * (b[i] - mb);
-      saa += (a[i] - ma) * (a[i] - ma);
-      sbb += (b[i] - mb) * (b[i] - mb);
-    }
-    return sab / Math.sqrt(saa * sbb);
-  }
-  function draw() {
-    const rt = parseFloat(document.getElementById('rtrue_s1').value);
-    const n = parseInt(document.getElementById('n_s1').value);
-    const showRes = document.getElementById('res_c1').checked;
-    document.getElementById('rtrue_v1').textContent = rt.toFixed(2);
-    document.getElementById('n_v1').textContent = n;
+  const R = 300;
+  let mode = 'both';
+  let seed = 20260930;
+  const $ = id => document.getElementById(id);
 
-    // נתונים: X ~ (50, 10), Y ~ (100, 15) עם מתאם אמיתי rt
-    const k = Math.sqrt(1 - rt * rt);
-    const x = [], y = [];
-    for (let i = 0; i < n; i++) {
-      x.push(50 + 10 * z1[i]);
-      y.push(100 + 15 * (rt * z1[i] + k * z2[i]));
-    }
-    let mx = 0, my = 0;
-    for (let i = 0; i < n; i++) { mx += x[i]; my += y[i]; }
-    mx /= n; my /= n;
-    let sxy = 0, sxx = 0, syy = 0;
-    for (let i = 0; i < n; i++) {
-      sxy += (x[i] - mx) * (y[i] - my);
-      sxx += (x[i] - mx) * (x[i] - mx);
-      syy += (y[i] - my) * (y[i] - my);
-    }
-    const cov = sxy / (n - 1);
-    const b1 = sxy / sxx, b0 = my - b1 * mx;
-    const r = sxy / Math.sqrt(sxx * syy);
+  function mulberry32(a) {
+    return function() {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
 
-    // residuals
-    const rx = [], ry = [];
-    for (let i = 0; i < n; i++) {
-      rx.push(x[i], x[i], null);
-      ry.push(y[i], b0 + b1 * x[i], null);
+  // מדמה R ניסויים. באותם אנשים (אותו U, אותו רעש) משווים שני מנגנוני הקצאה.
+  function simulate(g, tau, n, seed) {
+    const rng = mulberry32(seed);
+    function randn() {
+      let u = 0, v = 0;
+      while (u === 0) u = rng();
+      while (v === 0) v = rng();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
     }
-    const traces = [];
-    if (showRes) traces.push({ x: rx, y: ry, mode: 'lines', line: { color: '#e0a39c', width: 1 }, hoverinfo: 'skip', showlegend: false });
-    traces.push({ x: x, y: y, mode: 'markers', marker: { color: '#2980b9', size: 7, opacity: 0.8 }, showlegend: false });
-    traces.push({ x: [15, 85], y: [b0 + b1 * 15, b0 + b1 * 85], mode: 'lines', line: { color: '#c0392b', width: 3 }, showlegend: false });
-    Plotly.newPlot('demo-cloud1', traces, {
-      title: 'הענן, קו הרגרסיה וה-residuals',
-      xaxis: { title: 'X', range: [15, 85] },
-      yaxis: { title: 'Y', range: [40, 160] },
-      margin: { t: 40, b: 45, l: 50, r: 15 }
-    }, { displayModeBar: false });
-
-    // התפלגות r ב-REPS מדגמים חוזרים באותו n
-    const rs = [];
-    for (let j = 0; j < REPS; j++) {
-      const a = [], b = [];
+    const gam = 6 * g;   // כמה U משפיע על Y
+    const k = 2.5 * g;   // כמה U משפיע על הבחירה להיכנס לטיפול
+    const self = [], rand = [];
+    for (let r = 0; r < R; r++) {
+      let sa1 = 0, na1 = 0, sa0 = 0, na0 = 0, sb1 = 0, nb1 = 0, sb0 = 0, nb0 = 0;
       for (let i = 0; i < n; i++) {
-        const u = randn(), v = randn();
-        a.push(u); b.push(rt * u + k * v);
+        const U = randn(), e = 5 * randn();
+        const v1 = rng(), v2 = rng();
+        const y0 = gam * U + e;
+        const xs = v1 < 1 / (1 + Math.exp(-k * U));
+        const xr = v2 < 0.5;
+        const ys = y0 + (xs ? tau : 0);
+        const yr = y0 + (xr ? tau : 0);
+        if (xs) { sa1 += ys; na1++; } else { sa0 += ys; na0++; }
+        if (xr) { sb1 += yr; nb1++; } else { sb0 += yr; nb0++; }
       }
-      rs.push(corr(a, b));
+      if (na1 && na0) self.push(sa1 / na1 - sa0 / na0);
+      if (nb1 && nb0) rand.push(sb1 / nb1 - sb0 / nb0);
     }
-    const sorted = rs.slice().sort((p, q) => p - q);
-    const lo = sorted[Math.floor(0.025 * REPS)], hi = sorted[Math.floor(0.975 * REPS)];
-    Plotly.newPlot('demo-rdist1', [{
-      x: rs, type: 'histogram', xbins: { start: -1, end: 1, size: 0.05 },
-      marker: { color: '#95a5a6' }, showlegend: false
-    }], {
-      title: 'r ב-' + REPS + ' מדגמים חוזרים בגודל n',
-      xaxis: { title: 'r במדגם', range: [-1, 1] },
-      yaxis: { title: 'שכיחות' },
-      margin: { t: 40, b: 45, l: 50, r: 15 },
-      shapes: [
-        { type: 'line', x0: rt, x1: rt, y0: 0, y1: 1, yref: 'paper', line: { color: '#27ae60', width: 3, dash: 'dash' } },
-        { type: 'line', x0: r, x1: r, y0: 0, y1: 1, yref: 'paper', line: { color: '#c0392b', width: 3 } }
-      ]
-    }, { displayModeBar: false });
-
-    const el = document.getElementById('out_v1');
-    el.textContent = 'r במדגם ' + r.toFixed(2) + '  ·  r אמיתי ' + rt.toFixed(2) +
-                     '  ·  שיפוע ' + b1.toFixed(2) + '  ·  R² ' + (r * r).toFixed(2) +
-                     '  ·  cov ' + cov.toFixed(1);
-    const wide = (hi - lo) > 0.8;
-    if (wide) { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
-    else { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
-    document.getElementById('out2_v1').textContent =
-      '95% מהמדגמים בגודל ' + n + ' נותנים r בין ' + lo.toFixed(2) + ' ל-' + hi.toFixed(2) +
-      '   (ירוק מקווקו: הערך האמיתי, אדום: המדגם שבענן)';
+    return { self: self, rand: rand };
   }
-  newDraws();
-  ['rtrue_s1', 'n_s1', 'res_c1'].forEach(id => document.getElementById(id).addEventListener('input', draw));
-  document.getElementById('resample_b1').addEventListener('click', function() { newDraws(); draw(); });
+
+  const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
+
+  function paintOut(el, label, m, tau) {
+    const bias = m - tau;
+    el.textContent = label + ': ממוצע האומדים ' + m.toFixed(1) +
+                     '  ·  האמת ' + tau.toFixed(1) +
+                     '  ·  הטיה ' + (bias >= 0 ? '+' : '') + bias.toFixed(1);
+    if (Math.abs(bias) < 0.5) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
+    else { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
+  }
+
+  function styleButtons() {
+    const on = { self: 'm_self', rand: 'm_rand', both: 'm_both' };
+    Object.keys(on).forEach(k => {
+      const b = $(on[k]);
+      b.style.background = (k === mode) ? '#f2f2f2' : '#fff';
+      b.style.fontWeight = (k === mode) ? 'bold' : 'normal';
+    });
+  }
+
+  function draw() {
+    const g = parseFloat($('g').value);
+    const tau = parseFloat($('t').value);
+    const n = parseInt($('nn').value);
+    $('gval').textContent = g.toFixed(2);
+    $('tval').textContent = tau;
+    $('nval').textContent = n;
+
+    const res = simulate(g, tau, n, seed);
+    const bins = { start: -10, end: 22, size: 0.5 };
+    const traces = [];
+    if (mode !== 'rand') traces.push({ x: res.self, type: 'histogram', xbins: bins, autobinx: false,
+      opacity: 0.65, marker: { color: '#c0392b' }, name: 'הקצאה עצמית' });
+    if (mode !== 'self') traces.push({ x: res.rand, type: 'histogram', xbins: bins, autobinx: false,
+      opacity: 0.65, marker: { color: '#2980b9' }, name: 'הקצאה אקראית' });
+
+    const layout = {
+      barmode: 'overlay',
+      xaxis: { title: 'האפקט הנאמד בניסוי בודד (הפרש ממוצעים)', range: [-10, 22] },
+      yaxis: { title: 'מספר ניסויים (מתוך 300)' },
+      margin: { t: 28, b: 45, l: 55, r: 20 },
+      legend: { x: 0.99, xanchor: 'right', y: 0.98 },
+      shapes: [{ type: 'line', x0: tau, x1: tau, y0: 0, y1: 1, yref: 'paper',
+                 line: { color: '#27ae60', width: 3, dash: 'dash' } }],
+      annotations: [{ x: tau, y: 1, yref: 'paper', yanchor: 'bottom', showarrow: false,
+                      text: 'האפקט האמיתי', font: { color: '#27ae60', size: 12 } }]
+    };
+    Plotly.newPlot('demo-rand', traces, layout, { displayModeBar: false });
+
+    const oS = $('out_self'), oR = $('out_rand');
+    oS.style.display = (mode === 'rand') ? 'none' : 'block';
+    oR.style.display = (mode === 'self') ? 'none' : 'block';
+    paintOut(oS, 'הקצאה עצמית', mean(res.self), tau);
+    paintOut(oR, 'הקצאה אקראית', mean(res.rand), tau);
+    styleButtons();
+  }
+
+  ['g', 't', 'nn'].forEach(id => $(id).addEventListener('input', draw));
+  $('m_self').addEventListener('click', () => { mode = 'self'; draw(); });
+  $('m_rand').addEventListener('click', () => { mode = 'rand'; draw(); });
+  $('m_both').addEventListener('click', () => { mode = 'both'; draw(); });
+  $('reseed').addEventListener('click', () => { seed = Math.floor(Math.random() * 2147483647); draw(); });
   setTimeout(draw, 400);
 })();
 </script>
@@ -619,10 +594,9 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment"><strong>r גדול בערכו המוחלט:</strong> הנקודות צמודות לקו, וה-residuals (הקווים האדומים) קצרים.</li>
-<li class="fragment"><strong>n קטן:</strong> ההיסטוגרמה רחבה מאוד. במדגם של 10 נבדקים, <span class="math inline">\(r\)</span> אמיתי של 0.5 יכול לצאת 0.1 וגם 0.9.</li>
-<li class="fragment"><strong>גם כשהקשר האמיתי הוא 0</strong>, מדגם קטן ייתן לפעמים <span class="math inline">\(r\)</span> של <span class="math inline">\(\pm 0.5\)</span>. מתאם מרשים במדגם קטן אינו ראיה לקשר.</li>
-<li class="fragment">הגדלת n מצמצמת את ההיסטוגרמה סביב הערך האמיתי, אבל לעולם לא מסירה אותה לגמרי.</li>
+<li class="fragment"><strong>הקצאה עצמית:</strong> ככל שהמבלבל U חזק יותר, ההתפלגות של האומדים זזה ימינה, הרחק מהאמת. גם עם 500 משתתפים. <strong>הגדלת המדגם לא מתקנת הטיה.</strong></li>
+<li class="fragment"><strong>הקצאה אקראית:</strong> ההתפלגות נשארת ממורכזת על האמת, <strong>לא משנה כמה חזק U</strong>. אף אחד לא מדד את U, ואף אחד לא פיקח עליו.</li>
+<li class="fragment">הניסוי האקראי עדיין <strong>רועש</strong>: ניסוי בודד יכול לפספס. אקראיות מבטיחה ש<strong>בממוצע</strong> האומדן נכון, לא שכל ניסוי יצליח.</li>
 </ul>
 </div>
 <div class="callout callout-tip callout-captioned callout-style-default">
@@ -631,10 +605,183 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>למה posterior ולא נקודה</strong></p>
+<p><strong>שימו לב</strong></p>
 </div>
 <div class="callout-content">
-<p>זו הסיבה שנדווח על <span class="math inline">\(\beta_1\)</span> ועל <span class="math inline">\(\rho\)</span> כהתפלגות עם רוחב, ולא כמספר אחד. הרוחב הזה הוא בדיוק מה שההיסטוגרמה בהדגמה מראה.</p>
+<p>בשני המצבים, אלה <strong>אותם אנשים</strong> עם אותו U ואותו רעש. הדבר היחיד ששונה הוא מי קבע מי מקבל את הטיפול: הם, או המטבע.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="מה-עוד-נדרש-כדי-שניסוי-יעבוד" class="slide level2">
+<h2>מה עוד נדרש כדי שניסוי יעבוד</h2>
+<p>Randomization מוחקת חצים <strong>שנכנסים</strong> ל-X. היא לא אומרת דבר על חצים אחרים שעלולים להישתל בניסוי.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="allocation-concealment">Allocation concealment</h3>
+<p><strong>לפני</strong> ההקצאה.</p>
+<p>מי שמגייס משתתפים לא יכול לדעת, או לנחש, לאיזה תנאי יוקצה המשתתף הבא.</p>
+<p>מגן על ה-randomization עצמה: בלעדיו, החוקר “עוזר” למשתתפים מסוימים להגיע לתנאי מסוים, והחץ הנכנס ל-X חוזר.</p>
+</div><div class="column" style="width:50%;">
+<h3 id="blinding">Blinding</h3>
+<p><strong>אחרי</strong> ההקצאה.</p>
+<p>משתתפים, מפעילים ומעריכי תוצאה לא יודעים מי בתנאי איזה.</p>
+<p>מגן על החצים <strong>היוצאים</strong> מ-X: ציפיות, יחס שונה למשתתפים, שיקול דעת של מי שמדרג את התוצאה.</p>
+</div>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>הבחנה</strong></p>
+</div>
+<div class="callout-content">
+<p>Concealment מגן על ההקצאה. Blinding מגן על המדידה וההתנהגות שאחריה. אפשר שיהיה אחד בלי השני.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="intention-to-treat-מול-per-protocol" class="slide level2 smaller">
+<h2>Intention-to-treat מול per-protocol</h2>
+<p>מה עושים עם מי שהוקצה לטיפול אבל לא הגיע לפגישות, או עבר לקבוצה השנייה?</p>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Intention-to-treat</th>
+<th>Per-protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>את מי מנתחים</strong></td>
+<td>כל מי שהוקצה, <strong>לפי ההקצאה</strong></td>
+<td>רק מי שביצע את הטיפול כפי שתוכנן</td>
+</tr>
+<tr class="even">
+<td><strong>מה נשמר</strong></td>
+<td>ה-randomization שלמה</td>
+<td>נשמר רק “מי שהתמיד”</td>
+</tr>
+<tr class="odd">
+<td><strong>על מה עונה</strong></td>
+<td>מה קורה כשמציעים או מקצים טיפול</td>
+<td>מה קורה למי שמקבל אותו בפועל</td>
+</tr>
+<tr class="even">
+<td><strong>הסיכון</strong></td>
+<td>האפקט מדולל אם יש אי-היענות</td>
+<td>הבחירה להתמיד היא <strong>הקצאה עצמית</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>למה per-protocol מסוכן</strong></p>
+</div>
+<div class="callout-content">
+<p>מי שמתמיד בטיפול שונה ממי שנשר: יותר מוטיבציה, פחות בעיות, יותר תמיכה. הניתוח הזה מחזיר את U לתמונה, ובכך מבטל בדיוק את מה ש-randomization קנתה.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="attrition-כ-collider" class="slide level2">
+<h2>Attrition כ-collider</h2>
+<p>נשירה היא לא רק אובדן כוח סטטיסטי. כשהיא <strong>דיפרנציאלית</strong>, היא מחזירה הטיה.</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<svg viewbox="0 0 340 210" style="width:100%; max-width:340px; background:#fff; border:1px solid #ddd; border-radius:8px;">
+    <defs><marker id="ah_c" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
+    <line x1="75.6" y1="55.6" x2="146.6" y2="126.6" stroke="#333" stroke-width="2.5" marker-end="url(#ah_c)"></line>
+    <line x1="264.4" y1="55.6" x2="193.4" y2="126.6" stroke="#333" stroke-width="2.5" marker-end="url(#ah_c)"></line>
+    <circle cx="55" cy="40" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
+    <text x="55" y="47" text-anchor="middle" font-size="20" font-weight="bold">X</text>
+    <circle cx="285" cy="40" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
+    <text x="285" y="47" text-anchor="middle" font-size="20" font-weight="bold">Y</text>
+    <rect x="145" y="132" width="50" height="50" rx="4" fill="#fdecea" stroke="#c0392b" stroke-width="3"></rect>
+    <text x="170" y="164" text-anchor="middle" font-size="20" font-weight="bold">S</text>
+    <text x="55" y="86" text-anchor="middle" font-size="13">טיפול</text>
+    <text x="285" y="86" text-anchor="middle" font-size="13">תוצאה</text>
+    <text x="170" y="200" text-anchor="middle" font-size="13">נשארו עד הסוף</text>
+  </svg>
+</div><div class="column" style="width:55%;">
+<div>
+<ul>
+<li class="fragment"><strong>S</strong> = האם המשתתף נשאר עד המדידה האחרונה. גם הטיפול (תופעות לוואי, עומס) וגם התוצאה (מי שלא משתפר עוזב) משפיעים עליו.</li>
+<li class="fragment">מנתחים רק את מי שנשאר, כלומר <strong>מתנים על S = 1</strong>. המרובע בגרף מסמן התניה.</li>
+<li class="fragment">S הוא <strong>collider</strong>: שני חצים נכנסים אליו. התניה עליו <strong>פותחת</strong> נתיב בין X ל-Y שהיה סגור.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="דוגמה-מספרית-אפס-אפקט-ובכל-זאת-אפקט" class="slide level2">
+<h2>דוגמה מספרית: אפס אפקט, ובכל זאת “אפקט”</h2>
+<p>מאה משתתפים בכל קבוצה. <strong>הטיפול אינו עושה כלום</strong>: בשתי הקבוצות 50 היו משתפרים ו-50 לא.</p>
+<table>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>קבוצה</th>
+<th>משתפרים / לא משתפרים</th>
+<th>נשרו (משתפרים / לא)</th>
+<th>נשארו (משתפרים / לא)</th>
+<th>% שיפור בנשארים</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ביקורת</td>
+<td>50 / 50</td>
+<td>5 / 5</td>
+<td>45 / 45</td>
+<td><strong>50%</strong></td>
+</tr>
+<tr class="even">
+<td>טיפול</td>
+<td>50 / 50</td>
+<td>0 / 30</td>
+<td>50 / 20</td>
+<td><strong>71%</strong></td>
+</tr>
+</tbody>
+</table>
+<div>
+<ul>
+<li class="fragment">בביקורת הנשירה אקראית לגמרי (10% מכל סוג). בטיפול, מי שלא משתפר <strong>ונחשף לתופעות לוואי</strong> עוזב.</li>
+<li class="fragment">בקרב הנשארים: 71% מול 50%, “אפקט” של 21 נקודות אחוז, מטיפול שאין בו אפקט בכלל.</li>
+<li class="fragment">ההקצאה הייתה אקראית לחלוטין, ועדיין קיבלנו הטיה. הכול בגלל שהסתכלנו רק על <strong>S = 1</strong>.</li>
+</ul>
+</div>
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>שני לקחים</strong></p>
+</div>
+<div class="callout-content">
+<ol type="1">
+<li>Intention-to-treat דורש תוצאה <strong>לכולם</strong>, ולכן צריך לעקוב גם אחרי מי שנשר. (2) נשירה שונה בין הקבוצות היא סימן אזהרה: תמיד לדווח כמה נשרו מכל קבוצה ולמה.</li>
+</ol>
 </div>
 </div>
 </div>
@@ -642,12 +789,11 @@
 <section id="סיכום-w10.v1" class="slide level2">
 <h2>סיכום W10.V1</h2>
 <ul>
-<li>הצורך ברגרסיה הרציפה נולד מהריבוד שקרס: מבלבל רציף נכנס למודל כקו, לא כרמות.</li>
-<li><span class="math inline">\(y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)</span> היא אותה משוואה בדיוק. כש-X רציף, <span class="math inline">\(\beta_1\)</span> הוא <strong>שיפוע</strong> ולא הפרש בין שתי קבוצות.</li>
-<li><strong>Covariance</strong> היא ממוצע מכפלות הסטיות, אך יחידותיה תלויות במשתנים ולכן אינן ניתנות לפירוש.</li>
-<li><strong>Correlation</strong> היא covariance מתוקנן, בטווח <span class="math inline">\([-1, 1]\)</span>. הקשרים: <span class="math inline">\(\hat{\beta}_1 = r \cdot s_Y / s_X\)</span> ו-<span class="math inline">\(R^2 = r^2\)</span>.</li>
-<li><strong>Residual</strong> הוא אותו מושג משבוע 4, רק שהניחוש הפרטני מגיע מקו.</li>
-<li>במדגם קטן <span class="math inline">\(r\)</span> הנאמד קופץ פראית סביב הערך האמיתי.</li>
+<li><strong>Random sampling</strong> קונה תקפות חיצונית. <strong>Random assignment</strong> קונה תקפות פנימית. רק השנייה מאפשרת טענה סיבתית.</li>
+<li>Randomization <strong>מוחקת את כל החצים הנכנסים ל-X</strong>, ולכן סוגרת את כל ה-backdoor paths: גם על מבלבלים שלא מדדתם ולא חשבתם עליהם.</li>
+<li>הגדלת מדגם לא מתקנת הטיה. אקראיות מבטיחה נכונות <strong>בממוצע</strong>, לא בכל ניסוי.</li>
+<li><strong>Allocation concealment</strong> מגן על ההקצאה, <strong>blinding</strong> על מה שקורה אחריה. <strong>Intention-to-treat</strong> שומר על ה-randomization, <strong>per-protocol</strong> מבטל אותה.</li>
+<li><strong>Attrition</strong> דיפרנציאלית היא התניה על <strong>collider</strong>, והיא מחזירה הטיה לניסוי אקראי מושלם. ב-W10.V2 נראה למה ההתניה הזו פועלת כך, ולמה ריבוד לא תמיד מתקן.</li>
 </ul>
 <div class="footer footer-default">
 

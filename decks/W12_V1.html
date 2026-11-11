@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W12.V1 — שני תנאים בתוך נבדק: מה מבחן t מזווג באמת עושה</title>
+  <title>W12.V1 — מנבאים מרובים</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,150 +325,40 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W12.V1 — שני תנאים בתוך נבדק: מה מבחן t מזווג באמת עושה</h1>
-  <p class="subtitle">random intercept לכל נבדק, ההפרש בתוך הנבדק, ולמה מערך תוך-נבדקי חזק יותר</p>
+  <h1 class="title">W12.V1 — מנבאים מרובים</h1>
+  <p class="subtitle">בהחזקת משתנה קבוע, מישור במקום קו, וכשהמנבאים מתואמים זה עם זה</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>לזהות שמבחן t מזווג (dependent t-test) משבוע 5 הוא מודל עם <strong>random intercept</strong> לכל נבדק.</li>
-<li>להבין למה מדידות חוזרות על אותו נבדק אינן בלתי תלויות, ומה קורה כשמתעלמים מכך.</li>
-<li>להבחין בין שונות <strong>בין-נבדקית</strong> לשונות <strong>תוך-נבדקית</strong>, ולהכיר את ה-<strong>ICC</strong>.</li>
-<li>להבין למה המערך התוך-נבדקי חזק יותר, ואת הרעיון החדש היחיד של השבוע: לפרמטרים עצמם יש התפלגות.</li>
+<li>להרחיב את המודל הליניארי ליותר ממנבא אחד.</li>
+<li>לפרש מקדם כ<strong>אפקט של <span class="math inline">\(X_1\)</span> בהחזקת <span class="math inline">\(X_2\)</span> קבוע</strong> (holding constant) — ולהבין מה זה אומר גאומטרית.</li>
+<li>להבין למה <strong>collinearity</strong> מנפחת שגיאות תקן ומייצרת מקדמים לא יציבים, אף שהניבוי עצמו נשאר תקין.</li>
+<li>להשוות מודלים לפי מידת הצטמצמות ה-residual, ולשאול אם היא מצדיקה את המורכבות הנוספת.</li>
 </ul>
 </section>
-<section id="זוכרים-את-מבחן-ה-t-המזווג" class="slide level2">
-<h2>זוכרים את מבחן ה-t המזווג?</h2>
-<p>בשבוע 5 ראינו מערך של לפני-אחרי: כל נבדק נמדד פעמיים, בתנאי 1 ובתנאי 2.</p>
+<section id="מ-x-אחד-לכמה" class="slide level2">
+<h2>מ-<span class="math inline">\(X\)</span> אחד לכמה</h2>
+<p>המודל שאתם מכירים, עם מנבא נוסף:</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \varepsilon_i\]</span></p>
+<p>ובכלליות, עם <span class="math inline">\(p\)</span> מנבאים: <span class="math inline">\(y_i = \beta_0 + \sum_{j=1}^{p} \beta_j X_{ji} + \varepsilon_i\)</span>.</p>
 <div>
 <ul>
-<li class="fragment">חישבנו לכל נבדק את ההפרש <span class="math inline">\(d_i = y_{i2} - y_{i1}\)</span>.</li>
-<li class="fragment">ואז עשינו על ההפרשים מבחן t רגיל של מדגם אחד, מול <span class="math inline">\(0\)</span>.</li>
-<li class="fragment">הנבדק “נעלם” מהחישוב: נשארה עמודה אחת של הפרשים.</li>
+<li class="fragment"><strong>האמידה לא השתנתה:</strong> מחפשים את המקדמים שמצמצמים את <span class="math inline">\(\sum \varepsilon_i^2\)</span> — אותו עיקרון של least squares.</li>
+<li class="fragment"><strong>מה שהשתנה הוא הפירוש</strong> של כל מקדם.</li>
+<li class="fragment">המודל הזה <strong>אדיטיבי</strong>: האפקט של <span class="math inline">\(X_1\)</span> זהה בכל רמה של <span class="math inline">\(X_2\)</span>. אם רוצים שהאפקט ישתנה — זה איבר המכפלה של W7.V2 (ובמצגת הבאה, עם משתנים רציפים).</li>
 </ul>
-</div>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>מה נעשה היום</strong></p>
-</div>
-<div class="callout-content">
-<p>לא נלמד נושא חדש. נבין מה <strong>באמת</strong> קרה שם, ולמה זה עבד.</p>
-</div>
-</div>
 </div>
 </section>
-<section id="הבעיה-מדידות-על-אותו-נבדק-אינן-בלתי-תלויות" class="slide level2">
-<h2>הבעיה: מדידות על אותו נבדק אינן בלתי תלויות</h2>
-<p>נבדק עם רמת בסיס גבוהה יהיה גבוה <strong>בשני</strong> התנאים. שתי המדידות שלו קשורות זו לזו.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="כשמתעלמים-מזה-pseudoreplication">כשמתעלמים מזה: pseudoreplication</h3>
-<ul>
-<li>מתייחסים לתצפיות מאותו נבדק כאילו הן תצפיות ממדגם גדול יותר.</li>
-<li>“המדגם האפקטיבי” קטן ממספר התצפיות.</li>
-<li>כשהאפקט מגיע מהשוואה <strong>בין</strong> נבדקים: שגיאות תקן קטנות מדי ומובהקות מנופחת.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="אותה-תלות-כיוון-הפוך">אותה תלות, כיוון הפוך</h3>
-<ul>
-<li>בהשוואה <strong>בין שני תנאים בתוך נבדק</strong>, התעלמות מהזיווג מנפחת את שגיאת התקן.</li>
-<li>אנחנו מאבדים עוצמה סטטיסטית.</li>
-<li>הכיוון של הטעות תלוי במערך, אבל הבעיה זהה: התלות נשארה בנתונים.</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>חיבור לשבוע 7</strong></p>
-</div>
-<div class="callout-content">
-<p>זו אותה תלות שהופיעה בדגימת אשכולות: תצפיות בתוך אשכול דומות זו לזו. כאן האשכול הוא הנבדק עצמו.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="המודל-random-intercept-לכל-נבדק" class="slide level2">
-<h2>המודל: random intercept לכל נבדק</h2>
-<p><span class="math display">\[y_{ij} = \beta_0 + \beta_1 \cdot \text{Cond}_{ij} + u_i + \epsilon_{ij}\]</span></p>
-<p><span class="math display">\[u_i \sim N(0, \tau^2), \qquad \epsilon_{ij} \sim N(0, \sigma^2)\]</span></p>
+<section id="פירוש-המקדם-בהחזקת-קבוע" class="slide level2">
+<h2>פירוש המקדם: “בהחזקת קבוע”</h2>
+<p>נניח: <span class="math inline">\(Y\)</span> = רמת סימפטומים דיכאוניים, <span class="math inline">\(X_1\)</span> = לחץ נתפס, <span class="math inline">\(X_2\)</span> = תמיכה חברתית.</p>
 <div>
 <ul>
-<li class="fragment"><span class="math inline">\(i\)</span> = נבדק, <span class="math inline">\(j\)</span> = תנאי (1 או 2).</li>
-<li class="fragment"><span class="math inline">\(u_i\)</span> = ה-<strong>random intercept</strong>: כמה רמת הבסיס של נבדק <span class="math inline">\(i\)</span> גבוהה או נמוכה מהממוצע.</li>
-<li class="fragment"><span class="math inline">\(\beta_1\)</span> = האפקט הנבדק, כלומר ההפרש <strong>בתוך</strong> הנבדק.</li>
-<li class="fragment"><span class="math inline">\(\tau\)</span> = פיזור רמות הבסיס בין נבדקים. <span class="math inline">\(\sigma\)</span> = הרעש הנשאר בתוך נבדק.</li>
-</ul>
-</div>
-</section>
-<section id="למה-זה-בדיוק-ה-t-המזווג" class="slide level2">
-<h2>למה זה בדיוק ה-t המזווג</h2>
-<p>נבדוק את ההפרש בין שני התנאים של אותו נבדק:</p>
-<p><span class="math display">\[d_i = y_{i2} - y_{i1} = \beta_1 + (u_i - u_i) + (\epsilon_{i2} - \epsilon_{i1}) = \beta_1 + \text{רעש}\]</span></p>
-<div>
-<ul>
-<li class="fragment">ה-<span class="math inline">\(u_i\)</span> <strong>מתבטל</strong>. רמת הבסיס של הנבדק נעלמה מההפרש.</li>
-<li class="fragment">מה שנשאר: <span class="math inline">\(\beta_1\)</span> ועוד רעש תוך-נבדקי בלבד.</li>
-<li class="fragment">בנתונים מאוזנים, האומדן של <span class="math inline">\(\beta_1\)</span> הוא ממוצע ההפרשים, ו-<span class="math inline">\(t\)</span> זהה ל-t המזווג משבוע 5.</li>
-</ul>
-</div>
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>הרעיון</strong></p>
-</div>
-<div class="callout-content">
-<p>מבחן t מזווג הוא לא “טריק”. הוא מה שיוצא כשמאפשרים לכל נבדק רמת בסיס משלו.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="שונות-בין-נבדקית-שונות-תוך-נבדקית-ו-icc" class="slide level2">
-<h2>שונות בין-נבדקית, שונות תוך-נבדקית, ו-ICC</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="שני-מקורות-לשונות">שני מקורות לשונות</h3>
-<ul>
-<li><strong>בין-נבדקית</strong> (<span class="math inline">\(\tau^2\)</span>): נבדקים שונים זה מזה ברמת הבסיס.</li>
-<li><strong>תוך-נבדקית</strong> (<span class="math inline">\(\sigma^2\)</span>): אותו נבדק משתנה ממדידה למדידה.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="icc">ICC</h3>
-<p><span class="math display">\[\text{ICC} = \frac{\tau^2}{\tau^2 + \sigma^2}\]</span> החלק מכלל השונות שיושב ברמת הנבדק. ICC גבוה: הנבדקים שונים מאוד זה מזה, והמדידות של אותו נבדק דומות מאוד.</p>
-</div>
-</div>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>למה המערך התוך-נבדקי חזק יותר</strong></p>
-</div>
-<div class="callout-content">
-<p>בהשוואה בין קבוצות, שגיאת התקן של ההפרש כוללת את <span class="math inline">\(\tau^2\)</span>. בהשוואה בתוך נבדק היא כוללת רק את <span class="math inline">\(\sigma^2\)</span>. ככל ש-ICC גבוה יותר, הרווח גדול יותר.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="הרעיון-החדש-היחיד-לפרמטרים-יש-התפלגות" class="slide level2">
-<h2>הרעיון החדש היחיד: לפרמטרים יש התפלגות</h2>
-<div>
-<ul>
-<li class="fragment">עד עכשיו, כל <span class="math inline">\(\mu_j\)</span> או רמת בסיס היה <strong>מספר קבוע</strong> שרצינו לאמוד.</li>
-<li class="fragment">כאן <span class="math inline">\(u_i \sim N(0,\tau^2)\)</span>: רמות הבסיס של הנבדקים <strong>מגיעות מהתפלגות משותפת</strong>.</li>
-<li class="fragment">בקורס בייסיאני זה כמעט חינם: זה <strong>prior</strong> על הפרמטרים של הנבדקים, ו-<span class="math inline">\(\tau\)</span> עצמו מקבל prior ונאמד מהנתונים.</li>
+<li class="fragment"><span class="math inline">\(\beta_1\)</span> הוא ההבדל הצפוי ב-<span class="math inline">\(Y\)</span> בין שני אנשים שנבדלים ביחידה אחת של לחץ <strong>ושווים בתמיכה חברתית</strong>.</li>
+<li class="fragment">זה לא אותו דבר כמו המקדם של לחץ במודל שבו תמיכה חברתית אינה נמצאת. שני המקדמים שווים רק אם <span class="math inline">\(X_1\)</span> ו-<span class="math inline">\(X_2\)</span> בלתי מתואמים.</li>
+<li class="fragment">ככל ש-<span class="math inline">\(X_1\)</span> ו-<span class="math inline">\(X_2\)</span> מתואמים יותר, כך המקדם הפשוט והמקדם “בהחזקת קבוע” יכולים להיות שונים יותר — ואפילו בסימן הפוך.</li>
 </ul>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
@@ -477,122 +367,190 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>מה זה נותן</strong></p>
+<p><strong>“בהחזקת קבוע” הוא סטטיסטי, לא ניסויי</strong></p>
 </div>
 <div class="callout-content">
-<p>הנבדקים לומדים זה מזה, דרך ההתפלגות המשותפת. ביחידה הבאה נראה מה זה עושה לאומדנים.</p>
+<p>לא החזקנו שום דבר קבוע. השוונו בין אנשים שבמקרה דומים ב-<span class="math inline">\(X_2\)</span>. השאלה <strong>אילו</strong> משתנים ראוי להחזיק קבועים אינה שאלה של המודל — זו שאלה של הגרף מהשבוע העשירי. נחזור לזה ב-W12.V4.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-מתעלמים-מהנבדקים-או-מזווגים" class="slide level2">
-<h2>הדגמה אינטראקטיבית: מתעלמים מהנבדקים או מזווגים</h2>
-<p>30 נבדקים, שני תנאים. השונות התוך-נבדקית קבועה (<span class="math inline">\(\sigma = 5\)</span>). שנו את השונות הבין-נבדקית (<span class="math inline">\(\tau\)</span>) ואת גודל האפקט.</p>
+<section id="גאומטריה-מישור-במקום-קו" class="slide level2">
+<h2>גאומטריה: מישור במקום קו</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="מנבא-אחד">מנבא אחד</h3>
+<ul>
+<li>הנתונים חיים במרחב דו-ממדי: <span class="math inline">\((X, Y)\)</span>.</li>
+<li>המודל הוא <strong>קו</strong>.</li>
+<li>ה-residual הוא המרחק האנכי של כל נקודה מהקו.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="שני-מנבאים">שני מנבאים</h3>
+<ul>
+<li>הנתונים חיים במרחב תלת-ממדי: <span class="math inline">\((X_1, X_2, Y)\)</span>.</li>
+<li>המודל הוא <strong>מישור</strong>.</li>
+<li>ה-residual הוא המרחק האנכי של כל נקודה מהמישור.</li>
+</ul>
+</div>
+</div>
+<div>
+<ul>
+<li class="fragment"><span class="math inline">\(\beta_1\)</span> הוא השיפוע של המישור <strong>בכיוון ציר <span class="math inline">\(X_1\)</span></strong>; <span class="math inline">\(\beta_2\)</span> הוא השיפוע בכיוון ציר <span class="math inline">\(X_2\)</span>.</li>
+<li class="fragment">כל חתך של המישור לאורך <span class="math inline">\(X_1\)</span> הוא קו באותו שיפוע — וזו בדיוק משמעות ה<strong>אדיטיביות</strong>.</li>
+<li class="fragment">עם שלושה מנבאים ויותר זה hyperplane שאי אפשר לצייר, אבל הרעיון זהה.</li>
+</ul>
+</div>
+</section>
+<section id="collinearity-כשהמנבאים-מתואמים" class="slide level2">
+<h2>Collinearity: כשהמנבאים מתואמים</h2>
+<div>
+<ul>
+<li class="fragment">כש-<span class="math inline">\(X_1\)</span> ו-<span class="math inline">\(X_2\)</span> מתואמים חזק, ענן הנקודות במישור <span class="math inline">\((X_1, X_2)\)</span> הוא אליפסה צרה.</li>
+<li class="fragment">המישור מוצב היטב <strong>בתוך</strong> האליפסה — לכן הניבוי תקין.</li>
+<li class="fragment">אבל הנטייה שלו <strong>לרוחב</strong> האליפסה (כיוון שבו <span class="math inline">\(X_1\)</span> עולה ו-<span class="math inline">\(X_2\)</span> יורד) כמעט לא נקבעת על ידי הנתונים: שולחן שכל רגליו בשורה אחת.</li>
+</ul>
+</div>
+<p>עבור מנבא <span class="math inline">\(j\)</span>, שגיאת התקן של המקדם היא:</p>
+<p><span class="math display">\[SE(\hat\beta_j) = \frac{\sigma}{s_{X_j}\sqrt{n-1}} \cdot \sqrt{\text{VIF}_j}, \qquad \text{VIF}_j = \frac{1}{1 - R_j^2}\]</span></p>
+<p>כאשר <span class="math inline">\(R_j^2\)</span> הוא ה-<span class="math inline">\(R^2\)</span> מהחיזוי של <span class="math inline">\(X_j\)</span> מכל שאר המנבאים. בשני מנבאים: <span class="math inline">\(R_j^2 = r^2\)</span>.</p>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>VIF בפועל</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\(r = 0.9\)</span> נותן <span class="math inline">\(\text{VIF} \approx 5.3\)</span>, כלומר שגיאת התקן גדולה פי <span class="math inline">\(\sqrt{5.3} \approx 2.3\)</span>. <span class="math inline">\(r = 0.99\)</span> נותן <span class="math inline">\(\text{VIF} \approx 50\)</span>, כלומר פי 7 בערך.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="הדגמה-אינטראקטיבית-קולינאריות-ואי-יציבות-המקדמים" class="slide level2">
+<h2>הדגמה אינטראקטיבית: קולינאריות ואי-יציבות המקדמים</h2>
+<p>האמת קבועה: <span class="math inline">\(\beta_1 = \beta_2 = 1\)</span>, <span class="math inline">\(\sigma = 2\)</span>. בכל שינוי בסליידר מוגרלות 300 דגימות חדשות ובכל אחת נאמד המודל.</p>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
   <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>שונות בין-נבדקית τ: <b id="tauval_w">10.0</b>
-      <input type="range" id="tau_w" min="0" max="20" step="0.5" value="10"></label>
-    <label>אפקט תוך-נבדקי β1: <b id="effval_w">3.0</b>
-      <input type="range" id="eff_w" min="0" max="10" step="0.5" value="3"></label>
-    <button id="resample_w" style="padding:2px 10px;">דגום מחדש</button>
+    <label>המתאם בין X1 ל-X2 (r): <b id="rval_mc">0.30</b>
+      <input type="range" id="r_mc" min="0" max="0.99" step="0.01" value="0.3"></label>
+    <label>גודל המדגם (n): <b id="nval_mc">60</b>
+      <input type="range" id="n_mc" min="30" max="200" step="10" value="60"></label>
+    <button id="btn_mc" style="font-size:0.9em; padding:3px 12px;">דגימות חדשות</button>
   </div>
-  <div style="display:flex; flex-wrap:wrap; gap:10px;">
-    <div id="demo-w1" style="flex:1 1 320px; height:340px;"></div>
-    <div id="demo-w2" style="flex:1 1 320px; height:340px;"></div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+    <div id="demo-mc-hist" style="flex:1 1 320px; height:300px;"></div>
+    <div id="demo-mc-sc" style="flex:1 1 320px; height:300px;"></div>
   </div>
-  <div id="out_w" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; background:#eef5fa; color:#185fa5;"></div>
-  <div id="icc_w" style="text-align:center; padding:4px; font-size:0.85em;"></div>
+  <div id="out_mc" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; font-size:0.9em;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  const N = 30, SIGMA = 5, BASE = 50;
-  let seed = 7;
-  let U, E1, E2;
-  function mulberry32(a) {
-    return function() {
-      a |= 0; a = a + 0x6D2B79F5 | 0;
-      let t = Math.imul(a ^ a >>> 15, 1 | a);
-      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    };
+  const B0 = 1, B1 = 1, B2 = 1, SIGMA = 2, REPS = 300;
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   }
-  function makeNoise(s) {
-    const rnd = mulberry32(s);
-    function randn() {
-      let u = 0, v = 0;
-      while (u === 0) u = rnd();
-      while (v === 0) v = rnd();
-      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  function sd(a) {
+    const m = a.reduce((s, x) => s + x, 0) / a.length;
+    return Math.sqrt(a.reduce((s, x) => s + (x - m) * (x - m), 0) / (a.length - 1));
+  }
+  function mean(a) { return a.reduce((s, x) => s + x, 0) / a.length; }
+
+  let res = null;
+
+  function simulate() {
+    const r = parseFloat(document.getElementById('r_mc').value);
+    const n = parseInt(document.getElementById('n_mc').value);
+    const out = { r: r, n: n, b1: [], b2: [], se1: [], rmse: [] };
+    for (let rep = 0; rep < REPS; rep++) {
+      const x1 = new Array(n), x2 = new Array(n), y = new Array(n), mu = new Array(n);
+      for (let i = 0; i < n; i++) {
+        x1[i] = randn();
+        x2[i] = r * x1[i] + Math.sqrt(1 - r * r) * randn();
+        mu[i] = B0 + B1 * x1[i] + B2 * x2[i];
+        y[i] = mu[i] + SIGMA * randn();
+      }
+      const m1 = mean(x1), m2 = mean(x2), my = mean(y);
+      let S11 = 0, S22 = 0, S12 = 0, S1y = 0, S2y = 0, Syy = 0;
+      for (let i = 0; i < n; i++) {
+        const a = x1[i] - m1, b = x2[i] - m2, c = y[i] - my;
+        S11 += a * a; S22 += b * b; S12 += a * b;
+        S1y += a * c; S2y += b * c; Syy += c * c;
+      }
+      const det = S11 * S22 - S12 * S12;
+      const b1 = (S22 * S1y - S12 * S2y) / det;
+      const b2 = (S11 * S2y - S12 * S1y) / det;
+      const b0 = my - b1 * m1 - b2 * m2;
+      const sse = Syy - b1 * S1y - b2 * S2y;
+      const s2 = sse / (n - 3);
+      out.b1.push(b1); out.b2.push(b2);
+      out.se1.push(Math.sqrt(s2 * S22 / det));
+      let e2 = 0;
+      for (let i = 0; i < n; i++) {
+        const d = b0 + b1 * x1[i] + b2 * x2[i] - mu[i];
+        e2 += d * d;
+      }
+      out.rmse.push(Math.sqrt(e2 / n));
     }
-    U = []; E1 = []; E2 = [];
-    for (let i = 0; i < N; i++) { U.push(randn()); E1.push(randn()); E2.push(randn()); }
+    res = out;
   }
-  function mean(a) { return a.reduce((x, y) => x + y, 0) / a.length; }
-  function sd(a) { const m = mean(a); return Math.sqrt(a.reduce((s, x) => s + (x - m) * (x - m), 0) / (a.length - 1)); }
-  // ערכים קריטיים של t ברמת 95%
-  const T_PAIRED = 2.045;   // df = 29
-  const T_INDEP = 2.002;    // df = 58
 
   function draw() {
-    const tau = parseFloat(document.getElementById('tau_w').value);
-    const eff = parseFloat(document.getElementById('eff_w').value);
-    document.getElementById('tauval_w').textContent = tau.toFixed(1);
-    document.getElementById('effval_w').textContent = eff.toFixed(1);
+    if (!res) return;
+    document.getElementById('rval_mc').textContent = res.r.toFixed(2);
+    document.getElementById('nval_mc').textContent = res.n;
 
-    const y1 = [], y2 = [], d = [];
-    for (let i = 0; i < N; i++) {
-      const base = BASE + tau * U[i];
-      y1.push(base + SIGMA * E1[i]);
-      y2.push(base + eff + SIGMA * E2[i]);
-      d.push(y2[i] - y1[i]);
-    }
-    const diff = mean(d);
-    const sePaired = sd(d) / Math.sqrt(N);
-    const seIndep = Math.sqrt(sd(y1) * sd(y1) / N + sd(y2) * sd(y2) / N);
-    const tP = diff / sePaired, tI = diff / seIndep;
+    const hist = { x: res.b1, type: 'histogram', nbinsx: 40,
+                   marker: { color: '#2980b9' }, name: 'β1 נאמד' };
+    Plotly.newPlot('demo-mc-hist', [hist], {
+      title: { text: 'התפלגות β1 הנאמד ב-300 דגימות', font: { size: 13 } },
+      xaxis: { title: 'β1 נאמד', range: [-6, 8] },
+      yaxis: { title: 'מספר דגימות' },
+      shapes: [{ type: 'line', x0: B1, x1: B1, y0: 0, y1: 1, yref: 'paper',
+                 line: { color: '#27ae60', width: 3, dash: 'dash' } }],
+      margin: { t: 40, b: 45, l: 50, r: 15 }
+    }, { displayModeBar: false, responsive: true });
 
-    // גרף שמאלי: קו לכל נבדק
-    const traces = [];
-    for (let i = 0; i < N; i++) {
-      traces.push({ x: ['תנאי 1', 'תנאי 2'], y: [y1[i], y2[i]], mode: 'lines+markers',
-                    line: { color: 'rgba(120,120,120,0.45)', width: 1 }, marker: { size: 5, color: '#7f8c8d' },
-                    showlegend: false, hoverinfo: 'skip' });
-    }
-    traces.push({ x: ['תנאי 1', 'תנאי 2'], y: [mean(y1), mean(y2)], mode: 'lines+markers', name: 'ממוצע',
-                  line: { color: '#c0392b', width: 4 }, marker: { size: 12, color: '#c0392b' } });
-    Plotly.newPlot('demo-w1', traces, {
-      title: { text: 'כל קו הוא נבדק', font: { size: 14 } },
-      yaxis: { title: 'Y', range: [10, 95] },
-      margin: { t: 35, b: 35, l: 45, r: 15 }, showlegend: false
-    }, { displayModeBar: false });
+    const sc = { x: res.b1, y: res.b2, mode: 'markers', type: 'scatter',
+                 marker: { color: '#2980b9', size: 5, opacity: 0.45 }, name: 'דגימות' };
+    const truth = { x: [B1], y: [B2], mode: 'markers', type: 'scatter',
+                    marker: { color: '#c0392b', size: 13, symbol: 'star' }, name: 'האמת' };
+    Plotly.newPlot('demo-mc-sc', [sc, truth], {
+      title: { text: 'כל נקודה: (β1, β2) מדגימה אחת', font: { size: 13 } },
+      xaxis: { title: 'β1 נאמד', range: [-6, 8] },
+      yaxis: { title: 'β2 נאמד', range: [-6, 8] },
+      showlegend: false,
+      margin: { t: 40, b: 45, l: 50, r: 15 }
+    }, { displayModeBar: false, responsive: true });
 
-    // גרף ימני: האומדן ורווחי סמך של שני הניתוחים
-    const tr = [
-      { x: [diff], y: ['מתעלם מהנבדקים'], mode: 'markers', marker: { size: 12, color: '#c0392b' },
-        error_x: { type: 'constant', value: T_INDEP * seIndep, color: '#c0392b', thickness: 3, width: 8 }, showlegend: false },
-      { x: [diff], y: ['מזווג (random intercept)'], mode: 'markers', marker: { size: 12, color: '#2980b9' },
-        error_x: { type: 'constant', value: T_PAIRED * sePaired, color: '#2980b9', thickness: 3, width: 8 }, showlegend: false }
-    ];
-    Plotly.newPlot('demo-w2', tr, {
-      title: { text: 'אומדן β1 ורווח סמך 95%', font: { size: 14 } },
-      xaxis: { title: 'ההפרש בין התנאים', range: [-12, 18], zeroline: true, zerolinecolor: '#333', zerolinewidth: 2 },
-      margin: { t: 35, b: 45, l: 150, r: 15 }
-    }, { displayModeBar: false });
-
-    const sigI = Math.abs(tI) > T_INDEP, sigP = Math.abs(tP) > T_PAIRED;
-    const el = document.getElementById('out_w');
-    el.textContent = 'מתעלם: SE ' + seIndep.toFixed(2) + ', t ' + tI.toFixed(2) + (sigI ? ' (מובהק)' : ' (לא מובהק)') +
-                     '   |   מזווג: SE ' + sePaired.toFixed(2) + ', t ' + tP.toFixed(2) + (sigP ? ' (מובהק)' : ' (לא מובהק)');
-    if (sigP && !sigI) { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
+    const sumB = res.b1.map((v, i) => v + res.b2[i]);
+    const vif = 1 / (1 - res.r * res.r);
+    const el = document.getElementById('out_mc');
+    el.textContent = 'VIF = ' + vif.toFixed(1) +
+      '  ·  SD של β1 בין דגימות = ' + sd(res.b1).toFixed(2) +
+      '  ·  SE ממוצע = ' + mean(res.se1).toFixed(2) +
+      '  ·  SD של β1+β2 = ' + sd(sumB).toFixed(2) +
+      '  ·  שגיאת הניבוי (RMSE) = ' + mean(res.rmse).toFixed(2);
+    if (vif > 5) { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
     else { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
-    const icc = (tau * tau) / (tau * tau + SIGMA * SIGMA);
-    document.getElementById('icc_w').textContent = 'ICC התאורטי: ' + icc.toFixed(2);
   }
-  makeNoise(seed);
-  ['tau_w', 'eff_w'].forEach(id => document.getElementById(id).addEventListener('input', draw));
-  document.getElementById('resample_w').addEventListener('click', function() { seed += 1; makeNoise(seed); draw(); });
-  setTimeout(draw, 400);
+
+  function redo() { simulate(); draw(); }
+  ['r_mc', 'n_mc'].forEach(id => document.getElementById(id).addEventListener('input', redo));
+  document.getElementById('btn_mc').addEventListener('click', redo);
+  if (window.Reveal && Reveal.on) {
+    Reveal.on('slidechanged', function() {
+      setTimeout(function() {
+        try { Plotly.Plots.resize('demo-mc-hist'); Plotly.Plots.resize('demo-mc-sc'); } catch (e) {}
+      }, 150);
+    });
+  }
+  setTimeout(redo, 400);
 })();
 </script>
 </section>
@@ -600,20 +558,72 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment">כשהשונות הבין-נבדקית עולה, הקווים “מתרוממים ויורדים” יחד, אבל <strong>ההפרש בתוך כל נבדק</strong> נשאר יציב.</li>
-<li class="fragment">שגיאת התקן של הניתוח שמתעלם מהנבדקים <strong>גדלה</strong> עם <span class="math inline">\(\tau\)</span>. שגיאת התקן של הניתוח המזווג <strong>כמעט לא משתנה</strong>.</li>
-<li class="fragment">הרווח הסמך הכחול נשאר צר, והאדום מתרחב. המרחק ביניהם הוא מחיר ההתעלמות מהתלות.</li>
-<li class="fragment">ב-<span class="math inline">\(\tau = 0\)</span> (ICC אפס) שני הניתוחים כמעט זהים: אין מה להרוויח מהזיווג.</li>
+<li class="fragment"><strong>המרכז לא זז.</strong> גם ב-<span class="math inline">\(r = 0.99\)</span> האומדנים מתרכזים סביב האמת: collinearity אינה יוצרת הטיה, היא מנפחת <strong>שונות</strong>.</li>
+<li class="fragment"><strong>הפיזור מתרחב</strong>, וה-SE הממוצע עוקב אחרי ה-SD האמיתי בין דגימות — כלומר המודל “יודע” שהוא לא בטוח.</li>
+<li class="fragment"><strong>הענן בתרשים הימני מתארך לאורך האלכסון השלילי:</strong> דגימה שבה <span class="math inline">\(\hat\beta_1\)</span> גבוה מדי היא דגימה שבה <span class="math inline">\(\hat\beta_2\)</span> נמוך מדי. ה<strong>סכום</strong> <span class="math inline">\(\hat\beta_1 + \hat\beta_2\)</span> נשאר מדויק.</li>
+<li class="fragment"><strong>שגיאת הניבוי כמעט לא משתנה.</strong> מבחינת ניבוי אין בעיה.</li>
 </ul>
+</div>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>מה לא לעשות</strong></p>
+</div>
+<div class="callout-content">
+<p>לא מוחקים מנבא רק כי ה-VIF שלו גבוה. collinearity אינה הפרת הנחה — היא <strong>מחסור במידע</strong>: הנתונים אינם יכולים להבחין בין האפקטים. אילו משתנים שייכים למודל נקבע לפי השאלה (ולפי הגרף), לא לפי ה-VIF.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>מה כן עושים</strong></p>
+</div>
+<div class="callout-content">
+<p>דוגמים מדגם גדול יותר או מגוון יותר; מדווחים על האפקט המשותף כאשר השאלה מאפשרת זאת; מאחדים למשתנה אחד (composite) כשהמנבאים מודדים באופן תאורטי אותו מבנה; או מקבלים ש<strong>השאלה על אפקט של <span class="math inline">\(X_1\)</span> בנפרד מ-<span class="math inline">\(X_2\)</span> אינה ניתנת למענה עם הנתונים האלה</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="השוואת-מודלים-האם-ה-residual-הצטמצם-מספיק" class="slide level2">
+<h2>השוואת מודלים: האם ה-residual הצטמצם מספיק?</h2>
+<p>מודל <strong>מצומצם</strong> (compact, <span class="math inline">\(C\)</span>) מול מודל <strong>מורחב</strong> (augmented, <span class="math inline">\(A\)</span>) שמוסיף <span class="math inline">\(q\)</span> מנבאים. ההשוואה היא בעד כמה ה-residual קטן:</p>
+<p><span class="math display">\[\text{PRE} = \frac{SSE_C - SSE_A}{SSE_C}, \qquad F = \frac{(SSE_C - SSE_A)/q}{SSE_A/(n - p_A - 1)}\]</span></p>
+<div>
+<ul>
+<li class="fragment"><strong>הוספת מנבא לעולם לא מגדילה את ה-SSE.</strong> גם מנבא של רעש טהור מצמצם אותו מעט, בגלל שהוא מתאים את עצמו למקריות במדגם.</li>
+<li class="fragment">לכן השאלה איננה “האם ה-SSE ירד”, אלא <strong>“האם הוא ירד יותר ממה שהיינו מצפים ממנבא חסר תוכן”</strong>. זה מה שמבחן <span class="math inline">\(F\)</span> בודק.</li>
+<li class="fragment">בהינתן collinearity, שני מנבאים יכולים להיות מובהקים <strong>במשותף</strong> (<span class="math inline">\(F\)</span> גדול) ובלי שאף אחד מהם מובהק <strong>בנפרד</strong> — כי יחד הם מסבירים הרבה, אך הנתונים לא יודעים למי להעניק את הקרדיט.</li>
+</ul>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>לקראת W12.V3</strong></p>
+</div>
+<div class="callout-content">
+<p>מבחן <span class="math inline">\(F\)</span> עונה על שאלה אחת: האם ההצטמצמות מובהקת. הוא אינו עונה על שאלה אחרת וחשובה לא פחות: <strong>האם המודל המורחב ינבא טוב יותר נתונים חדשים</strong>. את זה נבדוק כשנדבר על overfitting.</p>
+</div>
+</div>
 </div>
 </section>
 <section id="סיכום-w12.v1" class="slide level2">
 <h2>סיכום W12.V1</h2>
 <ul>
-<li>מבחן t מזווג הוא מודל עם <strong>random intercept</strong> לכל נבדק. ה-<span class="math inline">\(u_i\)</span> מתבטל בהפרש, ולכן נשארים עם השונות התוך-נבדקית בלבד.</li>
-<li>מדידות חוזרות על אותו נבדק אינן בלתי תלויות. התעלמות מכך פוגעת באמינות ההסקה, בכיוון שתלוי במערך.</li>
-<li><strong>ICC</strong> הוא החלק מכלל השונות שיושב ברמת הנבדק, ואומר כמה הזיווג שווה.</li>
-<li>הרעיון החדש: לפרמטרים של הנבדקים יש <strong>התפלגות משותפת</strong>, כלומר prior שגם אותו אומדים.</li>
+<li>מודל עם כמה מנבאים אמוד באותה דרך, אך כל מקדם מפורש <strong>בהחזקת שאר המנבאים קבועים</strong> — השוואה סטטיסטית, לא התערבות.</li>
+<li>גאומטרית, המודל הוא מישור (hyperplane); אדיטיביות פירושה שהשיפוע לאורך כל ציר זהה בכל נקודה על הציר האחר.</li>
+<li><strong>Collinearity</strong> מנפחת את שגיאות התקן פי <span class="math inline">\(\sqrt{\text{VIF}}\)</span> ומייצרת מקדמים לא יציבים בין דגימות, בלי להטות אותם ובלי לפגוע בניבוי.</li>
+<li>אין “לתקן” collinearity בהוצאת משתנים אוטומטית: זו בעיה של מידע, והפתרון תלוי בשאלה המחקרית.</li>
+<li>הצטמצמות ה-residual היא תמיד חיובית; השאלה היא אם היא גדולה מהצפוי ממנבא חסר תוכן — ואם היא תשרוד נתונים חדשים.</li>
 </ul>
 <div class="footer footer-default">
 

@@ -32,9 +32,9 @@
     "W3.H1",
     "W3.T1",
     "W3.T2",
-    "W3.T3",
+    "W4.K1",
     "W3.B1",
-    "W4.V1"
+    "W5.V1"
   ],
   "general_labels": {
     "G0": "צוות הקורס",
@@ -99,7 +99,7 @@
       "image": "cameo-fisher.svg",
       "caption": "Ronald A. Fisher, 1890–1962"
     },
-    "4": {
+    "5": {
       "image": "cameo-gauss.svg",
       "caption": "Carl Friedrich Gauss, 1777–1855"
     }

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W9.V1 — randomization: למה הקצאה אקראית פותרת את הבעיה</title>
+  <title>W9.V1 — סקירה שיטתית ו-PRISMA</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,30 +325,52 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W9.V1 — randomization: למה הקצאה אקראית פותרת את הבעיה</h1>
-  <p class="subtitle">איך מסלקים מבלבלים שמדדתם, ושלא מדדתם, ושלא חשבתם עליהם, ומה עוד צריך כדי שהניסוי יעבוד</p>
+  <h1 class="title">W9.V1 — סקירה שיטתית ו-PRISMA</h1>
+  <p class="subtitle">מה הופך סקירה ל’שיטתית’, ואיך מתעדים את הדרך מאלפי רשומות למעט מחקרים</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להפריד שוב בין <strong>random sampling</strong> ל-<strong>random assignment</strong>, והפעם לראות למה השנייה היא זו שמאפשרת טענה סיבתית.</li>
-<li>להבין <strong>בשפת הגרף</strong> למה randomization סוגרת את כל ה-backdoor paths בלי לפקח על שום דבר.</li>
-<li>להכיר מה עוד נדרש כדי שניסוי אקראי יעבוד: <strong>blinding</strong>, <strong>allocation concealment</strong>, ו-<strong>intention-to-treat</strong> מול <strong>per-protocol</strong>.</li>
-<li>לזהות ש-<strong>attrition</strong> דיפרנציאלית היא <strong>collider</strong> שמחזיר הטיה לניסוי אקראי מושלם.</li>
+<li>להבחין בין <strong>סקירה נרטיבית</strong> לבין <strong>סקירה שיטתית</strong>, ולהסביר מה בדיוק הופך סקירה לשיטתית.</li>
+<li>לנסח שאלת מחקר בפורמט <strong>PICO</strong> ולגזור ממנה קריטריוני הכללה והדרה.</li>
+<li>להכיר את מרכיבי אסטרטגיית החיפוש: מאגרים, <strong>ספרות אפורה</strong> ו<strong>מרשמי ניסויים</strong>.</li>
+<li>לקרוא ולהפיק <strong>תרשים זרימה של PRISMA 2020</strong>, ולהבין למה חובה לדווח כמה מחקרים נפלו בכל שלב ומדוע.</li>
+<li>להכיר את ההערכה של <strong>risk of bias</strong> במחקרים הנכללים.</li>
 </ul>
 </section>
-<section id="חזרה-מכוונת-שתי-אקראיות-שונות-לגמרי" class="slide level2">
-<h2>חזרה מכוונת: שתי אקראיות שונות לגמרי</h2>
+<section id="מהמחקר-הבודד-אל-הספרות-כולה" class="slide level2">
+<h2>מהמחקר הבודד אל הספרות כולה</h2>
+<p>בשבוע 8 ראינו שמחקר בודד יכול להטעות: מדגם קטן, דרגות חופש של החוקר, הטיית פרסום. התגובה הטבעית היא להפסיק להסתמך על מחקר אחד ולהסתכל על <strong>כל</strong> מה שנעשה בשאלה.</p>
+<div>
+<ul>
+<li class="fragment">אבל “להסתכל על הספרות” הוא עצמו תהליך של בחירה: אילו מחקרים מצאתי, אילו קראתי, אילו החלטתי לכלול.</li>
+<li class="fragment">כל אחת מהבחירות האלה היא <strong>דרגת חופש</strong> ברמת הספרות, בדיוק כמו הבחירה באיזה מבחן להריץ ברמת המחקר הבודד.</li>
+<li class="fragment">סקירה שיטתית היא הניסיון להפוך את הבחירות האלה לגלויות, מתועדות וניתנות לשחזור.</li>
+</ul>
+</div>
+</section>
+<section id="סקירה-נרטיבית-מול-סקירה-שיטתית" class="slide level2">
+<h2>סקירה נרטיבית מול סקירה שיטתית</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="random-sampling">Random sampling</h3>
-<p><strong>מי נכנס למחקר</strong></p>
-<p>קונה <strong>תקפות חיצונית</strong> (external validity): הזכות להכליל מהמדגם לאוכלוסייה.</p>
+<h3 id="סקירה-נרטיבית">סקירה נרטיבית</h3>
+<ul>
+<li>החוקר בוחר את המחקרים שהוא מכיר או שנראים לו רלוונטיים.</li>
+<li>השאלה מתחדדת תוך כדי הקריאה.</li>
+<li>החיפוש אינו מתועד, ולכן לא ניתן לשחזור.</li>
+<li>הסיכום מילולי ותלוי בשיקול הדעת של הכותב.</li>
+<li>רגישה במיוחד ל-<strong>confirmation bias</strong>: קל למצוא את מה שמחפשים.</li>
+</ul>
 </div><div class="column" style="width:50%;">
-<h3 id="random-assignment">Random assignment</h3>
-<p><strong>מי מקבל איזה תנאי</strong></p>
-<p>קונה <strong>תקפות פנימית</strong> (internal validity): הזכות לומר שההבדל נגרם על ידי המניפולציה.</p>
+<h3 id="סקירה-שיטתית">סקירה שיטתית</h3>
+<ul>
+<li>שאלה, קריטריונים ושיטת חיפוש נקבעים <strong>מראש</strong>, בפרוטוקול.</li>
+<li>החיפוש ממצה ומתועד עד למחרוזת החיפוש המדויקת.</li>
+<li>הסינון נעשה בשני שלבים, בידי לפחות שני קוראים בלתי תלויים.</li>
+<li>הנתונים מחולצים לטופס מובנה.</li>
+<li>אפשר לשחזר את כל התהליך ולבדוק אותו.</li>
+</ul>
 </div>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
@@ -357,23 +379,116 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>למה חוזרים על זה עכשיו</strong></p>
+<p><strong>הנקודה</strong></p>
 </div>
 <div class="callout-content">
-<p>בשבוע 7 זו הייתה הבחנה מושגית. בשבוע הזה היא נושכת: <strong>כל</strong> היכולת שלכם לטעון “זה גרם לזה” תלויה בשנייה, ולא בראשונה. ניסוי בדגימת נוחות עם הקצאה אקראית נותן טענה סיבתית מצוינת, על אוכלוסייה שאינכם יודעים מהי.</p>
+<p>בסקירה שיטתית <strong>המחקר הבודד הוא יחידת הניתוח</strong>. הסקירה עצמה היא מחקר, עם שיטה, פרוטוקול ותוצאות, והמחקרים שנכללו בה הם ה”נבדקים”.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הבעיה-כשהמשתתפים-בוחרים-לעצמם" class="slide level2">
-<h2>הבעיה: כשהמשתתפים בוחרים לעצמם</h2>
-<p>נניח שמציעים לסטודנטים תוכנית mindfulness, ומשווים רווחה נפשית בין מי שבחר להצטרף למי שלא.</p>
+<section id="חמשת-המרכיבים-של-סקירה-שיטתית" class="slide level2">
+<h2>חמשת המרכיבים של סקירה “שיטתית”</h2>
+<div>
+<ol type="1">
+<li class="fragment"><strong>שאלת מחקר מוגדרת מראש</strong>, בדרך כלל בפורמט PICO.</li>
+<li class="fragment"><strong>קריטריוני הכללה והדרה (inclusion / exclusion criteria)</strong> שנקבעו לפני שראינו את התוצאות.</li>
+<li class="fragment"><strong>חיפוש ממצה ומתועד</strong>: כמה מאגרים, מחרוזת חיפוש מלאה, תאריך החיפוש.</li>
+<li class="fragment"><strong>סינון בשני שלבים בידי שני קוראים</strong>: קודם כותרות ותקצירים, ואחר כך טקסט מלא. אי-הסכמות נפתרות בדיון או בקורא שלישי, ואת רמת ההסכמה בין הקוראים מודדים (למשל Cohen’s kappa).</li>
+<li class="fragment"><strong>חילוץ נתונים מובנה</strong>: טופס אחיד, ובאופן אידיאלי שני מחלצים.</li>
+</ol>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>הקשר לשבוע 8</strong></p>
+</div>
+<div class="callout-content">
+<p>הפרוטוקול נכתב ומפורסם <strong>לפני</strong> החיפוש. זה אותו עיקרון של pre-registration, והוא יחזור בהרחבה ב-W9.V3.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="שאלת-מחקר-ב-pico" class="slide level2">
+<h2>שאלת מחקר ב-PICO</h2>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">רכיב</th>
+<th style="text-align: left;">מה מגדירים</th>
+<th style="text-align: left;">דוגמה</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>P</strong>opulation</td>
+<td style="text-align: left;">על מי השאלה</td>
+<td style="text-align: left;">מבוגרים עם הפרעת חרדה</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>I</strong>ntervention</td>
+<td style="text-align: left;">מה המניפולציה או החשיפה</td>
+<td style="text-align: left;">התערבות מבוססת mindfulness</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>C</strong>omparison</td>
+<td style="text-align: left;">מול מה משווים</td>
+<td style="text-align: left;">רשימת המתנה, או טיפול פעיל</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>O</strong>utcome</td>
+<td style="text-align: left;">מה נמדד</td>
+<td style="text-align: left;">חומרת סימפטומי חרדה בסוף הטיפול</td>
+</tr>
+</tbody>
+</table>
 <div>
 <ul>
-<li class="fragment">מי שבוחר להצטרף הוא כנראה מי ש<strong>מוטיבציה</strong> גבוהה אצלו, פנוי יותר, ומתעניין בעצמו.</li>
-<li class="fragment">אותה מוטיבציה גם מעלה את הרווחה הנפשית <strong>בלי קשר לתוכנית</strong>.</li>
-<li class="fragment">ההבדל שנמדוד מערבב שני דברים: אפקט התוכנית, ואפקט ההבדל המוקדם בין מי שבוחר למי שלא.</li>
+<li class="fragment">כל אות ב-PICO הופכת לקריטריון סינון: מי נכלל, איזו התערבות, איזו השוואה, איזה outcome.</li>
+<li class="fragment">לשאלות שאינן קליניות יש וריאציות (למשל PECO לחשיפות), אבל העיקרון זהה.</li>
 </ul>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>חיבור ל-W8.V1</strong></p>
+</div>
+<div class="callout-content">
+<p>ה-P ב-PICO קובע <strong>לאיזו אוכלוסייה תאורטית</strong> האומדן המשותף יתייחס. סקירה ש”מערבבת” ילדים ומבוגרים תפיק ממוצע שאינו מתאר אף אחד מהם.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="אסטרטגיית-חיפוש" class="slide level2">
+<h2>אסטרטגיית חיפוש</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="מאגרים-ומחרוזת-חיפוש">מאגרים ומחרוזת חיפוש</h3>
+<ul>
+<li><strong>מאגרים</strong>: PsycINFO, PubMed/MEDLINE, Web of Science, Scopus. Google Scholar כתוספת בלבד.</li>
+<li><strong>מחרוזת חיפוש</strong>: מילות מפתח, מילים נרדפות ומונחים מבוקרים (למשל MeSH), מחוברים ב-AND / OR.</li>
+<li>מתעדים את המחרוזת המלאה <strong>לכל מאגר</strong> ואת תאריך החיפוש.</li>
+<li><strong>Citation chasing</strong>: מעבר על ביבליוגרפיות של מחקרים שנכללו (אחורה) ועל מי שציטט אותם (קדימה).</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="מעבר-למאמרים-שפורסמו">מעבר למאמרים שפורסמו</h3>
+<ul>
+<li><strong>ספרות אפורה (grey literature)</strong>: עבודות דוקטורט ותזות, דוחות, תקצירי כנסים, preprints (למשל PsyArXiv).</li>
+<li><strong>מרשמי ניסויים</strong>: ClinicalTrials.gov, OSF Registries. מגלים מחקרים שנרשמו ולא פורסמו.</li>
+<li>פנייה ישירה לחוקרים בתחום.</li>
+</ul>
+</div>
 </div>
 <div class="callout callout-warning callout-captioned callout-style-default">
 <div class="callout-body">
@@ -381,211 +496,156 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הבעיה הקשה באמת</strong></p>
+<p><strong>למה זה חשוב</strong></p>
 </div>
 <div class="callout-content">
-<p>המוטיבציה <strong>לא נמדדה</strong>. כדי לרבד לפיה (כפי שנראה ב-W9.V2), צריך לדעת אותה. ומה עם מה שלא חשבתם עליו בכלל, כמו מצב הרוח באותו שבוע, או עומס בבחינות?</p>
+<p>מחקרים שלא הניבו תוצאה מובהקת מתפרסמים פחות. חיפוש שמסתפק במאמרים שפורסמו יורש את ההטיה הזו. ספרות אפורה ומרשמים הם הדרך לתפוס לפחות חלק מהמחקרים ש”נעלמו”. נחזור לזה ב-W9.V3.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="מה-randomization-עושה-לגרף" class="slide level2">
-<h2>מה randomization עושה לגרף</h2>
-<div style="display:flex; flex-wrap:wrap; gap:18px; justify-content:center;">
-  <div style="text-align:center; flex:1 1 300px; max-width:360px;">
-    <div style="font-weight:bold; margin-bottom:4px;">הקצאה עצמית</div>
-    <svg viewbox="0 0 340 200" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
-      <defs><marker id="ah_a" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
-      <line x1="152.8" y1="54.8" x2="73.6" y2="131.9" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ah_a)"></line>
-      <line x1="187.2" y1="54.8" x2="266.4" y2="131.9" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ah_a)"></line>
-      <line x1="81" y1="150" x2="259" y2="150" stroke="#333" stroke-width="2.5" marker-end="url(#ah_a)"></line>
-      <circle cx="170" cy="38" r="24" fill="#fdf3e3" stroke="#a1690a" stroke-width="2" stroke-dasharray="5,4"></circle>
-      <text x="170" y="45" text-anchor="middle" font-size="20" font-weight="bold">U</text>
-      <circle cx="55" cy="150" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
-      <text x="55" y="157" text-anchor="middle" font-size="20" font-weight="bold">X</text>
-      <circle cx="285" cy="150" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
-      <text x="285" y="157" text-anchor="middle" font-size="20" font-weight="bold">Y</text>
-      <text x="215" y="30" font-size="13" fill="#a1690a">מוטיבציה (לא נמדדה)</text>
-      <text x="55" y="192" text-anchor="middle" font-size="13">טיפול</text>
-      <text x="285" y="192" text-anchor="middle" font-size="13">תוצאה</text>
-    </svg>
-  </div>
-  <div style="text-align:center; flex:1 1 300px; max-width:360px;">
-    <div style="font-weight:bold; margin-bottom:4px;">הקצאה אקראית</div>
-    <svg viewbox="0 0 340 200" style="width:100%; background:#fff; border:1px solid #ddd; border-radius:8px;">
-      <defs><marker id="ah_b" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
-      <line x1="152.8" y1="54.8" x2="73.6" y2="131.9" stroke="#bbb" stroke-width="2.5" stroke-dasharray="6,5"></line>
-      <text x="108" y="100" text-anchor="middle" font-size="26" font-weight="bold" fill="#c0392b">✕</text>
-      <line x1="187.2" y1="54.8" x2="266.4" y2="131.9" stroke="#333" stroke-width="2.5" marker-end="url(#ah_b)"></line>
-      <line x1="81" y1="150" x2="259" y2="150" stroke="#333" stroke-width="2.5" marker-end="url(#ah_b)"></line>
-      <line x1="30" y1="62" x2="30" y2="124" stroke="#27ae60" stroke-width="2.5" marker-end="url(#ah_b)"></line>
-      <circle cx="30" cy="38" r="22" fill="#e6f4ea" stroke="#27ae60" stroke-width="2"></circle>
-      <text x="30" y="45" text-anchor="middle" font-size="18" font-weight="bold">R</text>
-      <circle cx="170" cy="38" r="24" fill="#fdf3e3" stroke="#a1690a" stroke-width="2" stroke-dasharray="5,4"></circle>
-      <text x="170" y="45" text-anchor="middle" font-size="20" font-weight="bold">U</text>
-      <circle cx="55" cy="150" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
-      <text x="55" y="157" text-anchor="middle" font-size="20" font-weight="bold">X</text>
-      <circle cx="285" cy="150" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
-      <text x="285" y="157" text-anchor="middle" font-size="20" font-weight="bold">Y</text>
-      <text x="62" y="30" font-size="13" fill="#27ae60">מטבע</text>
-      <text x="215" y="30" font-size="13" fill="#a1690a">מוטיבציה (לא נמדדה)</text>
-    </svg>
-  </div>
-</div>
-<div>
-<ul>
-<li class="fragment">ב-randomization, <strong>X נקבע על ידי מטבע</strong> (R) ולא על ידי שום דבר אחר. כל החצים שנכנסו ל-X נמחקו.</li>
-<li class="fragment">אין חצים נכנסים ל-X, לכן אין <strong>backdoor paths</strong>, ולכן אין צורך לפקח על דבר.</li>
-</ul>
-</div>
+<section id="תרשים-הזרימה-של-prisma-2020" class="slide level2">
+<h2>תרשים הזרימה של PRISMA 2020</h2>
+<p>PRISMA (Page et al., 2021) הוא הסטנדרט לדיווח על סקירות שיטתיות. הלב שלו הוא תרשים זרימה שמתעד את מספר הרשומות בכל שלב.</p>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">שלב</th>
+<th style="text-align: left;">מה קורה</th>
+<th style="text-align: left;">מה מדווחים</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Identification</strong></td>
+<td style="text-align: left;">חיפוש במאגרים ובמקורות נוספים, הסרת כפילויות</td>
+<td style="text-align: left;">כמה רשומות לפי מקור, כמה כפילויות הוסרו</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Screening</strong></td>
+<td style="text-align: left;">קריאת כותרות ותקצירים</td>
+<td style="text-align: left;">כמה רשומות נפסלו</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Eligibility</strong></td>
+<td style="text-align: left;">קריאת הטקסט המלא מול קריטריוני ההכללה</td>
+<td style="text-align: left;">כמה נפסלו, <strong>ומהי הסיבה לכל אחד</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Included</strong></td>
+<td style="text-align: left;">המחקרים שנכנסו לסקירה</td>
+<td style="text-align: left;">כמה מחקרים וכמה דוחות</td>
+</tr>
+</tbody>
+</table>
 <div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הטענה הייחודית</strong></p>
+<p><strong>למה מדווחים כמה נפלו בכל שלב</strong></p>
 </div>
 <div class="callout-content">
-<p>Randomization סוגרת את הנתיבים דרך מבלבלים שמדדתם, שלא מדדתם, <strong>ושלא חשבתם עליהם</strong>. אין שום שיטת פיקוח אחרת שמבטיחה את זה.</p>
+<ul>
+<li><strong>שקיפות ושחזור</strong>: קורא אחר יכול לבדוק אם ההחלטות סבירות.</li>
+<li><strong>אבחון</strong>: אם נפלו 99% בשלב הכותרות, ייתכן שמחרוזת החיפוש רחבה מדי. אם רוב הנפסלים בטקסט המלא נפלו מאותה סיבה, הקריטריונים אולי לא הובהרו מספיק.</li>
+<li><strong>הערכת הטיית הבחירה</strong>: המספר הסופי תלוי בכל החלטת סינון בדרך, וקורא צריך לראות אותן.</li>
+</ul>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-ניסוי-עם-מבלבל-שלא-נמדד" class="slide level2">
-<h2>הדגמה: ניסוי עם מבלבל שלא נמדד</h2>
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:6px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.8em;">
-    <label>עוצמת המבלבל U: <b id="gval">0.60</b>
-      <input type="range" id="g" min="0" max="1" step="0.05" value="0.6"></label>
-    <label>האפקט האמיתי של X: <b id="tval">3</b>
-      <input type="range" id="t" min="0" max="10" step="1" value="3"></label>
-    <label>משתתפים בכל ניסוי: <b id="nval">200</b>
-      <input type="range" id="nn" min="50" max="500" step="50" value="200"></label>
+<section id="הדגמה-תרשים-זרימה-אינטראקטיבי" class="slide level2">
+<h2>הדגמה: תרשים זרימה אינטראקטיבי</h2>
+<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
+  <div style="display:flex; flex-wrap:wrap; gap:18px; align-items:center; margin-bottom:8px; font-size:0.8em;">
+    <label>רשומות שאותרו: <b id="prN_v">4,000</b>
+      <input type="range" id="prN" min="500" max="20000" step="500" value="4000"></label>
+    <label>שיעור כפילויות: <b id="prD_v">25%</b>
+      <input type="range" id="prD" min="0" max="60" step="1" value="25"></label>
+    <label>פסילה בכותרות ותקצירים: <b id="prE1_v">92%</b>
+      <input type="range" id="prE1" min="50" max="99" step="1" value="92"></label>
+    <label>פסילה בטקסט מלא: <b id="prE2_v">70%</b>
+      <input type="range" id="prE2" min="0" max="95" step="1" value="70"></label>
+    <label><input type="checkbox" id="prLog"> סקאלה לוגריתמית</label>
   </div>
-  <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:6px; font-size:0.8em;">
-    <span>מצב:</span>
-    <button id="m_self" style="padding:4px 12px; border-radius:6px; border:1px solid #c0392b; cursor:pointer;">הקצאה עצמית</button>
-    <button id="m_rand" style="padding:4px 12px; border-radius:6px; border:1px solid #2980b9; cursor:pointer;">הקצאה אקראית</button>
-    <button id="m_both" style="padding:4px 12px; border-radius:6px; border:1px solid #555; cursor:pointer;">שתיהן יחד</button>
-    <button id="reseed" style="padding:4px 12px; border-radius:6px; border:1px solid #999; cursor:pointer; margin-right:auto;">הגרל 300 ניסויים מחדש</button>
-  </div>
-  <div id="demo-rand" style="width:100%; height:300px;"></div>
-  <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;">
-    <div id="out_self" style="flex:1 1 300px; text-align:center; font-weight:bold; padding:7px; border-radius:6px; font-size:0.8em;"></div>
-    <div id="out_rand" style="flex:1 1 300px; text-align:center; font-weight:bold; padding:7px; border-radius:6px; font-size:0.8em;"></div>
-  </div>
+  <div id="demo-prisma" style="width:100%; height:320px;"></div>
+  <div id="prisma_out" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
+  <div id="prisma_sens" style="text-align:center; font-size:0.8em; padding:4px; color:#555;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  const R = 300;
-  let mode = 'both';
-  let seed = 20260930;
-  const $ = id => document.getElementById(id);
-
-  function mulberry32(a) {
-    return function() {
-      a |= 0; a = a + 0x6D2B79F5 | 0;
-      let t = Math.imul(a ^ a >>> 15, 1 | a);
-      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    };
+  function g(id) { return document.getElementById(id); }
+  function fmt(x) { return Math.round(x).toLocaleString('en-US'); }
+  function chain(N, dup, e1, e2) {
+    const a = N;
+    const b = Math.round(a * (1 - dup));
+    const c = Math.round(b * (1 - e1));
+    const d = Math.round(c * (1 - e2));
+    return [a, b, c, d];
   }
-
-  // מדמה R ניסויים. באותם אנשים (אותו U, אותו רעש) משווים שני מנגנוני הקצאה.
-  function simulate(g, tau, n, seed) {
-    const rng = mulberry32(seed);
-    function randn() {
-      let u = 0, v = 0;
-      while (u === 0) u = rng();
-      while (v === 0) v = rng();
-      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-    }
-    const gam = 6 * g;   // כמה U משפיע על Y
-    const k = 2.5 * g;   // כמה U משפיע על הבחירה להיכנס לטיפול
-    const self = [], rand = [];
-    for (let r = 0; r < R; r++) {
-      let sa1 = 0, na1 = 0, sa0 = 0, na0 = 0, sb1 = 0, nb1 = 0, sb0 = 0, nb0 = 0;
-      for (let i = 0; i < n; i++) {
-        const U = randn(), e = 5 * randn();
-        const v1 = rng(), v2 = rng();
-        const y0 = gam * U + e;
-        const xs = v1 < 1 / (1 + Math.exp(-k * U));
-        const xr = v2 < 0.5;
-        const ys = y0 + (xs ? tau : 0);
-        const yr = y0 + (xr ? tau : 0);
-        if (xs) { sa1 += ys; na1++; } else { sa0 += ys; na0++; }
-        if (xr) { sb1 += yr; nb1++; } else { sb0 += yr; nb0++; }
-      }
-      if (na1 && na0) self.push(sa1 / na1 - sa0 / na0);
-      if (nb1 && nb0) rand.push(sb1 / nb1 - sb0 / nb0);
-    }
-    return { self: self, rand: rand };
-  }
-
-  const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
-
-  function paintOut(el, label, m, tau) {
-    const bias = m - tau;
-    el.textContent = label + ': ממוצע האומדים ' + m.toFixed(1) +
-                     '  ·  האמת ' + tau.toFixed(1) +
-                     '  ·  הטיה ' + (bias >= 0 ? '+' : '') + bias.toFixed(1);
-    if (Math.abs(bias) < 0.5) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
-    else { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
-  }
-
-  function styleButtons() {
-    const on = { self: 'm_self', rand: 'm_rand', both: 'm_both' };
-    Object.keys(on).forEach(k => {
-      const b = $(on[k]);
-      b.style.background = (k === mode) ? '#f2f2f2' : '#fff';
-      b.style.fontWeight = (k === mode) ? 'bold' : 'normal';
-    });
-  }
-
   function draw() {
-    const g = parseFloat($('g').value);
-    const tau = parseFloat($('t').value);
-    const n = parseInt($('nn').value);
-    $('gval').textContent = g.toFixed(2);
-    $('tval').textContent = tau;
-    $('nval').textContent = n;
+    const N   = parseInt(g('prN').value);
+    const dup = parseFloat(g('prD').value) / 100;
+    const e1  = parseFloat(g('prE1').value) / 100;
+    const e2  = parseFloat(g('prE2').value) / 100;
+    const useLog = g('prLog').checked;
+    g('prN_v').textContent  = fmt(N);
+    g('prD_v').textContent  = Math.round(dup * 100) + '%';
+    g('prE1_v').textContent = Math.round(e1 * 100) + '%';
+    g('prE2_v').textContent = Math.round(e2 * 100) + '%';
 
-    const res = simulate(g, tau, n, seed);
-    const bins = { start: -10, end: 22, size: 0.5 };
-    const traces = [];
-    if (mode !== 'rand') traces.push({ x: res.self, type: 'histogram', xbins: bins, autobinx: false,
-      opacity: 0.65, marker: { color: '#c0392b' }, name: 'הקצאה עצמית' });
-    if (mode !== 'self') traces.push({ x: res.rand, type: 'histogram', xbins: bins, autobinx: false,
-      opacity: 0.65, marker: { color: '#2980b9' }, name: 'הקצאה אקראית' });
-
-    const layout = {
-      barmode: 'overlay',
-      xaxis: { title: 'האפקט הנאמד בניסוי בודד (הפרש ממוצעים)', range: [-10, 22] },
-      yaxis: { title: 'מספר ניסויים (מתוך 300)' },
-      margin: { t: 28, b: 45, l: 55, r: 20 },
-      legend: { x: 0.99, xanchor: 'right', y: 0.98 },
-      shapes: [{ type: 'line', x0: tau, x1: tau, y0: 0, y1: 1, yref: 'paper',
-                 line: { color: '#27ae60', width: 3, dash: 'dash' } }],
-      annotations: [{ x: tau, y: 1, yref: 'paper', yanchor: 'bottom', showarrow: false,
-                      text: 'האפקט האמיתי', font: { color: '#27ae60', size: 12 } }]
+    const v = chain(N, dup, e1, e2);
+    const labels = [
+      'Identification<br>אותרו',
+      'אחרי הסרת כפילויות<br>(הוסרו ' + fmt(v[0] - v[1]) + ')',
+      'Screening<br>עברו כותרות ותקצירים<br>(נפסלו ' + fmt(v[1] - v[2]) + ')',
+      'Included<br>עברו טקסט מלא<br>(נפסלו ' + fmt(v[2] - v[3]) + ')'
+    ];
+    const finalColor = v[3] < 5 ? '#c0392b' : (v[3] < 15 ? '#e67e22' : '#27ae60');
+    const trace = {
+      x: labels, y: v, type: 'bar',
+      text: v.map(fmt), textposition: 'outside',
+      marker: { color: ['#7fb3d5', '#5499c7', '#2980b9', finalColor] }
     };
-    Plotly.newPlot('demo-rand', traces, layout, { displayModeBar: false });
+    const layout = {
+      yaxis: { title: 'מספר רשומות', type: useLog ? 'log' : 'linear', rangemode: 'tozero' },
+      xaxis: { tickfont: { size: 11 } },
+      margin: { t: 20, b: 80, l: 60, r: 20 },
+      showlegend: false
+    };
+    if (useLog) layout.yaxis.range = [0, Math.log10(Math.max(N, 10)) + 0.3];
+    Plotly.newPlot('demo-prisma', [trace], layout, { displayModeBar: false });
 
-    const oS = $('out_self'), oR = $('out_rand');
-    oS.style.display = (mode === 'rand') ? 'none' : 'block';
-    oR.style.display = (mode === 'self') ? 'none' : 'block';
-    paintOut(oS, 'הקצאה עצמית', mean(res.self), tau);
-    paintOut(oR, 'הקצאה אקראית', mean(res.rand), tau);
-    styleButtons();
+    const el = g('prisma_out');
+    let msg = 'נותרו ' + fmt(v[3]) + ' מחקרים לסקירה מתוך ' + fmt(N) + ' רשומות (' +
+              (100 * v[3] / N).toFixed(1) + '%)';
+    if (v[3] < 5) {
+      msg += ' — מעט מאוד: כל אומדן משותף יהיה רופף';
+      el.style.background = '#fdecea'; el.style.color = '#a32d2d';
+    } else if (v[3] > 150) {
+      msg += ' — ספרות גדולה מאוד: כדאי לשאול אם השאלה רחבה מדי';
+      el.style.background = '#fdf3e3'; el.style.color = '#a1690a';
+    } else {
+      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
+    }
+    el.textContent = msg;
+
+    // רגישות: מה אם הסינון הראשון היה מחמיר ב-3 נקודות אחוז
+    const e1b = Math.min(0.995, e1 + 0.03);
+    const alt = chain(N, dup, e1b, e2)[3];
+    const change = v[3] > 0 ? Math.round(100 * (alt - v[3]) / v[3]) : 0;
+    g('prisma_sens').textContent = 'רגישות: אילו הפסילה בכותרות הייתה מחמירה ב-3 נקודות אחוז (' +
+      Math.round(e1b * 100) + '%), היו נכללים ' + fmt(alt) + ' מחקרים (' + change + '% שינוי)';
   }
-
-  ['g', 't', 'nn'].forEach(id => $(id).addEventListener('input', draw));
-  $('m_self').addEventListener('click', () => { mode = 'self'; draw(); });
-  $('m_rand').addEventListener('click', () => { mode = 'rand'; draw(); });
-  $('m_both').addEventListener('click', () => { mode = 'both'; draw(); });
-  $('reseed').addEventListener('click', () => { seed = Math.floor(Math.random() * 2147483647); draw(); });
+  ['prN', 'prD', 'prE1', 'prE2', 'prLog'].forEach(id => g(id).addEventListener('input', draw));
   setTimeout(draw, 400);
 })();
 </script>
@@ -594,40 +654,10 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment"><strong>הקצאה עצמית:</strong> ככל שהמבלבל U חזק יותר, ההתפלגות של האומדים זזה ימינה, הרחק מהאמת. גם עם 500 משתתפים. <strong>הגדלת המדגם לא מתקנת הטיה.</strong></li>
-<li class="fragment"><strong>הקצאה אקראית:</strong> ההתפלגות נשארת ממורכזת על האמת, <strong>לא משנה כמה חזק U</strong>. אף אחד לא מדד את U, ואף אחד לא פיקח עליו.</li>
-<li class="fragment">הניסוי האקראי עדיין <strong>רועש</strong>: ניסוי בודד יכול לפספס. אקראיות מבטיחה ש<strong>בממוצע</strong> האומדן נכון, לא שכל ניסוי יצליח.</li>
+<li class="fragment">המספר הסופי הוא <strong>מכפלה</strong> של שיעורי שרידה, ולכן רגיש מאוד לכל אחד מהם. שינוי קטן בשלב אחד מוכפל בכל השלבים שאחריו.</li>
+<li class="fragment">הזיזו את הפסילה בכותרות מ-92% ל-95%: מספר המחקרים הנכללים יורד בכ-38%. זו החלטה של קורא שמסתכל על תקציר, ובכל זאת היא קובעת אילו מחקרים ייכנסו לניתוח.</li>
+<li class="fragment">לכן PRISMA דורש לדווח את המספרים בכל שלב, ולכן הסינון נעשה בידי שני קוראים לפי קריטריונים שנכתבו מראש.</li>
 </ul>
-</div>
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>שימו לב</strong></p>
-</div>
-<div class="callout-content">
-<p>בשני המצבים, אלה <strong>אותם אנשים</strong> עם אותו U ואותו רעש. הדבר היחיד ששונה הוא מי קבע מי מקבל את הטיפול: הם, או המטבע.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="מה-עוד-נדרש-כדי-שניסוי-יעבוד" class="slide level2">
-<h2>מה עוד נדרש כדי שניסוי יעבוד</h2>
-<p>Randomization מוחקת חצים <strong>שנכנסים</strong> ל-X. היא לא אומרת דבר על חצים אחרים שעלולים להישתל בניסוי.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="allocation-concealment">Allocation concealment</h3>
-<p><strong>לפני</strong> ההקצאה.</p>
-<p>מי שמגייס משתתפים לא יכול לדעת, או לנחש, לאיזה תנאי יוקצה המשתתף הבא.</p>
-<p>מגן על ה-randomization עצמה: בלעדיו, החוקר “עוזר” למשתתפים מסוימים להגיע לתנאי מסוים, והחץ הנכנס ל-X חוזר.</p>
-</div><div class="column" style="width:50%;">
-<h3 id="blinding">Blinding</h3>
-<p><strong>אחרי</strong> ההקצאה.</p>
-<p>משתתפים, מפעילים ומעריכי תוצאה לא יודעים מי בתנאי איזה.</p>
-<p>מגן על החצים <strong>היוצאים</strong> מ-X: ציפיות, יחס שונה למשתתפים, שיקול דעת של מי שמדרג את התוצאה.</p>
-</div>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
@@ -635,165 +665,51 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הבחנה</strong></p>
+<p><strong>מה זה אומר על האומדן</strong></p>
 </div>
 <div class="callout-content">
-<p>Concealment מגן על ההקצאה. Blinding מגן על המדידה וההתנהגות שאחריה. אפשר שיהיה אחד בלי השני.</p>
+<p>המחקרים שנשארו הם מדגם שסוננו לפי קריטריונים. אם הקריטריונים נבחרו אחרי שראינו את התוצאות, האומדן המשותף כבר אינו ניטרלי.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="intention-to-treat-מול-per-protocol" class="slide level2 smaller">
-<h2>Intention-to-treat מול per-protocol</h2>
-<p>מה עושים עם מי שהוקצה לטיפול אבל לא הגיע לפגישות, או עבר לקבוצה השנייה?</p>
-<table>
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Intention-to-treat</th>
-<th>Per-protocol</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>את מי מנתחים</strong></td>
-<td>כל מי שהוקצה, <strong>לפי ההקצאה</strong></td>
-<td>רק מי שביצע את הטיפול כפי שתוכנן</td>
-</tr>
-<tr class="even">
-<td><strong>מה נשמר</strong></td>
-<td>ה-randomization שלמה</td>
-<td>נשמר רק “מי שהתמיד”</td>
-</tr>
-<tr class="odd">
-<td><strong>על מה עונה</strong></td>
-<td>מה קורה כשמציעים או מקצים טיפול</td>
-<td>מה קורה למי שמקבל אותו בפועל</td>
-</tr>
-<tr class="even">
-<td><strong>הסיכון</strong></td>
-<td>האפקט מדולל אם יש אי-היענות</td>
-<td>הבחירה להתמיד היא <strong>הקצאה עצמית</strong></td>
-</tr>
-</tbody>
-</table>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>למה per-protocol מסוכן</strong></p>
-</div>
-<div class="callout-content">
-<p>מי שמתמיד בטיפול שונה ממי שנשר: יותר מוטיבציה, פחות בעיות, יותר תמיכה. הניתוח הזה מחזיר את U לתמונה, ובכך מבטל בדיוק את מה ש-randomization קנתה.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="attrition-כ-collider" class="slide level2">
-<h2>Attrition כ-collider</h2>
-<p>נשירה היא לא רק אובדן כוח סטטיסטי. כשהיא <strong>דיפרנציאלית</strong>, היא מחזירה הטיה.</p>
+<section id="הערכת-סיכון-להטיה-risk-of-bias" class="slide level2">
+<h2>הערכת סיכון להטיה (risk of bias)</h2>
+<p>לא כל המחקרים שנכללו מהימנים באותה מידה. בסקירה שיטתית מעריכים <strong>בנפרד לכל מחקר</strong> עד כמה התוצאה שלו עלולה להיות מוטה.</p>
 <div class="columns">
-<div class="column" style="width:45%;">
-<svg viewbox="0 0 340 210" style="width:100%; max-width:340px; background:#fff; border:1px solid #ddd; border-radius:8px;">
-    <defs><marker id="ah_c" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"></path></marker></defs>
-    <line x1="75.6" y1="55.6" x2="146.6" y2="126.6" stroke="#333" stroke-width="2.5" marker-end="url(#ah_c)"></line>
-    <line x1="264.4" y1="55.6" x2="193.4" y2="126.6" stroke="#333" stroke-width="2.5" marker-end="url(#ah_c)"></line>
-    <circle cx="55" cy="40" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
-    <text x="55" y="47" text-anchor="middle" font-size="20" font-weight="bold">X</text>
-    <circle cx="285" cy="40" r="24" fill="#eef5fa" stroke="#185fa5" stroke-width="2"></circle>
-    <text x="285" y="47" text-anchor="middle" font-size="20" font-weight="bold">Y</text>
-    <rect x="145" y="132" width="50" height="50" rx="4" fill="#fdecea" stroke="#c0392b" stroke-width="3"></rect>
-    <text x="170" y="164" text-anchor="middle" font-size="20" font-weight="bold">S</text>
-    <text x="55" y="86" text-anchor="middle" font-size="13">טיפול</text>
-    <text x="285" y="86" text-anchor="middle" font-size="13">תוצאה</text>
-    <text x="170" y="200" text-anchor="middle" font-size="13">נשארו עד הסוף</text>
-  </svg>
-</div><div class="column" style="width:55%;">
-<div>
+<div class="column" style="width:50%;">
+<h3 id="כלים-נפוצים">כלים נפוצים</h3>
 <ul>
-<li class="fragment"><strong>S</strong> = האם המשתתף נשאר עד המדידה האחרונה. גם הטיפול (תופעות לוואי, עומס) וגם התוצאה (מי שלא משתפר עוזב) משפיעים עליו.</li>
-<li class="fragment">מנתחים רק את מי שנשאר, כלומר <strong>מתנים על S = 1</strong>. המרובע בגרף מסמן התניה.</li>
-<li class="fragment">S הוא <strong>collider</strong>: שני חצים נכנסים אליו. התניה עליו <strong>פותחת</strong> נתיב בין X ל-Y שהיה סגור.</li>
+<li><strong>RoB 2</strong>: לניסויים מבוקרים עם הקצאה אקראית.</li>
+<li><strong>ROBINS-I</strong>: למחקרים לא-ניסוייים (הסקה סיבתית ממחקר תצפיתי).</li>
+<li><strong>Newcastle-Ottawa</strong>: לתצפיתיים, פשוט יותר.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="תחומי-ההטיה-ב-rob-2">תחומי ההטיה ב-RoB 2</h3>
+<ul>
+<li>תהליך ההקצאה האקראית.</li>
+<li>סטיות מההתערבות המתוכננת.</li>
+<li>נתוני outcome חסרים.</li>
+<li>מדידת ה-outcome.</li>
+<li><strong>בחירת התוצאה המדווחת</strong> מתוך כמה אפשרויות.</li>
 </ul>
 </div>
 </div>
-</div>
-</section>
-<section id="דוגמה-מספרית-אפס-אפקט-ובכל-זאת-אפקט" class="slide level2">
-<h2>דוגמה מספרית: אפס אפקט, ובכל זאת “אפקט”</h2>
-<p>מאה משתתפים בכל קבוצה. <strong>הטיפול אינו עושה כלום</strong>: בשתי הקבוצות 50 היו משתפרים ו-50 לא.</p>
-<table>
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>קבוצה</th>
-<th>משתפרים / לא משתפרים</th>
-<th>נשרו (משתפרים / לא)</th>
-<th>נשארו (משתפרים / לא)</th>
-<th>% שיפור בנשארים</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ביקורת</td>
-<td>50 / 50</td>
-<td>5 / 5</td>
-<td>45 / 45</td>
-<td><strong>50%</strong></td>
-</tr>
-<tr class="even">
-<td>טיפול</td>
-<td>50 / 50</td>
-<td>0 / 30</td>
-<td>50 / 20</td>
-<td><strong>71%</strong></td>
-</tr>
-</tbody>
-</table>
 <div>
 <ul>
-<li class="fragment">בביקורת הנשירה אקראית לגמרי (10% מכל סוג). בטיפול, מי שלא משתפר <strong>ונחשף לתופעות לוואי</strong> עוזב.</li>
-<li class="fragment">בקרב הנשארים: 71% מול 50%, “אפקט” של 21 נקודות אחוז, מטיפול שאין בו אפקט בכלל.</li>
-<li class="fragment">ההקצאה הייתה אקראית לחלוטין, ועדיין קיבלנו הטיה. הכול בגלל שהסתכלנו רק על <strong>S = 1</strong>.</li>
+<li class="fragment">התחום האחרון הוא בדיוק דרגות החופש של החוקר משבוע 8, מנקודת מבט של הקורא.</li>
+<li class="fragment">מה עושים עם ההערכה? מציגים אותה, ובודקים ב-sensitivity analysis אם האומדן המשותף משתנה כשמוציאים את המחקרים בסיכון גבוה.</li>
 </ul>
-</div>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>שני לקחים</strong></p>
-</div>
-<div class="callout-content">
-<ol type="1">
-<li>Intention-to-treat דורש תוצאה <strong>לכולם</strong>, ולכן צריך לעקוב גם אחרי מי שנשר. (2) נשירה שונה בין הקבוצות היא סימן אזהרה: תמיד לדווח כמה נשרו מכל קבוצה ולמה.</li>
-</ol>
-</div>
-</div>
 </div>
 </section>
 <section id="סיכום-w9.v1" class="slide level2">
 <h2>סיכום W9.V1</h2>
 <ul>
-<li><strong>Random sampling</strong> קונה תקפות חיצונית. <strong>Random assignment</strong> קונה תקפות פנימית. רק השנייה מאפשרת טענה סיבתית.</li>
-<li>Randomization <strong>מוחקת את כל החצים הנכנסים ל-X</strong>, ולכן סוגרת את כל ה-backdoor paths: גם על מבלבלים שלא מדדתם ולא חשבתם עליהם.</li>
-<li>הגדלת מדגם לא מתקנת הטיה. אקראיות מבטיחה נכונות <strong>בממוצע</strong>, לא בכל ניסוי.</li>
-<li><strong>Allocation concealment</strong> מגן על ההקצאה, <strong>blinding</strong> על מה שקורה אחריה. <strong>Intention-to-treat</strong> שומר על ה-randomization, <strong>per-protocol</strong> מבטל אותה.</li>
-<li><strong>Attrition</strong> דיפרנציאלית היא התניה על <strong>collider</strong>, והיא מחזירה הטיה לניסוי אקראי מושלם. ב-W9.V2 נראה למה ההתניה הזו פועלת כך, ולמה ריבוד לא תמיד מתקן.</li>
+<li>סקירה <strong>שיטתית</strong> שונה מנרטיבית בכך שהשאלה, הקריטריונים ושיטת החיפוש נקבעים מראש ומתועדים, והסינון והחילוץ נעשים בידי שני קוראים.</li>
+<li><strong>PICO</strong> הופך שאלה מעורפלת לקריטריונים; ה-P קובע לאיזו אוכלוסייה תאורטית האומדן יתייחס.</li>
+<li>החיפוש חייב לכלול <strong>ספרות אפורה</strong> ו<strong>מרשמי ניסויים</strong>, כדי לצמצם את הטיית הפרסום.</li>
+<li><strong>PRISMA 2020</strong> מחייב לדווח כמה רשומות נפלו בכל שלב ולמה; המספר הסופי הוא מכפלה של שיעורי שרידה, ולכן רגיש לכל החלטת סינון.</li>
+<li>לכל מחקר שנכלל מעריכים <strong>risk of bias</strong>; ביחידה הבאה נראה איך מאחדים את המחקרים האלה לאומדן אחד.</li>
 </ul>
 <div class="footer footer-default">
 

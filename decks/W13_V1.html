@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W13.V1 — odds ו-odds ratio</title>
+  <title>W13.V1 — שני תנאים בתוך נבדק: מה מבחן t מזווג באמת עושה</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,27 +325,27 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W13.V1 — odds ו-odds ratio</h1>
-  <p class="subtitle">מהסתברות ל-odds, ולמה לא לקרוא odds ratio כאילו הוא risk ratio</p>
+  <h1 class="title">W13.V1 — שני תנאים בתוך נבדק: מה מבחן t מזווג באמת עושה</h1>
+  <p class="subtitle">random intercept לכל נבדק, ההפרש בתוך הנבדק, ולמה מערך תוך-נבדקי חזק יותר</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להמיר בין <strong>הסתברות</strong> ל-<strong>odds</strong> בשני הכיוונים, ולהבין למה ה-odds ו-log-odds הם הבסיס לרגרסיה לוגיסטית.</li>
-<li>להגדיר <strong>odds ratio</strong> ולחשב אותו ביד מטבלת 2×2.</li>
-<li>להבחין בין <strong>odds ratio</strong> ל-<strong>risk ratio</strong>: מתי הם קרובים ומתי הם מתרחקים.</li>
-<li>לזהות בספרות הרפואית דיווח של OR כאילו הוא RR, ולהעריך כמה הוא מנפח את הרושם.</li>
+<li>לזהות שמבחן t מזווג (dependent t-test) משבוע 6 הוא מודל עם <strong>random intercept</strong> לכל נבדק.</li>
+<li>להבין למה מדידות חוזרות על אותו נבדק אינן בלתי תלויות, ומה קורה כשמתעלמים מכך.</li>
+<li>להבחין בין שונות <strong>בין-נבדקית</strong> לשונות <strong>תוך-נבדקית</strong>, ולהכיר את ה-<strong>ICC</strong>.</li>
+<li>להבין למה המערך התוך-נבדקי חזק יותר, ואת הרעיון החדש היחיד של השבוע: לפרמטרים עצמם יש התפלגות.</li>
 </ul>
 </section>
-<section id="זוכרים-את-שבוע-1" class="slide level2">
-<h2>זוכרים את שבוע 1?</h2>
-<p>בשבוע 1 למדנו את התפלגות <strong>Bernoulli</strong>: תצפית שהיא 0 או 1, עם פרמטר יחיד <span class="math inline">\(p\)</span>, ו-likelihood שמודד עד כמה <span class="math inline">\(p\)</span> מסוים מתאים לנתונים.</p>
+<section id="זוכרים-את-מבחן-ה-t-המזווג" class="slide level2">
+<h2>זוכרים את מבחן ה-t המזווג?</h2>
+<p>בשבוע 6 ראינו מערך של לפני-אחרי: כל נבדק נמדד פעמיים, בתנאי 1 ובתנאי 2.</p>
 <div>
 <ul>
-<li class="fragment">שם לא היה שום predictor. <strong>כל</strong> התצפיות חלקו את אותו <span class="math inline">\(p\)</span>.</li>
-<li class="fragment">בשבוע 13 נוסיף predictors, ונרשה ל-<span class="math inline">\(p\)</span> להשתנות מתצפית לתצפית.</li>
-<li class="fragment">כדי לעשות את זה נדרש קודם להתרגל לסקאלה חדשה שבה מודדים את <span class="math inline">\(p\)</span>: <strong>odds</strong>.</li>
+<li class="fragment">חישבנו לכל נבדק את ההפרש <span class="math inline">\(d_i = y_{i2} - y_{i1}\)</span>.</li>
+<li class="fragment">ואז עשינו על ההפרשים מבחן t רגיל של מדגם אחד, מול <span class="math inline">\(0\)</span>.</li>
+<li class="fragment">הנבדק “נעלם” מהחישוב: נשארה עמודה אחת של הפרשים.</li>
 </ul>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
@@ -354,253 +354,244 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>קשת הקורס</strong></p>
+<p><strong>מה נעשה היום</strong></p>
 </div>
 <div class="callout-content">
-<p>זו הסקאלה שבה רגרסיה לוגיסטית “חיה”. ביחידה הזו נלמד אותה, אחר כך נבנה עליה את המודל, ובסוף נראה איפה היא מטעה.</p>
+<p>לא נלמד נושא חדש. נבין מה <strong>באמת</strong> קרה שם, ולמה זה עבד.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הסתברות-ו-odds" class="slide level2">
-<h2>הסתברות ו-odds</h2>
-<p><span class="math display">\[\text{odds} = \frac{p}{1-p} \qquad\qquad p = \frac{\text{odds}}{1+\text{odds}}\]</span></p>
+<section id="הבעיה-מדידות-על-אותו-נבדק-אינן-בלתי-תלויות" class="slide level2">
+<h2>הבעיה: מדידות על אותו נבדק אינן בלתי תלויות</h2>
+<p>נבדק עם רמת בסיס גבוהה יהיה גבוה <strong>בשני</strong> התנאים. שתי המדידות שלו קשורות זו לזו.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">הסתברות <span class="math inline">\(p\)</span></th>
-<th style="text-align: center;">odds</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">0.10</td>
-<td style="text-align: center;">1/9 ≈ 0.11</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">1/4 = 0.25</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0.50</td>
-<td style="text-align: center;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0.75</td>
-<td style="text-align: center;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0.90</td>
-<td style="text-align: center;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0.99</td>
-<td style="text-align: center;">99</td>
-</tr>
-</tbody>
-</table>
-</div><div class="column" style="width:50%;">
-<div>
+<h3 id="כשמתעלמים-מזה-pseudoreplication">כשמתעלמים מזה: pseudoreplication</h3>
 <ul>
-<li class="fragment">odds = 1 פירושו “50–50”.</li>
-<li class="fragment">odds = 3 נקרא “שלוש נגד אחד”: על כל מקרה שלא קרה, שלושה שקרו.</li>
-<li class="fragment"><span class="math inline">\(p = 0.9\)</span> ו-<span class="math inline">\(p = 0.99\)</span> נראים קרובים, אך ה-odds שלהם רחוקים מאוד: 9 מול 99.</li>
+<li>מתייחסים לתצפיות מאותו נבדק כאילו הן תצפיות ממדגם גדול יותר.</li>
+<li>“המדגם האפקטיבי” קטן ממספר התצפיות.</li>
+<li>כשהאפקט מגיע מהשוואה <strong>בין</strong> נבדקים: שגיאות תקן קטנות מדי ומובהקות מנופחת.</li>
 </ul>
+</div><div class="column" style="width:50%;">
+<h3 id="אותה-תלות-כיוון-הפוך">אותה תלות, כיוון הפוך</h3>
+<ul>
+<li>בהשוואה <strong>בין שני תנאים בתוך נבדק</strong>, התעלמות מהזיווג מנפחת את שגיאת התקן.</li>
+<li>אנחנו מאבדים עוצמה סטטיסטית.</li>
+<li>הכיוון של הטעות תלוי במערך, אבל הבעיה זהה: התלות נשארה בנתונים.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>חיבור לשבוע 8</strong></p>
+</div>
+<div class="callout-content">
+<p>זו אותה תלות שהופיעה בדגימת אשכולות: תצפיות בתוך אשכול דומות זו לזו. כאן האשכול הוא הנבדק עצמו.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="למה-odds-ולא-הסתברות" class="slide level2">
-<h2>למה odds ולא הסתברות</h2>
+<section id="המודל-random-intercept-לכל-נבדק" class="slide level2">
+<h2>המודל: random intercept לכל נבדק</h2>
+<p><span class="math display">\[y_{ij} = \beta_0 + \beta_1 \cdot \text{Cond}_{ij} + u_i + \epsilon_{ij}\]</span></p>
+<p><span class="math display">\[u_i \sim N(0, \tau^2), \qquad \epsilon_{ij} \sim N(0, \sigma^2)\]</span></p>
 <div>
 <ul>
-<li class="fragment"><strong>הסתברות</strong> חסומה בין 0 ל-1. מודל ליניארי לא מכיר בחסמים האלה.</li>
-<li class="fragment"><strong>odds</strong> נע בין 0 ל-<span class="math inline">\(\infty\)</span>: נפתח מלמעלה, אך עדיין חסום מלמטה ב-0.</li>
-<li class="fragment"><strong>log-odds</strong> (ה-logit) נע בין <span class="math inline">\(-\infty\)</span> ל-<span class="math inline">\(\infty\)</span>: פתוח לשני הכיוונים.</li>
+<li class="fragment"><span class="math inline">\(i\)</span> = נבדק, <span class="math inline">\(j\)</span> = תנאי (1 או 2).</li>
+<li class="fragment"><span class="math inline">\(u_i\)</span> = ה-<strong>random intercept</strong>: כמה רמת הבסיס של נבדק <span class="math inline">\(i\)</span> גבוהה או נמוכה מהממוצע.</li>
+<li class="fragment"><span class="math inline">\(\beta_1\)</span> = האפקט הנבדק, כלומר ההפרש <strong>בתוך</strong> הנבדק.</li>
+<li class="fragment"><span class="math inline">\(\tau\)</span> = פיזור רמות הבסיס בין נבדקים. <span class="math inline">\(\sigma\)</span> = הרעש הנשאר בתוך נבדק.</li>
 </ul>
 </div>
-<p><span class="math display">\[\text{logit}(p) = \ln\left(\frac{p}{1-p}\right)\]</span></p>
+</section>
+<section id="למה-זה-בדיוק-ה-t-המזווג" class="slide level2">
+<h2>למה זה בדיוק ה-t המזווג</h2>
+<p>נבדוק את ההפרש בין שני התנאים של אותו נבדק:</p>
+<p><span class="math display">\[d_i = y_{i2} - y_{i1} = \beta_1 + (u_i - u_i) + (\epsilon_{i2} - \epsilon_{i1}) = \beta_1 + \text{רעש}\]</span></p>
+<div>
+<ul>
+<li class="fragment">ה-<span class="math inline">\(u_i\)</span> <strong>מתבטל</strong>. רמת הבסיס של הנבדק נעלמה מההפרש.</li>
+<li class="fragment">מה שנשאר: <span class="math inline">\(\beta_1\)</span> ועוד רעש תוך-נבדקי בלבד.</li>
+<li class="fragment">בנתונים מאוזנים, האומדן של <span class="math inline">\(\beta_1\)</span> הוא ממוצע ההפרשים, ו-<span class="math inline">\(t\)</span> זהה ל-t המזווג משבוע 6.</li>
+</ul>
+</div>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הסימטריה שמשלמת על עצמה</strong></p>
+<p><strong>הרעיון</strong></p>
 </div>
 <div class="callout-content">
-<p><span class="math inline">\(\text{logit}(0.8) = +1.39\)</span> ו-<span class="math inline">\(\text{logit}(0.2) = -1.39\)</span>. היפוך האירוע (“קרה” מול “לא קרה”) רק הופך את הסימן. על סקאלת ההסתברות אין תכונה כזו.</p>
+<p>מבחן t מזווג הוא לא “טריק”. הוא מה שיוצא כשמאפשרים לכל נבדק רמת בסיס משלו.</p>
 </div>
 </div>
-</div>
-<p>log-odds הוא הסקאלה שעליה נוכל סוף סוף לכתוב <span class="math inline">\(\beta_0 + \beta_1 X\)</span> בלי חשש לצאת מהטווח. את זה נראה ב-W13.V2.</p>
-</section>
-<section id="odds-ratio" class="slide level2">
-<h2>odds ratio</h2>
-<p>השוואה בין שתי קבוצות: <strong>יחס</strong> בין שני ה-odds שלהן.</p>
-<p><span class="math display">\[\text{OR} = \frac{\text{odds}_1}{\text{odds}_0} = \frac{p_1/(1-p_1)}{p_0/(1-p_0)}\]</span></p>
-<div>
-<ul>
-<li class="fragment"><span class="math inline">\(\text{OR} = 1\)</span>: אין הבדל בין הקבוצות.</li>
-<li class="fragment"><span class="math inline">\(\text{OR} &gt; 1\)</span>: ה-odds בקבוצה 1 גבוהים יותר. <span class="math inline">\(\text{OR} &lt; 1\)</span>: נמוכים יותר.</li>
-<li class="fragment">הסימטריה: <span class="math inline">\(\text{OR} = 2\)</span> ו-<span class="math inline">\(\text{OR} = 0.5\)</span> הם אותו גודל אפקט בכיוונים הפוכים. לכן מדברים על <span class="math inline">\(\ln(\text{OR})\)</span>.</li>
-</ul>
 </div>
 </section>
-<section id="דוגמה-שאפשר-לספור-ביד" class="slide level2">
-<h2>דוגמה שאפשר לספור ביד</h2>
-<p>ניסוי עם 100 נבדקים בכל קבוצה. האירוע: “הישנות של הסימפטום”.</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: center;">הישנות</th>
-<th style="text-align: center;">אין הישנות</th>
-<th style="text-align: center;">risk</th>
-<th style="text-align: center;">odds</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>ביקורת</strong></td>
-<td style="text-align: center;">40</td>
-<td style="text-align: center;">60</td>
-<td style="text-align: center;">40/100 = 0.40</td>
-<td style="text-align: center;">40/60 = 0.667</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>טיפול</strong></td>
-<td style="text-align: center;">20</td>
-<td style="text-align: center;">80</td>
-<td style="text-align: center;">20/100 = 0.20</td>
-<td style="text-align: center;">20/80 = 0.25</td>
-</tr>
-</tbody>
-</table>
-<p><span class="math display">\[\text{RR} = \frac{0.20}{0.40} = 0.50 \qquad\qquad \text{OR} = \frac{0.25}{0.667} = 0.375\]</span></p>
-<div>
-<ul>
-<li class="fragment"><strong>Risk ratio:</strong> הטיפול חצה את הסיכון. הפירוש הישיר: “בחצי מהסיכון”.</li>
-<li class="fragment"><strong>Odds ratio:</strong> 0.375, כלומר “ה-odds ירדו ל-37.5%”. זה <strong>לא</strong> “הסיכון ירד ל-37.5%”.</li>
-<li class="fragment">שני המספרים נכונים. הם עונים על שאלות שונות.</li>
-</ul>
-</div>
-</section>
-<section id="הבחנה-קריטית-or-אינו-rr" class="slide level2">
-<h2>הבחנה קריטית: OR אינו RR</h2>
-<p>כשהאירוע <strong>נדיר</strong>, <span class="math inline">\(1-p \approx 1\)</span>, ולכן <span class="math inline">\(\text{odds} \approx p\)</span> וה-OR קרוב ל-RR. כשהאירוע <strong>שכיח</strong>, הם מתרחקים.</p>
+<section id="שונות-בין-נבדקית-שונות-תוך-נבדקית-ו-icc" class="slide level2">
+<h2>שונות בין-נבדקית, שונות תוך-נבדקית, ו-ICC</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="אירוע-נדיר">אירוע נדיר</h3>
+<h3 id="שני-מקורות-לשונות">שני מקורות לשונות</h3>
 <ul>
-<li>ביקורת 4%, טיפול 2%.</li>
-<li><span class="math inline">\(\text{RR} = 0.50\)</span></li>
-<li><span class="math inline">\(\text{OR} = \frac{2/98}{4/96} = 0.49\)</span></li>
-<li>כמעט זהים.</li>
+<li><strong>בין-נבדקית</strong> (<span class="math inline">\(\tau^2\)</span>): נבדקים שונים זה מזה ברמת הבסיס.</li>
+<li><strong>תוך-נבדקית</strong> (<span class="math inline">\(\sigma^2\)</span>): אותו נבדק משתנה ממדידה למדידה.</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<h3 id="אירוע-שכיח">אירוע שכיח</h3>
-<ul>
-<li>ביקורת 60%, טיפול 90%.</li>
-<li><span class="math inline">\(\text{RR} = 1.5\)</span></li>
-<li><span class="math inline">\(\text{OR} = \frac{9}{1.5} = 6.0\)</span></li>
-<li>פי ארבעה.</li>
-</ul>
+<h3 id="icc">ICC</h3>
+<p><span class="math display">\[\text{ICC} = \frac{\tau^2}{\tau^2 + \sigma^2}\]</span> החלק מכלל השונות שיושב ברמת הנבדק. ICC גבוה: הנבדקים שונים מאוד זה מזה, והמדידות של אותו נבדק דומות מאוד.</p>
 </div>
 </div>
-<div class="callout callout-danger callout-captioned callout-style-default">
+<div class="callout callout-note callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הכשל בספרות הרפואית</strong></p>
+<p><strong>למה המערך התוך-נבדקי חזק יותר</strong></p>
 </div>
 <div class="callout-content">
-<p>מאמר מדווח “OR = 6.0” והכותרת או הדיון אומרים “פי 6 יותר סיכוי”. בפועל הסיכון עלה פי 1.5. OR שגדול מ-1 <strong>מנפח</strong> את הרושם, ו-OR שקטן מ-1 מגזים בגודל הירידה, וזה גובר ככל שהאירוע שכיח יותר. זו סיבה אחת שמתודולוגים ביקורתיים כלפי דיווח OR באירועים שכיחים (למשל Zhang &amp; Yu, JAMA 1998).</p>
+<p>בהשוואה בין קבוצות, שגיאת התקן של ההפרש כוללת את <span class="math inline">\(\tau^2\)</span>. בהשוואה בתוך נבדק היא כוללת רק את <span class="math inline">\(\sigma^2\)</span>. ככל ש-ICC גבוה יותר, הרווח גדול יותר.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-הפער-בין-or-ל-rr" class="slide level2">
-<h2>הדגמה אינטראקטיבית: הפער בין OR ל-RR</h2>
-<p>שני סליידרים: שכיחות האירוע בקבוצת הביקורת, ועוצמת האפקט (ה-OR האמיתי). שימו לב איך RR זז ו-OR נשאר קבוע.</p>
-
+<section id="הרעיון-החדש-היחיד-לפרמטרים-יש-התפלגות" class="slide level2">
+<h2>הרעיון החדש היחיד: לפרמטרים יש התפלגות</h2>
+<div>
+<ul>
+<li class="fragment">עד עכשיו, כל <span class="math inline">\(\mu_j\)</span> או רמת בסיס היה <strong>מספר קבוע</strong> שרצינו לאמוד.</li>
+<li class="fragment">כאן <span class="math inline">\(u_i \sim N(0,\tau^2)\)</span>: רמות הבסיס של הנבדקים <strong>מגיעות מהתפלגות משותפת</strong>.</li>
+<li class="fragment">בקורס בייסיאני זה כמעט חינם: זה <strong>prior</strong> על הפרמטרים של הנבדקים, ו-<span class="math inline">\(\tau\)</span> עצמו מקבל prior ונאמד מהנתונים.</li>
+</ul>
+</div>
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>מה זה נותן</strong></p>
+</div>
+<div class="callout-content">
+<p>הנבדקים לומדים זה מזה, דרך ההתפלגות המשותפת. ביחידה הבאה נראה מה זה עושה לאומדנים.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="הדגמה-אינטראקטיבית-מתעלמים-מהנבדקים-או-מזווגים" class="slide level2">
+<h2>הדגמה אינטראקטיבית: מתעלמים מהנבדקים או מזווגים</h2>
+<p>30 נבדקים, שני תנאים. השונות התוך-נבדקית קבועה (<span class="math inline">\(\sigma = 5\)</span>). שנו את השונות הבין-נבדקית (<span class="math inline">\(\tau\)</span>) ואת גודל האפקט.</p>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
   <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>שכיחות האירוע בביקורת (p₀): <b id="p0val_or">0.05</b>
-      <input type="range" id="p0_or" min="0.01" max="0.90" step="0.01" value="0.05"></label>
-    <label>עוצמת האפקט (OR אמיתי): <b id="orval_or">2.00</b>
-      <input type="range" id="lor_or" min="-3" max="3" step="0.1" value="1"></label>
+    <label>שונות בין-נבדקית τ: <b id="tauval_w">10.0</b>
+      <input type="range" id="tau_w" min="0" max="20" step="0.5" value="10"></label>
+    <label>אפקט תוך-נבדקי β1: <b id="effval_w">3.0</b>
+      <input type="range" id="eff_w" min="0" max="10" step="0.5" value="3"></label>
+    <button id="resample_w" style="padding:2px 10px;">דגום מחדש</button>
   </div>
-  <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start;">
-    <div id="tbl_or" style="flex:1 1 300px; font-size:0.72em; direction:rtl;"></div>
-    <div style="flex:1 1 320px; direction:ltr;"><div id="demo-or" style="width:100%; height:300px;"></div></div>
+  <div style="display:flex; flex-wrap:wrap; gap:10px;">
+    <div id="demo-w1" style="flex:1 1 320px; height:340px;"></div>
+    <div id="demo-w2" style="flex:1 1 320px; height:340px;"></div>
   </div>
-  <div id="gap_or" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
+  <div id="out_w" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; background:#eef5fa; color:#185fa5;"></div>
+  <div id="icc_w" style="text-align:center; padding:4px; font-size:0.85em;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  const N = 1000;
-  function draw() {
-    const p0 = parseFloat(document.getElementById('p0_or').value);
-    const OR = Math.pow(2, parseFloat(document.getElementById('lor_or').value));
-    document.getElementById('p0val_or').textContent = p0.toFixed(2);
-    document.getElementById('orval_or').textContent = OR.toFixed(2);
-
-    const odds0 = p0 / (1 - p0);
-    const odds1 = OR * odds0;
-    const p1 = odds1 / (1 + odds1);
-    const RR = p1 / p0;
-
-    const a0 = Math.round(N * p0), a1 = Math.round(N * p1);
-    document.getElementById('tbl_or').innerHTML =
-      '<table style="width:100%; border-collapse:collapse; text-align:center;">' +
-      '<tr style="background:#eef5fa;"><th></th><th>אירוע</th><th>אין אירוע</th><th>risk</th><th>odds</th></tr>' +
-      '<tr><td><b>ביקורת</b></td><td>' + a0 + '</td><td>' + (N - a0) + '</td><td>' + p0.toFixed(3) + '</td><td>' + odds0.toFixed(3) + '</td></tr>' +
-      '<tr><td><b>טיפול</b></td><td>' + a1 + '</td><td>' + (N - a1) + '</td><td>' + p1.toFixed(3) + '</td><td>' + odds1.toFixed(3) + '</td></tr>' +
-      '</table>' +
-      '<div style="margin-top:8px;">(N = ' + N + ' בכל קבוצה)</div>' +
-      '<div style="margin-top:4px;">OR = ' + odds1.toFixed(3) + ' / ' + odds0.toFixed(3) + ' = <b style="color:#c0392b;">' + OR.toFixed(2) + '</b></div>' +
-      '<div>RR = ' + p1.toFixed(3) + ' / ' + p0.toFixed(3) + ' = <b style="color:#2980b9;">' + RR.toFixed(2) + '</b></div>';
-
-    // RR כפונקציה של p0, עבור אותו OR
-    const xs = [], rrs = [];
-    for (let p = 0.005; p <= 0.951; p += 0.005) {
-      xs.push(p);
-      rrs.push(OR / (1 - p + OR * p));
-    }
-    const traces = [
-      { x: xs, y: rrs, mode: 'lines', name: 'RR', line: { color: '#2980b9', width: 3 } },
-      { x: [0.005, 0.95], y: [OR, OR], mode: 'lines', name: 'OR', line: { color: '#c0392b', width: 3, dash: 'dash' } },
-      { x: [p0], y: [RR], mode: 'markers', name: 'המצב הנוכחי', marker: { size: 12, color: '#2980b9', line: { color: '#fff', width: 2 } } }
-    ];
-    const top = Math.max(1, OR) * 1.15;
-    const layout = {
-      xaxis: { title: 'שכיחות האירוע בביקורת (p₀)', range: [0, 0.96] },
-      yaxis: { title: 'גודל האפקט', range: [0, top] },
-      margin: { t: 15, b: 50, l: 50, r: 15 },
-      legend: { orientation: 'h', y: 1.12 },
-      shapes: [{ type: 'line', x0: 0, x1: 0.96, y0: 1, y1: 1, line: { color: '#999', width: 1, dash: 'dot' } }]
+  const N = 30, SIGMA = 5, BASE = 50;
+  let seed = 7;
+  let U, E1, E2;
+  function mulberry32(a) {
+    return function() {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
     };
-    Plotly.newPlot('demo-or', traces, layout, { displayModeBar: false });
-
-    const ratio = Math.max(OR / RR, RR / OR);
-    const el = document.getElementById('gap_or');
-    el.textContent = 'OR ' + OR.toFixed(2) + '  ·  RR ' + RR.toFixed(2) + '  ·  היחס בין המדדים (הגדול חלקי הקטן): ' + ratio.toFixed(2);
-    if (Math.abs(OR - 1) < 0.02) {
-      el.textContent = 'OR = 1 → אין אפקט, ו-RR = 1 גם הוא';
-      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
-    } else if (ratio < 1.1) {
-      el.style.background = '#eef5fa'; el.style.color = '#185fa5';
-    } else {
-      el.style.background = '#fdecea'; el.style.color = '#a32d2d';
-    }
   }
-  ['p0_or', 'lor_or'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  function makeNoise(s) {
+    const rnd = mulberry32(s);
+    function randn() {
+      let u = 0, v = 0;
+      while (u === 0) u = rnd();
+      while (v === 0) v = rnd();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    }
+    U = []; E1 = []; E2 = [];
+    for (let i = 0; i < N; i++) { U.push(randn()); E1.push(randn()); E2.push(randn()); }
+  }
+  function mean(a) { return a.reduce((x, y) => x + y, 0) / a.length; }
+  function sd(a) { const m = mean(a); return Math.sqrt(a.reduce((s, x) => s + (x - m) * (x - m), 0) / (a.length - 1)); }
+  // ערכים קריטיים של t ברמת 95%
+  const T_PAIRED = 2.045;   // df = 29
+  const T_INDEP = 2.002;    // df = 58
+
+  function draw() {
+    const tau = parseFloat(document.getElementById('tau_w').value);
+    const eff = parseFloat(document.getElementById('eff_w').value);
+    document.getElementById('tauval_w').textContent = tau.toFixed(1);
+    document.getElementById('effval_w').textContent = eff.toFixed(1);
+
+    const y1 = [], y2 = [], d = [];
+    for (let i = 0; i < N; i++) {
+      const base = BASE + tau * U[i];
+      y1.push(base + SIGMA * E1[i]);
+      y2.push(base + eff + SIGMA * E2[i]);
+      d.push(y2[i] - y1[i]);
+    }
+    const diff = mean(d);
+    const sePaired = sd(d) / Math.sqrt(N);
+    const seIndep = Math.sqrt(sd(y1) * sd(y1) / N + sd(y2) * sd(y2) / N);
+    const tP = diff / sePaired, tI = diff / seIndep;
+
+    // גרף שמאלי: קו לכל נבדק
+    const traces = [];
+    for (let i = 0; i < N; i++) {
+      traces.push({ x: ['תנאי 1', 'תנאי 2'], y: [y1[i], y2[i]], mode: 'lines+markers',
+                    line: { color: 'rgba(120,120,120,0.45)', width: 1 }, marker: { size: 5, color: '#7f8c8d' },
+                    showlegend: false, hoverinfo: 'skip' });
+    }
+    traces.push({ x: ['תנאי 1', 'תנאי 2'], y: [mean(y1), mean(y2)], mode: 'lines+markers', name: 'ממוצע',
+                  line: { color: '#c0392b', width: 4 }, marker: { size: 12, color: '#c0392b' } });
+    Plotly.newPlot('demo-w1', traces, {
+      title: { text: 'כל קו הוא נבדק', font: { size: 14 } },
+      yaxis: { title: 'Y', range: [10, 95] },
+      margin: { t: 35, b: 35, l: 45, r: 15 }, showlegend: false
+    }, { displayModeBar: false });
+
+    // גרף ימני: האומדן ורווחי סמך של שני הניתוחים
+    const tr = [
+      { x: [diff], y: ['מתעלם מהנבדקים'], mode: 'markers', marker: { size: 12, color: '#c0392b' },
+        error_x: { type: 'constant', value: T_INDEP * seIndep, color: '#c0392b', thickness: 3, width: 8 }, showlegend: false },
+      { x: [diff], y: ['מזווג (random intercept)'], mode: 'markers', marker: { size: 12, color: '#2980b9' },
+        error_x: { type: 'constant', value: T_PAIRED * sePaired, color: '#2980b9', thickness: 3, width: 8 }, showlegend: false }
+    ];
+    Plotly.newPlot('demo-w2', tr, {
+      title: { text: 'אומדן β1 ורווח סמך 95%', font: { size: 14 } },
+      xaxis: { title: 'ההפרש בין התנאים', range: [-12, 18], zeroline: true, zerolinecolor: '#333', zerolinewidth: 2 },
+      margin: { t: 35, b: 45, l: 150, r: 15 }
+    }, { displayModeBar: false });
+
+    const sigI = Math.abs(tI) > T_INDEP, sigP = Math.abs(tP) > T_PAIRED;
+    const el = document.getElementById('out_w');
+    el.textContent = 'מתעלם: SE ' + seIndep.toFixed(2) + ', t ' + tI.toFixed(2) + (sigI ? ' (מובהק)' : ' (לא מובהק)') +
+                     '   |   מזווג: SE ' + sePaired.toFixed(2) + ', t ' + tP.toFixed(2) + (sigP ? ' (מובהק)' : ' (לא מובהק)');
+    if (sigP && !sigI) { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
+    else { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
+    const icc = (tau * tau) / (tau * tau + SIGMA * SIGMA);
+    document.getElementById('icc_w').textContent = 'ICC התאורטי: ' + icc.toFixed(2);
+  }
+  makeNoise(seed);
+  ['tau_w', 'eff_w'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  document.getElementById('resample_w').addEventListener('click', function() { seed += 1; makeNoise(seed); draw(); });
   setTimeout(draw, 400);
 })();
 </script>
@@ -609,38 +600,20 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment">כשהאירוע <strong>נדיר</strong> (p₀ קרוב ל-0.01), שני הקווים כמעט נוגעים: OR ≈ RR.</li>
-<li class="fragment">ככל ש-p₀ גדל, ה-RR <strong>נדחס</strong> לכיוון 1 בעוד ה-OR נשאר במקומו. הפער נפתח.</li>
-<li class="fragment">בהדגמה קבענו OR קבוע. ה-RR שמתאים לאותו OR משתנה עם שכיחות האירוע, ולכן הפער ביניהם הוא תוצר של השכיחות בלבד.</li>
+<li class="fragment">כשהשונות הבין-נבדקית עולה, הקווים “מתרוממים ויורדים” יחד, אבל <strong>ההפרש בתוך כל נבדק</strong> נשאר יציב.</li>
+<li class="fragment">שגיאת התקן של הניתוח שמתעלם מהנבדקים <strong>גדלה</strong> עם <span class="math inline">\(\tau\)</span>. שגיאת התקן של הניתוח המזווג <strong>כמעט לא משתנה</strong>.</li>
+<li class="fragment">הרווח הסמך הכחול נשאר צר, והאדום מתרחב. המרחק ביניהם הוא מחיר ההתעלמות מהתלות.</li>
+<li class="fragment">ב-<span class="math inline">\(\tau = 0\)</span> (ICC אפס) שני הניתוחים כמעט זהים: אין מה להרוויח מהזיווג.</li>
 </ul>
 </div>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>כשקוראים מאמר רפואי</strong></p>
-</div>
-<div class="callout-content">
-<ol type="1">
-<li>בדקו מה שכיחות האירוע בקבוצת הביקורת.</li>
-<li>אם היא מעל 10% בערך, אל תתרגמו OR ל”פי כמה יותר סיכוי”.</li>
-<li>אם המאמר מדווח את הסיכון בכל קבוצה, חשבו RR בעצמכם: זו חלוקה אחת.</li>
-</ol>
-</div>
-</div>
-</div>
-<p>בהמשך נראה שרגרסיה לוגיסטית מחזירה לנו <strong>תמיד</strong> OR, ולא RR. לכן הבחנה זו תלווה אותנו עד סוף היחידה.</p>
 </section>
 <section id="סיכום-w13.v1" class="slide level2">
 <h2>סיכום W13.V1</h2>
 <ul>
-<li><strong>odds</strong> <span class="math inline">\(= p/(1-p)\)</span> ו-<span class="math inline">\(p = \text{odds}/(1+\text{odds})\)</span>. <strong>log-odds</strong> נע על כל הישר, ולכן מתאים למודל ליניארי.</li>
-<li><strong>Odds ratio</strong> הוא יחס בין שני odds. OR = 1 פירושו אין הבדל, וההיפוך של האירוע רק הופך את OR ל-<span class="math inline">\(1/\text{OR}\)</span>.</li>
-<li><strong>OR ו-RR קרובים רק כשהאירוע נדיר.</strong> ככל שהוא שכיח יותר, OR מנפח את הרושם.</li>
-<li>דיווח של OR כאילו הוא risk ratio הוא כשל נפוץ בספרות הרפואית.</li>
-<li>בשבוע 1 למדנו את <span class="math inline">\(p\)</span> בלי predictors. כאן קיבלנו את הסקאלה שעליה <span class="math inline">\(p\)</span> יוכל להיות פונקציה של predictors.</li>
+<li>מבחן t מזווג הוא מודל עם <strong>random intercept</strong> לכל נבדק. ה-<span class="math inline">\(u_i\)</span> מתבטל בהפרש, ולכן נשארים עם השונות התוך-נבדקית בלבד.</li>
+<li>מדידות חוזרות על אותו נבדק אינן בלתי תלויות. התעלמות מכך פוגעת באמינות ההסקה, בכיוון שתלוי במערך.</li>
+<li><strong>ICC</strong> הוא החלק מכלל השונות שיושב ברמת הנבדק, ואומר כמה הזיווג שווה.</li>
+<li>הרעיון החדש: לפרמטרים של הנבדקים יש <strong>התפלגות משותפת</strong>, כלומר prior שגם אותו אומדים.</li>
 </ul>
 <div class="footer footer-default">
 

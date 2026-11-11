@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W8.V2 — מטא-אנליזה: מהמחקר הבודד לאומדן המשותף</title>
+  <title>W8.V2 — ריטואלים סטטיסטיים: מה p לא אומר</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,325 +325,263 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W8.V2 — מטא-אנליזה: מהמחקר הבודד לאומדן המשותף</h1>
-  <p class="subtitle">גודל אפקט סטנדרטי, שקלול לפי דיוק, והטרוגניות בין מחקרים</p>
+  <h1 class="title">W8.V2 — ריטואלים סטטיסטיים: מה p לא אומר</h1>
+  <p class="subtitle">ה-null ritual של Gigerenzer, שלוש אי-הבנות של ה-p-value, והכלאה שאיש לא תכנן</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להבין למה צריך <strong>standardized effect size</strong> (Cohen’s d, Hedges’ g) כדי לאחד מחקרים עם סולמות שונים.</li>
-<li>להבין ששונות הדגימה של גודל האפקט תלויה בגודל המדגם, ולכן מחקרים שונים מדויקים במידה שונה.</li>
-<li>לגזור את <strong>inverse-variance weighting</strong> מה-likelihood, ולראות למה דיוק הוא אינפורמציה.</li>
-<li>להבחין בין <strong>fixed effect</strong> ל-<strong>random effects</strong>, ולקרוא <strong>heterogeneity</strong> (<span class="math inline">\(\tau^2\)</span>, <span class="math inline">\(I^2\)</span>).</li>
-<li>לקרוא <strong>forest plot</strong>: ריבועים, קווי רווח סמך ומעוין.</li>
+<li>להכיר את ה-<strong>null ritual</strong> ש-Gigerenzer מתאר, ולזהות אותו בספרות ובעבודות שלכם.</li>
+<li>לפרק מה ה-p-value <strong>אינו</strong>: לא הסתברות של השערת האפס, לא סיכוי לשחזור, ולא גודל אפקט.</li>
+<li>להבין שה-NHST שמלמדים הוא <strong>הכלאה</strong> של Fisher ושל Neyman-Pearson, שחלקו זה על זה בכל דבר מהותי.</li>
+<li>לראות בהדגמה שה-p-value <strong>קופץ בפראות</strong> בין חזרות של אותו ניסוי בדיוק.</li>
+<li>להבין שגם המעבר לגישה בייסיאנית אינו מחסן מפני טקס.</li>
 </ul>
 </section>
-<section id="הבעיה-מחקרים-שונים-סולמות-שונים" class="slide level2">
-<h2>הבעיה: מחקרים שונים, סולמות שונים</h2>
-<p>שלושה מחקרים בודקים את אותה התערבות. הראשון מודד חרדה ב-0-63, השני ב-0-21, השלישי בשאלון של 1-5.</p>
+<section id="ה-null-ritual" class="slide level2">
+<h2>ה-null ritual</h2>
+<p>Gigerenzer (2004, 2018) מתאר נוהל אחד שחוזר בכל מאמר, בלי קשר לשאלת המחקר:</p>
 <div>
-<ul>
-<li class="fragment">הפרש של 5 נקודות במחקר הראשון ושל 2 נקודות בשני אינם ניתנים להשוואה או לחיבור.</li>
-<li class="fragment">הפתרון: להביע את ההפרש ביחידות של <strong>סטיית התקן</strong>, כלומר בלי יחידות.</li>
-<li class="fragment">כך מקבלים גודל אפקט (<strong>effect size</strong>) שאפשר לשים על אותו ציר.</li>
-</ul>
+<ol type="1">
+<li class="fragment">קובעים <strong>השערת אפס</strong> (“אין הבדל”, “המתאם הוא אפס”).</li>
+<li class="fragment"><strong>לא מנסחים השערה משלכם</strong> בצורה כמותית שאפשר לסתור.</li>
+<li class="fragment">משתמשים <strong>תמיד ב-5%</strong>, בלי קשר לעלויות, לעוצמה או לתחום.</li>
+<li class="fragment">מדווחים <strong>מכנית</strong>: <span class="math inline">\(p &lt; .05\)</span>, <span class="math inline">\(p &lt; .01\)</span>, <span class="math inline">\(p &lt; .001\)</span> — לפי הכוכבית הקרובה.</li>
+</ol>
 </div>
-</section>
-<section id="cohens-d-ו-hedges-g" class="slide level2">
-<h2>Cohen’s d ו-Hedges’ g</h2>
-<p><span class="math display">\[d = \frac{\bar X_1 - \bar X_2}{s_p}, \qquad s_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}}\]</span></p>
-<p><span class="math inline">\(d\)</span> הוא ההפרש בין הממוצעים ביחידות של סטיית התקן המשותפת. ב-<strong>Hedges’ g</strong> מתקנים הטיה קטנה במדגמים קטנים:</p>
-<p><span class="math display">\[g = J \cdot d, \qquad J \approx 1 - \frac{3}{4(n_1+n_2) - 9}\]</span></p>
-<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout callout-important callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>בפועל</strong></p>
+<p><strong>הנקודה של Gigerenzer</strong></p>
 </div>
 <div class="callout-content">
-<p>עבור <span class="math inline">\(n\)</span> גדול <span class="math inline">\(J \approx 1\)</span> ו-<span class="math inline">\(g \approx d\)</span>. בקורס נשתמש ב-<span class="math inline">\(g\)</span> כברירת מחדל, ו”גודל האפקט” יתייחס ל-<span class="math inline">\(g\)</span> אלא אם נאמר אחרת.</p>
+<p>זה אינו שיטה סטטיסטית. אף סטטיסטיקאי לא הציע אותה. זה <strong>טקס</strong> — פעולה שמבוצעת מתוך הרגל ופחד ממבקרים, ולא מתוך הבנה של מה היא עושה.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="שונות-הדגימה-של-גודל-האפקט" class="slide level2">
-<h2>שונות הדגימה של גודל האפקט</h2>
-<p>גודל האפקט שמחקר מדווח הוא <strong>אומדן</strong>, ולכן יש לו שגיאת דגימה. עבור שתי קבוצות בגודל <span class="math inline">\(n_1, n_2\)</span>:</p>
-<p><span class="math display">\[v = \widehat{\text{Var}}(d) \approx \frac{n_1+n_2}{n_1 n_2} + \frac{d^2}{2(n_1+n_2)}\]</span></p>
+<section id="מה-בעצם-p-value-הוא" class="slide level2">
+<h2>מה בעצם p-value הוא</h2>
+<p><span class="math display">\[p = P(\text{data as extreme or more extreme} \mid H_0)\]</span></p>
 <div>
 <ul>
-<li class="fragment">המחובר הראשון דומיננטי: השונות <strong>יורדת בערך כ-<span class="math inline">\(1/n\)</span></strong>.</li>
-<li class="fragment">מחקר עם 200 נבדקים בכל קבוצה מדויק פי עשרה ממחקר עם 20 בכל קבוצה, במונחי שונות.</li>
-<li class="fragment">זו התפלגות הדגימה מיחידה א, רק שהאומדן כאן הוא גודל אפקט ולא ממוצע.</li>
+<li class="fragment">הסתברות לנתונים (או קיצוניים מהם), <strong>בהינתן</strong> ש-<span class="math inline">\(H_0\)</span> נכונה, כולל כל ההנחות של המודל.</li>
+<li class="fragment">זו הסתברות על <strong>נתונים</strong>, לא על <strong>השערות</strong>.</li>
+<li class="fragment">ב-<span class="math inline">\(H_0\)</span> שנכונה, ה-p-value מתפלג אחיד בין 0 ל-1. רק כך “5%” הוא באמת 5%.</li>
 </ul>
 </div>
 </section>
-<section id="inverse-variance-weighting-דיוק-הוא-אינפורמציה" class="slide level2">
-<h2>Inverse-variance weighting: דיוק הוא אינפורמציה</h2>
-<p>כל מחקר <span class="math inline">\(i\)</span> נותן אומדן <span class="math inline">\(y_i\)</span> עם שונות ידועה בקירוב <span class="math inline">\(v_i\)</span>. אם כולם מודדים אותו אפקט <span class="math inline">\(\theta\)</span>, ה-likelihood של <span class="math inline">\(\theta\)</span> (כמו ב-likelihood של ממוצע נורמלי מיחידה א):</p>
-<p><span class="math display">\[\log L(\theta) = -\sum_{i=1}^{k} \frac{(y_i-\theta)^2}{2 v_i} + \text{const}\]</span></p>
-<p>גוזרים ומשווים לאפס:</p>
-<p><span class="math display">\[\hat\theta = \frac{\sum w_i\, y_i}{\sum w_i}, \qquad w_i = \frac{1}{v_i}, \qquad \text{Var}(\hat\theta) = \frac{1}{\sum w_i}\]</span></p>
-<div>
-<ul>
-<li class="fragment"><strong>אומדן ה-ML הוא ממוצע משוקלל</strong>, והמשקל של כל מחקר הוא <strong>הדיוק</strong> שלו (<span class="math inline">\(1/v_i\)</span>).</li>
-<li class="fragment">מחקר גדול, עם שונות קטנה, מקבל משקל גדול. זו לא החלטה שרירותית אלא תוצאה ישירה של ה-likelihood.</li>
-<li class="fragment">הדיוקים <strong>מצטברים</strong>: <span class="math inline">\(\text{Var}(\hat\theta) = 1/\sum w_i\)</span>. כל מחקר מוסיף אינפורמציה.</li>
-<li class="fragment">עם prior שטוח, ה-posterior הוא בדיוק ה-likelihood, אז אותם מספרים מתקבלים גם בגישה הבייסיאנית.</li>
-</ul>
-</div>
-</section>
-<section id="fixed-effect-מול-random-effects" class="slide level2">
-<h2>Fixed effect מול random effects</h2>
+<section id="שלוש-אי-הבנות-שכל-אחת-מהן-שגויה" class="slide level2">
+<h2>שלוש אי-הבנות שכל אחת מהן שגויה</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="fixed-effect">Fixed effect</h3>
-<p><span class="math display">\[y_i = \theta + \epsilon_i, \quad \epsilon_i \sim N(0, v_i)\]</span></p>
-<ul>
-<li><strong>אפקט אמיתי אחד</strong> משותף לכל המחקרים.</li>
-<li>ההבדלים בין המחקרים נובעים רק משגיאת דגימה.</li>
-<li>המשקל: <span class="math inline">\(w_i = 1/v_i\)</span>.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="random-effects">Random effects</h3>
-<p><span class="math display">\[y_i = \theta_i + \epsilon_i, \quad \theta_i \sim N(\mu, \tau^2)\]</span></p>
-<ul>
-<li>לכל מחקר אפקט אמיתי משלו, מתוך <strong>התפלגות של אפקטים אמיתיים</strong>.</li>
-<li><span class="math inline">\(\mu\)</span> הוא ממוצע ההתפלגות ו-<span class="math inline">\(\tau^2\)</span> הפיזור שלה.</li>
-<li>המשקל: <span class="math inline">\(w_i^* = 1/(v_i + \tau^2)\)</span>.</li>
-</ul>
+<div class="column" style="width:33%;">
+<h3 id="הסיכוי-ש-h_0-נכונה">1. “הסיכוי ש-<span class="math inline">\(H_0\)</span> נכונה”</h3>
+<p><span class="math inline">\(p = .03\)</span> <strong>לא</strong> אומר שהסיכוי ש-<span class="math inline">\(H_0\)</span> נכונה הוא 3%.</p>
+<p><span class="math inline">\(P(D \mid H_0) \neq P(H_0 \mid D)\)</span></p>
+</div><div class="column" style="width:33%;">
+<h3 id="הסיכוי-לשחזר">2. “הסיכוי לשחזר”</h3>
+<p><span class="math inline">\(p = .01\)</span> <strong>לא</strong> אומר ש-99% מהשחזורים יצאו מובהקים. זו ה-<strong>replication fallacy</strong>.</p>
+</div><div class="column" style="width:33%;">
+<h3 id="גודל-האפקט">3. “גודל האפקט”</h3>
+<p><span class="math inline">\(p\)</span> קטן <strong>לא</strong> אומר אפקט גדול. עם n גדול מספיק, כל הבדל זניח יהיה מובהק.</p>
 </div>
 </div>
-<div>
-<ul>
-<li class="fragment">כש-<span class="math inline">\(\tau^2\)</span> גדל, המשקלות <strong>מתקרבים זה לזה</strong>: מחקר גדול מאבד את הדומיננטיות שלו, כי גם הוא מודד אפקט אמיתי מקומי.</li>
-<li class="fragment">רווח הסמך של האומדן המשותף <strong>מתרחב</strong>.</li>
-</ul>
-</div>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>נחזור לזה</strong></p>
-</div>
-<div class="callout-content">
-<p>random effects הוא בעצם <strong>מודל היררכי</strong>: מחקרים בתוך התפלגות. נפגוש אותו שוב, בצורה מלאה, בשבוע 12.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="heterogeneity-כמה-המחקרים-באמת-שונים" class="slide level2">
-<h2>Heterogeneity: כמה המחקרים באמת שונים</h2>
-<div>
-<ul>
-<li class="fragment"><strong><span class="math inline">\(Q\)</span></strong> מודד את הפיזור של האומדנים סביב האומדן המשותף, ממושקל בדיוקים. תחת אפקט אחד משותף, <span class="math inline">\(E[Q] = k-1\)</span>.</li>
-<li class="fragment"><strong><span class="math inline">\(\tau^2\)</span></strong> היא שונות האפקטים האמיתיים בין המחקרים. <span class="math inline">\(\tau\)</span> נמדד באותן יחידות כמו גודל האפקט, ולכן קל לפרש: <span class="math inline">\(\tau = 0.2\)</span> עם <span class="math inline">\(\mu = 0.4\)</span> אומר שהאפקטים האמיתיים נעים בערך בין 0 ל-0.8.</li>
-<li class="fragment"><strong><span class="math inline">\(I^2\)</span></strong> הוא החלק בפיזור הנצפה שאינו נובע משגיאת דגימה:</li>
-</ul>
-</div>
-<p><span class="math display">\[I^2 = \max\left(0,\; \frac{Q-(k-1)}{Q}\right)\]</span></p>
 <div class="callout callout-warning callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>זהירות עם <span class="math inline">\(I^2\)</span></strong></p>
+<p><strong>למה זה חשוב</strong></p>
 </div>
 <div class="callout-content">
-<p><span class="math inline">\(I^2\)</span> תלוי בדיוק של המחקרים, לא רק ב-<span class="math inline">\(\tau\)</span>. עם מחקרים גדולים מאוד אפילו <span class="math inline">\(\tau\)</span> קטן נותן <span class="math inline">\(I^2\)</span> גבוה, ועם מחקרים קטנים <span class="math inline">\(I^2\)</span> נמוך גם כש-<span class="math inline">\(\tau\)</span> גדול. מדווחים גם <span class="math inline">\(\tau\)</span>, ובאופן אידיאלי גם <strong>prediction interval</strong>: הטווח שבו צפוי האפקט האמיתי של מחקר חדש.</p>
+<p>כדי לקבל את <span class="math inline">\(P(H_0 \mid D)\)</span> צריך <strong>prior</strong> ו-<strong>likelihood</strong> תחת חלופה. ה-p-value אינו מכיל אף אחד מהם. זו בדיוק הסיבה שהקורס עובר לאמידת posterior.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="איך-קוראים-forest-plot" class="slide level2">
-<h2>איך קוראים forest plot</h2>
+<section id="שתי-שיטות-שחלקו-על-הכל-והכלאה-ביניהן" class="slide level2">
+<h2>שתי שיטות שחלקו על הכל, והכלאה ביניהן</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
+<h3 id="fisher">Fisher</h3>
 <ul>
-<li><strong>שורה = מחקר.</strong> הנקודה היא האומדן <span class="math inline">\(y_i\)</span>.</li>
-<li><strong>הקו האופקי</strong> הוא רווח הסמך של המחקר.</li>
-<li><strong>גודל הריבוע</strong> מייצג את המשקל: מחקר גדול, ריבוע גדול.</li>
+<li>רק השערת אפס, ללא חלופה מוגדרת.</li>
+<li>ה-p-value הוא מדד <strong>מדורג</strong> לראיות נגד <span class="math inline">\(H_0\)</span>.</li>
+<li>אין “5% קבוע” — שיקול דעת בכל מחקר.</li>
+<li>מסקנה על מקרה בודד: האם הנתונים מפתיעים?</li>
 </ul>
 </div><div class="column" style="width:50%;">
+<h3 id="neyman-pearson">Neyman-Pearson</h3>
 <ul>
-<li><strong>הקו האנכי</strong> הוא אפקט אפס (no effect).</li>
-<li><strong>המעוין בתחתית</strong> הוא האומדן המשותף. מרכזו הוא האומדן, <strong>רוחבו</strong> הוא רווח הסמך.</li>
-<li>מעוין שאינו חוצה את קו האפס: האפקט המשותף שונה מאפס.</li>
+<li>שתי השערות מוגדרות מראש, <span class="math inline">\(H_0\)</span> ו-<span class="math inline">\(H_1\)</span>.</li>
+<li><span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> ו-<strong>power</strong> נקבעים לפני האיסוף.</li>
+<li>כלל <strong>החלטה</strong> לטווח ארוך, לא מדד ראיות.</li>
+<li>Fisher התנגד בחריפות לכל זה.</li>
 </ul>
 </div>
 </div>
-<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout callout-danger callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>שלוש שאלות לכל forest plot</strong></p>
+<p><strong>ההכלאה</strong></p>
 </div>
 <div class="callout-content">
-<ol type="1">
-<li>האם רווחי הסמך של המחקרים חופפים זה לזה ולמעוין? (רמז להטרוגניות)</li>
-<li>אילו מחקרים גדולים ואילו קטנים, והאם התוצאה נשענת על מחקר אחד?</li>
-<li>האם המעוין רחב? (כמה אינפורמציה יש בסך הכל)</li>
-</ol>
+<p>ה-NHST שמלמדים: <span class="math inline">\(H_0\)</span> בלבד (Fisher), עם <span class="math inline">\(\alpha = .05\)</span> קבוע (Neyman-Pearson), ופירוש של ה-p-value כאילו הוא הסתברות של ההשערה (אף אחד מהם). זו תערובת שאף אחד מהאבות המייסדים לא היה מאשר.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="הדגמה-forest-plot-אינטראקטיבי" class="slide level2">
-<h2>הדגמה: forest plot אינטראקטיבי</h2>
+<section id="המטאפורה-הפרוידיאנית-של-gigerenzer" class="slide level2">
+<h2>המטאפורה הפרוידיאנית של Gigerenzer</h2>
+<p>הכלאה הופכת ללוגיקה פנימית סותרת, ש-Gigerenzer מתאר כמבנה נפשי:</p>
+<div>
+<ul>
+<li class="fragment"><strong>הסופר-אגו — Neyman-Pearson.</strong> קובע כללים קפדניים: <span class="math inline">\(\alpha\)</span> מראש, power, גודל מדגם. דורש ציות.</li>
+<li class="fragment"><strong>האגו — Fisher.</strong> מתפשר בפועל: מחשב p, משווה ל-5%, ממשיך הלאה בלי חלופה.</li>
+<li class="fragment"><strong>האיד — Bayes.</strong> מה שהחוקר <em>באמת</em> רוצה לדעת: מה הסיכוי שההשערה שלי נכונה? נדחק ל<strong>מרתף</strong>, אך הרצון נשאר, ופורץ החוצה בצורת פירוש שגוי של ה-p-value — אי-ההבנה מס’ 1.</li>
+</ul>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>מה לקחת מזה</strong></p>
+</div>
+<div class="callout-content">
+<p>אי-ההבנות אינן טיפשות של חוקרים. הן פתרון טבעי לכך שהכלי שקיבלו לא עונה על השאלה שהם שואלים.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="הדגמה-ריקוד-ערכי-ה-p" class="slide level2">
+<h2>הדגמה: ריקוד ערכי ה-p</h2>
+<p>אותו ניסוי בדיוק (שתי קבוצות, t-test), עם אפקט <strong>אמיתי וקבוע</strong>, שחוזר 400 פעמים.</p>
 <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-bottom:6px; font-size:0.78em;">
-    <label>מספר מחקרים: <b id="fk_v">10</b>
-      <input type="range" id="fk" min="3" max="20" step="1" value="10"></label>
-    <label>n מינימלי לקבוצה: <b id="fnmin_v">20</b>
-      <input type="range" id="fnmin" min="10" max="300" step="10" value="20"></label>
-    <label>n מקסימלי לקבוצה: <b id="fnmax_v">200</b>
-      <input type="range" id="fnmax" min="10" max="500" step="10" value="200"></label>
-    <label>הטרוגניות τ: <b id="ftau_v">0.20</b>
-      <input type="range" id="ftau" min="0" max="0.8" step="0.05" value="0.2"></label>
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
+    <label>גודל האפקט האמיתי (d): <b id="dval_pd">0.40</b>
+      <input type="range" id="d_pd" min="0" max="1.2" step="0.05" value="0.4"></label>
+    <label>n בכל קבוצה: <b id="nval_pd">30</b>
+      <input type="range" id="n_pd" min="10" max="200" step="5" value="30"></label>
+    <button id="go_pd" style="padding:4px 12px; cursor:pointer;">חזרו על 400 הניסויים</button>
   </div>
-  <div style="font-size:0.78em; margin-bottom:4px;">
-    ריבועים לפי משקל:
-    <label><input type="radio" name="fwm" value="fixed"> fixed effect</label>
-    <label><input type="radio" name="fwm" value="random" checked=""> random effects</label>
-    &nbsp;·&nbsp; האפקט הממוצע האמיתי μ = 0.40 (קו ירוק מקווקו)
-  </div>
-  <div id="demo-forest" style="width:100%; height:440px;"></div>
-  <div id="forest_out" style="text-align:center; font-weight:bold; font-size:0.85em; padding:8px; border-radius:6px; margin-top:6px;"></div>
+  <div id="demo-pdance" style="width:100%; height:300px;"></div>
+  <div id="first_pd" style="text-align:center; font-size:0.8em; padding:4px;"></div>
+  <div id="out_pd" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px;"></div>
 </div>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
 <script>
 (function() {
-  function g(id) { return document.getElementById(id); }
-  function mulberry32(a) {
-    return function() {
-      var t = a += 0x6D2B79F5;
-      t = Math.imul(t ^ t >>> 15, t | 1);
-      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    };
-  }
-  const rng = mulberry32(20260930);
+  const R = 400;
   function randn() {
     let u = 0, v = 0;
-    while (u === 0) u = rng();
-    while (v === 0) v = rng();
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
     return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   }
-  // הגרלה אחת קבועה: הסליידרים משנים רק את הפרמטרים, כך שהמחקרים "זזים" בצורה רציפה
-  const KMAX = 20, MU = 0.4;
-  const Z = [], E = [], U = [];
-  for (let i = 0; i < KMAX; i++) { Z.push(randn()); E.push(randn()); U.push(rng()); }
-
-  function diamond(lo, est, hi, yc) {
-    return { x: [lo, est, hi, est, lo], y: [yc, yc + 0.4, yc, yc - 0.4, yc] };
+  function lgamma(x) {
+    const c = [76.18009172947146, -86.50532032941677, 24.01409824083091,
+               -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+    let y = x, tmp = x + 5.5;
+    tmp -= (x + 0.5) * Math.log(tmp);
+    let ser = 1.000000000190015;
+    for (let j = 0; j < 6; j++) { y += 1; ser += c[j] / y; }
+    return -tmp + Math.log(2.5066282746310005 * ser / x);
   }
-
+  function betacf(a, b, x) {
+    const qab = a + b, qap = a + 1, qam = a - 1;
+    let c = 1, d = 1 - qab * x / qap;
+    if (Math.abs(d) < 1e-30) d = 1e-30;
+    d = 1 / d;
+    let h = d;
+    for (let m = 1; m <= 200; m++) {
+      const m2 = 2 * m;
+      let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+      d = 1 + aa * d; if (Math.abs(d) < 1e-30) d = 1e-30;
+      c = 1 + aa / c; if (Math.abs(c) < 1e-30) c = 1e-30;
+      d = 1 / d; h *= d * c;
+      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+      d = 1 + aa * d; if (Math.abs(d) < 1e-30) d = 1e-30;
+      c = 1 + aa / c; if (Math.abs(c) < 1e-30) c = 1e-30;
+      d = 1 / d;
+      const del = d * c;
+      h *= del;
+      if (Math.abs(del - 1) < 3e-7) break;
+    }
+    return h;
+  }
+  function betai(a, b, x) {
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+    const bt = Math.exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+    if (x < (a + 1) / (a + b + 2)) return bt * betacf(a, b, x) / a;
+    return 1 - bt * betacf(b, a, 1 - x) / b;
+  }
+  // p דו-צדדי של t עם df דרגות חופש
+  function pTwoSided(t, df) {
+    return betai(df / 2, 0.5, df / (df + t * t));
+  }
+  function oneExperiment(n, d) {
+    let s1 = 0, s2 = 0, q1 = 0, q2 = 0;
+    for (let i = 0; i < n; i++) {
+      const a = randn(), b = randn() + d;
+      s1 += a; q1 += a * a; s2 += b; q2 += b * b;
+    }
+    const m1 = s1 / n, m2 = s2 / n;
+    const v1 = (q1 - n * m1 * m1) / (n - 1), v2 = (q2 - n * m2 * m2) / (n - 1);
+    const sp2 = (v1 + v2) / 2;
+    const t = (m2 - m1) / Math.sqrt(sp2 * 2 / n);
+    return pTwoSided(t, 2 * n - 2);
+  }
+  function fmt(p) { return p < 0.001 ? '<.001' : p.toFixed(3).replace(/^0/, ''); }
   function draw() {
-    const k = parseInt(g('fk').value);
-    const nmin = parseInt(g('fnmin').value);
-    const nmax = Math.max(nmin, parseInt(g('fnmax').value));
-    const tau = parseFloat(g('ftau').value);
-    g('fk_v').textContent = k;
-    g('fnmin_v').textContent = nmin;
-    g('fnmax_v').textContent = nmax;
-    g('ftau_v').textContent = tau.toFixed(2);
-    const model = document.querySelector('input[name="fwm"]:checked').value;
+    const d = parseFloat(document.getElementById('d_pd').value);
+    const n = parseInt(document.getElementById('n_pd').value);
+    document.getElementById('dval_pd').textContent = d.toFixed(2);
+    document.getElementById('nval_pd').textContent = n;
 
-    // סימולציה של k מחקרים
-    const y = [], v = [], n = [];
-    for (let i = 0; i < k; i++) {
-      const ni = Math.round(nmin + U[i] * (nmax - nmin));
-      const theta = MU + tau * Z[i];
-      const vgen = 2 / ni + theta * theta / (4 * ni);
-      const d = theta + Math.sqrt(vgen) * E[i];
-      const J = 1 - 3 / (8 * ni - 9);
-      const gi = J * d;
-      const vi = J * J * (2 / ni + d * d / (4 * ni));
-      y.push(gi); v.push(vi); n.push(ni);
-    }
+    const ps = [];
+    for (let r = 0; r < R; r++) ps.push(oneExperiment(n, d));
+    const bins = new Array(20).fill(0);
+    ps.forEach(p => { bins[Math.min(19, Math.floor(p / 0.05))]++; });
+    const centers = bins.map((_, i) => 0.05 * i + 0.025);
+    const colors = bins.map((_, i) => i === 0 ? '#c0392b' : '#2980b9');
+    const sig = ps.filter(p => p < 0.05).length;
+    const sorted = ps.slice().sort((a, b) => a - b);
+    const q = f => sorted[Math.floor(f * (R - 1))];
 
-    // fixed effect
-    const w = v.map(x => 1 / x);
-    const sw = w.reduce((a, b) => a + b, 0);
-    const fe = w.reduce((a, wi, i) => a + wi * y[i], 0) / sw;
-    const seFE = 1 / Math.sqrt(sw);
-    // heterogeneity (DerSimonian-Laird)
-    const Q = w.reduce((a, wi, i) => a + wi * Math.pow(y[i] - fe, 2), 0);
-    const df = k - 1;
-    const C = sw - w.reduce((a, wi) => a + wi * wi, 0) / sw;
-    const tau2 = Math.max(0, (Q - df) / C);
-    const I2 = Q > 0 ? Math.max(0, (Q - df) / Q) : 0;
-    // random effects
-    const wr = v.map(x => 1 / (x + tau2));
-    const swr = wr.reduce((a, b) => a + b, 0);
-    const re = wr.reduce((a, wi, i) => a + wi * y[i], 0) / swr;
-    const seRE = 1 / Math.sqrt(swr);
-
-    const ws = model === 'fixed' ? w : wr;
-    const sws = model === 'fixed' ? sw : swr;
-    const wmax = Math.max.apply(null, ws);
-
-    const ypos = [], lo = [], hi = [], sizes = [], ticktext = [];
-    for (let i = 0; i < k; i++) {
-      const yp = k - i;
-      const se = Math.sqrt(v[i]);
-      ypos.push(yp);
-      lo.push(y[i] - 1.96 * se);
-      hi.push(y[i] + 1.96 * se);
-      sizes.push(5 + 24 * Math.sqrt(ws[i] / wmax));
-      ticktext.push('Study ' + (i + 1) + ' (n=' + n[i] + ', ' + (100 * ws[i] / sws).toFixed(0) + '%)');
-    }
-
-    const studies = {
-      x: y, y: ypos, mode: 'markers', type: 'scatter',
-      marker: { symbol: 'square', size: sizes, color: '#2980b9' },
-      error_x: { type: 'data', symmetric: false,
-                 array: hi.map((h, i) => h - y[i]), arrayminus: y.map((yy, i) => yy - lo[i]),
-                 color: '#2980b9', thickness: 1.5, width: 3 },
-      hovertemplate: 'g = %{x:.2f}<extra></extra>', showlegend: false
-    };
-    const dFE = diamond(fe - 1.96 * seFE, fe, fe + 1.96 * seFE, -0.6);
-    const dRE = diamond(re - 1.96 * seRE, re, re + 1.96 * seRE, -1.8);
-    const trFE = { x: dFE.x, y: dFE.y, mode: 'lines', fill: 'toself', fillcolor: 'rgba(230,126,34,0.75)',
-                   line: { color: '#a1690a', width: 1 }, hoverinfo: 'skip', showlegend: false };
-    const trRE = { x: dRE.x, y: dRE.y, mode: 'lines', fill: 'toself', fillcolor: 'rgba(192,57,43,0.75)',
-                   line: { color: '#7b241c', width: 1 }, hoverinfo: 'skip', showlegend: false };
-
+    const trace = { x: centers, y: bins, type: 'bar', width: 0.045, marker: { color: colors } };
     const layout = {
-      xaxis: { title: 'Hedges g', range: [-1.6, 2.4], zeroline: false },
-      yaxis: { range: [-2.6, k + 1], tickvals: ypos.concat([-0.6, -1.8]),
-               ticktext: ticktext.concat(['Fixed effect', 'Random effects']),
-               tickfont: { size: 10 }, showgrid: false, zeroline: false },
-      margin: { t: 10, b: 45, l: 190, r: 20 },
-      shapes: [
-        { type: 'line', x0: 0, x1: 0, y0: -2.6, y1: k + 1, line: { color: '#555', width: 1.5 } },
-        { type: 'line', x0: MU, x1: MU, y0: -2.6, y1: k + 1, line: { color: '#27ae60', width: 2, dash: 'dash' } }
-      ]
+      xaxis: { title: 'ערך p', range: [0, 1] },
+      yaxis: { title: 'מספר חזרות (מתוך ' + R + ')' },
+      margin: { t: 15, b: 45, l: 55, r: 20 },
+      shapes: [{ type: 'line', x0: 0.05, x1: 0.05, y0: 0, y1: 1, yref: 'paper',
+                 line: { color: '#27ae60', width: 2, dash: 'dash' } }]
     };
-    g('demo-forest').style.height = Math.max(330, 110 + 16 * (k + 3)) + 'px';
-    Plotly.newPlot('demo-forest', [studies, trFE, trRE], layout, { displayModeBar: false });
+    Plotly.newPlot('demo-pdance', [trace], layout, { displayModeBar: false });
 
-    const el = g('forest_out');
-    el.textContent =
-      'Fixed: ' + fe.toFixed(2) + ' [' + (fe - 1.96 * seFE).toFixed(2) + ', ' + (fe + 1.96 * seFE).toFixed(2) + ']' +
-      '  ·  Random: ' + re.toFixed(2) + ' [' + (re - 1.96 * seRE).toFixed(2) + ', ' + (re + 1.96 * seRE).toFixed(2) + ']' +
-      '  ·  Q = ' + Q.toFixed(1) + ' (df = ' + df + ')' +
-      '  ·  I² = ' + (100 * I2).toFixed(0) + '%' +
-      '  ·  τ נאמד = ' + Math.sqrt(tau2).toFixed(2) + ' (אמיתי: ' + tau.toFixed(2) + ')';
-    if (I2 < 0.25) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
-    else if (I2 < 0.6) { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
+    document.getElementById('first_pd').innerHTML = 'הניסויים הראשונים: ' +
+      ps.slice(0, 12).map(p => '<span style="color:' + (p < 0.05 ? '#c0392b' : '#555') +
+        '; font-weight:' + (p < 0.05 ? 'bold' : 'normal') + ';">' + fmt(p) + '</span>').join(' , ');
+
+    const el = document.getElementById('out_pd');
+    el.textContent = sig + ' מתוך ' + R + ' (' + (100 * sig / R).toFixed(0) + '%) מתחת ל-0.05  ·  ' +
+                     'p חציוני ' + fmt(q(0.5)) + '  ·  90% מהערכים בין ' + fmt(q(0.05)) + ' ל-' + fmt(q(0.95));
+    if (d === 0) { el.style.background = '#fdf3e3'; el.style.color = '#a1690a'; }
+    else if (sig / R > 0.8) { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
     else { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
   }
-  ['fk', 'fnmin', 'fnmax', 'ftau'].forEach(id => g(id).addEventListener('input', draw));
-  document.querySelectorAll('input[name="fwm"]').forEach(r => r.addEventListener('change', draw));
+  ['d_pd', 'n_pd'].forEach(id => document.getElementById(id).addEventListener('input', draw));
+  document.getElementById('go_pd').addEventListener('click', draw);
   setTimeout(draw, 400);
 })();
 </script>
@@ -652,10 +590,33 @@
 <h2>מה ההדגמה מראה</h2>
 <div>
 <ul>
-<li class="fragment"><strong>הגדילו את טווח ה-<span class="math inline">\(n\)</span></strong> (למשל 20 עד 400): המחקרים הגדולים מקבלים ריבועים גדולים ורווחי סמך צרים, והמעוין נצמד אליהם.</li>
-<li class="fragment"><strong>הגדילו את <span class="math inline">\(\tau\)</span> מ-0 ל-0.6</strong>: ה-<span class="math inline">\(I^2\)</span> עולה; ב-random effects הריבועים מתקרבים בגודלם ומעוין ה-random effects <strong>מתרחב</strong> ביחס למעוין ה-fixed, שנשאר צר ומטעה.</li>
-<li class="fragment"><strong>הפחיתו את מספר המחקרים ל-3 עד 5</strong>: האומדן ל-<span class="math inline">\(\tau^2\)</span> עצמו לא יציב. בפועל, כשיש מעט מחקרים אי אפשר להסתמך על האומדן של ההטרוגניות.</li>
-<li class="fragment">כש-<span class="math inline">\(\tau = 0\)</span> שני המעוינים כמעט חופפים, כי שני המודלים מתלכדים.</li>
+<li class="fragment"><strong>אותו אפקט, אותו n, אותו ניסוי</strong> — ובכל זאת p נע בין ערכים כמעט אפס לערכים קרובים ל-1. ה-p-value הוא סטטיסטי מדגם, ומשתנה כמו כל סטטיסטי אחר.</li>
+<li class="fragment">עם עוצמה נמוכה (אפקט קטן או n קטן) רוב החזרות <strong>לא</strong> יורדות מתחת ל-0.05, אף שהאפקט אמיתי לגמרי.</li>
+<li class="fragment">כשהאפקט הוא אפס (<span class="math inline">\(d = 0\)</span>) ההתפלגות שטוחה, ובדיוק כ-5% יורדים מתחת ל-0.05. <strong>אין ערך של p שמעיד על “אפס”.</strong></li>
+</ul>
+</div>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>מסקנה: למה p לא אומר שום דבר על שחזור</strong></p>
+</div>
+<div class="callout-content">
+<p>סיכוי השחזור תלוי באפקט האמיתי וב-n של הניסוי הבא, שהם מה שלא ידוע. ה-p של הניסוי הראשון הוא רק מדגם בודד מתוך ההתפלגות שראיתם עכשיו.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="גם-bayes-יכול-להפוך-לטקס" class="slide level2">
+<h2>גם Bayes יכול להפוך לטקס</h2>
+<p>Gigerenzer &amp; Marewski (2015) מזהירים מפני <strong>“universal method”</strong> — מתכון אחד שמחליף שיקול דעת.</p>
+<div>
+<ul>
+<li class="fragment">אם “<span class="math inline">\(BF &gt; 3\)</span>” או “<span class="math inline">\(BF &gt; 10\)</span>” מחליף את “<span class="math inline">\(p &lt; .05\)</span>” כסף קסמים, החלפנו טקס בטקס.</li>
+<li class="fragment">prior ברירת מחדל שלא נבחר מתוך ידע בתחום הוא ה-“5%” החדש.</li>
+<li class="fragment">posterior הוא מסקנה <strong>מותנית במודל וב-prior</strong>. אם המודל שגוי, גם ההסתברות הבייסיאנית שגויה.</li>
 </ul>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
@@ -664,10 +625,10 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>הנקודה</strong></p>
+<p><strong>מה באמת מגן מפני טקס</strong></p>
 </div>
 <div class="callout-content">
-<p>בחירה ב-fixed effect כשיש הטרוגניות אמיתית מייצרת <strong>ביטחון-יתר</strong>: רווח סמך צר מדי לשאלה “מה האפקט הצפוי במחקר חדש”.</p>
+<p>הגדרת השערה שיכולה להיכשל, בחירה מנומקת של prior ושל אפקט מינימלי רלוונטי, דיווח של <strong>אי-ודאות</strong> (התפלגות ולא נקודה), וחשיבה על השאלה המדעית לפני שבוחרים כלי.</p>
 </div>
 </div>
 </div>
@@ -675,11 +636,12 @@
 <section id="סיכום-w8.v2" class="slide level2">
 <h2>סיכום W8.V2</h2>
 <ul>
-<li><strong>Cohen’s d ו-Hedges’ g</strong> מאפשרים לשים על ציר אחד מחקרים עם סולמות שונים, והשונות שלהם יורדת בערך כ-<span class="math inline">\(1/n\)</span>.</li>
-<li><strong>Inverse-variance weighting</strong> הוא לא כלל אצבע: הוא נובע ישירות מה-likelihood. דיוק הוא אינפורמציה, ולכן מחקר גדול נשקל יותר.</li>
-<li><strong>fixed effect</strong> מניח אפקט אמיתי אחד; <strong>random effects</strong> מניח התפלגות של אפקטים אמיתיים (<span class="math inline">\(\mu\)</span>, <span class="math inline">\(\tau^2\)</span>), ומייצר משקלות מאוזנים יותר ורווח סמך רחב יותר. נחזור אליו כמודל היררכי בשבוע 12.</li>
-<li><strong><span class="math inline">\(\tau\)</span></strong> מודד את ההטרוגניות ביחידות גודל האפקט; <strong><span class="math inline">\(I^2\)</span></strong> תלוי גם בדיוק המחקרים, ולכן מדווחים את שניהם.</li>
-<li>ב-<strong>forest plot</strong>: ריבוע = מחקר (גודלו הוא משקלו), קו = רווח סמך, מעוין = האומדן המשותף.</li>
+<li>ה-<strong>null ritual</strong>: השערת אפס, בלי השערה משלכם, 5% תמיד, דיווח מכני. זה טקס ולא שיטה.</li>
+<li>p הוא <span class="math inline">\(P(\text{data} \mid H_0)\)</span>. הוא אינו <span class="math inline">\(P(H_0 \mid \text{data})\)</span>, אינו סיכוי לשחזור, ואינו גודל אפקט.</li>
+<li>ה-NHST הנפוץ הוא הכלאה בין Fisher ל-Neyman-Pearson, ומכאן הבלבול הכרוני.</li>
+<li>ה-p-value משתנה פראית בין חזרות של אותו ניסוי, ולכן אינו יכול לנבא שחזור.</li>
+<li>גורם בייס ו-posterior אינם חסינים: כל כלל אוטומטי (“<span class="math inline">\(BF &gt; 10\)</span>”) הוא טקס פוטנציאלי.</li>
+<li>בשיעור הבא: מה קורה כשהטקס הזה מופעל שוב ושוב, על הרבה מבחנים, בשיטות מחקר גמישות.</li>
 </ul>
 <div class="footer footer-default">
 

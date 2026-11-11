@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W12.V3 — הרחבות, והחזרה ל-forest plot</title>
+  <title>W12.V3 — בדיקת הנחות, overfitting והשוואת מודלים</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,50 +325,34 @@
 
 <section id="title-slide" class="quarto-title-block center" dir="rtl">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W12.V3 — הרחבות, והחזרה ל-forest plot</h1>
-  <p class="subtitle">יותר משני תנאים, אשכולות שאינם נבדקים, ומטא-אנליזה כמודל היררכי</p>
+  <h1 class="title">W12.V3 — בדיקת הנחות, overfitting והשוואת מודלים</h1>
+  <p class="subtitle">אבחון ולא טקס, למה R² לא יכול לבחור מודל, והבחנה בין prediction ל-inference</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
 <section id="מטרות-המצגת" class="slide level2">
 <h2>מטרות המצגת</h2>
 <ul>
-<li>להבין שאותו מודל עובד גם ליותר משני תנאים ולאשכולות שאינם נבדקים.</li>
-<li>לקשר בין המודל ההיררכי לדגימת אשכולות (שבוע 7).</li>
-<li>להכיר את <strong>random slopes</strong> כרעיון בלבד.</li>
-<li>לזהות ש-<strong>random-effects meta-analysis</strong> משבוע 8 הוא בדיוק המודל ההיררכי, ושה-forest plot הוא תצוגה של partial pooling.</li>
-<li>להכיר את האזהרה המעשית: מעט אשכולות, מודל לא יציב.</li>
+<li>להכיר את ארבע הנחות המודל הליניארי, ולדעת מה כל אחת מבטיחה.</li>
+<li>לבדוק הנחות בתרשימי <strong>residuals</strong> ולא במבחנים — ולהבין את הטיעון לכך.</li>
+<li>להבין <strong>overfitting</strong>, ולמה <span class="math inline">\(R^2\)</span> לא יכול לשמש לבחירת מודל.</li>
+<li>להכיר את הרעיון של <strong>cross-validation</strong>.</li>
+<li>להבחין במפורש בין <strong>prediction</strong> ל-<strong>inference</strong>.</li>
 </ul>
 </section>
-<section id="מעבר-משני-תנאים-ליותר" class="slide level2">
-<h2>מעבר משני תנאים ליותר</h2>
-<p>הרעיון לא משתנה: לכל נבדק רמת בסיס משלו, שנמשכת מהתפלגות משותפת.</p>
-<p><span class="math display">\[y_{ij} = \beta_0 + \beta_{\text{cond}(j)} + u_i + \epsilon_{ij}, \qquad u_i \sim N(0, \tau^2)\]</span></p>
-<div>
-<ul>
-<li class="fragment">שלושה תנאים, חמישה תנאים, או מדידות חוזרות לאורך זמן: אותו <span class="math inline">\(u_i\)</span>.</li>
-<li class="fragment">אין צורך ב”מבחן t מזווג מורחב”. המודל פשוט מכיל יותר פרמטרים של תנאים.</li>
-<li class="fragment">כל נבדק תורם מידע על ההבדלים בין התנאים, ורמת הבסיס שלו לא מפריעה.</li>
-</ul>
-</div>
-</section>
-<section id="אשכולות-שאינם-נבדקים" class="slide level2">
-<h2>אשכולות שאינם נבדקים</h2>
+<section id="ארבע-ההנחות" class="slide level2">
+<h2>ארבע ההנחות</h2>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_{1i} + \dots + \varepsilon_i, \qquad \varepsilon_i \sim N(0, \sigma^2) \text{ ובלתי תלויים}\]</span></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="דוגמאות">דוגמאות</h3>
-<ul>
-<li>תלמידים בתוך <strong>כיתות</strong>.</li>
-<li>מטופלים בתוך <strong>מרפאות</strong>.</li>
-<li>משתתפים בתוך <strong>מעבדות</strong> (מחקרי multi-site).</li>
-<li>תצפיות בתוך <strong>נבדקים</strong> (מה שראינו).</li>
-</ul>
+<h3 id="linearity">1. Linearity</h3>
+<p>התוחלת של <span class="math inline">\(Y\)</span> היא פונקציה ליניארית של המנבאים.</p>
+<h3 id="homoscedasticity">2. Homoscedasticity</h3>
+<p>שונות ה-residuals זהה בכל רמה של המנבאים.</p>
 </div><div class="column" style="width:50%;">
-<h3 id="אותו-מבנה">אותו מבנה</h3>
-<ul>
-<li>“נבדק” הוא סתם אשכול שבו יש כמה תצפיות.</li>
-<li>לכל אשכול <span class="math inline">\(u_j\)</span> משלו, מהתפלגות משותפת.</li>
-<li><span class="math inline">\(\tau\)</span> מודד כמה האשכולות שונים זה מזה.</li>
-</ul>
+<h3 id="independence">3. Independence</h3>
+<p>ה-residuals של תצפיות שונות אינם קשורים זה בזה.</p>
+<h3 id="normality-של-ה-residuals">4. Normality של ה-residuals</h3>
+<p>ההתפלגות של ה-<strong>שגיאות</strong> נורמלית. לא של <span class="math inline">\(Y\)</span>, ולא של <span class="math inline">\(X\)</span>.</p>
 </div>
 </div>
 <div class="callout callout-note callout-captioned callout-style-default">
@@ -377,21 +361,63 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>חיבור לשבוע 7</strong></p>
+<p><strong>סדר חשיבות</strong></p>
 </div>
 <div class="callout-content">
-<p>דגימת אשכולות (cluster sampling) יוצרת בדיוק את התלות הזו. המודל ההיררכי הוא הדרך לנתח נתונים כאלה בלי להעמיד פנים שהתצפיות בלתי תלויות. ובנוסף, האשכולות שדגמנו הם מדגם מתוך אוכלוסייה של אשכולות, וזה מה שמאפשר להכליל מעבר אליהם.</p>
+<p>לרוב, הפרה של <strong>linearity</strong> פוגעת הכי קשה בפירוש המקדמים, והפרה של <strong>independence</strong> פוגעת הכי קשה בשגיאות התקן ובמובהקות. שונות לא שווה פוגעת בעיקר בשגיאות התקן. נורמליות היא ההנחה הפחות קריטית במדגמים לא קטנים, אך חשובה לטווחי ניבוי.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="random-slopes-רק-כרעיון" class="slide level2">
-<h2>Random slopes: רק כרעיון</h2>
+<section id="איך-בודקים-תרשימים-לא-מבחנים" class="slide level2">
+<h2>איך בודקים: תרשימים, לא מבחנים</h2>
 <div>
 <ul>
-<li class="fragment">עד כאן, הנבדקים שונים ב<strong>רמת הבסיס</strong> בלבד. האפקט של התנאי זהה לכולם.</li>
-<li class="fragment">ברעיון של <strong>random slopes</strong>, גם <strong>גודל האפקט</strong> יכול להשתנות בין נבדקים: אצל אחד האפקט גדול, אצל אחר קטן.</li>
-<li class="fragment">אז יש לא רק התפלגות של רמות בסיס, אלא גם התפלגות של אפקטים.</li>
+<li class="fragment"><strong>Residuals מול fitted values:</strong> ענן אקראי סביב האפס = בסדר. עקמומיות → linearity נפגעת. מניפה → שונות לא שווה.</li>
+<li class="fragment"><strong>Q-Q plot של ה-residuals:</strong> נקודות על האלכסון = בסדר. זנבות שמתרחקים → נורמליות.</li>
+<li class="fragment"><strong>Residuals לפי סדר האיסוף / לפי קבוצה, מוסד או משתתף:</strong> רצפים או אשכולות → תלות.</li>
+</ul>
+</div>
+<p><strong>למה לא מבחנים</strong> (Shapiro-Wilk, Levene, Breusch-Pagan)?</p>
+<div>
+<ul>
+<li class="fragment">במדגם גדול הם דוחים סטיות זעירות שאין להן שום השפעה מעשית; במדגם קטן אין להם כוח לזהות סטיות חמורות.</li>
+<li class="fragment">הם עונים “האם ההנחה מדויקת” — שאלה שהתשובה עליה תמיד “לא”. השאלה הרלוונטית היא <strong>“האם ההפרה משנה את המסקנה”</strong>.</li>
+<li class="fragment">תרשים מראה את <strong>הצורה</strong> של ההפרה, ולכן גם מה לעשות בעקבותיה. מבחן נותן רק p.</li>
+</ul>
+</div>
+</section>
+<section id="הטיעון-אבחון-לא-טקס" class="slide level2">
+<h2>הטיעון: אבחון, לא טקס</h2>
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>שני שימושים שונים לחלוטין</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>טקס:</strong> מריצים Shapiro-Wilk, ואם <span class="math inline">\(p &gt; .05\)</span> ממשיכים ל-t-test, ואם <span class="math inline">\(p &lt; .05\)</span> עוברים למבחן אחר. (זה הטקס של Gigerenzer מ-W8.V2.)</p>
+<p><strong>אבחון:</strong> מסתכלים על ה-residuals <em>אחרי</em> התאמת המודל, כדי להבין אם הוא מתאר את הנתונים — וכדי לשפר אותו.</p>
+</div>
+</div>
+</div>
+<div>
+<ul>
+<li class="fragment">בדיקת הנחות אינה שער שצריך לעבור לפני הריצה. היא חלק מהמודל: <strong>המודל הוא ההשערה, וה-residuals הם הראיה נגדה</strong>.</li>
+<li class="fragment">ההחלטה “לעבור למבחן אחר לפי תוצאת מבחן ההנחות” היא בעצמה צעד סטטיסטי עם שגיאות — ופתיחה של forking paths.</li>
+<li class="fragment">מה עושים כשההנחה נשברת? תלוי בצורה: להוסיף איבר לא ליניארי או אינטראקציה; להשתמש בשגיאות תקן robust; למדל את התלות (מודל היררכי, שבוע 13); או להבין שהמודל פשוט לא מתאר את התהליך.</li>
+</ul>
+</div>
+</section>
+<section id="overfitting-מודל-שמתאים-את-עצמו-לרעש" class="slide level2">
+<h2>Overfitting: מודל שמתאים את עצמו לרעש</h2>
+<div>
+<ul>
+<li class="fragment">בכל מדגם יש <strong>אות</strong> (מה שיחזור במדגם הבא) ו<strong>רעש</strong> (מה שלא).</li>
+<li class="fragment">מודל גמיש מספיק מתאים את עצמו לשניהם. הוא “מסביר” את המדגם הנוכחי — כולל המקריות בו — ומאבד את היכולת להכליל.</li>
+<li class="fragment"><span class="math inline">\(R^2 = 1 - \dfrac{SSE}{SST}\)</span>. הוספת מנבא <strong>לעולם לא מגדילה</strong> את ה-SSE, ולכן <span class="math inline">\(R^2\)</span> רק עולה. גם עם מנבא של רעש טהור. עם <span class="math inline">\(n-1\)</span> מנבאים: <span class="math inline">\(R^2 = 1\)</span>.</li>
 </ul>
 </div>
 <div class="callout callout-warning callout-captioned callout-style-default">
@@ -400,32 +426,225 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>לא נאמוד את זה בקורס</strong></p>
+<p><strong>המסקנה</strong></p>
 </div>
 <div class="callout-content">
-<p>זה נושא מתקדם, והוא הרבה פחות יציב בנתונים קטנים. מספיק לדעת שהאפשרות קיימת ושהיא אותה לוגיקה: עוד פרמטר שיש לו התפלגות.</p>
+<p><span class="math inline">\(R^2\)</span> מודד התאמה למדגם <strong>שממנו נאמד המודל</strong>. הוא לא יכול להבדיל בין מודל שלמד אות למודל שלמד רעש, ולכן אינו קריטריון לבחירה בין מודלים בעלי מורכבות שונה.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="החזרה-לשבוע-8-מטא-אנליזה-היא-המודל-הזה" class="slide level2">
-<h2>החזרה לשבוע 8: מטא-אנליזה היא המודל הזה</h2>
-<p><span class="math display">\[y_k \sim N(\theta_k,\, s_k^2), \qquad \theta_k \sim N(\mu,\, \tau^2)\]</span></p>
+<section id="הדגמה-אינטראקטיבית-דרגת-הפולינום-ושגיאת-הבדיקה" class="slide level2">
+<h2>הדגמה אינטראקטיבית: דרגת הפולינום ושגיאת הבדיקה</h2>
+<p>האמת: פונקציית סינוס חלקה. המדגם קטן ורועש. בוחרים דרגת פולינום.</p>
+<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
+    <label>דרגת הפולינום: <b id="dval_of">3</b>
+      <input type="range" id="d_of" min="1" max="12" step="1" value="3"></label>
+    <label>גודל המדגם (n): <b id="nval_of">15</b>
+      <input type="range" id="n_of" min="14" max="60" step="2" value="15"></label>
+    <button id="btn_of" style="font-size:0.9em; padding:3px 12px;">מדגם חדש</button>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+    <div id="demo-of-fit" style="flex:1 1 320px; height:310px;"></div>
+    <div id="demo-of-err" style="flex:1 1 320px; height:310px;"></div>
+  </div>
+  <div id="out_of" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; font-size:0.9em;"></div>
+</div>
+<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<script>
+(function() {
+  const SD = 0.3, MAXD = 12;
+  const f = x => 0.8 * Math.sin(2.5 * x);
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  // בסיס לז'אנדר, לשיפור יציבות נומרית
+  function phi(x, d) {
+    const P = [1, x];
+    for (let k = 2; k <= d; k++) P[k] = ((2 * k - 1) * x * P[k - 1] - (k - 1) * P[k - 2]) / k;
+    return P.slice(0, d + 1);
+  }
+  function solve(A, b) {
+    const p = b.length;
+    for (let i = 0; i < p; i++) {
+      let piv = i;
+      for (let r = i + 1; r < p; r++) if (Math.abs(A[r][i]) > Math.abs(A[piv][i])) piv = r;
+      [A[i], A[piv]] = [A[piv], A[i]]; [b[i], b[piv]] = [b[piv], b[i]];
+      for (let r = i + 1; r < p; r++) {
+        const m = A[r][i] / A[i][i];
+        for (let c = i; c < p; c++) A[r][c] -= m * A[i][c];
+        b[r] -= m * b[i];
+      }
+    }
+    const w = new Array(p).fill(0);
+    for (let i = p - 1; i >= 0; i--) {
+      let s = b[i];
+      for (let c = i + 1; c < p; c++) s -= A[i][c] * w[c];
+      w[i] = s / A[i][i];
+    }
+    return w;
+  }
+  function fit(xs, ys, d) {
+    const p = d + 1;
+    const A = Array.from({ length: p }, () => new Array(p).fill(0));
+    const b = new Array(p).fill(0);
+    for (let i = 0; i < xs.length; i++) {
+      const ph = phi(xs[i], d);
+      for (let a = 0; a < p; a++) {
+        b[a] += ph[a] * ys[i];
+        for (let c = 0; c < p; c++) A[a][c] += ph[a] * ph[c];
+      }
+    }
+    for (let a = 0; a < p; a++) A[a][a] += 1e-9;
+    return solve(A, b);
+  }
+  function predict(w, x) {
+    const ph = phi(x, w.length - 1);
+    let s = 0;
+    for (let i = 0; i < w.length; i++) s += w[i] * ph[i];
+    return s;
+  }
+
+  const grid = [];
+  for (let i = 0; i <= 200; i++) grid.push(-1 + i / 100);
+  let data = null;
+
+  function newSample() {
+    const n = parseInt(document.getElementById('n_of').value);
+    const xs = [], ys = [];
+    for (let i = 0; i < n; i++) {
+      const x = -1 + 2 * Math.random();
+      xs.push(x); ys.push(f(x) + SD * randn());
+    }
+    const my = ys.reduce((s, v) => s + v, 0) / n;
+    const sst = ys.reduce((s, v) => s + (v - my) * (v - my), 0);
+    const models = [];
+    for (let d = 1; d <= MAXD; d++) {
+      const w = fit(xs, ys, d);
+      let sse = 0;
+      for (let i = 0; i < n; i++) { const e = ys[i] - predict(w, xs[i]); sse += e * e; }
+      let g = 0;
+      for (const x of grid) { const e = predict(w, x) - f(x); g += e * e; }
+      models.push({ d: d, w: w, train: sse / n, r2: 1 - sse / sst, test: g / grid.length + SD * SD });
+    }
+    let best = 0;
+    models.forEach((m, i) => { if (m.test < models[best].test) best = i; });
+    data = { xs: xs, ys: ys, n: n, models: models, best: best };
+  }
+
+  function draw() {
+    if (!data) return;
+    const d = parseInt(document.getElementById('d_of').value);
+    document.getElementById('dval_of').textContent = d;
+    document.getElementById('nval_of').textContent = data.n;
+    const m = data.models[d - 1];
+
+    const pts = { x: data.xs, y: data.ys, mode: 'markers', name: 'נתוני אימון',
+                  marker: { color: '#2c3e50', size: 8 } };
+    const truth = { x: grid, y: grid.map(f), mode: 'lines', name: 'האמת',
+                    line: { color: '#27ae60', width: 3, dash: 'dash' } };
+    const fitLine = { x: grid, y: grid.map(x => predict(m.w, x)), mode: 'lines', name: 'המודל שנאמד',
+                      line: { color: '#c0392b', width: 3 } };
+    Plotly.newPlot('demo-of-fit', [truth, pts, fitLine], {
+      title: { text: 'ההתאמה לנתוני האימון', font: { size: 13 } },
+      xaxis: { title: 'X', range: [-1, 1] },
+      yaxis: { title: 'Y', range: [-2.5, 2.5] },
+      legend: { orientation: 'h', y: -0.28, font: { size: 10 } },
+      margin: { t: 40, b: 80, l: 45, r: 15 }
+    }, { displayModeBar: false, responsive: true });
+
+    const degs = data.models.map(q => q.d);
+    const tr = { x: degs, y: data.models.map(q => q.train), mode: 'lines+markers', name: 'שגיאת אימון',
+                 line: { color: '#2980b9', width: 3 } };
+    const te = { x: degs, y: data.models.map(q => q.test), mode: 'lines+markers', name: 'שגיאה על נתונים חדשים',
+                 line: { color: '#c0392b', width: 3 } };
+    const cur = { x: [d, d], y: [m.train, m.test], mode: 'markers', showlegend: false,
+                  marker: { color: '#f39c12', size: 14, symbol: 'circle-open', line: { width: 3 } } };
+    Plotly.newPlot('demo-of-err', [tr, te, cur], {
+      title: { text: 'MSE כפונקציה של הדרגה (ציר לוגריתמי)', font: { size: 13 } },
+      xaxis: { title: 'דרגת הפולינום', dtick: 1 },
+      yaxis: { title: 'MSE', type: 'log' },
+      legend: { orientation: 'h', y: -0.28, font: { size: 10 } },
+      margin: { t: 40, b: 80, l: 55, r: 15 }
+    }, { displayModeBar: false, responsive: true });
+
+    const el = document.getElementById('out_of');
+    el.textContent = 'דרגה ' + d + '  ·  R² על נתוני האימון = ' + m.r2.toFixed(3) +
+      '  ·  MSE אימון = ' + m.train.toFixed(3) +
+      '  ·  MSE על נתונים חדשים = ' + m.test.toFixed(3) +
+      '  ·  הדרגה הטובה ביותר במדגם הזה: ' + data.models[data.best].d;
+    if (d > data.models[data.best].d + 1) { el.style.background = '#fdecea'; el.style.color = '#a32d2d'; }
+    else { el.style.background = '#eef5fa'; el.style.color = '#185fa5'; }
+  }
+
+  document.getElementById('d_of').addEventListener('input', draw);
+  document.getElementById('n_of').addEventListener('input', function() { newSample(); draw(); });
+  document.getElementById('btn_of').addEventListener('click', function() { newSample(); draw(); });
+  if (window.Reveal && Reveal.on) {
+    Reveal.on('slidechanged', function() {
+      setTimeout(function() {
+        try { Plotly.Plots.resize('demo-of-fit'); Plotly.Plots.resize('demo-of-err'); } catch (e) {}
+      }, 150);
+    });
+  }
+  setTimeout(function() { newSample(); draw(); }, 400);
+})();
+</script>
+</section>
+<section id="מה-ההדגמה-מראה" class="slide level2">
+<h2>מה ההדגמה מראה</h2>
+<div>
+<ul>
+<li class="fragment"><strong>שגיאת האימון יורדת מונוטונית</strong> עם הדרגה, ו-<span class="math inline">\(R^2\)</span> עולה מונוטונית. תמיד. בדרגה <span class="math inline">\(n-1\)</span> הפולינום עובר בכל הנקודות.</li>
+<li class="fragment"><strong>השגיאה על נתונים חדשים יורדת ואז עולה</strong> — צורת U. בדרגות נמוכות המודל פשוט מדי (הוא מפספס אות), בדרגות גבוהות הוא מלמד את עצמו את הרעש.</li>
+<li class="fragment">הדרגה האופטימלית משתנה בין דגימות, ותלויה ב-<span class="math inline">\(n\)</span>: <strong>מדגם גדול מרשה מודל מורכב יותר</strong>.</li>
+<li class="fragment">הסתכלו על הקו האדום בתרשים השמאלי בדרגות גבוהות: הוא עובר בנקודות האימון בדיוק — ומתנהג פרוע בין הנקודות ובקצוות.</li>
+</ul>
+</div>
+</section>
+<section id="cross-validation-לבדוק-על-מה-שלא-ראינו" class="slide level2">
+<h2>Cross-validation: לבדוק על מה שלא ראינו</h2>
+<p>הרעיון: <strong>להעריך את המודל על נתונים שלא השתתפו באמידה שלו</strong>.</p>
+<div>
+<ul>
+<li class="fragment">מחלקים את המדגם ל-<span class="math inline">\(k\)</span> חלקים (folds).</li>
+<li class="fragment">מתאימים את המודל על <span class="math inline">\(k-1\)</span> חלקים, ומודדים את השגיאה על החלק שנשאר.</li>
+<li class="fragment">חוזרים על התהליך <span class="math inline">\(k\)</span> פעמים, כך שכל חלק משמש פעם אחת לבדיקה, וממצעים את השגיאה.</li>
+<li class="fragment">בוחרים את המודל עם שגיאת ה-CV הנמוכה ביותר. במקרה הקיצוני <span class="math inline">\(k = n\)</span>: leave-one-out.</li>
+</ul>
+</div>
+<div class="callout callout-note callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>לא רק CV</strong></p>
+</div>
+<div class="callout-content">
+<p>יש משפחה שלמה של דרכים להעריך את השגיאה על נתונים חדשים בלי לאסוף אותם: adjusted <span class="math inline">\(R^2\)</span> ו-AIC (שמענישים על מורכבות), ו-LOO בגישה הבייסיאנית. כולם עונים על אותה שאלה: <strong>כמה המודל יטעה במדגם הבא</strong>, ולא כמה הוא מתאים לנוכחי.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="prediction-מול-inference" class="slide level2">
+<h2>Prediction מול inference</h2>
+<p>שתי מטרות שונות לחלוטין ללמוד מנתונים (Shmueli, 2010):</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h3 id="מה-שלמדנו-היום">מה שלמדנו היום</h3>
-<ul>
-<li>אשכול = נבדק או כיתה.</li>
-<li><span class="math inline">\(u_j\)</span> = הסטייה של האשכול מהממוצע.</li>
-<li><span class="math inline">\(\tau^2\)</span> = השונות בין האשכולות.</li>
-</ul>
+<h3 id="prediction">Prediction</h3>
+<p><strong>שאלה:</strong> מה יהיה <span class="math inline">\(Y\)</span> עבור תצפית חדשה?</p>
+<p><strong>קריטריון:</strong> שגיאה על נתונים חדשים.</p>
+<p><strong>המקדמים:</strong> אינם חשובים כשלעצמם. מודל בעל 200 מנבאים יכול להיות מצוין.</p>
 </div><div class="column" style="width:50%;">
-<h3 id="מה-שראינו-בשבוע-8">מה שראינו בשבוע 8</h3>
-<ul>
-<li>אשכול = <strong>מחקר</strong>.</li>
-<li><span class="math inline">\(\theta_k\)</span> = האפקט האמיתי של מחקר <span class="math inline">\(k\)</span>.</li>
-<li><span class="math inline">\(\tau^2\)</span> = השונות בין המחקרים (heterogeneity).</li>
-</ul>
+<h3 id="inference">Inference</h3>
+<p><strong>שאלה:</strong> מה קורה ל-<span class="math inline">\(Y\)</span> אם משנים את <span class="math inline">\(X\)</span>? מה גודלו של אפקט מסוים?</p>
+<p><strong>קריטריון:</strong> הגרף — האם קבוצת הפיקוח נכונה (W8).</p>
+<p><strong>המקדמים:</strong> הם התוצר. כל מקדם צריך פירוש.</p>
 </div>
 </div>
 <div class="callout callout-important callout-captioned callout-style-default">
@@ -434,159 +653,22 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>פגשתם את המודל הזה לפני ארבעה שבועות</strong></p>
+<p><strong>הן לא נגזרות זו מזו</strong></p>
 </div>
 <div class="callout-content">
-<p>random-effects meta-analysis הוא partial pooling. ההבדל היחיד: את השונות התוך-אשכולית (<span class="math inline">\(s_k^2\)</span>, שגיאת התקן של המחקר) מקבלים מוכנה מהמאמר, במקום לאמוד אותה מהתצפיות הגולמיות.</p>
+<p>מודל מצוין לניבוי אינו בהכרח מודל שמקדמיו ניתנים לפירוש סיבתי: הוספת <strong>collider</strong> משפרת לעיתים קרובות את הניבוי ומקלקלת את האומדן הסיבתי. ולהפך, מודל שמפוקח נכון לצורך אפקט סיבתי (רק ה-confounders) עשוי לנבא פחות טוב ממודל שמכיל כל מה שקשור ל-<span class="math inline">\(Y\)</span>. אל תשתמשו בקריטריון של אחת המטרות כדי לבחור מודל לצורך השנייה. נמשיך את זה ב-W12.V4.</p>
 </div>
 </div>
-</div>
-</section>
-<section id="ה-forest-plot-כתצוגה-של-partial-pooling" class="slide level2">
-<h2>ה-forest plot כתצוגה של partial pooling</h2>
-<div>
-<ul>
-<li class="fragment">כל <strong>מחקר</strong> הוא אשכול, עם אומדן וגודל אי-ודאות משלו.</li>
-<li class="fragment"><strong>המשקל</strong> של מחקר באומדן המשותף הוא <span class="math inline">\(1/(s_k^2 + \tau^2)\)</span>.</li>
-<li class="fragment">כש-<span class="math inline">\(\tau = 0\)</span>: fixed-effect, כלומר <strong>complete pooling</strong>. מחקרים גדולים שולטים.</li>
-<li class="fragment">כש-<span class="math inline">\(\tau\)</span> גדל: המשקלות מתיישרים, כל מחקר נחשב בערך אותו דבר, והכיווץ נעלם, כלומר מתקרבים ל-<strong>no pooling</strong>.</li>
-<li class="fragment">ה-<strong>shrinkage</strong> אומר: האפקט האמיתי של מחקר קטן ורועש קרוב לממוצע הכללי יותר ממה שהאומדן שלו מציע.</li>
-</ul>
-</div>
-</section>
-<section id="הדגמה-אינטראקטיבית-forest-plot-עם-שליטה-ב-τ" class="slide level2">
-<h2>הדגמה אינטראקטיבית: forest plot עם שליטה ב-τ</h2>
-<p>שמונה מחקרים. הריבועים האפורים הם האומדנים הגולמיים עם רווחי סמך. העיגולים הכחולים הם האומדנים <strong>אחרי partial pooling</strong>. היהלום האדום הוא האומדן המשותף.</p>
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:8px; font-size:0.85em;">
-    <label>τ (השונות בין המחקרים): <b id="tauval_f">0.22</b>
-      <input type="range" id="tau_f" min="0" max="0.8" step="0.01" value="0.22"></label>
-    <button id="est_f" style="padding:2px 10px;">קבע τ לפי הנתונים</button>
-  </div>
-  <div id="demo-forest" style="width:100%; height:470px;"></div>
-  <div id="out_f" style="text-align:center; font-weight:bold; padding:8px; border-radius:6px; margin-top:6px; background:#eef5fa; color:#185fa5;"></div>
-  <div id="est_txt_f" style="text-align:center; padding:4px; font-size:0.85em;"></div>
-</div>
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
-<script>
-(function() {
-  const y = [0.72, 0.08, 0.50, 1.00, 0.22, -0.12, 0.60, 0.30];
-  const s = [0.12, 0.30, 0.20, 0.35, 0.15, 0.28, 0.10, 0.25];
-  const K = y.length;
-
-  // אומדן τ בשיטת DerSimonian-Laird
-  const w0 = s.map(x => 1 / (x * x));
-  const sw0 = w0.reduce((a, b) => a + b, 0);
-  const m0 = y.reduce((acc, yy, k) => acc + yy * w0[k], 0) / sw0;
-  const Q = y.reduce((acc, yy, k) => acc + w0[k] * (yy - m0) * (yy - m0), 0);
-  const C = sw0 - w0.reduce((acc, w) => acc + w * w, 0) / sw0;
-  const tauHat = Math.sqrt(Math.max(0, (Q - (K - 1)) / C));
-
-  function draw() {
-    const tau = parseFloat(document.getElementById('tau_f').value);
-    const tau2 = tau * tau;
-    document.getElementById('tauval_f').textContent = tau.toFixed(2);
-
-    const w = s.map(x => 1 / (x * x + tau2));
-    const sw = w.reduce((a, b) => a + b, 0);
-    const mu = y.reduce((acc, yy, k) => acc + yy * w[k], 0) / sw;
-    const seMu = Math.sqrt(1 / sw);
-    const pct = w.map(x => 100 * x / sw);
-
-    // partial pooling: אומדן וסטיית תקן פוסטריורית לכל מחקר
-    const B = s.map(x => (x * x) / (x * x + tau2));
-    const shr = y.map((yy, k) => (1 - B[k]) * yy + B[k] * mu);
-    const shrSd = s.map((x, k) => Math.sqrt((1 - B[k]) * x * x + B[k] * B[k] * seMu * seMu));
-
-    const pos = y.map((_, k) => K - k);   // 8..1
-    const names = y.map((_, k) => 'Study ' + (k + 1));
-
-    const traces = [
-      { x: y, y: pos.map(p => p + 0.15), mode: 'markers', name: 'אומדן גולמי',
-        marker: { symbol: 'square', color: '#555', size: pct.map(p => 6 + 0.9 * p) },
-        error_x: { type: 'data', array: s.map(x => 1.96 * x), color: '#555', thickness: 1.5, width: 4 },
-        hovertext: y.map((v, k) => names[k] + ': ' + v.toFixed(2) + ', משקל ' + pct[k].toFixed(0) + '%'), hoverinfo: 'text' },
-      { x: shr, y: pos.map(p => p - 0.15), mode: 'markers', name: 'אחרי partial pooling',
-        marker: { symbol: 'circle', color: '#2980b9', size: 9 },
-        error_x: { type: 'data', array: shrSd.map(x => 1.96 * x), color: '#2980b9', thickness: 1.5, width: 4 },
-        hovertext: shr.map((v, k) => names[k] + ': ' + v.toFixed(2)), hoverinfo: 'text' },
-      { x: [mu], y: [-0.2], mode: 'markers', name: 'אומדן משותף',
-        marker: { symbol: 'diamond', color: '#c0392b', size: 15 },
-        error_x: { type: 'constant', value: 1.96 * seMu, color: '#c0392b', thickness: 3, width: 6 },
-        hoverinfo: 'skip' },
-      { x: pos.map(() => 1.55), y: pos, mode: 'text', text: pct.map(p => p.toFixed(0) + '%'),
-        textfont: { size: 12, color: '#333' }, showlegend: false, hoverinfo: 'skip' }
-    ];
-    const layout = {
-      xaxis: { title: 'גודל אפקט', range: [-0.9, 1.75], zeroline: true, zerolinecolor: '#999' },
-      yaxis: { tickvals: pos.concat([-0.2]), ticktext: names.concat(['Pooled']), range: [-1, K + 0.8] },
-      margin: { t: 30, b: 45, l: 70, r: 15 },
-      legend: { orientation: 'h', y: 1.08, x: 0 },
-      annotations: [{ x: 1.55, y: K + 0.6, text: 'משקל', showarrow: false, font: { size: 12 } }],
-      shapes: [{ type: 'line', x0: mu, x1: mu, y0: -0.6, y1: K + 0.4, line: { color: '#c0392b', width: 1.2, dash: 'dot' } }]
-    };
-    Plotly.newPlot('demo-forest', traces, layout, { displayModeBar: false });
-
-    const el = document.getElementById('out_f');
-    el.textContent = 'אומדן משותף ' + mu.toFixed(2) + '  [' + (mu - 1.96 * seMu).toFixed(2) + ', ' + (mu + 1.96 * seMu).toFixed(2) + ']' +
-                     '  ·  המשקל הגדול ביותר ' + Math.max.apply(null, pct).toFixed(0) + '%, הקטן ביותר ' + Math.min.apply(null, pct).toFixed(0) + '%';
-    let note;
-    if (tau < 0.02) note = 'τ = 0: fixed-effect, כלומר complete pooling. המחקרים הגדולים שולטים והאומדנים הכחולים נדחסים אל היהלום.';
-    else if (tau > 0.6) note = 'τ גדול: המשקלות כמעט שווים והכיווץ כמעט נעלם, כלומר no pooling.';
-    else note = 'partial pooling: מחקרים קטנים ורועשים נמשכים חזק, מחקרים גדולים כמעט לא זזים.';
-    document.getElementById('est_txt_f').textContent = note + '  (τ שנאמד מהנתונים: ' + tauHat.toFixed(2) + ')';
-  }
-  document.getElementById('tau_f').addEventListener('input', draw);
-  document.getElementById('est_f').addEventListener('click', function() {
-    document.getElementById('tau_f').value = tauHat.toFixed(2);
-    draw();
-  });
-  setTimeout(draw, 400);
-})();
-</script>
-</section>
-<section id="מה-ההדגמה-מראה" class="slide level2">
-<h2>מה ההדגמה מראה</h2>
-<div>
-<ul>
-<li class="fragment">הזיזו את <span class="math inline">\(\tau\)</span> ל-0: כל המחקרים נדחסים אל האומדן המשותף, והמשקלות נקבעים רק לפי גודל המחקר.</li>
-<li class="fragment">העלו את <span class="math inline">\(\tau\)</span>: המשקלות מתאזנים, מחקר קטן מקבל יותר משקל, והאומדן הכחול חוזר אל האומדן הגולמי.</li>
-<li class="fragment">מחקר קטן עם רווח סמך רחב (Study 4, Study 2) זז הרבה. מחקר גדול (Study 7) כמעט לא זז.</li>
-<li class="fragment">הלחצן “קבע <span class="math inline">\(\tau\)</span> לפי הנתונים” מראה מה מתקבל כשה-<span class="math inline">\(\tau\)</span> נאמד ולא נקבע ידנית. זה מה שהתוכנה עושה.</li>
-<li class="fragment">זו התמונה שראיתם בשבוע 8. עכשיו אתם יודעים מה היא מראה.</li>
-</ul>
-</div>
-</section>
-<section id="אזהרה-מעשית-מעט-אשכולות" class="slide level2">
-<h2>אזהרה מעשית: מעט אשכולות</h2>
-<div class="callout callout-danger callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>מספר קטן של אשכולות הוא המצב שבו המודל הכי פחות יציב</strong></p>
-</div>
-<div class="callout-content">
-<p>כדי לאמוד את <span class="math inline">\(\tau\)</span> צריך לראות כמה אשכולות שונים זה מזה. עם 3-5 אשכולות, זה כמו לאמוד סטיית תקן מחמש תצפיות.</p>
-</div>
-</div>
-</div>
-<div>
-<ul>
-<li class="fragment">האומדן של <span class="math inline">\(\tau\)</span> רועש מאוד, ולעיתים קרובות “קורס” לאפס. אז מקבלים complete pooling מבלי שזה היה נכון.</li>
-<li class="fragment">התוצאה רגישה מאוד ל-prior על <span class="math inline">\(\tau\)</span>. בגישה הבייסיאנית, prior חלש-אינפורמטיבי על <span class="math inline">\(\tau\)</span> (למשל half-normal) מייצב את האומדן.</li>
-<li class="fragment">שני מחקרים או שלוש כיתות אינם מספיקים כדי ללמוד “התפלגות של אשכולות”. במקרה כזה עדיף להודות בכך במקום להמציא דיוק.</li>
-</ul>
 </div>
 </section>
 <section id="סיכום-w12.v3" class="slide level2">
 <h2>סיכום W12.V3</h2>
 <ul>
-<li>אותו מודל מכסה יותר משני תנאים ואשכולות שאינם נבדקים: כיתות, מרפאות, מעבדות. זה הפתרון לתלות שנוצרת בדגימת אשכולות (שבוע 7).</li>
-<li><strong>Random slopes</strong> הם הרחבה טבעית (גם האפקט משתנה בין אשכולות), אך לא נאמוד אותם בקורס.</li>
-<li><strong>Random-effects meta-analysis</strong> משבוע 8 הוא מודל היררכי עם מחקרים כאשכולות. ה-forest plot הוא תצוגה של partial pooling, ו-<span class="math inline">\(\tau^2\)</span> היא השונות בין האשכולות.</li>
-<li><strong>מעט אשכולות = אומדן לא יציב של <span class="math inline">\(\tau\)</span>.</strong> prior חלש-אינפורמטיבי עוזר, אבל אינו מחליף נתונים.</li>
+<li>ההנחות: linearity, homoscedasticity, independence, normality של ה-residuals. הראשונה קובעת את פירוש המקדמים, והשלישית את שגיאות התקן.</li>
+<li>בודקים אותן ב<strong>תרשימי residuals</strong>, כאבחון שמשפר את המודל — לא כמבחן שמכריע איזה מבחן להריץ.</li>
+<li><strong>Overfitting:</strong> מודל שמתאים את עצמו לרעש. <span class="math inline">\(R^2\)</span> רק עולה עם מנבאים נוספים, ולכן אינו יכול לבחור מודל.</li>
+<li>שגיאה על נתונים חדשים יורדת ואז עולה. <strong>Cross-validation</strong> היא הדרך להעריך אותה מבלי לאסוף נתונים חדשים.</li>
+<li><strong>Prediction ו-inference הן מטרות שונות</strong> עם קריטריונים שונים. מודל טוב לאחת אינו בהכרח טוב לשנייה.</li>
 </ul>
 <div class="footer footer-default">
 
