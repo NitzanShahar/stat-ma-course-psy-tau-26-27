@@ -785,6 +785,11 @@ class Site:
             head = 'מטלת קריאה' if items[0][1] == 'קריאה' else 'מטלת הגשה'
             return f'<h3 class="msub">{head}</h3>' + ''.join(self.mat_row(it, k) for it, k in items)
         gl = ''.join(given([x for x in given_lesson if x[1] == lab]) for lab in ('קריאה', 'מטלת הגשה'))
+        rt = self.cfg.get('reading_tasks', {}).get(str(w['n'])) if not reading else None
+        if rt:  # a reading task given in class that is not a history page: a survey link of its own
+            gl = (f'<h3 class="msub">מטלת קריאה</h3><div class="mat"><a class="mlink" href="{esc(rt["url"])}" target="_blank" rel="noopener">'
+                  f'<span class="ic">{PILL_SURVEY}</span><span><span class="mt">{esc(rt.get("title", rt["text"]))}</span>'
+                  f'<span class="ms">{esc(rt.get("sub", ""))}</span></span></a></div>') + gl
         gp = ''.join(given([x for x in given_practice if x[1] == lab]) for lab in ('קריאה', 'מטלת הגשה'))
         k_items = [it for it in lesson if self.kind(it) == 'K']
         d_items = [it for it in lesson if self.kind(it) != 'K']
@@ -792,7 +797,7 @@ class Site:
         pdecks = ('<h3 class="msub">מצגות</h3>' + ''.join(self.mat_row(it) for it in practice)) if practice else ''
         acts = ('<h3 class="msub">התנסות בכיתה</h3>' + ''.join(self.mat_row(it) for it in k_items)) if k_items else ''
         cols = ''
-        if lesson or notes or given_lesson:
+        if lesson or notes or given_lesson or rt:
             cols += (f'<section class="mcard" aria-label="שיעור"><div class="mh"><h2 class="fr">שיעור</h2><span>{day_dm(w["lecture"])}</span></div>'
                      f'{notes_html}{decks}{acts}{gl}</section>')
         if practice:
@@ -860,8 +865,8 @@ class Site:
             if url:
                 note.append(f'הגשה מקוונת: <a class="ln" href="{esc(url)}" target="_blank" rel="noopener">טופס ההגשה</a>')
             cards.append(self.task_card('מטלת קריאה שבועית', '', text, note, nl, frm=w.get('lecture')))
-        sx = self.cfg.get('staff_reading', {}).get(str(w['n'])) if self.staff and not reading else None
-        if sx and nl:  # staff-only reading task (the student site does not show it)
+        sx = self.cfg.get('reading_tasks', {}).get(str(w['n'])) if not reading else None
+        if sx and nl:  # a reading task that is not a history page (site.json reading_tasks), e.g. a survey
             x = d(nl)
             at = self.cfg.get('reading_due_time', '10:00')
             note = [esc(f'תאריך אחרון להגשה: יום {DAYS[x.weekday()]} {x.day}.{x.month} ב-{at}'),
@@ -876,7 +881,7 @@ class Site:
             hw_note = []
             if y:
                 hw_note.append(esc(f'תאריך אחרון להגשה: יום {DAYS[y.weekday()]} {y.day}.{y.month}' + (f' ב-{hw_at}' if hw_at else '')))
-            hw_note.append(esc(self.cfg.get('task_notes', {}).get('hw', 'הגשה מקוונת: צילום או סריקה דרך ה-Moodle')))
+            hw_note.append(esc(self.cfg.get('task_hw_note', {}).get(str(w['n'])) or self.cfg.get('task_notes', {}).get('hw', 'הגשה מקוונת: צילום או סריקה דרך ה-Moodle')))
             bot = next((m['href'] for m in it.get('more', []) if m.get('label') == 'Gemini' and m.get('href')), None)
             if bot:  # the assignment's Gemini bot, linked from the card
                 hw_note.append(f'בוט המטלה: <a class="ln" href="{esc(bot)}" target="_blank" rel="noopener">לינק לבוט המטלה</a>')
