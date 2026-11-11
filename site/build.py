@@ -556,6 +556,8 @@ class Site:
             public_more |= set(self.cfg.get('more_staff', []))
         for m in it.get('more', []):
             lbl = m.get('label') or ''
+            if lbl == 'פתרון לדוגמא':  # shown inside the weekly practice task card, not as a row of its own
+                continue
             if m.get('href') and (lbl in public_more or lbl.split(':')[0].strip() in public_more):  # 'הקראה: ...' counts as 'הקראה'  # extra links are private unless their label is listed
                 folder = 'files/' + it['code'].replace('.', '_')
                 h = m['href'] if re.match(r'https?://', m['href']) else self.copy_file(m['href'], folder)
@@ -882,6 +884,11 @@ class Site:
             if y:
                 hw_note.append(esc(f'תאריך אחרון להגשה: יום {DAYS[y.weekday()]} {y.day}.{y.month}' + (f' ב-{hw_at}' if hw_at else '')))
             hw_note.append(esc(self.cfg.get('task_hw_note', {}).get(str(w['n'])) or self.cfg.get('task_notes', {}).get('hw', 'הגשה מקוונת: צילום או סריקה דרך ה-Moodle')))
+            sol = next((m['href'] for m in it.get('more', []) if m.get('label') == 'פתרון לדוגמא' and m.get('href')), None)
+            if sol:  # the example solution, linked from the weekly practice task card
+                sh = self.copy_file(sol, 'files/' + it['code'].replace('.', '_'))
+                if sh:
+                    hw_note.append(f'<a class="ln" href="{esc(sh)}" target="_blank" rel="noopener">פתרון לדוגמא</a>')
             bot = next((m['href'] for m in it.get('more', []) if m.get('label') == 'Gemini' and m.get('href')), None)
             if bot:  # the assignment's Gemini bot, linked from the card
                 hw_note.append(f'בוט המטלה: <a class="ln" href="{esc(bot)}" target="_blank" rel="noopener">לינק לבוט המטלה</a>')
