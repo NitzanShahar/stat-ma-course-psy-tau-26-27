@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="he"><head>
-<script src="_libs/c86215b912/clipboard/clipboard.min.js"></script>
-<script src="_libs/c86215b912/quarto-html/tabby.min.js"></script>
-<script src="_libs/c86215b912/quarto-html/popper.min.js"></script>
-<script src="_libs/c86215b912/quarto-html/tippy.umd.min.js"></script>
-<link href="_libs/c86215b912/quarto-html/tippy.css" rel="stylesheet">
-<link href="_libs/c86215b912/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="_libs/c86215b912/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="_libs/ea614404db/clipboard/clipboard.min.js"></script>
+<script src="_libs/ea614404db/quarto-html/tabby.min.js"></script>
+<script src="_libs/ea614404db/quarto-html/popper.min.js"></script>
+<script src="_libs/ea614404db/quarto-html/tippy.umd.min.js"></script>
+<link href="_libs/ea614404db/quarto-html/tippy.css" rel="stylesheet">
+<link href="_libs/ea614404db/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="_libs/ea614404db/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="_libs/c86215b912/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="_libs/c86215b912/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="_libs/ea614404db/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="_libs/ea614404db/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,11 +29,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="_libs/c86215b912/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="_libs/c86215b912/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="_libs/c86215b912/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="_libs/c86215b912/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="_libs/c86215b912/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="_libs/ea614404db/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="_libs/ea614404db/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="_libs/ea614404db/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="_libs/ea614404db/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="_libs/ea614404db/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -348,66 +348,6 @@ Frequentist
 </div>
 </div>
 </section>
-<section id="הנתונים" class="slide level2 example-slide">
-<h2>הנתונים</h2>
-<div class="demo-panel">
-  <svg id="dt-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="20 הערכות זמן של סרטון באורך 120 שניות"></svg>
-</div>
-<script>
-  // ── הנתונים והחישובים המשותפים לכל המצגת ──
-  (function () {
-    // 20 נבדקים צפו בסרטון מותח באורך 120 שניות, והעריכו כמה זמן הוא נמשך (בשניות)
-    const YS = [152, 107, 173, 139, 91, 158, 128, 183, 145, 104, 170, 66, 143, 176, 108, 138, 169, 100, 154, 173];
-    const n = YS.length, MEAN = YS.reduce((a, b) => a + b, 0) / n;
-    const SS = YS.reduce((a, y) => a + (y - MEAN) ** 2, 0), S = Math.sqrt(SS / (n - 1)), SMLE = Math.sqrt(SS / n);
-    // ה-posterior על רשת, עם prior אחיד על μ (60–220) ועל σ (5–100)
-    const MU = [], SG = [];
-    for (let m = 60; m <= 220.0001; m += .5) MU.push(m);
-    for (let s = 5; s <= 100.0001; s += .5) SG.push(s);
-    const ll = (m, s) => -n * Math.log(s) - (SS + n * (MEAN - m) ** 2) / (2 * s * s);
-    let top = -Infinity; const L = SG.map(s => MU.map(m => { const v = ll(m, s); if (v > top) top = v; return v; }));
-    let tot = 0; const P = L.map(r => r.map(v => { const p = Math.exp(v - top); tot += p; return p; }));
-    P.forEach(r => r.forEach((v, i) => r[i] = v / tot));
-    const pMu = MU.map((_, i) => P.reduce((a, r) => a + r[i], 0)), pSg = P.map(r => r.reduce((a, b) => a + b, 0));
-    const quant = (xs, ps) => { const c = []; ps.reduce((a, p, i) => (c[i] = a + p), 0); return q => xs[c.findIndex(v => v >= q)]; };
-    // גודל האפקט d = (μ − 120) / σ: התפלגות על כל הזוגות
-    const D = []; P.forEach((r, j) => r.forEach((p, i) => { if (p > 1e-12) D.push([(MU[i] - 120) / SG[j], p]); }));
-    D.sort((a, b) => a[0] - b[0]);
-    window.W4V3 = { YS, n, MEAN, S, SMLE, MU, SG, P, pMu, pSg, D,
-      qMu: quant(MU, pMu), qSg: quant(SG, pSg), qD: quant(D.map(d => d[0]), D.map(d => d[1])),
-      pdMu: pMu.reduce((a, p, i) => a + (MU[i] > 120 ? p : 0), 0) };
-    // צעדים בתוך שקף: מצייר מחדש בכל fragment
-    window.W4V3.steps = function (id, draw) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const sync = () => { const sec = el.closest('section'); draw(sec ? sec.querySelectorAll('.fragment.visible').length : 0); };
-      const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready'].forEach(e => Reveal.on(e, sync)); sync(); };
-      if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
-    };
-  })();
-  (function () {
-    const svg = document.getElementById('dt-svg'), V = window.W4V3;
-    if (!svg) return;
-    const yb = 300, yt = 20, Y = v => yb - v / 260 * (yb - yt), x0 = 110, x1 = 560;
-    let s = '';
-    [0, 60, 120, 180, 240].forEach(v => { s += `<line x1="${x0 - 14}" y1="${Y(v)}" x2="${x1}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${x0 - 22}" y="${Y(v) + 5}" text-anchor="end" font-size="16" fill="var(--ink-soft)">${v}</text>`; });
-    s += `<line x1="${x0 - 14}" y1="${yt}" x2="${x0 - 14}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
-          <text x="24" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)" transform="rotate(-90 24 ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>
-          <line x1="${x0 - 14}" y1="${Y(120)}" x2="${x1}" y2="${Y(120)}" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="8 6"/>
-          <text x="${x1 + 10}" y="${Y(120) + 6}" text-anchor="end" direction="rtl" font-size="17" fill="var(--ink)">משך הסרטון: 120</text>`;
-    V.YS.forEach((y, i) => { s += `<circle cx="${x0 + 20 + i * (x1 - x0 - 40) / 19}" cy="${Y(y)}" r="7" fill="var(--seen)" opacity=".85"/>`; });
-    s += `<text x="${x1 + 10}" y="${Y(250)}" text-anchor="end" direction="rtl" font-size="17" fill="var(--seen)" font-weight="700">20 נבדקים, הערכה אחת לכל נבדק</text>`;
-    svg.innerHTML = s;
-  })();
-</script>
-<div>
-<ul>
-<li class="fragment">נבדקים צפו בסרטון מותח באורך <strong>120 שניות</strong>, ואחר כך העריכו כמה זמן הוא נמשך.</li>
-<li class="fragment">תאוריה של עוררות רגשית: אירועים מעוררים נחווים כארוכים יותר. האם <span class="math inline">\(\mu\)</span>, ההערכה הממוצעת באוכלוסייה, גדולה מ-120?</li>
-<li class="fragment">המודל הריק: <span class="math inline">\(y_i \sim \text{Normal}(\mu, \sigma)\)</span>. שני פרמטרים חבויים, ואין שום משתנה מנבא.</li>
-</ul>
-</div>
-</section>
 <section id="הערכה-bayesian" class="slide level2 part-gate">
 <h2>הערכה Bayesian</h2>
 <div class="gate">
@@ -448,6 +388,37 @@ y_i &amp;\sim \text{Normal}(\mu,\ \sigma) &amp;&amp; \text{likelihood} \\
   <div class="demo-readout" id="jp-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
 </div>
 <script>
+  // ── הנתונים והחישובים המשותפים לכל המצגת ──
+  (function () {
+    // 20 נבדקים צפו בסרטון מותח באורך 120 שניות, והעריכו כמה זמן הוא נמשך (בשניות)
+    const YS = [152, 107, 173, 139, 91, 158, 128, 183, 145, 104, 170, 66, 143, 176, 108, 138, 169, 100, 154, 173];
+    const n = YS.length, MEAN = YS.reduce((a, b) => a + b, 0) / n;
+    const SS = YS.reduce((a, y) => a + (y - MEAN) ** 2, 0), S = Math.sqrt(SS / (n - 1)), SMLE = Math.sqrt(SS / n);
+    // ה-posterior על רשת, עם prior אחיד על μ (60–220) ועל σ (5–100)
+    const MU = [], SG = [];
+    for (let m = 60; m <= 220.0001; m += .5) MU.push(m);
+    for (let s = 5; s <= 100.0001; s += .5) SG.push(s);
+    const ll = (m, s) => -n * Math.log(s) - (SS + n * (MEAN - m) ** 2) / (2 * s * s);
+    let top = -Infinity; const L = SG.map(s => MU.map(m => { const v = ll(m, s); if (v > top) top = v; return v; }));
+    let tot = 0; const P = L.map(r => r.map(v => { const p = Math.exp(v - top); tot += p; return p; }));
+    P.forEach(r => r.forEach((v, i) => r[i] = v / tot));
+    const pMu = MU.map((_, i) => P.reduce((a, r) => a + r[i], 0)), pSg = P.map(r => r.reduce((a, b) => a + b, 0));
+    const quant = (xs, ps) => { const c = []; ps.reduce((a, p, i) => (c[i] = a + p), 0); return q => xs[c.findIndex(v => v >= q)]; };
+    // גודל האפקט d = (μ − 120) / σ: התפלגות על כל הזוגות
+    const D = []; P.forEach((r, j) => r.forEach((p, i) => { if (p > 1e-12) D.push([(MU[i] - 120) / SG[j], p]); }));
+    D.sort((a, b) => a[0] - b[0]);
+    window.W4V3 = { YS, n, MEAN, S, SMLE, MU, SG, P, pMu, pSg, D,
+      qMu: quant(MU, pMu), qSg: quant(SG, pSg), qD: quant(D.map(d => d[0]), D.map(d => d[1])),
+      pdMu: pMu.reduce((a, p, i) => a + (MU[i] > 120 ? p : 0), 0) };
+    // צעדים בתוך שקף: מצייר מחדש בכל fragment
+    window.W4V3.steps = function (id, draw) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const sync = () => { const sec = el.closest('section'); draw(sec ? sec.querySelectorAll('.fragment.visible').length : 0); };
+      const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready'].forEach(e => Reveal.on(e, sync)); sync(); };
+      if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
+    };
+  })();
   (function () {
     const svg = document.getElementById('jp-svg'), V = window.W4V3;
     if (!svg || !V) return;
@@ -920,19 +891,19 @@ Frequentist
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="_libs/c86215b912/revealjs/dist/reveal.js"></script>
+  <script src="_libs/ea614404db/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="_libs/c86215b912/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="_libs/c86215b912/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="_libs/c86215b912/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="_libs/c86215b912/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="_libs/c86215b912/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="_libs/ea614404db/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="_libs/ea614404db/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="_libs/ea614404db/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="_libs/ea614404db/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="_libs/ea614404db/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="_libs/c86215b912/revealjs/plugin/notes/notes.js"></script>
-  <script src="_libs/c86215b912/revealjs/plugin/search/search.js"></script>
-  <script src="_libs/c86215b912/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="_libs/c86215b912/revealjs/plugin/math/math.js"></script>
+  <script src="_libs/ea614404db/revealjs/plugin/notes/notes.js"></script>
+  <script src="_libs/ea614404db/revealjs/plugin/search/search.js"></script>
+  <script src="_libs/ea614404db/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="_libs/ea614404db/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

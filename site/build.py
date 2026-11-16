@@ -46,6 +46,8 @@ UNIT_SHORT = {'א': 'מהמודל המייצר אל הפרמטר', 'ב': 'פאק
 DAYS = ['שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת', 'ראשון']  # date.weekday(): Monday = 0
 MONTHS = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר']
 NEVER_KINDS = {'M'}  # 'הודעת וואטסאפ לסטודנטים' — never on any version of the site
+# Subtitle under a document link (outside the f-string, so build.py also runs on Python < 3.12)
+ORIG_TEXT_SUB = '<span class="ms">טקסט מקורי</span>'
 TITLE_PREFIXES = ['התנסות בכיתה — ', 'התנסות — ', 'תרגול: ', 'היסטוריה: ']
 
 ICON_DECK = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M10 13.5v3M7 16.5h6"/></svg>'
@@ -579,8 +581,10 @@ class Site:
         out = []
         for d_ in self._resdirs:
             if d_.is_dir() and d_.name.startswith(prefix):
+                # a video the deck itself plays (named in its .qmd, e.g. W5_V1 לוח גלטון פיזי.mp4) is not a recording
+                used = ''.join(q.read_text(encoding='utf-8', errors='ignore') for q in d_.glob('*.qmd'))
                 out += sorted(p for p in d_.iterdir() if p.is_file() and p.suffix.lower() in ('.mp4', '.mov', '.webm')
-                              and 'למרצה' not in p.name)
+                              and 'למרצה' not in p.name and p.name not in used)
         return out
 
     def mat_row(self, it, kicker=None):
@@ -611,7 +615,7 @@ class Site:
         main = f'<a class="mlink" href="{link}"{target}>{ic}<span>{body}</span></a>' if link else f'<span class="mlink">{ic}<span>{body}</span></span>'
         tones = self.cfg.get('doc_tones', {})
         rows = ''.join(f'<div class="mat"><a class="mlink" href="{h}" target="_blank" rel="noopener"><span class="ic">{icon}</span>'
-                       f'<span><span class="mt">{esc(lbl)}</span>{"" if lbl == "פתרון לדוגמא" else '<span class="ms">טקסט מקורי</span>'}</span></a>'
+                       f'<span><span class="mt">{esc(lbl)}</span>{"" if lbl == "פתרון לדוגמא" else ORIG_TEXT_SUB}</span></a>'
                        + (f'<span class="pills">{"".join(pill(ml, mh, lbl, self.p, tones.get(lbl)) for ml, mh in dm_)}</span>' if dm_ else '') + '</div>'
                        for lbl, h, dm_ in docs)
         return f'<div class="mat">{main}' + (f'<span class="pills">{pills}</span>' if pills else '') + '</div>' + rows
