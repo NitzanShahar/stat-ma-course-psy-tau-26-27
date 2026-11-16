@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>הסקה במודל הריק</title>
+  <title>הערכת זמן</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -326,10 +326,346 @@
 <section id="title-slide" class="quarto-title-block center" dir="rtl" data-unit="a">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
   <p class="week-label">שבוע 5 · Continuous estimates</p>
-  <h1 class="title">הסקה במודל הריק</h1>
+  <h1 class="title">הערכת זמן</h1>
   <div class="title-rule"></div>
-  <p class="subtitle">הערכה Bayesian והערכה Frequentist של μ ו-σ</p>
+  <p class="subtitle">פרמטר בודד בהתפלגות גאוסיינית: נראות, הערכה Bayesian והערכה Frequentist</p>
   <p class="author">פרופ’ ניצן שחר</p>
+</section>
+<section id="ניסוי-הערכת-זמן-בכיתה" class="slide level2 part-gate">
+<h2>ניסוי הערכת זמן בכיתה</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span><span class="later"></span></div>
+  <svg viewbox="0 0 200 160" width="230" style="display:block; margin:0 auto .4em;" aria-label="אייקון של מדיטציה: דמות יושבת בעיניים עצומות">
+    <g fill="none" stroke="var(--ink-soft)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="100" cy="30" r="17"></circle>
+      <path d="M93 31 q3 3 6 0 M101 31 q3 3 6 0" stroke-width="2.5"></path>
+      <path d="M100 50 C 86 54 80 74 82 104"></path>
+      <path d="M100 50 C 114 54 120 74 118 104"></path>
+      <path d="M88 60 C 72 74 62 92 54 106"></path>
+      <path d="M112 60 C 128 74 138 92 146 106"></path>
+      <path d="M36 128 C 66 106 134 106 164 128 C 134 144 66 144 36 128 Z"></path>
+      <circle cx="52" cy="108" r="4" fill="var(--ink-soft)"></circle>
+      <circle cx="148" cy="108" r="4" fill="var(--ink-soft)"></circle>
+    </g>
+  </svg>
+  <div class="gate-title">ניסוי הערכת זמן בכיתה</div>
+</div>
+</section>
+<section id="זמן-פסיכולוגי" class="slide level2">
+<h2>זמן פסיכולוגי</h2>
+<div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+  <iframe data-src="https://www.youtube.com/embed/T6aZfncu77g" style="width:880px; aspect-ratio:16/9; border:0;" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen="" title="סרטון: זמן פסיכולוגי"></iframe>
+  <a href="https://www.youtube.com/watch?v=T6aZfncu77g" target="_blank" style="font-size:.45em;">לפתוח ב-YouTube</a>
+</div>
+</section>
+<section id="זמן-פסיכולוגי-1" class="slide level2">
+<h2>זמן פסיכולוגי</h2>
+<p><strong>קשב ומשאבים קוגניטיביים:</strong> גורסת שלאדם יש משאבים מנטליים מוגבלים. כאשר אנו מפנים קשב רב למטלה שדורשת מאמץ מנטלי, יש לנו פחות משאבים להפנות למעקב אחר מעבר הזמן עצמו. כאשר אנחנו פחות קשובים למעבר הזמן עצמו (למשל כאשר אנחנו מרוכזים מאוד במאמץ מנטלי למטלה מסוימת), נדמה שהזמן עובר מהר.</p>
+<p><img data-src="W5_V3%20קשב%20וזיכרון%20עבודה.png" style="display:block; margin:.4em auto 0; height:300px;"></p>
+<div class="fig-caption ltr" style="font-size:.45em; color:var(--ink-soft); text-align:center; margin-top:.4em;">
+<p>Block, R. A., Hancock, P. A., &amp; Zakay, D. (2010). How cognitive load affects duration judgments: A meta-analytic review. <em>Acta Psychologica, 134</em>(3), 330–343. <a href="https://doi.org/10.1016/j.actpsy.2010.03.006" target="_blank">doi.org/10.1016/j.actpsy.2010.03.006</a></p>
+</div>
+</section>
+<section id="זמן-פסיכולוגי-2" class="slide level2">
+<h2>זמן פסיכולוגי</h2>
+<p><strong>עוררות רגשית:</strong> אירועים בעלי מטען רגשי ועוררות משמעותית יכולים לשנות את תפיסת הזמן, ולגרום לתחושה שהזמן עובר יותר לאט, בין היתר בגלל היווצרות של זיכרונות מרובים.</p>
+<p><img data-src="W5_V3%20עוררות%20וערכיות.png" style="display:block; margin:.4em auto 0; height:330px;"></p>
+<div class="fig-caption ltr" style="font-size:.45em; color:var(--ink-soft); text-align:center; margin-top:.4em;">
+<p>Gable, P. A., Wilhelm, A. L., &amp; Poole, B. D. (2022). How does emotion influence time perception? A review of evidence linking emotional motivation and time processing. <em>Frontiers in Psychology, 13</em>. <a href="https://doi.org/10.3389/fpsyg.2022.848154" target="_blank">doi.org/10.3389/fpsyg.2022.848154</a></p>
+</div>
+</section>
+<section id="זמן-פסיכולוגי-3" class="slide level2">
+<h2>זמן פסיכולוגי</h2>
+<p><strong>התאוריה האנרגטית:</strong> נוירונים שרגישים למעבר זמן באזור ה-Supramarginal gyrus “נשחקים” בזמן פעולה אינטנסיבית, וגורמים להטיה בתפיסת הזמן.</p>
+<p><img data-src="W5_V3%20SMG%20ועיוות%20זמן.jpg" style="display:block; margin:.4em auto 0; height:330px;"></p>
+<div class="fig-caption ltr" style="font-size:.45em; color:var(--ink-soft); text-align:center; margin-top:.4em;">
+<p>Hayashi, M. J., &amp; Ivry, R. B. (2020). Duration-selectivity in right parietal cortex reflects the subjective experience of time. <em>Journal of Neuroscience</em>. <a href="https://doi.org/10.1523/JNEUROSCI.0078-20.2020" target="_blank">doi.org/10.1523/JNEUROSCI.0078-20.2020</a></p>
+</div>
+</section>
+<section id="המודל-המייצר" class="slide level2">
+<h2>המודל המייצר</h2>
+<div class="centered-content">
+<div class="flow-diagram">
+<div class="flow-node hidden-node">
+<p><strong><span class="math inline">\(\mu = \blacksquare\)</span> · <span class="math inline">\(\sigma = \blacksquare\)</span></strong> · חבויים בטבע</p>
+</div>
+<div class="flow-arrow">
+<p>▼</p>
+</div>
+<div class="flow-node">
+<p><span class="math inline">\(y \sim \text{Normal}(\mu,\ \sigma)\)</span></p>
+</div>
+<div class="flow-arrow">
+<p>▼</p>
+</div>
+<div class="flow-node seen-node">
+<p><strong><span class="math inline">\(y_1, y_2, \dots, y_n\)</span></strong> · הערכות הזמן שלכם, בשניות</p>
+</div>
+</div>
+<div style="margin-top:.6em;">
+<ul>
+<li class="fragment"><strong><span class="math inline">\(\mu\)</span>:</strong> ההערכה הממוצעת באוכלוסייה. האם היא שווה לזמן שעבר באמת, קצרה ממנו או ארוכה ממנו?</li>
+<li class="fragment"><strong><span class="math inline">\(\sigma\)</span>:</strong> כמה ההערכות שונות מאדם לאדם.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="המודל-המייצר-1" class="slide level2 example-slide">
+<h2>המודל המייצר</h2>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <button class="demo-btn" data-g="1">נבדק</button>
+    <button class="demo-btn" data-g="10">10 נבדקים</button>
+    <button id="gt-model" class="demo-btn ghost" aria-pressed="true">הסתרת המודל</button>
+    <button id="gt-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <svg id="gt-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="המודל המייצר: פעמון עם μ ו-σ חבויים, והערכות זמן שנוצרות ממנו">
+    <g id="gt-static"></g><g id="gt-fly"></g>
+  </svg>
+  <div class="demo-readout" id="gt-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('gt-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id), fly = $('gt-fly');
+    // המודל המייצר: μ ו-σ קבועים וחבויים. הציר האנכי הוא הערכת הזמן, כמו בשקפי ה-likelihood, והפעמון שוכב על הצד
+    const MU = 85, SD = 20;
+    const lo = 0, hi = 200, yt = 14, yb = 316, Y = v => yb - (v - lo) / (hi - lo) * (yb - yt);
+    const axX = 150, dX0 = 180, dX1 = 600, floorX = 650, bW = 230;
+    const randn = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+    // ys: כל הנבדקים, landed: כמה מהם כבר נחתו. fresh: מאיזה אינדקס מתחילה הקבוצה האחרונה
+    let ys = [], jit = [], landed = 0, fresh = 0, gen0 = 0;
+    // show: המודל גלוי (פעמון, קווים ומספרים). כשהוא מוסתר נשארות רק ההערכות, ו-μ ו-σ חבויים, כמו במדע אמפירי
+    let show = true;
+    function draw() {
+      const n = landed;
+      let s = '';
+      for (let v = 0; v <= 200; v += 50) s += `<line x1="${axX}" y1="${Y(v)}" x2="${floorX}" y2="${Y(v)}" stroke="var(--rule)"/>
+        <text x="${axX - 12}" y="${Y(v) + 5}" text-anchor="end" direction="ltr" font-size="15" fill="var(--ink-soft)">${v}</text>`;
+      s += `<line x1="${axX}" y1="${yt}" x2="${axX}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="${axX - 62}" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)" transform="rotate(-90 ${axX - 62} ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>`;
+      // הפעמון של המודל: הבסיס על הרצפה, והמילוי נסגר לאורך הבסיס
+      const pts = [];
+      if (show) {
+      for (let i = 0; i <= 160; i++) { const v = MU - 3.5 * SD + i / 160 * 7 * SD; if (v < lo || v > hi) continue; pts.push([floorX + Math.exp(-.5 * ((v - MU) / SD) ** 2) * bW, Y(v)]); }
+      const curve = pts.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1)).join('');
+      s += `<path d="M${floorX},${pts[0][1].toFixed(1)}${curve.replace('M', 'L')}L${floorX},${pts[pts.length - 1][1].toFixed(1)}Z" fill="var(--hidden-bg)" stroke="none"/>
+            <path d="${curve}" fill="none" stroke="var(--hidden)" stroke-width="2.5"/>
+            <line x1="${floorX}" y1="${Y(Math.min(hi, MU + 3.5 * SD))}" x2="${floorX}" y2="${Y(Math.max(lo, MU - 3.5 * SD))}" stroke="var(--ink)" stroke-width="3"/>
+            <text x="${floorX + bW + 14}" y="${Y(MU) + 6}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="var(--hidden)">μ = ${MU} · σ = ${SD}</text>`;
+      } else {
+        // בלי המודל: התווית באמצע הציר, כדי שהגובה שלה לא יסגיר את μ
+        s += `<text x="${floorX + bW + 14}" y="${Y((lo + hi) / 2) + 6}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="var(--hidden)">μ = ■ · σ = ■</text>`;
+      }
+      // הנבדקים שכבר נחתו: הקבוצה האחרונה גדולה ובצבע העקומה, עם קו מקווקו מהגובה שלה בפעמון
+      for (let i = Math.max(0, n - 400); i < n; i++) {
+        const isNew = i >= fresh && n - fresh <= 10, x = dX0 + jit[i] * (dX1 - dX0);
+        if (isNew && show) s += `<line x1="${x}" y1="${Y(ys[i])}" x2="${floorX + Math.exp(-.5 * ((ys[i] - MU) / SD) ** 2) * bW}" y2="${Y(ys[i])}" stroke="var(--curve)" stroke-width="1.5" stroke-dasharray="3 4" opacity=".7"/>`;
+        s += `<circle cx="${x}" cy="${Y(ys[i])}" r="${isNew ? 7 : 4.5}" fill="${isNew && show ? 'var(--curve)' : 'var(--seen)'}" opacity="${isNew ? 1 : .55}"/>`;
+      }
+      $('gt-static').innerHTML = s;
+      let out = 'עוד אין נבדקים';
+      if (n) {
+        const mean = ys.slice(0, n).reduce((a, b) => a + b, 0) / n;
+        out = `נבדקים: <span class="ltr">${n}</span> · האחרון: <span class="ltr">${ys[n - 1]}</span> שניות · הממוצע שלהם: <span class="ltr">${mean.toFixed(1)}</span>`;
+        if (n > 1) out += ` · סטיית התקן שלהם: <span class="ltr">${Math.sqrt(ys.slice(0, n).reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1)).toFixed(1)}</span>`;
+      }
+      $('gt-out').innerHTML = out;
+    }
+    // נפילה: הכדור מופיע בפייד-אין בראש הפעמון (בגובה μ), ויורד שמאלה בזיגזג, כמו בלוח גלטון בלי המסמרים, עד המקום שלו
+    function drop(i, delay, gen) {
+      // בלי המודל הכדור רק מופיע במקומו: נפילה מראש הפעמון הייתה מסגירה את μ
+      const x1 = dX0 + jit[i] * (dX1 - dX0), y1 = Y(ys[i]), x0 = show ? floorX + bW - 6 : x1, y0 = show ? Y(MU) : y1;
+      const K = 7, pts = [[x0, y0]];
+      for (let k = 1; k < K; k++) {
+        const t = k / K, wob = (Math.random() < .5 ? -1 : 1) * 10 * Math.sin(Math.PI * t);
+        pts.push([x0 + (x1 - x0) * t, y0 + (y1 - y0) * t + wob]);
+      }
+      pts.push([x1, y1]);
+      const ball = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      ball.setAttribute('r', 7); ball.setAttribute('fill', show ? 'var(--curve)' : 'var(--seen)'); ball.setAttribute('opacity', 0);
+      ball.setAttribute('cx', x0); ball.setAttribute('cy', y0);
+      fly.appendChild(ball);
+      const FADE = 250, SEG = 110, t0 = performance.now() + delay;
+      (function frame(now) {
+        if (gen !== gen0) { ball.remove(); return; }
+        const e = now - t0;
+        if (e < 0) { requestAnimationFrame(frame); return; }
+        if (e < FADE) { ball.setAttribute('opacity', e / FADE); requestAnimationFrame(frame); return; }
+        ball.setAttribute('opacity', 1);
+        const u = show ? (e - FADE) / SEG : K, k = Math.min(Math.floor(u), K - 1), f = Math.min(u - k, 1);
+        // בכל קטע: האטה בסופו, כמו כדור שפוגע וממשיך
+        const g = 1 - (1 - f) * (1 - f), a = pts[k], b = pts[k + 1];
+        ball.setAttribute('cx', a[0] + (b[0] - a[0]) * g); ball.setAttribute('cy', a[1] + (b[1] - a[1]) * g);
+        if (u < K) requestAnimationFrame(frame);
+        else { ball.remove(); landed = Math.max(landed, i + 1); draw(); }
+      })(performance.now());
+    }
+    function gen(k) {
+      // קבוצה חדשה: מה שעוד באוויר נוחת מיד
+      fly.innerHTML = ''; gen0++; landed = ys.length; fresh = ys.length;
+      for (let i = 0; i < k; i++) { ys.push(Math.max(1, Math.min(199, Math.round(MU + SD * randn())))); jit.push(Math.random()); drop(ys.length - 1, i * 160, gen0); }
+      draw();
+    }
+    function reset() { gen0++; fly.innerHTML = ''; ys = []; jit = []; landed = 0; fresh = 0; draw(); }
+    svg.closest('.demo-panel').querySelectorAll('[data-g]').forEach(b => b.onclick = () => gen(+b.dataset.g));
+    $('gt-reset').onclick = reset;
+    $('gt-model').onclick = function () {
+      show = !show;
+      this.textContent = show ? 'הסתרת המודל' : 'הצגת המודל';
+      this.setAttribute('aria-pressed', show);
+      draw();
+    };
+    reset();
+  })();
+</script>
+<div class="demo-note">
+<p>המחשב יודע את <span class="math inline">\(\mu\)</span> ואת <span class="math inline">\(\sigma\)</span>, וכל לחיצה מייצרת נבדק: הערכת זמן אחת מתוך הפעמון. במחקר אמיתי הכיוון הפוך: יש לנו רק את ההערכות, ו-<span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span> חבויים.</p>
+</div>
+</section>
+<section id="חישוב-נראות" class="slide level2 part-gate">
+<h2>חישוב נראות</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-title">חישוב נראות</div>
+  <div class="gate-why">כמה צפויות ההערכות שלנו, לכל ערך מועמד של μ</div>
+</div>
+</section>
+<section id="חישוב-נראות-1" class="slide level2 example-slide">
+<h2>חישוב נראות</h2>
+<script>
+  // ── הנתונים והחישובים המשותפים לכל המצגת ──
+  (function () {
+    // עשרה נבדקים דמיוניים: כמה שניות לדעתם עברו
+    const YS = [104, 75, 132, 93, 117, 62, 109, 84, 126, 98];
+    const n = YS.length, MEAN = YS.reduce((a, b) => a + b, 0) / n;
+    const SS = YS.reduce((a, y) => a + (y - MEAN) ** 2, 0), S = Math.sqrt(SS / (n - 1)), SE = S / Math.sqrt(n);
+    // σ ידוע לשם ההדגמה בשקפי ה-likelihood וה-prior × likelihood (קרוב ל-s)
+    const SDK = 22;
+    const dnorm = (y, m, s) => Math.exp(-.5 * ((y - m) / s) ** 2) / (s * Math.sqrt(2 * Math.PI));
+    // התפלגות t: צפיפות, מצטברת (אינטגרל סימפסון) ואחוזון (חיפוש בינארי)
+    const lgamma = x => {
+      const c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61503916999185, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+      if (x < .5) return Math.log(Math.PI / Math.abs(Math.sin(Math.PI * x))) - lgamma(1 - x);
+      x -= 1; let a = c[0]; const t = x + 7.5; for (let i = 1; i < 9; i++) a += c[i] / (x + i);
+      return .5 * Math.log(2 * Math.PI) + (x + .5) * Math.log(t) - t + Math.log(a);
+    };
+    const tpdf = (t, df) => Math.exp(lgamma((df + 1) / 2) - lgamma(df / 2) - .5 * Math.log(df * Math.PI) - (df + 1) / 2 * Math.log(1 + t * t / df));
+    const tcdf = (t, df) => { const a = Math.abs(t), N = 400; let s = 0; for (let i = 0; i <= N; i++) s += (i === 0 || i === N ? 1 : i % 2 ? 4 : 2) * tpdf(a * i / N, df); const h = a ? s * a / (3 * N) : 0; return t >= 0 ? .5 + h : .5 - h; };
+    const tq = (p, df) => { let a = -60, b = 60; for (let i = 0; i < 80; i++) { const m = (a + b) / 2; if (tcdf(m, df) < p) a = m; else b = m; } return (a + b) / 2; };
+    // ה-posterior של המודל המלא (σ לא ידוע), על רשת, עם prior אחיד על μ (40–160) ועל σ (2–80)
+    const MU = [], SG = [];
+    for (let m = 40; m <= 160.0001; m += .25) MU.push(+m.toFixed(2));
+    for (let s = 2; s <= 80.0001; s += .25) SG.push(s);
+    const ll = (m, s) => -n * Math.log(s) - (SS + n * (MEAN - m) ** 2) / (2 * s * s);
+    let top = -Infinity; const L = SG.map(s => MU.map(m => { const v = ll(m, s); if (v > top) top = v; return v; }));
+    let tot = 0; const P = L.map(r => r.map(v => { const p = Math.exp(v - top); tot += p; return p; }));
+    const pMu = MU.map((_, i) => P.reduce((a, r) => a + r[i], 0) / tot);
+    const cum = []; pMu.reduce((a, p, i) => (cum[i] = a + p), 0);
+    const qMu = q => MU[cum.findIndex(v => v >= q)];
+    const pd = ref => pMu.reduce((a, p, i) => a + (MU[i] > ref ? p : MU[i] === ref ? p / 2 : 0), 0);
+    window.W5V3 = { YS, n, MEAN, S, SE, SDK, dnorm, tpdf, tcdf, tq, MU, pMu, qMu, pd };
+    // צעדים בתוך שקף: מצייר מחדש בכל fragment
+    window.W5V3.steps = function (id, draw) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const sync = () => { const sec = el.closest('section'); draw(sec ? sec.querySelectorAll('.fragment.visible').length : 0); };
+      const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready', 'resize'].forEach(e => Reveal.on(e, sync)); sync(); };
+      if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
+    };
+  })();
+</script>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <button id="lt-up" class="demo-btn">μ ▲</button>
+    <button id="lt-down" class="demo-btn">μ ▼</button>
+    <button id="lt-one" class="demo-btn">+1 תצפית</button>
+    <button id="lt-ten" class="demo-btn">כל התצפיות</button>
+    <label><input type="checkbox" id="lt-mean"> הממוצע</label>
+    <label><input type="checkbox" id="lt-all"> נראות רציפה</label>
+    <button id="lt-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <svg id="lt-svg" viewbox="120 0 840 330" style="width:100%; height:430px; display:block;" aria-label="התצפיות, הפעמון של μ מועמד, הצפיפות של כל תצפית והמכפלה שלהן, ומימין פונקציית הנראות של כל μ"></svg>
+  <div class="demo-readout" id="lt-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('lt-svg'), V = window.W5V3;
+    if (!svg || !V) return;
+    const $ = id => document.getElementById(id);
+    // אותו מנגנון כמו ב-W5.V2: הפעמון של μ מועמד, קו מכל תצפית אל הצפיפות שלה, ומימין פונקציית הנראות.
+    // באמצע, בתצוגה אנכית: הצפיפות של כל תצפית, והמכפלה שלהן
+    const SD = V.SDK, lo = 20, hi = 180, yt = 14, yb = 316, Y = v => yb - (v - lo) / (hi - lo) * (yb - yt);
+    const axX = 200, dX0 = 216, dX1 = 330, floorX = 350, bW = 150, cX = 610, lX0 = 760, lX1 = 935, STEP = 5, MU0 = 60;
+    const logp = (y, m) => -.5 * ((y - m) / SD) ** 2 - Math.log(SD * Math.sqrt(2 * Math.PI));
+    let shown = 0, m = MU0, seen = new Set([MU0]);
+    const ys = () => V.YS.slice(0, shown);
+    const ll = c => ys().reduce((a, y) => a + logp(y, c), 0);
+    const sci = l => { const e = Math.floor(l / Math.LN10), q = Math.exp(l - e * Math.LN10); return `${q.toFixed(1)}·10<tspan dy="-7" font-size="11">${e}</tspan>`; };
+    const sciH = l => { const e = Math.floor(l / Math.LN10), q = Math.exp(l - e * Math.LN10); return `${q.toFixed(1)}·10<sup>${e}</sup>`; };
+    function draw() {
+      let top = -Infinity; for (let c = lo; c <= hi; c++) top = Math.max(top, ll(c));
+      const rel = c => Math.exp(ll(c) - top), LX = r => lX0 + r * (lX1 - lX0);
+      let s = '';
+      // ציר הערכת הזמן
+      s += `<line x1="${axX}" y1="${yt}" x2="${axX}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
+      for (let v = 20; v <= 180; v += 20) s += `<line x1="${axX - 6}" y1="${Y(v)}" x2="${axX}" y2="${Y(v)}" stroke="var(--ink)"/>
+        <text x="${axX - 12}" y="${Y(v) + 5}" text-anchor="end" direction="ltr" font-size="15" fill="var(--ink-soft)">${v}</text>`;
+      s += `<text x="${axX - 56}" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)" transform="rotate(-90 ${axX - 56} ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>`;
+      // הפעמון של μ המועמד
+      const pts = [];
+      for (let i = 0; i <= 120; i++) { const v = m - 3.2 * SD + i / 120 * 6.4 * SD; if (v < lo || v > hi) continue; pts.push([floorX + Math.exp(-.5 * ((v - m) / SD) ** 2) * bW, Y(v)]); }
+      const curve = pts.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1)).join('');
+      s += `<path d="M${floorX},${pts[0][1].toFixed(1)}${curve.replace('M', 'L')}L${floorX},${pts[pts.length - 1][1].toFixed(1)}Z" fill="var(--hidden-bg)" stroke="none"/>
+            <path d="${curve}" fill="none" stroke="var(--hidden)" stroke-width="2.5"/>
+            <line x1="${floorX}" y1="${Y(Math.min(hi, m + 3.2 * SD))}" x2="${floorX}" y2="${Y(Math.max(lo, m - 3.2 * SD))}" stroke="var(--ink)" stroke-width="3"/>`;
+      // μ המועמד, עד פונקציית הנראות
+      s += `<line x1="${axX}" y1="${Y(m)}" x2="${floorX + bW + 10}" y2="${Y(m)}" stroke="var(--hidden)" stroke-width="2.5" stroke-dasharray="6 5"/>
+            <line x1="${lX0 - 10}" y1="${Y(m)}" x2="${lX1}" y2="${Y(m)}" stroke="var(--hidden)" stroke-width="2.5" stroke-dasharray="6 5"/>`;
+      const Y0 = ys();
+      if ($('lt-mean').checked && Y0.length) { const mean = Y0.reduce((a, c) => a + c, 0) / Y0.length; s += `<line x1="${axX}" y1="${Y(mean)}" x2="${floorX + bW}" y2="${Y(mean)}" stroke="var(--seen)" stroke-width="2"/><line x1="${lX0}" y1="${Y(mean)}" x2="${lX1}" y2="${Y(mean)}" stroke="var(--seen)" stroke-width="2"/><text x="${lX1}" y="${Y(mean) - 8}" text-anchor="start" direction="rtl" font-size="15" fill="var(--seen)">הממוצע</text>`; }
+      // התצפיות: קו מקווקו אל הרצפה, והצפיפות (הקו האדום) עד הפעמון
+      Y0.forEach((y, i) => {
+        const x = dX0 + (i + .5) / 10 * (dX1 - dX0), on = Math.exp(logp(y, m) - logp(m, m));
+        s += `<line x1="${x}" y1="${Y(y)}" x2="${floorX}" y2="${Y(y)}" stroke="var(--seen)" stroke-width="2" stroke-dasharray="3 4" opacity=".7"/>
+              <line x1="${floorX}" y1="${Y(y)}" x2="${floorX + on * bW}" y2="${Y(y)}" stroke="var(--curve)" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+              <circle cx="${x}" cy="${Y(y)}" r="6" fill="var(--seen)" opacity="${.25 + .75 * on}"/>`;
+      });
+      // החישוב, בתצוגה אנכית: צפיפות לכל תצפית, ובסוף המכפלה
+      const rh = 24, c0 = 34;
+      s += `<text x="${cX}" y="${c0 - 6}" text-anchor="middle" direction="ltr" font-size="15" font-weight="700" fill="var(--ink-soft)">p(yᵢ | μ = ${m}, σ = ${SD})</text>`;
+      Y0.forEach((y, i) => {
+        s += `<text x="${cX}" y="${c0 + (i + 1) * rh}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--ink)">${i ? '× ' : '  '}p(${y}) = <tspan fill="var(--curve)" font-weight="700">${Math.exp(logp(y, m)).toFixed(4)}</tspan></text>`;
+      });
+      if (Y0.length) s += `<line x1="${cX - 80}" y1="${c0 + (Y0.length + .45) * rh}" x2="${cX + 80}" y2="${c0 + (Y0.length + .45) * rh}" stroke="var(--ink-faint)"/>
+            <text x="${cX}" y="${c0 + (Y0.length + 1.3) * rh}" text-anchor="middle" direction="ltr" font-size="16" font-weight="700" fill="var(--curve)">𝓛(μ) = ${sci(ll(m))}</text>`;
+      // פונקציית הנראות: נקודה לכל מועמד שבדקנו, או העקומה כולה
+      s += `<line x1="${lX0}" y1="${yt}" x2="${lX0}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="${lX0 - 14}" y="${yt + 14}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--hidden)">μ</text>`;
+      if ($('lt-all').checked) { let d = ''; for (let c = lo; c <= hi; c++) d += (d ? 'L' : 'M') + LX(rel(c)).toFixed(1) + ',' + Y(c).toFixed(1); s += `<path d="${d}" fill="none" stroke="var(--curve)" stroke-width="3.5"/>`; }
+      else seen.forEach(c => { if (c !== m) s += `<circle cx="${LX(rel(c))}" cy="${Y(c)}" r="3.5" fill="var(--curve)" opacity=".7"/>`; });
+      s += `<line x1="${lX0}" y1="${Y(m)}" x2="${LX(rel(m))}" y2="${Y(m)}" stroke="var(--curve)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="${LX(rel(m))}" cy="${Y(m)}" r="8" fill="var(--curve)"/>`;
+      svg.innerHTML = s;
+      $('lt-out').innerHTML = shown
+        ? `<span class="ltr">μ = ${m}</span> · תצפיות: <span class="ltr">${shown}</span> · <span class="ltr">𝓛(μ) = ${sciH(ll(m))}</span> · ביחס למועמד הטוב ביותר: <span class="ltr">${(100 * rel(m)).toFixed(1)}%</span>`
+        : `<span class="ltr">μ = ${m}</span> · עוד אין תצפיות. בלי תצפיות, כל המועמדים סבירים באותה מידה`;
+      $('lt-up').disabled = m >= 160; $('lt-down').disabled = m <= 40;
+      $('lt-one').disabled = $('lt-ten').disabled = shown >= V.n;
+    }
+    $('lt-one').onclick = () => { shown = Math.min(V.n, shown + 1); draw(); };
+    $('lt-ten').onclick = () => { shown = V.n; draw(); };
+    $('lt-up').onclick = () => { if (m < 160) { m += STEP; seen.add(m); draw(); } };
+    $('lt-down').onclick = () => { if (m > 40) { m -= STEP; seen.add(m); draw(); } };
+    $('lt-mean').onchange = draw; $('lt-all').onchange = draw;
+    $('lt-reset').onclick = () => { shown = 0; m = MU0; seen = new Set([MU0]); $('lt-all').checked = false; $('lt-mean').checked = false; draw(); };
+    draw();
+  })();
+</script>
+<div class="demo-note">
+<p>לשם ההדגמה <span class="math inline">\(\sigma = 22\)</span> שניות ידוע. הוסיפו את התצפיות אחת-אחת והזיזו את <span class="math inline">\(\mu\)</span>: הקווים האדומים הם הצפיפות של כל תצפית, ובאמצע הן נכפלות זו בזו. כל מועמד משאיר נקודה בפונקציית הנראות שמימין, והשיא שלה בממוצע.</p>
+</div>
 </section>
 <section id="שתי-דרכים" class="slide level2 stacked-cards">
 <h2>שתי דרכים</h2>
@@ -338,549 +674,393 @@
 <h3>
 Bayesian
 </h3>
-<p>רוצים את הסיכוי לפרמטרים <strong>בהינתן התצפיות</strong>. מכפילים את ה-<span class="term">likelihood</span> ב-<span class="term">prior</span>, ומקבלים <span class="term">posterior</span>: התפלגות שלמה על <span class="math inline">\(\mu\)</span> ועל <span class="math inline">\(\sigma\)</span>.</p>
+<p>רוצים את הסיכוי לפרמטרים <strong>בהינתן התצפיות</strong>. מכפילים את ה-<span class="term">likelihood</span> ב-<span class="term">prior</span>, ומקבלים <span class="term">posterior</span>: התפלגות שלמה על <span class="math inline">\(\mu\)</span>.</p>
 </div>
 <div class="compare-card freq fragment">
 <h3>
 Frequentist
 </h3>
-<p>מוצאים את השיא של ה-<span class="term">likelihood</span> בנוסחה קצרה, בלי לחשב את המפה. את הוודאות מעריכים בעזרת <strong>התפלגות דגימה</strong>: מה היה קורה אילו חזרנו על המחקר שוב ושוב.</p>
+<p>מוצאים את השיא של ה-<span class="term">likelihood</span> בנוסחה קצרה, בלי לחשב את העקומה. את הוודאות מעריכים בעזרת <strong>התפלגות דגימה</strong>: מה היה קורה אילו חזרנו על המחקר שוב ושוב.</p>
 </div>
 </div>
 </section>
 <section id="הערכה-bayesian" class="slide level2 part-gate">
 <h2>הערכה Bayesian</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="now"></span><span class="later"></span></div>
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span><span class="later"></span></div>
   <div class="gate-title">הערכה Bayesian</div>
-  <div class="gate-why">מה הסיכוי לכל ערך של μ ו-σ, בהינתן התצפיות?</div>
+  <div class="gate-why">מה הסיכוי לכל ערך של μ, בהינתן ההערכות?</div>
 </div>
 </section>
-<section id="הערכה-bayesian-1" class="slide level2">
+<section id="הערכה-bayesian-1" class="slide level2 example-slide">
 <h2>הערכה Bayesian</h2>
-<div class="centered-content">
-<div class="ltr">
-<p><span class="math display">\[
-\begin{aligned}
-y_i &amp;\sim \text{Normal}(\mu,\ \sigma) &amp;&amp; \text{likelihood} \\
-\mu &amp;\sim \text{Uniform}(60,\ 220) &amp;&amp; \text{prior} \\
-\sigma &amp;\sim \text{Uniform}(5,\ 100) &amp;&amp; \text{prior}
-\end{aligned}
-\]</span></p>
+<div class="demo-panel" style="margin-inline:-28px;">
+  <svg id="pp-svg" viewbox="-40 0 1120 372" style="width:100%; height:auto; display:block;" aria-label="ה-prior, ה-likelihood וה-posterior של μ, כעקומות וכווקטורים"></svg>
 </div>
-<div>
-<ul>
-<li class="fragment">כמו בשבוע 2: <span class="term">posterior</span> ∝ <span class="term">likelihood</span> × <span class="term">prior</span>, לכל זוג <span class="math inline">\((\mu, \sigma)\)</span>.</li>
-<li class="fragment">עם <span class="term">prior</span> אחיד, מפת ה-<span class="term">posterior</span> נראית בדיוק כמו מפת ה-<span class="term">likelihood</span> מהמצגת הקודמת. ההבדל: עכשיו מחלקים בסכום, וזו התפלגות. הנפח שמתחתיה הוא 1.</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="הערכה-bayesian-2" class="slide level2 example-slide">
-<h2>הערכה Bayesian</h2>
-<div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center;">
-    <button id="jp-mu" class="demo-btn">μ לבדו</button>
-    <button id="jp-sg" class="demo-btn">σ לבדו</button>
-    <button id="jp-reset" class="demo-btn ghost">איפוס</button>
-  </div>
-  <svg id="jp-svg" viewbox="0 0 1000 400" style="width:100%; height:auto; display:block;" aria-label="ה-posterior המשותף של μ ו-σ, וההתפלגויות של כל אחד מהם לבדו"></svg>
-  <div class="demo-readout" id="jp-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
-</div>
+<style>
+  #pp-svg [data-act] { cursor: pointer; }
+  #pp-svg [data-act].off { cursor: default; opacity: .3; }
+  #pp-svg [data-act]:not(.off):hover > rect { filter: brightness(1.12); }
+</style>
 <script>
-  // ── הנתונים והחישובים המשותפים לכל המצגת ──
   (function () {
-    // 20 נבדקים צפו בסרטון מותח באורך 120 שניות, והעריכו כמה זמן הוא נמשך (בשניות)
-    const YS = [152, 107, 173, 139, 91, 158, 128, 183, 145, 104, 170, 66, 143, 176, 108, 138, 169, 100, 154, 173];
-    const n = YS.length, MEAN = YS.reduce((a, b) => a + b, 0) / n;
-    const SS = YS.reduce((a, y) => a + (y - MEAN) ** 2, 0), S = Math.sqrt(SS / (n - 1)), SMLE = Math.sqrt(SS / n);
-    // ה-posterior על רשת, עם prior אחיד על μ (60–220) ועל σ (5–100)
-    const MU = [], SG = [];
-    for (let m = 60; m <= 220.0001; m += .5) MU.push(m);
-    for (let s = 5; s <= 100.0001; s += .5) SG.push(s);
-    const ll = (m, s) => -n * Math.log(s) - (SS + n * (MEAN - m) ** 2) / (2 * s * s);
-    let top = -Infinity; const L = SG.map(s => MU.map(m => { const v = ll(m, s); if (v > top) top = v; return v; }));
-    let tot = 0; const P = L.map(r => r.map(v => { const p = Math.exp(v - top); tot += p; return p; }));
-    P.forEach(r => r.forEach((v, i) => r[i] = v / tot));
-    const pMu = MU.map((_, i) => P.reduce((a, r) => a + r[i], 0)), pSg = P.map(r => r.reduce((a, b) => a + b, 0));
-    const quant = (xs, ps) => { const c = []; ps.reduce((a, p, i) => (c[i] = a + p), 0); return q => xs[c.findIndex(v => v >= q)]; };
-    // גודל האפקט d = (μ − 120) / σ: התפלגות על כל הזוגות
-    const D = []; P.forEach((r, j) => r.forEach((p, i) => { if (p > 1e-12) D.push([(MU[i] - 120) / SG[j], p]); }));
-    D.sort((a, b) => a[0] - b[0]);
-    window.W4V3 = { YS, n, MEAN, S, SMLE, MU, SG, P, pMu, pSg, D,
-      qMu: quant(MU, pMu), qSg: quant(SG, pSg), qD: quant(D.map(d => d[0]), D.map(d => d[1])),
-      pdMu: pMu.reduce((a, p, i) => a + (MU[i] > 120 ? p : 0), 0) };
-    // צעדים בתוך שקף: מצייר מחדש בכל fragment
-    window.W4V3.steps = function (id, draw) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const sync = () => { const sec = el.closest('section'); draw(sec ? sec.querySelectorAll('.fragment.visible').length : 0); };
-      const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready'].forEach(e => Reveal.on(e, sync)); sync(); };
-      if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
-    };
-  })();
-  (function () {
-    const svg = document.getElementById('jp-svg'), V = window.W4V3;
+    const svg = document.getElementById('pp-svg'), V = window.W5V3;
     if (!svg || !V) return;
-    const $ = id => document.getElementById(id);
-    // המפה: μ אופקי (90–190), σ אנכי (10–80). מתחתיה μ לבדו, ומימינה σ לבדו.
-    const mX0 = 250, mX1 = 750, mY0 = 20, mY1 = 270, mu0 = 90, mu1 = 190, s0 = 10, s1 = 80;
-    const MX = m => mX0 + (m - mu0) / (mu1 - mu0) * (mX1 - mX0), SY = s => mY1 - (s - s0) / (s1 - s0) * (mY1 - mY0);
-    const i0 = V.MU.indexOf(mu0), i1 = V.MU.indexOf(mu1), j0 = V.SG.indexOf(s0), j1 = V.SG.indexOf(s1);
-    const W = i1 - i0 + 1, H = j1 - j0 + 1, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-    const g = cv.getContext('2d'), img = g.createImageData(W, H);
-    let pk = 0; V.P.forEach(r => r.forEach(v => { if (v > pk) pk = v; }));
-    for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) {
-      const r = V.P[j1 - j][i0 + i] / pk, k = 4 * (j * W + i);
-      img.data[k] = 252 + (91 - 252) * r; img.data[k + 1] = 252 + (63 - 252) * r; img.data[k + 2] = 250 + (168 - 250) * r; img.data[k + 3] = 255;
+    // כמו בכדור הארץ (W2.V3): 11 ערכים של μ, וקטור לכל שלב, והעקומות מעליהם על אותו ציר
+    const SD = V.SDK, grid = Array.from({ length: 11 }, (_, i) => 75 + 5 * i);
+    const x0 = 200, x1 = 860, X = m => x0 + (m - 75) / 50 * (x1 - x0), cLo = 72.5, cHi = 127.5;
+    const cTop = 40, cBase = 172, yHead = 204, rowY = { prior: 238, lik: 274, norm: 310, post: 346 }, cw = 58, ch = 28;
+    const LIGHT = 'rgb(167,148,216)', DARK = 'var(--hidden)', RED = 'var(--curve)';
+    // שני priors: אחיד, או פעמון סביב 120 (חוקרת שמאמינה שהזמן נחווה ארוך)
+    const PRIORS = { flat: { f: () => 1, label: 'אחיד', formula: '= 1/11' }, bell: { f: m => Math.exp(-.5 * ((m - 120) / 10) ** 2), label: 'פעמון', formula: '∝ Normal(120, 10)' } };
+    const logLik = m => V.YS.reduce((a, y) => a + Math.log(V.dnorm(y, m, SD)), 0);
+    const likShape = m => Math.exp(logLik(m) - logLik(V.MEAN));
+    let prior = 'flat', stage = 0;
+    const fmt = v => {
+      if (v === 0) return '0';
+      if (v >= .01) { const t = (Math.round(v * 1000) / 1000).toFixed(3).replace(/0+$/, ''); return t.endsWith('.') ? t + '0' : t; }
+      if (v >= 1e-4) return String(+v.toPrecision(2));
+      let e = Math.floor(Math.log10(v)), mm = (v / Math.pow(10, e)).toFixed(1);
+      if (+mm >= 10) { e++; mm = (v / Math.pow(10, e)).toFixed(1); }
+      return `${mm}·10<tspan dy="-6" font-size="10">−${-e}</tspan>`;
+    };
+    // כל עקומה לפי הצורה שלה, כך שהשיא שלה תמיד באותו גובה
+    function curveY(f) { let pk = 0; for (let k = 0; k <= 400; k++) pk = Math.max(pk, f(cLo + k / 400 * (cHi - cLo))); return m => cBase - f(m) / pk * (cBase - cTop); }
+    const path = Yf => { let d = ''; for (let k = 0; k <= 220; k++) { const m = cLo + k / 220 * (cHi - cLo); d += (k ? 'L' : 'M') + X(m).toFixed(1) + ',' + Yf(m).toFixed(1); } return d; };
+    function button(act, x, y, w, label, color, on, filled = true) {
+      return `<g data-act="${act}" class="${on ? '' : 'off'}" role="button" aria-label="${label}">
+        <rect x="${x}" y="${y}" width="${w}" height="30" rx="7" fill="${filled ? color : '#fff'}" stroke="${color}" stroke-width="1.6"/>
+        <text x="${x + w / 2}" y="${y + 20.5}" text-anchor="middle" direction="rtl" font-size="16" font-weight="700" fill="${filled ? '#fff' : color}">${label}</text></g>`;
     }
-    g.putImageData(img, 0, 0);
-    const URL = cv.toDataURL();
-    let showMu = false, showSg = false;
+    function row(name, v, color, label, prob) {
+      const y = rowY[name];
+      let s = `<text x="${x1 + 40}" y="${y + 6}" text-anchor="start" direction="ltr" font-size="17" fill="${color}"><tspan font-weight="700">${label}</tspan> (${prob})</text>`;
+      grid.forEach((m, i) => {
+        s += `<rect x="${X(m) - cw / 2}" y="${y - ch / 2}" width="${cw}" height="${ch}" rx="5" fill="${v ? '#fff' : '#f6f7f8'}" stroke="${v ? color : 'var(--rule)'}" stroke-width="${v ? 1.6 : 1}"/>`;
+        if (v) s += `<text x="${X(m)}" y="${y + 5}" text-anchor="middle" direction="ltr" font-size="${fmt(v[i]).length > 6 ? 12 : 14}" fill="var(--ink)">${prior === 'flat' && name === 'prior' ? '1/11' : fmt(v[i])}</text>`;
+      });
+      return s;
+    }
     function draw() {
-      let s = `<image href="${URL}" x="${mX0}" y="${mY0}" width="${mX1 - mX0}" height="${mY1 - mY0}" preserveAspectRatio="none"/>
-               <rect x="${mX0}" y="${mY0}" width="${mX1 - mX0}" height="${mY1 - mY0}" fill="none" stroke="var(--ink-faint)"/>`;
-      [100, 120, 140, 160, 180].forEach(m => { s += `<text x="${MX(m)}" y="${mY1 + 20}" text-anchor="middle" font-size="14" fill="var(--ink-soft)">${m}</text>`; });
-      [20, 40, 60, 80].forEach(v => { s += `<text x="${mX0 - 10}" y="${SY(v) + 5}" text-anchor="end" font-size="14" fill="var(--ink-soft)">${v}</text>`; });
-      s += `<text x="${mX0 - 40}" y="${(mY0 + mY1) / 2}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">σ</text>`;
-      if (showMu) {
-        const top = Math.max(...V.pMu), yb = 385, h = 80; let d = '';
-        V.MU.forEach((m, i) => { if (m >= mu0 && m <= mu1) d += (d ? 'L' : 'M') + MX(m).toFixed(1) + ',' + (yb - V.pMu[i] / top * h).toFixed(1); });
-        s += `<path d="${d}L${MX(mu1)},${yb}L${MX(mu0)},${yb}Z" fill="var(--hidden-bg)" stroke="var(--hidden)" stroke-width="3"/>
-              <line x1="${mX0}" y1="${yb}" x2="${mX1}" y2="${yb}" stroke="var(--ink)" stroke-width="1.5"/>
-              <text x="${mX1 + 14}" y="${yb - 4}" text-anchor="start" font-size="18" font-weight="700" fill="var(--hidden)">μ</text>`;
-        for (let k = 0; k < 6; k++) s += `<line x1="${mX0 + (k + .5) * (mX1 - mX0) / 6}" y1="${mY1 + 28}" x2="${mX0 + (k + .5) * (mX1 - mX0) / 6}" y2="${yb - h - 6}" stroke="var(--hidden)" stroke-width="1.5" stroke-dasharray="3 5" opacity=".6"/>`;
-      } else s += `<text x="${(mX0 + mX1) / 2}" y="${mY1 + 44}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">μ</text>`;
-      if (showSg) {
-        const top = Math.max(...V.pSg), xb = 790, w = 140; let d = '';
-        V.SG.forEach((v, j) => { if (v >= s0 && v <= s1) d += (d ? 'L' : 'M') + (xb + V.pSg[j] / top * w).toFixed(1) + ',' + SY(v).toFixed(1); });
-        s += `<path d="${d}L${xb},${SY(s1)}L${xb},${SY(s0)}Z" fill="var(--hidden-bg)" stroke="var(--hidden)" stroke-width="3"/>
-              <line x1="${xb}" y1="${mY0}" x2="${xb}" y2="${mY1}" stroke="var(--ink)" stroke-width="1.5"/>`;
-      }
+      const pf = PRIORS[prior].f, pv0 = grid.map(pf), ps = pv0.reduce((a, b) => a + b, 0), pv = pv0.map(v => v / ps);
+      const lv = stage >= 1 ? grid.map(m => Math.exp(logLik(m))) : null;
+      const pD = stage >= 2 ? pv.reduce((a, p, i) => a + p * lv[i], 0) : null, post = stage >= 3 ? pv.map((p, i) => p * lv[i] / pD) : null;
+      let s = '';
+      // העקומות
+      grid.forEach(m => { s += `<line x1="${X(m)}" y1="${cTop}" x2="${X(m)}" y2="${rowY.post + ch / 2}" stroke="var(--rule)" stroke-dasharray="2 4"/>`; });
+      s += `<line x1="${X(cLo)}" y1="${cBase}" x2="${X(cHi)}" y2="${cBase}" stroke="var(--ink)" stroke-width="2"/>`;
+      s += `<path d="${path(curveY(pf))}" fill="none" stroke="${LIGHT}" stroke-width="4"/>`;
+      if (stage >= 1) s += `<path d="${path(curveY(likShape))}" fill="none" stroke="${RED}" stroke-width="3.5" stroke-dasharray="10 6"/>`;
+      if (stage >= 3) s += `<path d="${path(curveY(m => pf(m) * likShape(m)))}" fill="none" stroke="${DARK}" stroke-width="4"/>`;
+      // מקרא העקומות, מימין
+      const leg = [[LIGHT, 'prior', true], [RED, 'likelihood', stage >= 1], [DARK, 'posterior', stage >= 3]];
+      leg.forEach(([c, t, on], i) => { if (on) s += `<line x1="${x1 + 40}" y1="${70 + i * 34}" x2="${x1 + 76}" y2="${70 + i * 34}" stroke="${c}" stroke-width="4" ${t === 'likelihood' ? 'stroke-dasharray="8 5"' : ''}/>
+        <text x="${x1 + 86}" y="${76 + i * 34}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="${c}">${t}</text>`; });
+      s += `<text x="${X(cLo)}" y="${cTop - 18}" text-anchor="end" direction="rtl" font-size="15" fill="var(--ink-soft)">התצפיות: 10 ההערכות · σ = ${SD} ידוע</text>`;
+      // הווקטורים
+      s += `<text x="${x1 + 40}" y="${yHead + 6}" text-anchor="start" direction="ltr" font-size="17" font-style="italic" fill="var(--ink-soft)">μ</text>`;
+      grid.forEach(m => { s += `<text x="${X(m)}" y="${yHead + 6}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${m}</text>`; });
+      const op = (name, c) => `<text x="${x0 - 48}" y="${rowY[name] + 7}" text-anchor="middle" font-size="22" fill="var(--ink-soft)">${c}</text>`;
+      s += row('prior', pv, LIGHT, 'prior', 'P(μ)');
+      s += op('lik', '×') + row('lik', lv, RED, 'likelihood', 'P(D|μ)');
+      const yN = rowY.norm, nx = X(75) - cw / 2, nw = X(125) - X(75) + cw;
+      s += op('norm', '÷') + `<text x="${x1 + 40}" y="${yN + 6}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="var(--ink)">P(D)</text>
+        <rect x="${nx}" y="${yN - ch / 2}" width="${nw}" height="${ch}" rx="5" fill="${pD !== null ? '#fff' : '#f6f7f8'}" stroke="${pD !== null ? 'var(--ink)' : 'var(--rule)'}" stroke-width="${pD !== null ? 1.6 : 1}"/>`;
+      if (pD !== null) s += `<text x="${nx + nw / 2}" y="${yN + 5}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--ink)">Σ P(μ) · P(D|μ) = ${fmt(pD)}</text>`;
+      s += op('post', '=') + row('post', post, DARK, 'posterior', 'P(μ|D)');
+      // ה-prior: מתג של שתי אפשרויות, ומתחת כפתורי החישוב ליד השורה שהם ממלאים
+      s += `<text x="50" y="${cTop + 6}" text-anchor="middle" font-size="13" fill="var(--ink-faint)">prior</text>
+        <rect x="-8" y="${cTop + 14}" width="116" height="28" rx="14" fill="#fff" stroke="var(--rule)" stroke-width="1.4"/>`;
+      ['flat', 'bell'].forEach((k, i) => {
+        const x = -8 + (1 - i) * 58, sel = k === prior;
+        s += `<g data-act="prior" data-k="${k}" role="button" aria-pressed="${sel}">
+          <rect x="${x + 2}" y="${cTop + 16}" width="54" height="24" rx="12" fill="${sel ? 'var(--ink)' : 'transparent'}"/>
+          <text x="${x + 29}" y="${cTop + 33}" text-anchor="middle" font-size="14" font-weight="${sel ? 700 : 400}" fill="${sel ? '#fff' : 'var(--ink-soft)'}">${PRIORS[k].label}</text></g>`;
+      });
+      s += button('lik', -8, rowY.lik - 15, 128, 'חשב נראות', RED, stage === 0);
+      s += button('norm', -8, rowY.norm - 15, 128, 'חשב ⁦P(D)⁩', 'var(--ink)', stage === 1);
+      s += button('post', -8, rowY.post - 15, 128, 'חשב posterior', DARK, stage === 2);
+      if (stage) s += `<g data-act="reset" role="button"><text x="56" y="${rowY.prior + 6}" text-anchor="middle" font-size="14" fill="var(--ink-faint)" text-decoration="underline">איפוס</text></g>`;
       svg.innerHTML = s;
-      $('jp-out').innerHTML = showMu || showSg
-        ? 'כדי לקבל את μ לבדו, סוכמים את כל המפה לאורך σ: בכל עמודה, את כל הערכים מלמטה עד למעלה. כך אי-הוודאות על σ נכנסת לתוך ההתפלגות של μ.'
-        : 'כל נקודה במפה היא זוג (μ, σ). ככל שהצבע כהה יותר, הזוג סביר יותר בהינתן התצפיות.';
     }
-    $('jp-mu').onclick = () => { showMu = true; draw(); };
-    $('jp-sg').onclick = () => { showSg = true; draw(); };
-    $('jp-reset').onclick = () => { showMu = showSg = false; draw(); };
+    svg.addEventListener('click', e => {
+      const b = e.target.closest('[data-act]');
+      if (!b || b.classList.contains('off')) return;
+      const a = b.dataset.act;
+      if (a === 'prior') { prior = b.dataset.k; stage = 0; }
+      if (a === 'lik') stage = 1;
+      if (a === 'norm') stage = 2;
+      if (a === 'post') stage = 3;
+      if (a === 'reset') stage = 0;
+      draw();
+    });
     draw();
   })();
 </script>
 <div class="demo-note">
-<p>מה שמעניין אותנו הוא בדרך כלל <span class="math inline">\(\mu\)</span> לבדו. לפעולה של סיכום המפה לאורך הפרמטר השני קוראים <span class="term">marginalization</span>.</p>
+<p>כמו בכדור הארץ: <span class="term">posterior</span> = <span class="term">prior</span> × <span class="term">likelihood</span> ÷ P(D), לכל ערך של <span class="math inline">\(\mu\)</span>. עם <span class="term">prior</span> אחיד, ה-<span class="term">posterior</span> בדיוק בצורת ה-<span class="term">likelihood</span>. נסו גם <span class="term">prior</span> של פעמון: ה-<span class="term">posterior</span> נמשך לכיוונו.</p>
 </div>
 </section>
 <section id="דיווח-bayesian" class="slide level2 example-slide">
 <h2>דיווח Bayesian</h2>
-<div class="demo-panel" id="bp-panel"><svg id="bp-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="התצפיות עם קווים מה-posterior, וה-posterior של μ"></svg></div>
-<div class="rep-step">
-  <div class="r-stack rep-text">
-    <p class="fragment fade-in-then-out"><b>משמאל:</b> התצפיות, ועליהן 150 קווים שנדגמו מה-<span class="term">posterior</span>. כל קו הוא ערך אפשרי של μ. <b>מימין:</b> ה-<span class="term">posterior</span> של μ לבדו.</p>
-    <p class="fragment fade-in-then-out"><b>הערך הסביר ביותר:</b> החציון של ה-<span class="term">posterior</span>, <span class="ltr">139</span> שניות.</p>
-    <p class="fragment fade-in-then-out"><b>הערכת ודאות:</b> יש 90% סיכוי ש-μ נמצא בין <span class="ltr">125.5</span> ל-<span class="ltr">152</span> שניות (90% CI).</p>
-    <p class="fragment fade-in"><b>הערכת כיוון:</b> הסיכוי ש-μ גדול ממשך הסרטון, 120 שניות: <span class="ltr">pd = 98.8%</span>.</p>
+<h3 class="paper-kicker">כך זה נראה במאמר</h3>
+<div class="paper" id="rb">
+  <div class="paper-head"><span>ESTIMATING ELAPSED TIME WITH EYES CLOSED</span><span>4</span></div>
+  <svg id="rb-fig" viewbox="0 0 1000 236" style="width:100%; height:auto; display:block;" aria-label="Figure 1: the posterior distribution of the mean estimate, and the individual estimates"></svg>
+  <p class="paper-cap"><b>Figure 1.</b> (A) Posterior distribution of μ, the mean time estimate, with flat priors. Shaded area: 90% CI; solid line: posterior median. (B) Individual time estimates (N = 10); line and band: posterior median and 90% CI.</p>
+  <p class="paper-h">Results</p>
+  <div class="paper-text">
+    <p><span class="rp-s" data-k="2">Ten participants sat silently with their eyes closed and estimated how many seconds had passed. Estimates ranged from <span class="rb-min"></span> to <span class="rb-max"></span> s (Figure 1B)</span>. <span class="rp-s" data-k="3">We modeled the estimates as normally distributed, with flat priors on the mean and the standard deviation</span>. <span class="rp-s" data-k="4">The most probable mean estimate was <span id="rb-med"></span> s (posterior median)</span>, <span class="rp-s" data-k="5">90% CI <span class="nw">[<span id="rb-a"></span>, <span id="rb-b"></span>]</span></span>. <span class="rp-s" data-k="6">The probability that the mean estimate exceeded 100 s was <span id="rb-pd"></span> (pd)</span>.</p>
+    <div class="rp-arrow" id="rb-arrow">▲</div>
   </div>
 </div>
-<style>
-  .reveal .rep-step { margin-top: .3em; }
-  .reveal .rep-text { font-size: .8em; line-height: 1.45; }
-  .reveal .rep-text > p { margin: 0 !important; justify-self: stretch; text-align: start; }
-</style>
+<div class="rp-note" id="rb-note"></div>
 <script>
   (function () {
-    const V = window.W4V3, svg = document.getElementById('bp-svg');
-    if (!V || !svg) return;
-    const yb = 270, yt = 16, Y = v => yb - (v - 40) / 220 * (yb - yt), dx0 = 80, dx1 = 330;
-    const px0 = 420, px1 = 960, lo = 100, hi = 180, PX = m => px0 + (m - lo) / (hi - lo) * (px1 - px0);
-    const top = Math.max(...V.pMu), PY = p => yb - p / top * (yb - yt - 30);
-    const med = V.qMu(.5), a = V.qMu(.05), b = V.qMu(.95);
-    // 150 קווים: הכמותונים של ה-posterior, בסדר מעורבב
-    const lines = Array.from({ length: 150 }, (_, i) => V.qMu((i + .5) / 150));
-    const area = (from, to) => { let d = ''; V.MU.forEach((m, i) => { if (m >= Math.max(from, lo) && m <= Math.min(to, hi)) d += (d ? 'L' : 'M') + PX(m).toFixed(1) + ',' + PY(V.pMu[i]).toFixed(1); }); return d + `L${PX(Math.min(to, hi))},${yb}L${PX(Math.max(from, lo))},${yb}Z`; };
-    V.steps('bp-panel', k => {
-      let s = '';
-      [60, 120, 180, 240].forEach(v => { s += `<line x1="${dx0 - 10}" y1="${Y(v)}" x2="${dx1}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${dx0 - 18}" y="${Y(v) + 5}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
-      s += `<line x1="${dx0 - 10}" y1="${yt}" x2="${dx0 - 10}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      lines.forEach(m => { s += `<line x1="${dx0 - 10}" y1="${Y(m)}" x2="${dx1}" y2="${Y(m)}" stroke="var(--ink)" stroke-width="1" opacity=".06"/>`; });
-      V.YS.forEach((y, i) => { s += `<circle cx="${dx0 + 8 + i * (dx1 - dx0 - 16) / 19}" cy="${Y(y)}" r="5" fill="var(--seen)" opacity=".85"/>`; });
-      if (k >= 2) s += `<line x1="${dx0 - 10}" y1="${Y(med)}" x2="${dx1}" y2="${Y(med)}" stroke="var(--ink)" stroke-width="3"/>`;
-      // ה-posterior של μ
-      if (k === 3) s += `<path d="${area(a, b)}" fill="var(--hidden)" opacity=".3"/>`;
-      if (k >= 4) s += `<path d="${area(120, hi)}" fill="var(--hidden)" opacity=".3"/>
-            <line x1="${PX(120)}" y1="${yt}" x2="${PX(120)}" y2="${yb}" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="7 5"/>
-            <text x="${PX(120) - 8}" y="${yt + 14}" text-anchor="start" direction="rtl" font-size="15" fill="var(--ink-soft)">משך הסרטון</text>`;
-      let d = ''; V.MU.forEach((m, i) => { if (m >= lo && m <= hi) d += (d ? 'L' : 'M') + PX(m).toFixed(1) + ',' + PY(V.pMu[i]).toFixed(1); });
-      s += `<path d="${d}" fill="none" stroke="var(--hidden)" stroke-width="4"/>
-            <line x1="${px0}" y1="${yb}" x2="${px1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      for (let m = lo; m <= hi; m += 10) s += `<text x="${PX(m)}" y="${yb + 22}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${m}</text>`;
-      s += `<text x="${px1 + 18}" y="${yb + 22}" text-anchor="middle" font-size="17" font-weight="700" fill="var(--hidden)">μ</text>`;
-      if (k >= 2) s += `<line x1="${PX(med)}" y1="${yb}" x2="${PX(med)}" y2="${PY(V.pMu[V.MU.indexOf(med)])}" stroke="var(--ink)" stroke-width="3"/>`;
-      if (k === 3) s += `<line x1="${PX(a)}" y1="${yb - 8}" x2="${PX(b)}" y2="${yb - 8}" stroke="var(--hidden)" stroke-width="6" stroke-linecap="round"/>`;
-      if (k >= 4) s += `<text x="${PX(150)}" y="${PY(top * .5)}" text-anchor="middle" font-size="28" font-weight="700" fill="var(--hidden)">${(100 * V.pdMu).toFixed(1)}%</text>`;
-      svg.innerHTML = s;
-    });
-  })();
-</script>
-</section>
-<section id="דיווח-bayesian-1" class="slide level2 example-slide">
-<h2>דיווח Bayesian</h2>
-<div class="demo-panel"><svg id="bs-svg" viewbox="0 0 1000 270" style="width:100%; height:auto; display:block;" aria-label="ה-posterior של σ ושל גודל האפקט"></svg></div>
-<script>
-  (function () {
-    const V = window.W4V3, svg = document.getElementById('bs-svg');
-    if (!V || !svg) return;
-    const yb = 210, yt = 30;
-    function panel(x0, x1, xs, ps, lo, hi, ticks, label, ref, title, B) {
-      const X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0);
-      // הצפיפות: היסטוגרמה חלקה על 60 תאים
-      const w = (hi - lo) / B, h0 = Array(B).fill(0);
-      xs.forEach((v, i) => { const k = Math.floor((v - lo) / w); if (k >= 0 && k < B) h0[k] += ps[i]; });
-      // החלקה קלה: הרשת יוצרת שיניים בהתפלגות של d
-      const h = h0.map((v, k) => (2 * v + (h0[k - 1] ?? v) + (h0[k + 1] ?? v)) / 4);
-      const top = Math.max(...h), Y = p => yb - p / top * (yb - yt);
-      let d = ''; h.forEach((p, k) => { d += (k ? 'L' : 'M') + X(lo + (k + .5) * w).toFixed(1) + ',' + Y(p).toFixed(1); });
-      const q = t => { let c = 0; for (let i = 0; i < xs.length; i++) { c += ps[i]; if (c >= t) return xs[i]; } return xs[xs.length - 1]; };
-      const med = q(.5), a = q(.05), b = q(.95);
-      let s = `<text x="${(x0 + x1) / 2}" y="18" text-anchor="middle" direction="rtl" font-size="18" font-weight="700" fill="var(--ink)">${title}</text>
-        <path d="${d}L${X(hi - w / 2)},${yb}L${X(lo + w / 2)},${yb}Z" fill="var(--hidden-bg)"/>
-        <path d="${d}" fill="none" stroke="var(--hidden)" stroke-width="3.5"/>
-        <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      ticks.forEach(t => { s += `<text x="${X(t)}" y="${yb + 20}" text-anchor="middle" direction="ltr" font-size="14" fill="var(--ink-soft)">${t}</text>`; });
-      if (ref !== null) s += `<line x1="${X(ref)}" y1="${yt}" x2="${X(ref)}" y2="${yb}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 5"/>`;
-      s += `<line x1="${X(a)}" y1="${yb + 32}" x2="${X(b)}" y2="${yb + 32}" stroke="var(--hidden)" stroke-width="6" stroke-linecap="round"/>
-        <line x1="${X(med)}" y1="${yb}" x2="${X(med)}" y2="${yt + 10}" stroke="var(--ink)" stroke-width="2.5"/>
-        <text x="${(x0 + x1) / 2}" y="${yb + 56}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--hidden)">${label}: median ${med.toFixed(label === 'd' ? 2 : 1)}, 90% CI [${a.toFixed(label === 'd' ? 2 : 1)}, ${b.toFixed(label === 'd' ? 2 : 1)}]</text>`;
-      return s;
+    const root = document.getElementById('rb'), V = window.W5V3;
+    if (!root || !V) return;
+    const $ = id => document.getElementById(id);
+    const med = V.qMu(.5), a = V.qMu(.05), b = V.qMu(.95), pd = V.pd(100);
+    root.querySelectorAll('.rb-min').forEach(e => e.textContent = Math.min(...V.YS));
+    root.querySelectorAll('.rb-max').forEach(e => e.textContent = Math.max(...V.YS));
+    $('rb-med').textContent = med.toFixed(1); $('rb-a').textContent = a.toFixed(1); $('rb-b').textContent = b.toFixed(1);
+    $('rb-pd').textContent = Math.round(pd * 100) + '%';
+    const notes = ['', 'האיור: (A) ה-posterior של μ, ו-(B) התצפיות. בציר ה-Y של A אין מספרים: חשובה הצורה, לא הגובה.',
+      'הנתונים: כמה נבדקים, מה הם עשו, ובאיזה טווח היו ההערכות.', 'המודל וה-prior: חלק מהניתוח, ולכן מדווחים עליהם.',
+      'point estimation: הערך הסביר ביותר.', 'הערכת ודאות: רווח אמינות. יש 90% סיכוי ש-μ נמצא בטווח הזה.', 'הערכת כיוון: pd, כמה מה-posterior נמצא מעל 100.'];
+    // (A) ה-posterior משמאל, (B) התצפיות מימין
+    const ax0 = 90, ax1 = 600, yt = 30, yb = 176, lo = 60, hi = 140, top = Math.max(...V.pMu);
+    const X = m => ax0 + (m - lo) / (hi - lo) * (ax1 - ax0), Y = p => yb - p / top * (yb - yt);
+    const area = (f, t) => { let d = ''; V.MU.forEach((m, i) => { if (m >= Math.max(f, lo) && m <= Math.min(t, hi)) d += (d ? 'L' : 'M') + X(m).toFixed(1) + ',' + Y(V.pMu[i]).toFixed(1); }); return d + `L${X(Math.min(t, hi))},${yb}L${X(Math.max(f, lo))},${yb}Z`; };
+    let curve = ''; V.MU.forEach((m, i) => { if (m >= lo && m <= hi) curve += (curve ? 'L' : 'M') + X(m).toFixed(1) + ',' + Y(V.pMu[i]).toFixed(1); });
+    const bx0 = 745, bx1 = 955, Yb = v => yb - (v - 40) / 120 * (yb - yt);
+    const F = `font-family="Arial, Helvetica, sans-serif"`;
+    function fig(k) {
+      const act = { 2: 'data', 3: 'prior', 4: 'med', 5: 'ci', 6: 'pd' }[k], o = g => act && act !== g ? .25 : 1;
+      let s = `<g ${F}>`;
+      // (A)
+      s += `<g opacity="${o('ci')}"><path d="${area(a, b)}" fill="var(--hidden)" opacity="${act === 'ci' ? .45 : .2}"/></g>`;
+      if (act === 'pd') s += `<path d="${area(100, hi)}" fill="var(--hidden)" opacity=".45"/>
+        <text x="${X(112)}" y="${Y(top * .55)}" text-anchor="middle" font-size="22" font-weight="700" fill="var(--hidden)">${Math.round(pd * 100)}%</text>`;
+      s += `<path d="${curve}" fill="none" stroke="var(--hidden)" stroke-width="3" opacity="${act === 'data' ? .25 : 1}"/>`;
+      if (act === 'prior') s += `<line x1="${ax0}" y1="${yt + 40}" x2="${ax1}" y2="${yt + 40}" stroke="var(--hidden)" stroke-width="3" stroke-dasharray="8 6"/>
+        <text x="${ax1 - 6}" y="${yt + 32}" text-anchor="end" direction="ltr" font-size="15" fill="var(--hidden)">flat prior</text>`;
+      s += `<line x1="${X(med)}" y1="${yb}" x2="${X(med)}" y2="${Y(top)}" stroke="${act === 'med' ? 'var(--hidden)' : 'var(--ink)'}" stroke-width="${act === 'med' ? 4 : 1.8}" opacity="${o('med')}"/>`;
+      if (act === 'pd') s += `<line x1="${X(100)}" y1="${yt - 8}" x2="${X(100)}" y2="${yb}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 4"/>`;
+      s += `<line x1="${ax0}" y1="${yb}" x2="${ax1}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>
+        <line x1="${ax0}" y1="${yt - 10}" x2="${ax0}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>
+        <text x="${ax0 - 16}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="15" fill="var(--ink)" transform="rotate(-90 ${ax0 - 16} ${(yt + yb) / 2})">Density</text>
+        <text x="${(ax0 + ax1) / 2}" y="${yb + 42}" text-anchor="middle" font-size="15" fill="var(--ink)">μ (mean time estimate, s)</text>
+        <text x="${ax0 - 50}" y="${yt - 10}" font-size="18" font-weight="700" fill="var(--ink)">A</text>`;
+      [60, 80, 100, 120, 140].forEach(t => { s += `<line x1="${X(t)}" y1="${yb}" x2="${X(t)}" y2="${yb + 5}" stroke="var(--ink)" stroke-width="1.3"/>
+        <text x="${X(t)}" y="${yb + 21}" text-anchor="middle" font-size="14" fill="var(--ink)">${t}</text>`; });
+      // (B)
+      s += `<g opacity="${o('ci')}"><rect x="${bx0}" y="${Yb(b)}" width="${bx1 - bx0}" height="${Yb(a) - Yb(b)}" fill="var(--hidden)" opacity="${act === 'ci' ? .35 : .15}"/></g>
+        <line x1="${bx0}" y1="${Yb(med)}" x2="${bx1}" y2="${Yb(med)}" stroke="${act === 'med' ? 'var(--hidden)' : 'var(--ink)'}" stroke-width="${act === 'med' ? 4 : 1.8}" opacity="${o('med')}"/>`;
+      if (act === 'pd') s += `<line x1="${bx0}" y1="${Yb(100)}" x2="${bx1}" y2="${Yb(100)}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 4"/>`;
+      V.YS.forEach((y, i) => { s += `<circle cx="${bx0 + 16 + i * (bx1 - bx0 - 32) / 9}" cy="${Yb(y)}" r="${act === 'data' ? 7 : 5}" fill="var(--seen)" opacity="${o('data')}"/>`; });
+      s += `<line x1="${bx0 - 10}" y1="${yt - 10}" x2="${bx0 - 10}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>`;
+      [40, 80, 120, 160].forEach(v => { s += `<line x1="${bx0 - 15}" y1="${Yb(v)}" x2="${bx0 - 10}" y2="${Yb(v)}" stroke="var(--ink)" stroke-width="1.3"/>
+        <text x="${bx0 - 19}" y="${Yb(v) + 5}" text-anchor="end" direction="ltr" font-size="14" fill="var(--ink)">${v}</text>`; });
+      s += `<text x="${bx0 - 55}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="15" fill="var(--ink)" transform="rotate(-90 ${bx0 - 55} ${(yt + yb) / 2})">Time estimate (s)</text>
+        <text x="${(bx0 + bx1) / 2}" y="${yb + 42}" text-anchor="middle" font-size="15" fill="var(--ink)">Participants</text>
+        <text x="${bx0 - 85}" y="${yt - 10}" font-size="18" font-weight="700" fill="var(--ink)">B</text></g>`;
+      $('rb-fig').innerHTML = s;
     }
-    svg.innerHTML = panel(540, 960, V.SG, V.pSg, 15, 75, [20, 30, 40, 50, 60, 70], 'σ', null, 'σ: כמה הנבדקים שונים זה מזה', 60) +
-      panel(40, 460, V.D.map(d => d[0]), V.D.map(d => d[1]), -.6, 1.6, [-.5, 0, .5, 1, 1.5], 'd', 0, 'גודל האפקט (d)', 50);
+    function sync() {
+      const sec = root.closest('section'), k = sec ? sec.querySelectorAll('.fragment.visible').length : 0;
+      fig(k);
+      let on = null;
+      root.querySelectorAll('.rp-s').forEach(sp => { const hit = +sp.dataset.k === k; sp.classList.toggle('on', hit); if (hit) on = sp; });
+      const ar = $('rb-arrow');
+      if (on) {
+        const r = on.getClientRects(), last = r[r.length - 1], box = on.parentNode.parentNode.getBoundingClientRect(), sc = box.width / on.parentNode.parentNode.offsetWidth;
+        ar.style.left = ((last.left + last.right) / 2 - box.left) / sc + 'px';
+        ar.style.top = (last.bottom - box.top) / sc - 1 + 'px';
+        ar.style.display = 'block';
+      } else ar.style.display = 'none';
+      $('rb-note').textContent = notes[k] || '';
+    }
+    const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready', 'resize'].forEach(e => Reveal.on(e, sync)); sync(); };
+    if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
   })();
 </script>
-<div>
-<ul>
-<li class="fragment"><strong><span class="math inline">\(\sigma\)</span>:</strong> הנבדקים שונים זה מזה בכ-35 שניות. גם על זה יש לנו התפלגות שלמה, ולא רק מספר.</li>
-<li class="fragment"><strong>גודל האפקט</strong> (<span class="term">Cohen’s d</span>): כמה רחוק <span class="math inline">\(\mu\)</span> מ-120, ביחידות של סטיית תקן. מחשבים אותו לכל זוג <span class="math inline">\((\mu, \sigma)\)</span> במפה, וכך מקבלים גם לו <span class="term">posterior</span>.</li>
-<li class="fragment">גודל אפקט לא תלוי ביחידות, ולכן אפשר להשוות בעזרתו בין מחקרים שמדדו דברים שונים.</li>
-</ul>
-</div>
-</section>
-<section id="דיווח-bayesian-2" class="slide level2">
-<h2>דיווח Bayesian</h2>
-<div class="centered-content">
-<div class="soft-card ltr" style="text-align:left; font-family:'Frank Ruhl Libre', serif; font-size:.68em; line-height:1.55;">
-  <p style="margin:0">“Twenty participants watched a 120-second suspense clip and estimated its duration. Estimates ranged from 66 to 183 s. A Bayesian model with flat priors suggested that the mean estimate was 139 s (posterior median; 90% CI [125.5, 152.0]), with a 98.8% probability of exceeding the true duration (pd). The standardized effect was d = 0.55 (90% CI [0.15, 0.95]).”</p>
-</div>
-<div style="margin-top:.5em;">
-<ul>
-<li class="fragment">כל המספרים הם תיאורים של אותו <span class="term">posterior</span>: איפה הוא, כמה הוא רחב, וכמה ממנו נמצא מעבר ל-120.</li>
-<li class="fragment">המשפט “יש 90% סיכוי ש-<span class="math inline">\(\mu\)</span> בין 125.5 ל-152” נכון כאן מילה במילה.</li>
-</ul>
-</div>
-</div>
+<p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
 </section>
 <section id="הערכה-frequentist" class="slide level2 part-gate">
 <h2>הערכה Frequentist</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="now"></span></div>
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span></div>
   <div class="gate-title">הערכה Frequentist</div>
-  <div class="gate-why">בלי מחשב ובלי prior: שיא בנוסחה, וודאות מדגימות חוזרות</div>
+  <div class="gate-why">שיא בנוסחה, ווודאות ממחקרים חוזרים</div>
 </div>
 </section>
-<section id="השיא-בלי-מפה" class="slide level2 example-slide">
-<h2>השיא בלי מפה</h2>
-<div class="demo-panel">
+<section id="mle-והתפלגות-הדגימה" class="slide level2 example-slide">
+<h2>MLE והתפלגות הדגימה</h2>
+<div class="demo-panel" id="fq-panel">
   <div class="demo-controls" style="justify-content:center;">
-    <label>μ מועמד: <input type="range" id="ms-mu" min="60" max="220" step="0.5" value="90"> <span class="ltr demo-readout" id="ms-muv"></span></label>
-    <button id="ms-go" class="demo-btn">חיפוש</button>
-    <label><input type="checkbox" id="ms-mean"> הממוצע</label>
+    <label>ערך בר-הפרכה, μ<sub>null</sub>: <input type="range" id="fq-null" min="60" max="140" step="1" value="100"> <span class="ltr demo-readout" id="fq-nullv"></span></label>
   </div>
-  <svg id="ms-svg" viewbox="0 0 1000 340" style="width:100%; height:auto; display:block;" aria-label="המרחקים של התצפיות מ-μ מועמד, וממוצע ריבועי המרחקים"></svg>
-  <div class="demo-readout" id="ms-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+  <svg id="fq-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="התצפיות והממוצע שלהן, התפלגות הדגימה של הממוצע סביב הערך בר-ההפרכה, אזור הקבלה, ערך p ורווח בר-סמך"></svg>
 </div>
+<div class="rep-step">
+  <div class="r-stack rep-text">
+    <p class="fragment fade-in-then-out"><b>MLE:</b> השיא של ה-<span class="term">likelihood</span> הוא הממוצע: <span class="ltr">μ̂ = ȳ = <span class="fq-m"></span></span> שניות. סטיית התקן של המדגם: <span class="ltr">s = <span class="fq-s"></span></span>.</p>
+    <p class="fragment fade-in-then-out"><b>התפלגות הדגימה:</b> אם <span class="ltr">μ = <span class="fq-n0"></span></span>, הממוצעים של מחקרים חוזרים עם 10 נבדקים היו מתפזרים כך. הרוחב: <span class="ltr">SE = s / √n = <span class="fq-se"></span></span>, והצורה: התפלגות t עם 9 דרגות חופש.</p>
+    <p class="fragment fade-in-then-out"><b>אזור הקבלה:</b> 95% מהממוצעים היו נופלים בין <span class="ltr fq-alo"></span> ל-<span class="ltr fq-ahi"></span>. מחוץ לו, 2.5% מכל צד: אזור הדחייה.</p>
+    <p class="fragment fade-in-then-out"><b>ערך p:</b> הסיכוי לממוצע רחוק מ-<span class="ltr fq-n0"></span> לפחות כמו שלנו, לשני הכיוונים: <span class="ltr">t(9) = <span class="fq-t"></span>, p = <span class="fq-p"></span></span>. <span class="fq-dec"></span></p>
+    <p class="fragment fade-in"><b>רווח בר-סמך 95%:</b> <span class="ltr">ȳ ± 2.26 × SE</span>, כלומר <span class="ltr">[<span class="fq-clo"></span>, <span class="fq-chi"></span>]</span>. כל ערך בר-הפרכה שבתוך הרווח לא היה נדחה.</p>
+  </div>
+</div>
+<style>
+  .reveal .rep-step { margin-top: .2em; }
+  .reveal .rep-text { font-size: .74em; line-height: 1.45; }
+  .reveal .rep-text > p { margin: 0 !important; justify-self: stretch; text-align: start; }
+</style>
 <script>
   (function () {
-    const V = window.W4V3, svg = document.getElementById('ms-svg');
-    if (!V || !svg) return;
-    const $ = id => document.getElementById(id);
-    const yb = 310, yt = 16, Y = v => yb - (v - 40) / 220 * (yb - yt), dx0 = 110, dx1 = 470, cx0 = 600, cx1 = 960;
-    const mse = m => V.YS.reduce((a, y) => a + (y - m) ** 2, 0) / V.n, top = Math.max(mse(40), mse(260)), CX = e => cx0 + e / top * (cx1 - cx0);
-    let timer = null;
+    const svg = document.getElementById('fq-svg'), V = window.W5V3;
+    if (!svg || !V) return;
+    const $ = id => document.getElementById(id), all = c => document.querySelectorAll('#fq-panel ~ .rep-step .' + c);
+    const set = (c, t) => all(c).forEach(e => e.textContent = t);
+    // ציר אנכי אחד לכול: התצפיות משמאל, התפלגות הדגימה של הממוצע שוכבת על הצד, ורווח בר-הסמך מימין
+    const DF = V.n - 1, TC = V.tq(.975, DF), lo = 50, hi = 150, yt = 14, yb = 290, Y = v => yb - (v - lo) / (hi - lo) * (yb - yt);
+    const axX = 110, dX0 = 140, dX1 = 330, floorX = 470, bW = 260, ciX = 880, f0 = V.tpdf(0, DF);
+    let K = 0;
     function draw() {
-      const m = +$('ms-mu').value; $('ms-muv').textContent = m.toFixed(1);
+      const k = K, m0 = +$('fq-null').value, M = V.MEAN, SE = V.SE, t = (M - m0) / SE, p = 2 * (1 - V.tcdf(Math.abs(t), DF));
+      $('fq-nullv').textContent = m0;
+      set('fq-m', M.toFixed(1)); set('fq-s', V.S.toFixed(1)); set('fq-se', SE.toFixed(2)); set('fq-n0', m0);
+      set('fq-alo', (m0 - TC * SE).toFixed(1)); set('fq-ahi', (m0 + TC * SE).toFixed(1));
+      set('fq-t', t.toFixed(2)); set('fq-p', p > .999 ? '1.000' : p < .001 ? '< .001' : p.toFixed(3).replace(/^0/, ''));
+      set('fq-dec', p < .05 ? 'קטן מ-.05: הממוצע שלנו באזור הדחייה, ולכן דוחים את ההשערה ברת-ההפרכה.' : 'לא קטן מ-.05: הממוצע שלנו באזור הקבלה, ולכן לא דוחים את ההשערה ברת-ההפרכה.');
+      set('fq-clo', (M - TC * SE).toFixed(1)); set('fq-chi', (M + TC * SE).toFixed(1));
       let s = '';
-      [60, 120, 180, 240].forEach(v => { s += `<line x1="${dx0 - 14}" y1="${Y(v)}" x2="${cx1}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${dx0 - 22}" y="${Y(v) + 5}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
-      s += `<line x1="${dx0 - 14}" y1="${yt}" x2="${dx0 - 14}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
-            <line x1="${cx0}" y1="${yt}" x2="${cx0}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
-            <text x="${(cx0 + cx1) / 2}" y="${yb + 24}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--curve)">MSE</text>
-            <text x="22" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)" transform="rotate(-90 22 ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>`;
-      V.YS.forEach((y, i) => {
-        const x = dx0 + 6 + i * (dx1 - dx0 - 12) / 19;
-        s += `<line x1="${x}" y1="${Y(y)}" x2="${x}" y2="${Y(m)}" stroke="var(--curve)" stroke-width="2.5" opacity=".7"/>
-              <circle cx="${x}" cy="${Y(y)}" r="6" fill="var(--seen)"/>`;
-      });
-      s += `<line x1="${dx0 - 14}" y1="${Y(m)}" x2="${cx1}" y2="${Y(m)}" stroke="var(--hidden)" stroke-width="2.5" stroke-dasharray="6 5"/>`;
-      if ($('ms-mean').checked) s += `<line x1="${dx0 - 14}" y1="${Y(V.MEAN)}" x2="${cx1}" y2="${Y(V.MEAN)}" stroke="var(--seen)" stroke-width="2"/><text x="${dx1}" y="${Y(V.MEAN) - 8}" text-anchor="start" direction="rtl" font-size="15" fill="var(--seen)">הממוצע</text>`;
-      let d = ''; for (let v = 40; v <= 260; v += 1) d += (d ? 'L' : 'M') + CX(Math.min(mse(v), top * 1.02)).toFixed(1) + ',' + Y(v).toFixed(1);
-      s += `<path d="${d}" fill="none" stroke="var(--curve)" stroke-width="3.5"/>
-            <circle cx="${CX(mse(m))}" cy="${Y(m)}" r="8" fill="var(--curve)"/>`;
+      for (let v = 50; v <= 150; v += 25) s += `<line x1="${axX}" y1="${Y(v)}" x2="${ciX + 40}" y2="${Y(v)}" stroke="var(--rule)"/>
+        <text x="${axX - 12}" y="${Y(v) + 5}" text-anchor="end" direction="ltr" font-size="15" fill="var(--ink-soft)">${v}</text>`;
+      s += `<line x1="${axX}" y1="${yt}" x2="${axX}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="40" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)" transform="rotate(-90 40 ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>`;
+      // התפלגות הדגימה סביב μ_null: צורת t, ברוחב SE
+      if (k >= 2) {
+        const pt = tt => [floorX + V.tpdf(tt, DF) / f0 * bW, Y(m0 + tt * SE)];
+        const seg = (a, b) => { let d = ''; for (let i = 0; i <= 80; i++) { const q = pt(a + i / 80 * (b - a)); if (q[1] < yt || q[1] > yb) continue; d += (d ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1); } return d; };
+        const fill = (a, b, c, op) => { const d = seg(a, b); if (!d) return ''; const y0 = Math.min(yb, Math.max(yt, Y(m0 + a * SE))), y1 = Math.min(yb, Math.max(yt, Y(m0 + b * SE))); return `<path d="M${floorX},${y0}${d.replace('M', 'L')}L${floorX},${y1}Z" fill="${c}" opacity="${op}"/>`; };
+        const L = -(m0 - lo) / SE, H = (hi - m0) / SE;
+        if (k >= 3) s += fill(-TC, TC, 'var(--seen)', .2) + fill(L, -TC, 'var(--curve)', .2) + fill(TC, H, 'var(--curve)', .2) +
+          `<text x="${floorX + 14}" y="${Y(m0 + .6 * TC * SE) + 7}" text-anchor="start" direction="ltr" font-size="18" font-weight="700" fill="var(--seen)">95%</text>`;
+        if (k >= 4) { const d = Math.abs(t); s += fill(L, -d, 'var(--curve)', .5) + fill(d, H, 'var(--curve)', .5); }
+        s += `<path d="${seg(L, H)}" fill="none" stroke="var(--ink)" stroke-width="3"/>
+              <line x1="${floorX}" y1="${yt}" x2="${floorX}" y2="${yb}" stroke="var(--ink)" stroke-width="2.5"/>
+              <line x1="${axX}" y1="${Y(m0)}" x2="${floorX + bW + 20}" y2="${Y(m0)}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 5"/>
+              <text x="${floorX + bW + 24}" y="${Y(m0) + 5}" text-anchor="start" direction="ltr" font-size="15" fill="var(--ink)">μnull = ${m0}</text>`;
+        if (k >= 3) { [-1, 1].forEach(sg => { const v = m0 + sg * (TC + 1.1) * SE; if (v > lo + 3 && v < hi - 3) s += `<text x="${floorX + 12}" y="${Y(v) + 5}" text-anchor="end" direction="rtl" font-size="14" fill="var(--curve)">דחייה</text>`; }); }
+      }
+      // התצפיות, והממוצע (ה-MLE)
+      V.YS.forEach((y, i) => { s += `<circle cx="${dX0 + (i + .5) / 10 * (dX1 - dX0)}" cy="${Y(y)}" r="6" fill="var(--seen)" opacity=".85"/>`; });
+      if (k >= 1) s += `<line x1="${axX}" y1="${Y(M)}" x2="${k >= 2 ? floorX + bW : dX1 + 20}" y2="${Y(M)}" stroke="var(--seen)" stroke-width="3"/>
+            <text x="${dX1 + 24}" y="${Y(M) - 8}" text-anchor="start" direction="ltr" font-size="16" font-weight="700" fill="var(--seen)">ȳ = ${M.toFixed(1)}</text>`;
+      if (k >= 4) s += `<text x="${floorX + bW + 24}" y="${Y(M) + (Math.abs(Y(M) - Y(m0)) < 22 ? 26 : 5)}" text-anchor="start" direction="ltr" font-size="16" font-weight="700" fill="var(--curve)">p = ${p > .999 ? '1.000' : p < .001 ? '< .001' : p.toFixed(3).replace(/^0/, '')}</text>`;
+      // רווח בר-הסמך סביב הממוצע
+      if (k >= 5) { const a = M - TC * SE, b = M + TC * SE;
+        s += `<line x1="${ciX}" y1="${Y(a)}" x2="${ciX}" y2="${Y(b)}" stroke="var(--seen)" stroke-width="4"/>
+              <line x1="${ciX - 10}" y1="${Y(a)}" x2="${ciX + 10}" y2="${Y(a)}" stroke="var(--seen)" stroke-width="3"/>
+              <line x1="${ciX - 10}" y1="${Y(b)}" x2="${ciX + 10}" y2="${Y(b)}" stroke="var(--seen)" stroke-width="3"/>
+              <circle cx="${ciX}" cy="${Y(M)}" r="7" fill="var(--seen)"/>
+              <text x="${ciX}" y="${Y(b) - 12}" text-anchor="middle" direction="ltr" font-size="15" font-weight="700" fill="var(--seen)">95% CI</text>`; }
+      if (k >= 2) s += `<text x="${floorX + 8}" y="${yt + 4}" text-anchor="end" direction="rtl" font-size="14" fill="var(--ink-soft)">התפלגות הדגימה של הממוצע</text>`;
       svg.innerHTML = s;
-      $('ms-out').innerHTML = `<span class="ltr">μ = ${m.toFixed(1)}</span> · ממוצע ריבועי המרחקים: <span class="ltr">MSE = ${mse(m).toFixed(0)}</span>`;
     }
-    $('ms-go').onclick = () => {
-      clearInterval(timer);
-      timer = setInterval(() => {
-        const el = $('ms-mu'), m = +el.value, next = m + (V.MEAN - m) * .18;
-        el.value = Math.abs(next - V.MEAN) < .3 ? V.MEAN : next; draw();
-        if (Math.abs(+el.value - V.MEAN) < .3) clearInterval(timer);
-      }, 60);
-    };
-    $('ms-mu').oninput = () => { clearInterval(timer); draw(); };
-    $('ms-mean').onchange = draw;
+    V.steps('fq-panel', k => { K = k; draw(); });
+    $('fq-null').oninput = draw;
     draw();
   })();
 </script>
-<div class="demo-note">
-<p>הקווים האדומים הם המרחקים של התצפיות מ-<span class="math inline">\(\mu\)</span> המועמד. ה-<span class="term">MSE</span> (<span class="term">mean squared error</span>) הוא הממוצע של ריבועי המרחקים. הוא הכי קטן בדיוק במקום שבו ה-<span class="term">likelihood</span> הכי גבוה.</p>
-</div>
 </section>
-<section id="השיא-בלי-מפה-1" class="slide level2">
-<h2>השיא בלי מפה</h2>
-<div class="centered-content">
-<div>
-<ul>
-<li class="fragment"><p>את השיא של ה-<span class="term">likelihood</span> לא צריך לחפש. יש לו נוסחה:</p>
-<div class="ltr">
-<p><span class="math display">\[\hat\mu = \bar y = \frac{1}{n}\sum_{i=1}^{n} y_i = 138.9\]</span></p>
-</div></li>
-<li class="fragment"><p>זה גם הערך שבו ה-<span class="term">MSE</span> הכי קטן: הריבועים הפחותים של גאוס.</p></li>
-<li class="fragment"><p>גם ל-<span class="math inline">\(\sigma\)</span> יש נוסחה. השיא במפה הוא השורש של ה-<span class="term">MSE</span> סביב הממוצע:</p>
-<div class="ltr">
-<p><span class="math display">\[\hat\sigma_{\text{MLE}} = \sqrt{\frac{1}{n}\sum_{i=1}^{n} (y_i - \bar y)^2} = 32.2\]</span></p>
-</div></li>
-</ul>
-</div>
-</div>
-</section>
-<section id="סטיית-התקן-ו-n1" class="slide level2">
-<h2>סטיית התקן ו-n−1</h2>
-<div class="centered-content">
-<div>
-<ul>
-<li class="fragment"><p>את <span class="math inline">\(\sigma\)</span> היינו רוצים למדוד כמרחק מ-<span class="math inline">\(\mu\)</span>, <strong>הערך האמיתי</strong>. אבל אותו אנחנו לא יודעים, ולכן מודדים מרחקים מהממוצע <span class="math inline">\(\bar y\)</span>.</p></li>
-<li class="fragment"><p>הממוצע הוא, מעצם הגדרתו, הנקודה <strong>הקרובה ביותר</strong> לתצפיות. לכן המרחקים ממנו תמיד קצת קטנים מהמרחקים מ-<span class="math inline">\(\mu\)</span>.</p></li>
-<li class="fragment"><p><strong>דוגמה:</strong> שתי תצפיות, 4 ו-6. הממוצע 5, וסכום ריבועי המרחקים ממנו <span class="math inline">\(1 + 1 = 2\)</span>. אם <span class="math inline">\(\mu\)</span> האמיתי הוא 4.5, הסכום ממנו <span class="math inline">\(0.25 + 2.25 = 2.5\)</span>.</p></li>
-<li class="fragment"><p><strong>התיקון:</strong> מחלקים ב-<span class="math inline">\(n-1\)</span> במקום ב-<span class="math inline">\(n\)</span>. עם תצפית אחת, <span class="math inline">\(n - 1 = 0\)</span>: מתצפית אחת אי אפשר ללמוד כלום על הפיזור.</p>
-<div class="ltr">
-<p><span class="math display">\[s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n} (y_i - \bar y)^2} = 33.1\]</span></p>
-</div></li>
-</ul>
-</div>
-</div>
-</section>
-<section id="סטיית-התקן-ו-n1-1" class="slide level2 example-slide">
-<h2>סטיית התקן ו-n−1</h2>
-<div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center;">
-    <label>נבדקים בכל מחקר (n): <select id="bi-n"><option>2</option><option selected="">3</option><option>5</option><option>10</option><option>30</option></select></label>
-    <button class="demo-btn" data-r="1">מחקר אחד</button>
-    <button class="demo-btn" data-r="100">100 מחקרים</button>
-    <button class="demo-btn" data-r="10000">10,000 מחקרים</button>
-    <button id="bi-reset" class="demo-btn ghost">איפוס</button>
-  </div>
-  <svg id="bi-svg" viewbox="0 0 1000 320" style="width:100%; height:auto; display:block;" aria-label="המחקר האחרון, והממוצע של שני אומדני השונות על פני מחקרים"></svg>
-  <div class="demo-readout" id="bi-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('bi-svg');
-    if (!svg) return;
-    const $ = id => document.getElementById(id);
-    // אוכלוסייה מדומה: μ = 140, σ = 30, ולכן σ² = 900
-    const MU = 140, SD = 30, V2 = SD * SD;
-    const yb = 290, yt = 16, Y = v => yb - (v - 40) / 200 * (yb - yt), dx0 = 100, dx1 = 400;
-    const randn = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
-    let R = 0, sumN = 0, sumN1 = 0, last = null;
-    function draw() {
-      const n = +$('bi-n').value;
-      let s = '';
-      [60, 100, 140, 180, 220].forEach(v => { s += `<line x1="${dx0 - 14}" y1="${Y(v)}" x2="${dx1}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${dx0 - 22}" y="${Y(v) + 5}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
-      s += `<line x1="${dx0 - 14}" y1="${yt}" x2="${dx0 - 14}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
-            <line x1="${dx0 - 14}" y1="${Y(MU)}" x2="${dx1}" y2="${Y(MU)}" stroke="var(--hidden)" stroke-width="3"/>
-            <text x="${dx1 + 8}" y="${Y(MU) + 5}" text-anchor="start" font-size="15" font-weight="700" fill="var(--hidden)">μ</text>
-            <text x="${(dx0 + dx1) / 2}" y="${yb + 24}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)">המחקר האחרון</text>`;
-      if (last) {
-        const m = last.reduce((a, b) => a + b, 0) / n;
-        s += `<line x1="${dx0 - 14}" y1="${Y(m)}" x2="${dx1}" y2="${Y(m)}" stroke="var(--seen)" stroke-width="2.5" stroke-dasharray="6 5"/>
-              <text x="${dx1 + 8}" y="${Y(m) + 5 + (Math.abs(Y(m) - Y(MU)) < 20 ? (Y(m) > Y(MU) ? 14 : -14) : 0)}" text-anchor="end" direction="rtl" font-size="15" fill="var(--seen)">הממוצע</text>`;
-        last.forEach((y, i) => {
-          const x = dx0 + 20 + i * (dx1 - dx0 - 40) / Math.max(1, n - 1);
-          s += `<line x1="${x - 4}" y1="${Y(y)}" x2="${x - 4}" y2="${Y(MU)}" stroke="var(--hidden)" stroke-width="2.5" opacity=".6"/>
-                <line x1="${x + 4}" y1="${Y(y)}" x2="${x + 4}" y2="${Y(m)}" stroke="var(--seen)" stroke-width="2.5" opacity=".8"/>
-                <circle cx="${x}" cy="${Y(y)}" r="${n > 10 ? 4 : 7}" fill="var(--seen)"/>`;
-        });
-      }
-      // שני האומדנים, בממוצע על כל המחקרים
-      const bx0 = 560, bx1 = 960, by = 270, bh = 230, top = 1200, BY = v => by - v / top * bh;
-      const bars = [['חלוקה ב-n', R ? sumN / R : 0, 'var(--curve)'], ['חלוקה ב-n−1', R ? sumN1 / R : 0, 'var(--seen)']];
-      bars.forEach(([lab, v, c], i) => {
-        const x = bx0 + 60 + i * 180;
-        if (R) s += `<rect x="${x}" y="${BY(v)}" width="120" height="${by - BY(v)}" fill="${c}" opacity=".75"/>
-                     <text x="${x + 60}" y="${BY(v) - 8}" text-anchor="middle" font-size="17" font-weight="700" fill="${c}">${v.toFixed(0)}</text>`;
-        s += `<text x="${x + 60}" y="${by + 24}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink)">${lab}</text>`;
-      });
-      s += `<line x1="${bx0}" y1="${by}" x2="${bx1}" y2="${by}" stroke="var(--ink)" stroke-width="2"/>
-            <line x1="${bx0}" y1="${BY(V2)}" x2="${bx1}" y2="${BY(V2)}" stroke="var(--hidden)" stroke-width="3" stroke-dasharray="8 6"/>
-            <text x="${bx1}" y="${BY(V2) - 8}" text-anchor="end" direction="ltr" font-size="16" font-weight="700" fill="var(--hidden)">σ² = ${V2}</text>
-            <text x="${(bx0 + bx1) / 2}" y="${yt + 4}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)">הממוצע של אומדן השונות, על פני כל המחקרים</text>`;
-      svg.innerHTML = s;
-      $('bi-out').innerHTML = R ? `מחקרים: <span class="ltr">${R.toLocaleString('en')}</span>` : 'כל מחקר: n נבדקים מאוכלוסייה שבה μ = 140 ו-σ = 30';
-    }
-    function run(r) {
-      const n = +$('bi-n').value;
-      for (let j = 0; j < r; j++) {
-        const y = Array.from({ length: n }, () => MU + SD * randn()), m = y.reduce((a, b) => a + b, 0) / n, ss = y.reduce((a, v) => a + (v - m) ** 2, 0);
-        sumN += ss / n; sumN1 += ss / (n - 1); R++; last = y;
-      }
-      draw();
-    }
-    function reset() { R = 0; sumN = 0; sumN1 = 0; last = null; draw(); }
-    svg.closest('.demo-panel').querySelectorAll('[data-r]').forEach(b => b.onclick = () => run(+b.dataset.r));
-    $('bi-reset').onclick = reset; $('bi-n').onchange = reset;
-    reset();
-  })();
-</script>
-<div class="demo-note">
-<p>משמאל: המרחקים של כל נבדק מ-<span class="math inline">\(\mu\)</span> האמיתי (סגול) ומהממוצע של המחקר (כחול). הכחולים קצרים יותר. מימין: על פני הרבה מחקרים, חלוקה ב-<span class="math inline">\(n\)</span> נותנת שונות קטנה מדי, וחלוקה ב-<span class="math inline">\(n-1\)</span> פוגעת בדיוק. נסו <span class="math inline">\(n=2\)</span>, ואז <span class="math inline">\(n=30\)</span>.</p>
-</div>
-</section>
-<section id="התפלגות-הדגימה-של-הממוצע" class="slide level2">
-<h2>התפלגות הדגימה של הממוצע</h2>
-<div class="centered-content">
-<div>
-<ul>
-<li class="fragment"><p>כמו בשבוע שעבר: אילו חזרנו על המחקר שוב ושוב, כל פעם עם 20 נבדקים, הממוצע היה משתנה. הרוחב של ההתפלגות הזו הוא ה-<span class="term">standard error</span>:</p>
-<div class="ltr">
-<p><span class="math display">\[SE = \frac{s}{\sqrt{n}} = \frac{33.1}{\sqrt{20}} = 7.39\]</span></p>
-</div></li>
-<li class="fragment"><p>כאן <span class="math inline">\(s\)</span> הוא אומדן, ולא <span class="math inline">\(\sigma\)</span> האמיתי. לכן משתמשים בהתפלגות <span class="math inline">\(t\)</span> של גוסט, עם <span class="math inline">\(n - 1 = 19\)</span> דרגות חופש.</p></li>
-<li class="fragment"><p><strong>ההשערה ברת-ההפרכה</strong> (<span class="term">null hypothesis</span>): הזמן נתפס נכון, <span class="math inline">\(\mu = 120\)</span>. כמה רחוק הממוצע שלנו ממנה, ביחידות SE:</p>
-<div class="ltr">
-<p><span class="math display">\[t = \frac{\bar y - 120}{SE} = \frac{138.9 - 120}{7.39} = 2.55\]</span></p>
-</div></li>
-</ul>
-</div>
-</div>
-</section>
-<section id="רווח-סמך-וערך-p" class="slide level2 example-slide">
-<h2>רווח סמך וערך p</h2>
-<div class="demo-panel" id="tp-panel"><svg id="tp-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="התפלגות t עם 19 דרגות חופש, הערך שנצפה והזנבות"></svg></div>
-<div class="rep-step">
-  <div class="r-stack rep-text">
-    <p class="fragment fade-in-then-out"><b>אם μ = 120,</b> ערכי t ממחקרים חוזרים היו מתפזרים כך: התפלגות t עם 19 דרגות חופש.</p>
-    <p class="fragment fade-in-then-out"><b>במחקר שלנו</b> יצא <span class="ltr">t = 2.55</span>.</p>
-    <p class="fragment fade-in-then-out"><b>ערך p:</b> הסיכוי לקבל t רחוק מ-0 לפחות כמו שלנו, לשני הכיוונים, אם μ = 120: <span class="ltr">p = .020</span>. קטן מ-.05, ולכן דוחים את ההשערה ברת-ההפרכה.</p>
-    <p class="fragment fade-in"><b>רווח סמך 95%:</b> <span class="ltr">138.9 ± 2.09 × 7.39</span>, כלומר <span class="ltr">[123.4, 154.3]</span>. המספר 2.09 הוא הערך של t שתוחם 95% מהשטח (בפעמון היה 1.96). 120 מחוץ לרווח, בהתאם ל-p.</p>
-  </div>
-</div>
-<script>
-  (function () {
-    const V = window.W4V3, svg = document.getElementById('tp-svg');
-    if (!V || !svg) return;
-    // צפיפות t עם 19 דרגות חופש (בלי הקבוע, כי מציירים לפי הגובה היחסי)
-    const DF = 19, T = 2.55, Q = 2.093, x0 = 60, x1 = 960, yb = 250, yt = 20, lo = -4.2, hi = 4.2;
-    const f = t => Math.pow(1 + t * t / DF, -(DF + 1) / 2), X = t => x0 + (t - lo) / (hi - lo) * (x1 - x0), Y = v => yb - v * (yb - yt);
-    const path = (a, b) => { let d = ''; for (let i = 0; i <= 200; i++) { const t = a + i / 200 * (b - a); d += (i ? 'L' : 'M') + X(t).toFixed(1) + ',' + Y(f(t)).toFixed(1); } return d; };
-    V.steps('tp-panel', k => {
-      let s = `<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      for (let t = -4; t <= 4; t++) s += `<text x="${X(t)}" y="${yb + 22}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--ink-soft)">${t}</text>`;
-      s += `<text x="${x1}" y="${yb + 44}" text-anchor="end" font-size="16" font-style="italic" fill="var(--ink-soft)">t</text>`;
-      if (k >= 3) s += `<path d="${path(T, hi)}L${X(hi)},${yb}L${X(T)},${yb}Z" fill="var(--curve)" opacity=".45"/>
-                         <path d="${path(lo, -T)}L${X(-T)},${yb}L${X(lo)},${yb}Z" fill="var(--curve)" opacity=".45"/>`;
-      if (k >= 4) s += `<path d="${path(-Q, Q)}L${X(Q)},${yb}L${X(-Q)},${yb}Z" fill="var(--seen)" opacity=".18"/>
-                         <text x="${X(0)}" y="${Y(.35)}" text-anchor="middle" font-size="24" font-weight="700" fill="var(--seen)">95%</text>`;
-      s += `<path d="${path(lo, hi)}" fill="none" stroke="var(--ink)" stroke-width="3.5"/>`;
-      if (k >= 2) s += `<line x1="${X(T)}" y1="${yb}" x2="${X(T)}" y2="${yt + 30}" stroke="var(--curve)" stroke-width="4"/>
-                         <text x="${X(T)}" y="${yt + 20}" text-anchor="middle" direction="ltr" font-size="18" font-weight="700" fill="var(--curve)">t = 2.55</text>`;
-      if (k >= 3) s += `<text x="${X(3.4)}" y="${Y(.12)}" text-anchor="middle" direction="ltr" font-size="17" font-weight="700" fill="var(--curve)">1%</text>
-                         <text x="${X(-3.4)}" y="${Y(.12)}" text-anchor="middle" direction="ltr" font-size="17" font-weight="700" fill="var(--curve)">1%</text>`;
-      svg.innerHTML = s;
-    });
-  })();
-</script>
-</section>
-<section id="גודל-אפקט-ו-σ" class="slide level2">
-<h2>גודל אפקט ו-σ</h2>
-<div class="centered-content">
-<div>
-<ul>
-<li class="fragment"><p><strong>גודל האפקט</strong> (<span class="term">Cohen’s d</span>): כמה רחוק הממוצע מ-120, ביחידות של סטיית תקן:</p>
-<div class="ltr">
-<p><span class="math display">\[d = \frac{\bar y - 120}{s} = \frac{138.9 - 120}{33.1} = 0.57\]</span></p>
-</div></li>
-<li class="fragment"><p>ערך p תלוי בגודל המדגם, וגודל האפקט לא. עם 2,000 נבדקים, גם <span class="math inline">\(d = 0.05\)</span> ייתן p קטן.</p></li>
-<li class="fragment"><p>גם ל-<span class="math inline">\(\sigma\)</span> יש רווח סמך, מהתפלגות אחרת (<span class="math inline">\(\chi^2\)</span>): ‏<span class="math inline">\([25.1,\ 48.3]\)</span> שניות. בפסיכולוגיה כמעט לא מדווחים עליו.</p></li>
-</ul>
-</div>
-</div>
-</section>
-<section id="דיווח-frequentist" class="slide level2">
+<section id="דיווח-frequentist" class="slide level2 example-slide">
 <h2>דיווח Frequentist</h2>
-<div class="centered-content">
-<div class="soft-card ltr" style="text-align:left; font-family:'Frank Ruhl Libre', serif; font-size:.68em; line-height:1.55;">
-  <p style="margin:0">“Twenty participants watched a 120-second suspense clip and estimated its duration. Estimates ranged from 66 to 183 s. The mean estimate (M = 138.9 s, SD = 33.1) was significantly longer than the true duration, t(19) = 2.55, p = .020, d = 0.57, 95% CI [123.4, 154.3].”</p>
+<h3 class="paper-kicker">כך זה נראה במאמר</h3>
+<div class="paper freq" id="rf">
+  <div class="paper-head"><span>ESTIMATING ELAPSED TIME WITH EYES CLOSED</span><span>4</span></div>
+  <svg id="rf-fig" viewbox="0 0 1000 236" style="width:100%; height:auto; display:block;" aria-label="Figure 1: the individual estimates, their mean and 95% CI"></svg>
+  <p class="paper-cap"><b>Figure 1.</b> Individual time estimates (N = 10). Horizontal line and error bar: mean and 95% CI; dashed line: null value (100 s).</p>
+  <p class="paper-h">Results</p>
+  <div class="paper-text">
+    <p><span class="rp-s" data-k="2">Ten participants sat silently with their eyes closed and estimated how many seconds had passed. Estimates ranged from <span class="rf-min"></span> to <span class="rf-max"></span> s (Figure 1)</span>. <span class="rp-s" data-k="3">The mean estimate was <i>M</i> = <span class="rf-m"></span> s (<i>SD</i> = <span class="rf-sd"></span>)</span>, <span class="rp-s" data-k="4">and did not differ significantly from 100 s, <span class="nw"><i>t</i>(9) = <span class="rf-t"></span>, <i>p</i> <span class="rf-p"></span></span></span>, <span class="rp-s" data-k="5"><i>d</i> = <span class="rf-d"></span></span>, <span class="rp-s" data-k="6">95% CI <span class="nw">[<span class="rf-a"></span>, <span class="rf-b"></span>]</span></span>.</p>
+    <div class="rp-arrow" id="rf-arrow">▲</div>
+  </div>
 </div>
-<div style="margin-top:.5em;">
-<ul>
-<li class="fragment">כל המספרים כאן מגיעים משני מספרים: הממוצע ו-<span class="math inline">\(s\)</span>. השאר הן נוסחאות.</li>
-<li class="fragment">רווח הסמך <strong>אינו</strong> “95% סיכוי ש-<span class="math inline">\(\mu\)</span> בין 123.4 ל-154.3”. ה-95% שייך לשיטה: אילו חזרנו על המחקר שוב ושוב, כ-95% מהרווחים היו מכילים את <span class="math inline">\(\mu\)</span>.</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="אותם-נתונים-שני-דיווחים" class="slide level2 stacked-cards">
-<h2>אותם נתונים, שני דיווחים</h2>
-<div class="centered-content">
-<div class="compare-card bayes fragment">
-<h3>
-Bayesian
-</h3>
-<p>החציון של ה-<span class="term">posterior</span>: 139 שניות · 90% CI ‏<span class="math inline">\([125.5,\ 152.0]\)</span> · ‏pd = 98.8% · ‏<span class="math inline">\(d = 0.55\)</span></p>
-</div>
-<div class="compare-card freq fragment">
-<h3>
-Frequentist
-</h3>
-<p>‏<span class="math inline">\(M = 138.9\)</span> שניות · 95% CI ‏<span class="math inline">\([123.4,\ 154.3]\)</span> · ‏<span class="math inline">\(t(19) = 2.55\)</span>, ‏<span class="math inline">\(p = .020\)</span> · ‏<span class="math inline">\(d = 0.57\)</span></p>
-</div>
-<div class="fragment" style="text-align:center; margin-top:.6em; font-size:.85em;">
-<p>המספרים כמעט זהים. ההבדל הוא במה שמותר להגיד עליהם.</p>
-</div>
-</div>
-</section>
-<section id="נקודות-ודגשים" class="slide level2">
-<h2>נקודות ודגשים</h2>
-<div class="centered-content">
-<div>
-<ul>
-<li class="fragment"><strong>הממוצע הוא נקודת המפגש.</strong> עם <span class="term">prior</span> אחיד, השיא של ה-<span class="term">posterior</span>, ה-MLE והריבועים הפחותים הם אותו מספר. ההבדל בין הגישות הוא איך מתארים את אי-הוודאות סביבו.</li>
-<li class="fragment"><strong>לרוב ההבדלים בין הגישות קטנים</strong>, במיוחד כשיש הרבה נתונים. אבל לא תמיד: במדגם קטן, או כשהפרמטר קרוב לגבול.</li>
-<li class="fragment"><strong>אין שום משמעות סטטיסטית מיוחדת ל-5%.</strong> זו מוסכמה חברתית.</li>
-<li class="fragment"><strong>הגישה ה-Frequentist זמינה יותר</strong>, כי היא נוסחאות. הגישה ה-Bayesian נותנת את התשובה לשאלה שבאמת שאלנו.</li>
-</ul>
-</div>
-</div>
+<div class="rp-note freq" id="rf-note"></div>
+<script>
+  (function () {
+    const root = document.getElementById('rf'), V = window.W5V3;
+    if (!root || !V) return;
+    const $ = id => document.getElementById(id), set = (c, t) => root.querySelectorAll('.' + c).forEach(e => e.textContent = t);
+    const NULL = 100, DF = V.n - 1, TC = V.tq(.975, DF), M = V.MEAN, t = (M - NULL) / V.SE, p = 2 * (1 - V.tcdf(Math.abs(t), DF));
+    const a = M - TC * V.SE, b = M + TC * V.SE, d = (M - NULL) / V.S;
+    set('rf-min', Math.min(...V.YS)); set('rf-max', Math.max(...V.YS)); set('rf-m', M.toFixed(1)); set('rf-sd', V.S.toFixed(1));
+    set('rf-t', t.toFixed(2)); set('rf-p', p > .999 ? '> .999' : p < .001 ? '< .001' : '= ' + p.toFixed(3).replace(/^0/, ''));
+    set('rf-d', d.toFixed(2)); set('rf-a', a.toFixed(1)); set('rf-b', b.toFixed(1));
+    const notes = ['', 'האיור: רק הנתונים והאומדנים. אין כאן posterior.', 'הנתונים: כמה נבדקים, מה הם עשו, ובאיזה טווח היו ההערכות.',
+      'point estimation: הממוצע (ה-MLE), וסטיית התקן של המדגם.', 'מבחן מול ההשערה ברת-ההפרכה: t, דרגות החופש וערך p.',
+      'גודל האפקט: המרחק של הממוצע מ-100, ביחידות של סטיית תקן.', 'רווח בר-סמך: טווח שבנוי כך שב-95% מהמחקרים הוא מכיל את μ.'];
+    const yt = 22, yb = 196, Y = v => yb - (v - 40) / 120 * (yb - yt), px0 = 360, px1 = 640, ciX = 700, sdX = 740;
+    const F = `font-family="Arial, Helvetica, sans-serif"`;
+    function fig(k) {
+      const act = { 2: 'data', 3: 'mean', 4: 'test', 5: 'd', 6: 'ci' }[k], o = g => act && act !== g ? .25 : 1, hot = g => act === g;
+      let s = `<g ${F}>`;
+      // הערך בר-ההפרכה
+      s += `<line x1="${px0 - 10}" y1="${Y(NULL)}" x2="${sdX + 30}" y2="${Y(NULL)}" stroke="var(--ink)" stroke-width="${hot('test') ? 3 : 1.5}" stroke-dasharray="6 4" opacity="${act === 'test' || act === 'd' || !act ? 1 : .25}"/>`;
+      // הנתונים
+      V.YS.forEach((y, i) => { s += `<circle cx="${px0 + 16 + i * (px1 - px0 - 32) / 9}" cy="${Y(y)}" r="${hot('data') ? 7 : 5}" fill="var(--seen)" opacity="${o('data')}"/>`; });
+      // הממוצע
+      const mo = act === 'mean' || act === 'test' || act === 'd' || !act ? 1 : .25;
+      s += `<line x1="${px0}" y1="${Y(M)}" x2="${px1}" y2="${Y(M)}" stroke="${hot('mean') ? 'var(--seen)' : 'var(--ink)'}" stroke-width="${hot('mean') ? 4 : 2}" opacity="${mo}"/>`;
+      // סטיית התקן (לגודל האפקט)
+      if (hot('d')) s += `<line x1="${sdX}" y1="${Y(M - V.S)}" x2="${sdX}" y2="${Y(M + V.S)}" stroke="var(--seen)" stroke-width="3"/>
+        <line x1="${sdX - 7}" y1="${Y(M - V.S)}" x2="${sdX + 7}" y2="${Y(M - V.S)}" stroke="var(--seen)" stroke-width="3"/>
+        <line x1="${sdX - 7}" y1="${Y(M + V.S)}" x2="${sdX + 7}" y2="${Y(M + V.S)}" stroke="var(--seen)" stroke-width="3"/>
+        <text x="${sdX + 14}" y="${Y(M + V.S) + 5}" font-size="15" fill="var(--seen)">± SD</text>`;
+      // רווח בר-הסמך
+      s += `<g opacity="${o('ci')}" stroke="${hot('ci') ? 'var(--seen)' : 'var(--ink)'}" stroke-width="${hot('ci') ? 3.5 : 2}">
+        <line x1="${ciX}" y1="${Y(a)}" x2="${ciX}" y2="${Y(b)}"/><line x1="${ciX - 8}" y1="${Y(a)}" x2="${ciX + 8}" y2="${Y(a)}"/><line x1="${ciX - 8}" y1="${Y(b)}" x2="${ciX + 8}" y2="${Y(b)}"/></g>
+        <circle cx="${ciX}" cy="${Y(M)}" r="5" fill="${hot('ci') ? 'var(--seen)' : 'var(--ink)'}" opacity="${o('ci')}"/>`;
+      s += `<line x1="${px0 - 10}" y1="${yt - 6}" x2="${px0 - 10}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>
+        <line x1="${px0 - 10}" y1="${yb}" x2="${sdX + 30}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>`;
+      [40, 80, 120, 160].forEach(v => { s += `<line x1="${px0 - 15}" y1="${Y(v)}" x2="${px0 - 10}" y2="${Y(v)}" stroke="var(--ink)" stroke-width="1.3"/>
+        <text x="${px0 - 19}" y="${Y(v) + 5}" text-anchor="end" direction="ltr" font-size="14" fill="var(--ink)">${v}</text>`; });
+      s += `<text x="${px0 - 58}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="15" fill="var(--ink)" transform="rotate(-90 ${px0 - 58} ${(yt + yb) / 2})">Time estimate (s)</text>
+        <text x="${(px0 + px1) / 2}" y="${yb + 24}" text-anchor="middle" font-size="15" fill="var(--ink)">Participants</text></g>`;
+      $('rf-fig').innerHTML = s;
+    }
+    function sync() {
+      const sec = root.closest('section'), k = sec ? sec.querySelectorAll('.fragment.visible').length : 0;
+      fig(k);
+      let on = null;
+      root.querySelectorAll('.rp-s').forEach(sp => { const hit = +sp.dataset.k === k; sp.classList.toggle('on', hit); if (hit) on = sp; });
+      const ar = $('rf-arrow');
+      if (on) {
+        const r = on.getClientRects(), last = r[r.length - 1], box = on.parentNode.parentNode.getBoundingClientRect(), sc = box.width / on.parentNode.parentNode.offsetWidth;
+        ar.style.left = ((last.left + last.right) / 2 - box.left) / sc + 'px';
+        ar.style.top = (last.bottom - box.top) / sc - 1 + 'px';
+        ar.style.display = 'block';
+      } else ar.style.display = 'none';
+      $('rf-note').textContent = notes[k] || '';
+    }
+    const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready', 'resize'].forEach(e => Reveal.on(e, sync)); sync(); };
+    if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
+  })();
+</script>
+<p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
 </section>
 <section id="סיכום" class="slide level2 summary-slide">
 <h2>סיכום</h2>
 <div>
 <ul>
-<li class="fragment"><strong>המודל הריק:</strong> <span class="math inline">\(y_i \sim \text{Normal}(\mu, \sigma)\)</span>. שני פרמטרים חבויים: מרכז ורוחב.</li>
-<li class="fragment"><strong>Bayesian:</strong> <span class="term">posterior</span> ∝ <span class="term">likelihood</span> × <span class="term">prior</span> על כל הזוגות <span class="math inline">\((\mu, \sigma)\)</span>. סוכמים לאורך <span class="math inline">\(\sigma\)</span> ומקבלים את <span class="math inline">\(\mu\)</span> לבדו (<span class="term">marginalization</span>). מדווחים: חציון, CI, pd, וגודל אפקט.</li>
-<li class="fragment"><strong>Frequentist:</strong> <span class="math inline">\(\hat\mu = \bar y\)</span>, השיא של ה-<span class="term">likelihood</span> וה-MSE הקטן ביותר. לסטיית התקן מחלקים ב-<span class="math inline">\(n-1\)</span>, כי המרחקים מהממוצע קטנים מהמרחקים מ-<span class="math inline">\(\mu\)</span>.</li>
-<li class="fragment"><strong>ודאות Frequentist:</strong> <span class="math inline">\(SE = s/\sqrt{n}\)</span>, התפלגות <span class="math inline">\(t\)</span>, ערך p מול ההשערה ברת-ההפרכה, ורווח סמך.</li>
-<li class="fragment"><strong>גודל אפקט:</strong> <span class="math inline">\(d\)</span> = המרחק מערך הייחוס, ביחידות של סטיית תקן.</li>
+<li class="fragment"><strong>זמן פסיכולוגי:</strong> קשב, עוררות רגשית ושחיקה של נוירונים במוח מטים את הערכת הזמן.</li>
+<li class="fragment"><strong>המודל המייצר:</strong> <span class="math inline">\(y_i \sim \text{Normal}(\mu, \sigma)\)</span>. <span class="math inline">\(\mu\)</span> היא ההערכה הממוצעת, ו-<span class="math inline">\(\sigma\)</span> הפיזור בין אנשים.</li>
+<li class="fragment"><strong>likelihood:</strong> הצפיפות של כל תצפית, כפול הצפיפויות של כל השאר. השיא נמצא בממוצע.</li>
+<li class="fragment"><strong>Bayesian:</strong> <span class="term">posterior</span> ∝ <span class="term">prior</span> × <span class="term">likelihood</span>. מדווחים: חציון, רווח אמינות ו-pd.</li>
+<li class="fragment"><strong>Frequentist:</strong> ה-MLE הוא הממוצע. התפלגות הדגימה סביב הערך בר-ההפרכה נותנת אזור קבלה וערך p, ורווח בר-סמך נבנה סביב הממוצע.</li>
 </ul>
 </div>
 <div class="footer footer-default">

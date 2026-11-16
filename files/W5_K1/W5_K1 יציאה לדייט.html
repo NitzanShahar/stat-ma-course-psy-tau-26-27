@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="ניסוי יציאה לדייטים כיתתי – קורס סטטיסטיקה ושיטות מחקר, בית הספר לפסיכולוגיה, אוניברסיטת תל אביב">
+<title>יציאה לדייט</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* Unit A (blue) as the only accent; ink for text */
+:root {
+  --bg: #fcfcfa; --ink: #1b2028; --ink-soft: #5a6472; --ink-faint: #c9ced5;
+  --unit: #185fa5; --unit-line: #9fbbd9; --unit-bg: #eaf1f9; --btn-text: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15181d; --ink: #e9ecf0; --ink-soft: #9aa3ae; --ink-faint: #3a414b;
+    --unit: #7fb0e3; --unit-line: #3d5f82; --unit-bg: #1d2a38; --btn-text: #0f1722;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15181d; --ink: #e9ecf0; --ink-soft: #9aa3ae; --ink-faint: #3a414b;
+  --unit: #7fb0e3; --unit-line: #3d5f82; --unit-bg: #1d2a38; --btn-text: #0f1722;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Assistant", "Arial Hebrew", Arial, sans-serif;
+  padding-inline: max(16px, env(safe-area-inset-left, 0px));
+}
+main {
+  min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 26px; padding-block: 32px; text-align: center;
+}
+h1 { margin: 0; font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; }
+.title-rule { width: 90px; height: 4px; border-radius: 2px; background: var(--unit); margin: -12px 0 0; }
+
+.icon { width: 200px; max-width: 60vw; height: auto; display: block; }
+.icon g { stroke: var(--ink-soft); }
+.icon .heart { stroke: var(--unit); transform-box: fill-box; transform-origin: center; }
+.waiting .icon .heart { animation: beat .7s ease-in-out infinite; fill: var(--unit-bg); }
+@keyframes beat { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.25); } }
+@media (prefers-reduced-motion: reduce) { .waiting .icon .heart { animation: none; } }
+
+button {
+  font: inherit; font-size: 2rem; font-weight: 700;
+  background: var(--unit); color: var(--btn-text); border: 0; border-radius: 18px;
+  padding: 20px 56px; min-width: min(320px, 100%); cursor: pointer;
+}
+button:hover { filter: brightness(1.08); }
+button:focus-visible { outline: 3px solid var(--unit-line); outline-offset: 3px; }
+button:disabled { opacity: .55; cursor: default; filter: none; }
+button[hidden] { display: none; }
+
+.result { min-height: 3.2rem; margin: 0; font-size: clamp(1.8rem, 6.5vw, 2.6rem); font-weight: 700; }
+.result.good { color: var(--unit); }
+.result.wait { color: var(--ink-soft); font-weight: 600; }
+.said { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.where { min-height: 1.5em; margin: 0; color: var(--ink-soft); font-size: clamp(1.05rem, 3.8vw, 1.25rem); }
+
+/* progress: one circle per date */
+.progress { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 8px; }
+.dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.dots li {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2px dashed var(--ink-faint); background: transparent;
+}
+.dots li.good { border: 2px solid var(--unit); background: var(--unit); }
+.dots li.bad  { border: 2px solid var(--ink-soft); background: transparent; }
+.dots li.now  { border-style: solid; border-color: var(--unit-line); }
+.count { margin: 0; color: var(--ink-soft); font-size: 1.05rem; }
+.summary { margin: 0; font-size: clamp(1.3rem, 4.5vw, 1.6rem); font-weight: 700; }
+.summary[hidden], .report[hidden] { display: none; }
+.report {
+  display: inline-block; margin-top: 6px; padding: 14px 40px; border-radius: 14px;
+  background: var(--unit); color: var(--btn-text); font-size: 1.4rem; font-weight: 700; text-decoration: none;
+}
+.report:focus-visible { outline: 3px solid var(--unit-line); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main id="main">
+  <h1>יציאה לדייט</h1>
+  <div class="title-rule" aria-hidden="true"></div>
+
+  <svg class="icon" viewBox="0 0 200 160" aria-hidden="true">
+    <g fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="58" cy="70" r="18"/>
+      <path d="M26 140 C 26 104 90 104 90 140"/>
+      <circle cx="142" cy="70" r="18"/>
+      <path d="M110 140 C 110 104 174 104 174 140"/>
+    </g>
+    <path class="heart" d="M100 50 C 82 38 84 16 100 26 C 116 16 118 38 100 50 Z"
+          fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <button id="go" type="button">יציאה לדייט</button>
+  <div class="said" aria-live="polite">
+    <p class="result" id="result">&nbsp;</p>
+    <p class="where" id="where">&nbsp;</p>
+  </div>
+
+  <div class="progress">
+    <ol class="dots" id="dots" aria-hidden="true"></ol>
+    <p class="count" id="count">דייט 1 מתוך 11</p>
+    <p class="summary" id="summary" hidden></p>
+    <a class="report" id="report" href="https://forms.gle/wNrT2xbH3Ndp2W4A6" target="_blank" rel="noopener" hidden>לדיווח בסקר</a>
+  </div>
+</main>
+
+<script>
+const N = 11;
+const WAIT_MS = 2000;
+const main = document.getElementById('main');
+const btn = document.getElementById('go');
+const result = document.getElementById('result');
+const dotsEl = document.getElementById('dots');
+const countEl = document.getElementById('count');
+const summary = document.getElementById('summary');
+
+const whereEl = document.getElementById('where');
+const PLACES = [
+  'יצאנו ללבונטין ושמענו הופעה',
+  'הלכנו לים בגורדון ואכלנו ארטיק',
+  'טיילנו בפארק הירקון ושכרנו אופניים',
+  'ישבנו בבית קפה בפלורנטין ושיחקנו שש-בש',
+  'ראינו סרט בסינמטק',
+  'אכלנו חומוס ביפו והסתובבנו בשוק הפשפשים',
+  'הלכנו לערב סטנדאפ וצחקנו עד דמעות',
+  'עשינו פיקניק בגן מאיר',
+  'שמענו ג׳אז במועדון קטן',
+  'טיילנו בנמל תל אביב בשקיעה',
+  'בישלנו ארוחה יחד, והכול נשרף קצת',
+  'הלכנו לחדר בריחה ויצאנו בדקה האחרונה',
+  'שיחקנו באולינג',
+  'ביקרנו במוזיאון תל אביב לאמנות',
+  'הלכנו לערב טריוויה בפאב',
+  'אכלנו גלידה בשדרות רוטשילד',
+  'עלינו לגג ושתינו תה מול השקיעה',
+  'ראינו הצגה בהבימה',
+  'הלכנו לערב סלסה ולמדנו כמה צעדים',
+  'טיילנו בעין כרם ואכלנו מאפים',
+  'עשינו סדנת קרמיקה, וכל אחד יצר ספל',
+  'הסתובבנו בשוק הכרמל וקנינו פירות',
+  'ראינו כדורגל בבר ואהדנו קבוצות יריבות',
+  'רכבנו על קורקינטים לאורך הטיילת',
+  'הלכנו לקריוקי ושרנו דואט',
+  'ביקרנו בספארי ברמת גן',
+  'שתינו קפה ודיברנו שלוש שעות על סטטיסטיקה',
+  'הלכנו לפסטיבל אוכל רחוב',
+  'שיחקנו משחקי קופסה בבית קפה',
+  'נסענו למצפה רמון וצפינו בכוכבים'
+];
+// a shuffled deck, so the same date does not repeat within the 11
+const order = PLACES.map((_, i) => i);
+for (let i = order.length - 1; i > 0; i--) {
+  const a = new Uint32Array(1); crypto.getRandomValues(a);
+  const j = a[0] % (i + 1); [order[i], order[j]] = [order[j], order[i]];
+}
+
+const dots = [];
+for (let i = 0; i < N; i++) { const li = document.createElement('li'); dotsEl.appendChild(li); dots.push(li); }
+let done = 0, good = 0;
+dots[0].classList.add('now');
+
+function fairBit() {
+  const a = new Uint8Array(1);
+  crypto.getRandomValues(a);
+  return a[0] & 1; // 1 = success, theta = 1/2
+}
+
+btn.addEventListener('click', () => {
+  if (done >= N) return;
+  btn.disabled = true;
+  main.classList.add('waiting');
+  result.className = 'result wait';
+  result.textContent = 'יצאנו לדייט!';
+  whereEl.textContent = PLACES[order[done]];
+
+  setTimeout(() => {
+    const ok = fairBit() === 1;
+    main.classList.remove('waiting');
+    result.className = 'result' + (ok ? ' good' : '');
+    result.textContent = ok ? 'הדייט הצליח' : 'הדייט היה פחות מוצלח';
+
+    dots[done].classList.remove('now');
+    dots[done].classList.add(ok ? 'good' : 'bad');
+    done++; if (ok) good++;
+
+    if (done < N) {
+      dots[done].classList.add('now');
+      countEl.textContent = `דייט ${done + 1} מתוך ${N}`;
+      btn.disabled = false;
+      btn.focus();
+    } else {
+      btn.hidden = true;
+      countEl.textContent = `סיימתם ${N} דייטים`;
+      summary.textContent = `דייטים שהצליחו: ${good} מתוך ${N}`;
+      summary.hidden = false;
+      document.getElementById('report').hidden = false;
+    }
+  }, WAIT_MS);
+});
+</script>
+</body>
+</html>
