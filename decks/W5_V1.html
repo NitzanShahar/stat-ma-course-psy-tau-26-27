@@ -346,7 +346,7 @@
 <section id="קצת-היסטוריה" class="slide level2 part-gate">
 <h2>קצת היסטוריה</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-dots"><span class="now"></span><span class="later"></span></div>
   <div class="gate-title">קצת היסטוריה</div>
   <div class="gate-why">גאוס, כוכב לכת אבוד, ומאיפה בא הפעמון</div>
 </div>
@@ -408,7 +408,7 @@
 <section id="לוח-ההתפלגות-הנורמלית" class="slide level2 part-gate">
 <h2>לוח ההתפלגות הנורמלית</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-dots"><span class="done"></span><span class="now"></span></div>
   <div class="gate-title">לוח ההתפלגות הנורמלית</div>
   <div class="gate-why">מנגנון פשוט שמייצר פעמון</div>
 </div>
@@ -589,16 +589,8 @@
   <img src="W5_V1 לוח גלטון מקרוב.jpeg" alt="לוח ההתפלגות הנורמלית הפיזי לאחר שהכדורים נאספו בתאים" style="max-height:100%; max-width:100%; object-fit:contain;">
 </div>
 </section>
-<section id="צפיפות-הסתברות" class="slide level2 part-gate">
-<h2>צפיפות הסתברות</h2>
-<div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span><span class="later"></span></div>
-  <div class="gate-title">צפיפות הסתברות</div>
-  <div class="gate-why">ממשתנה בדיד למשתנה רציף</div>
-</div>
-</section>
-<section id="צפיפות-הסתברות-1" class="slide level2 example-slide">
-<h2>צפיפות הסתברות</h2>
+<section id="לוח-ההתפלגות-הנורמלית-בקירוב-לאינסוף-ערכים" class="slide level2 example-slide">
+<h2>לוח ההתפלגות הנורמלית בקירוב לאינסוף ערכים</h2>
 <div class="demo-panel">
   <div class="demo-controls" style="justify-content:center;">
     <label>שורות בלוח: <input type="range" id="dn-r" min="1" max="100" step="1" value="4"> <span class="ltr demo-readout" id="dn-rv"></span></label>
@@ -662,10 +654,10 @@
 <p>עוד שורות בלוח, ובכל פעם מקטינים את הצעד כך שהרוחב הכולל נשאר קבוע. התאים נעשים צרים, והסיכוי ליפול בתא אחד שואף לאפס. אבל <strong>הגובה</strong>, הסיכוי לחלק לרוחב התא, מתייצב על עקומה אחת.</p>
 </div>
 </section>
-<section id="פונקציית-צפיפות-הסתברות" class="slide level2">
-<h2>פונקציית צפיפות הסתברות</h2>
+<section id="לוח-ההתפלגות-הנורמלית-בקירוב-לאינסוף-ערכים-1" class="slide level2">
+<h2>לוח ההתפלגות הנורמלית בקירוב לאינסוף ערכים</h2>
 <div class="centered-content">
-<p>את העקומה אפשר לחשב בנוסחה, בלי לוח: <span class="term">probability density function</span>.</p>
+<p>את העקומה אפשר לחשב בנוסחה, בלי לוח: <b>פונקציית צפיפות הסתברות</b> (<span class="term">probability density function</span>).</p>
 <div class="ltr">
 <p><span class="math display">\[p(y \mid \mu, \sigma) = \frac{1}{\sigma\sqrt{2\pi}}\; e^{-\frac{(y-\mu)^2}{2\sigma^2}}\]</span></p>
 </div>
@@ -676,208 +668,6 @@
 <li class="fragment">את הנוסחה לא צריך לזכור. מה שחשוב: <span class="math inline">\((y-\mu)^2\)</span>. ככל ש-<span class="math inline">\(y\)</span> רחוק יותר מ-<span class="math inline">\(\mu\)</span>, הצפיפות יורדת, ומהר.</li>
 </ul>
 </div>
-</div>
-</section>
-<section id="פונקציית-צפיפות-הסתברות-1" class="slide level2 example-slide">
-<h2>פונקציית צפיפות הסתברות</h2>
-<div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center;">
-    <label>μ: <input type="range" id="pd-mu" min="2" max="5" step="0.1" value="3.4"> <span class="ltr demo-readout" id="pd-muv"></span></label>
-    <label>σ: <input type="range" id="pd-sd" min="0.2" max="1.2" step="0.05" value="0.5"> <span class="ltr demo-readout" id="pd-sdv"></span></label>
-    <label>y: <input type="range" id="pd-y" min="1" max="6" step="0.05" value="2.6"> <span class="ltr demo-readout" id="pd-yv"></span></label>
-  </div>
-  <div class="demo-readout" id="pd-out" style="text-align:center; font-size:.58em; line-height:1.45; color:var(--curve); margin:6px 0 10px; min-height:2.9em;"></div>
-  <svg id="pd-svg" viewbox="0 0 1000 300" style="width:100%; height:auto; display:block;" aria-label="פונקציית הצפיפות של משקל לידה"></svg>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('pd-svg');
-    if (!svg) return;
-    const $ = id => document.getElementById(id);
-    const x0 = 70, x1 = 960, yb = 245, yt = 30, lo = 1, hi = 6, top = 2.1, HW = .1;
-    const X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0), Y = d => yb - d / top * (yb - yt);
-    const pdf = (v, m, s) => Math.exp(-.5 * ((v - m) / s) ** 2) / (s * Math.sqrt(2 * Math.PI));
-    const Phi = z => { const t = 1 / (1 + .2316419 * Math.abs(z)), d = .3989423 * Math.exp(-z * z / 2), p = d * t * (.3193815 + t * (-.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; };
-    function draw() {
-      const m = +$('pd-mu').value, sd = +$('pd-sd').value, y = +$('pd-y').value;
-      $('pd-muv').textContent = m.toFixed(1); $('pd-sdv').textContent = sd.toFixed(2); $('pd-yv').textContent = y.toFixed(2);
-      let s = '';
-      [0, .5, 1, 1.5, 2].forEach(d => {
-        s += `<line x1="${x0}" y1="${Y(d)}" x2="${x1}" y2="${Y(d)}" stroke="var(--rule)"/>
-              <text x="${x0 - 10}" y="${Y(d) + 6}" text-anchor="end" font-size="15" fill="var(--ink-soft)">${d}</text>`;
-      });
-      let a = `M${X(y - HW)},${yb}`;
-      for (let i = 0; i <= 40; i++) { const v = y - HW + i / 40 * 2 * HW; a += `L${X(v).toFixed(1)},${Y(pdf(v, m, sd)).toFixed(1)}`; }
-      s += `<path d="${a}L${X(y + HW)},${yb}Z" fill="var(--seen)" opacity=".35"/>`;
-      let d = '';
-      for (let i = 0; i <= 400; i++) { const v = lo + i / 400 * (hi - lo); d += (i ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(Math.min(pdf(v, m, sd), top * 1.1)).toFixed(1); }
-      s += `<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="3"/>
-            <line x1="${X(m)}" y1="${yb}" x2="${X(m)}" y2="${yt - 10}" stroke="var(--hidden)" stroke-width="2" stroke-dasharray="6 5"/>
-            <text x="${X(m)}" y="${yt - 14}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">μ</text>`;
-      const py = pdf(y, m, sd);
-      s += `<line x1="${X(y)}" y1="${yb}" x2="${X(y)}" y2="${Y(py)}" stroke="var(--seen)" stroke-width="3"/>
-            <circle cx="${X(y)}" cy="${Y(py)}" r="7" fill="var(--seen)"/>
-            <line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>`;
-      for (let v = 1; v <= 6; v++) s += `<text x="${X(v)}" y="${yb + 26}" text-anchor="middle" font-size="17" fill="var(--ink-soft)">${v}</text>`;
-      s += `<text x="${(x0 + x1) / 2}" y="${yb + 50}" text-anchor="middle" direction="rtl" font-size="17" fill="var(--ink-soft)">משקל לידה (ק"ג)</text>
-            <text x="22" y="${(yb + yt) / 2}" text-anchor="middle" direction="rtl" font-size="17" fill="var(--ink-soft)" transform="rotate(-90 22 ${(yb + yt) / 2})">צפיפות</text>`;
-      svg.innerHTML = s;
-      const P = Phi((y + HW - m) / sd) - Phi((y - HW - m) / sd);
-      $('pd-out').innerHTML = `<div>הצפיפות ב-y: <span class="ltr">p(${y.toFixed(2)} | μ=${m.toFixed(1)}, σ=${sd.toFixed(2)}) = ${py.toFixed(3)}</span></div><div>הסיכוי למשקל בין <span class="ltr">${(y - HW).toFixed(2)}</span> ל-<span class="ltr">${(y + HW).toFixed(2)}</span> (השטח הכחול): <span class="ltr">${(100 * P).toFixed(1)}%</span></div>`;
-    }
-    ['pd-mu', 'pd-sd', 'pd-y'].forEach(id => $(id).oninput = draw);
-    draw();
-  })();
-</script>
-<div class="demo-note">
-<p>הזיזו את <span class="math inline">\(\mu\)</span>: העקומה זזה ולא משנה צורה. הזיזו את <span class="math inline">\(\sigma\)</span>: היא מתרחבת ונעשית נמוכה, או מצטמצמת ונעשית גבוהה, כי השטח תמיד 1. עם <span class="math inline">\(\sigma\)</span> קטן הצפיפות עולה מעל 1, ובכל זאת השטח הכחול, שהוא סיכוי, נשאר קטן מ-1.</p>
-</div>
-</section>
-<section id="המודל-המייצר" class="slide level2 part-gate">
-<h2>המודל המייצר</h2>
-<div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span></div>
-  <div class="gate-title">המודל המייצר</div>
-  <div class="gate-why">מפרמטרים לתצפיות</div>
-</div>
-</section>
-<section id="המודל-המייצר-1" class="slide level2">
-<h2>המודל המייצר</h2>
-<div class="centered-content">
-<div class="flow-diagram">
-<div class="flow-node hidden-node">
-<p><strong>פרמטרים (<span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma\)</span>)</strong> · החוקיות החבויה בטבע</p>
-</div>
-<div class="flow-arrow">
-<p>▼</p>
-</div>
-<div class="flow-node">
-<p><strong>המודל המייצר</strong> · <span class="math inline">\(y \sim \text{Normal}(\mu,\ \sigma)\)</span></p>
-</div>
-<div class="flow-arrow">
-<p>▼</p>
-</div>
-<div class="flow-node seen-node">
-<p><strong>תצפיות (<span class="math inline">\(y\)</span>)</strong> · משקל של כל תינוק שנולד</p>
-</div>
-</div>
-<div class="fragment" style="text-align:center; font-size:.8em; margin-top:.6em;">
-<p>שני ערכים קבועים, <span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span>, קובעים כמה סביר כל ערך של <span class="math inline">\(y\)</span>.</p>
-</div>
-</div>
-</section>
-<section id="המודל-המייצר-2" class="slide level2 example-slide">
-<h2>המודל המייצר</h2>
-<div class="demo-panel">
-  <div class="demo-controls" style="justify-content:center;">
-    <button class="demo-btn" data-g="1">תינוק</button>
-    <button class="demo-btn" data-g="10">10 תינוקות</button>
-    <button id="gt-model" class="demo-btn ghost" aria-pressed="true">הסתרת המודל</button>
-    <button id="gt-reset" class="demo-btn ghost">איפוס</button>
-  </div>
-  <svg id="gt-svg" viewbox="0 0 1000 330" style="width:100%; height:auto; display:block;" aria-label="המודל המייצר: פעמון עם μ ו-σ חבויים, ומשקלי לידה שנוצרים ממנו">
-    <g id="gt-static"></g><g id="gt-fly"></g>
-  </svg>
-  <div class="demo-readout" id="gt-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
-</div>
-<script>
-  (function () {
-    const svg = document.getElementById('gt-svg');
-    if (!svg) return;
-    const $ = id => document.getElementById(id), fly = $('gt-fly');
-    // המודל המייצר: μ ו-σ קבועים וחבויים. הציר האנכי הוא משקל הלידה, והפעמון שוכב על הצד
-    const MU = 3.4, SD = 0.5;
-    const lo = 1, hi = 6, yt = 14, yb = 316, Y = v => yb - (v - lo) / (hi - lo) * (yb - yt);
-    const axX = 150, dX0 = 180, dX1 = 600, floorX = 650, bW = 180;
-    const randn = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
-    // ys: כל התינוקות, landed: כמה מהם כבר נחתו. fresh: מאיזה אינדקס מתחילה הקבוצה האחרונה
-    let ys = [], jit = [], landed = 0, fresh = 0, gen0 = 0;
-    // show: המודל גלוי (פעמון, קווים ומספרים). כשהוא מוסתר נשארים רק המשקלים, ו-μ ו-σ חבויים, כמו במדע אמפירי
-    let show = true;
-    function draw() {
-      const n = landed;
-      let s = '';
-      for (let v = 1; v <= 6; v += 1) s += `<line x1="${axX}" y1="${Y(v)}" x2="${floorX}" y2="${Y(v)}" stroke="var(--rule)"/>
-        <text x="${axX - 12}" y="${Y(v) + 5}" text-anchor="end" direction="ltr" font-size="15" fill="var(--ink-soft)">${v}</text>`;
-      s += `<line x1="${axX}" y1="${yt}" x2="${axX}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
-            <text x="${axX - 62}" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)" transform="rotate(-90 ${axX - 62} ${(yt + yb) / 2})">משקל לידה (ק"ג)</text>`;
-      // הפעמון של המודל: הבסיס על הרצפה, והמילוי נסגר לאורך הבסיס
-      const pts = [];
-      if (show) {
-      for (let i = 0; i <= 160; i++) { const v = MU - 3.5 * SD + i / 160 * 7 * SD; if (v < lo || v > hi) continue; pts.push([floorX + Math.exp(-.5 * ((v - MU) / SD) ** 2) * bW, Y(v)]); }
-      const curve = pts.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1)).join('');
-      s += `<path d="M${floorX},${pts[0][1].toFixed(1)}${curve.replace('M', 'L')}L${floorX},${pts[pts.length - 1][1].toFixed(1)}Z" fill="var(--hidden-bg)" stroke="none"/>
-            <path d="${curve}" fill="none" stroke="var(--hidden)" stroke-width="2.5"/>
-            <line x1="${floorX}" y1="${Y(Math.min(hi, MU + 3.5 * SD))}" x2="${floorX}" y2="${Y(Math.max(lo, MU - 3.5 * SD))}" stroke="var(--ink)" stroke-width="3"/>
-            <text x="${floorX + bW + 14}" y="${Y(MU) + 6}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="var(--hidden)">μ = ${MU} · σ = ${SD}</text>`;
-      } else {
-        // בלי המודל: התווית באמצע הציר, כדי שהגובה שלה לא יסגיר את μ
-        s += `<text x="${floorX + bW + 14}" y="${Y((lo + hi) / 2) + 6}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="var(--hidden)">μ = ■ · σ = ■</text>`;
-      }
-      // התינוקות שכבר נחתו: הקבוצה האחרונה גדולה ובצבע העקומה, עם קו מקווקו מהגובה שלה בפעמון
-      for (let i = Math.max(0, n - 400); i < n; i++) {
-        const isNew = i >= fresh && n - fresh <= 10, x = dX0 + jit[i] * (dX1 - dX0);
-        if (isNew && show) s += `<line x1="${x}" y1="${Y(ys[i])}" x2="${floorX + Math.exp(-.5 * ((ys[i] - MU) / SD) ** 2) * bW}" y2="${Y(ys[i])}" stroke="var(--curve)" stroke-width="1.5" stroke-dasharray="3 4" opacity=".7"/>`;
-        s += `<circle cx="${x}" cy="${Y(ys[i])}" r="${isNew ? 7 : 4.5}" fill="${isNew && show ? 'var(--curve)' : 'var(--seen)'}" opacity="${isNew ? 1 : .55}"/>`;
-      }
-      $('gt-static').innerHTML = s;
-      let out = 'עוד אין תינוקות';
-      if (n) {
-        const mean = ys.slice(0, n).reduce((a, b) => a + b, 0) / n;
-        out = `תינוקות: <span class="ltr">${n}</span> · האחרון: <span class="ltr">${ys[n - 1].toFixed(2)}</span> ק"ג · הממוצע שלהם: <span class="ltr">${mean.toFixed(2)}</span>`;
-        if (n > 1) out += ` · סטיית התקן שלהם: <span class="ltr">${Math.sqrt(ys.slice(0, n).reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1)).toFixed(2)}</span>`;
-      }
-      $('gt-out').innerHTML = out;
-    }
-    // נפילה: הכדור מופיע בפייד-אין בראש הפעמון (בגובה μ), ויורד שמאלה בזיגזג, כמו בלוח ההתפלגות הנורמלית בלי המסמרים, עד המקום שלו
-    function drop(i, delay, gen) {
-      // בלי המודל הכדור רק מופיע במקומו: נפילה מראש הפעמון הייתה מסגירה את μ
-      const x1 = dX0 + jit[i] * (dX1 - dX0), y1 = Y(ys[i]), x0 = show ? floorX + bW - 6 : x1, y0 = show ? Y(MU) : y1;
-      const K = 7, pts = [[x0, y0]];
-      for (let k = 1; k < K; k++) {
-        const t = k / K, wob = (Math.random() < .5 ? -1 : 1) * 10 * Math.sin(Math.PI * t);
-        pts.push([x0 + (x1 - x0) * t, y0 + (y1 - y0) * t + wob]);
-      }
-      pts.push([x1, y1]);
-      const ball = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      ball.setAttribute('r', 7); ball.setAttribute('fill', show ? 'var(--curve)' : 'var(--seen)'); ball.setAttribute('opacity', 0);
-      ball.setAttribute('cx', x0); ball.setAttribute('cy', y0);
-      fly.appendChild(ball);
-      const FADE = 250, SEG = 110, t0 = performance.now() + delay;
-      (function frame(now) {
-        if (gen !== gen0) { ball.remove(); return; }
-        const e = now - t0;
-        if (e < 0) { requestAnimationFrame(frame); return; }
-        if (e < FADE) { ball.setAttribute('opacity', e / FADE); requestAnimationFrame(frame); return; }
-        ball.setAttribute('opacity', 1);
-        const u = show ? (e - FADE) / SEG : K, k = Math.min(Math.floor(u), K - 1), f = Math.min(u - k, 1);
-        // בכל קטע: האטה בסופו, כמו כדור שפוגע וממשיך
-        const g = 1 - (1 - f) * (1 - f), a = pts[k], b = pts[k + 1];
-        ball.setAttribute('cx', a[0] + (b[0] - a[0]) * g); ball.setAttribute('cy', a[1] + (b[1] - a[1]) * g);
-        if (u < K) requestAnimationFrame(frame);
-        else { ball.remove(); landed = Math.max(landed, i + 1); draw(); }
-      })(performance.now());
-    }
-    function gen(k) {
-      // קבוצה חדשה: מה שעוד באוויר נוחת מיד
-      fly.innerHTML = ''; gen0++; landed = ys.length; fresh = ys.length;
-      for (let i = 0; i < k; i++) { ys.push(Math.max(1.01, Math.min(5.99, Math.round((MU + SD * randn()) * 100) / 100))); jit.push(Math.random()); drop(ys.length - 1, i * 160, gen0); }
-      draw();
-    }
-    function reset() { gen0++; fly.innerHTML = ''; ys = []; jit = []; landed = 0; fresh = 0; draw(); }
-    svg.closest('.demo-panel').querySelectorAll('[data-g]').forEach(b => b.onclick = () => gen(+b.dataset.g));
-    $('gt-reset').onclick = reset;
-    $('gt-model').onclick = function () {
-      show = !show;
-      this.textContent = show ? 'הסתרת המודל' : 'הצגת המודל';
-      this.setAttribute('aria-pressed', show);
-      draw();
-    };
-    reset();
-  })();
-</script>
-<div class="demo-note">
-<p>המחשב יודע את <span class="math inline">\(\mu\)</span> ואת <span class="math inline">\(\sigma\)</span>, וכל לחיצה מייצרת תינוק: משקל לידה אחד מתוך הפעמון. במחקר אמיתי הכיוון הפוך: יש לנו רק את המשקלים, ו-<span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span> חבויים.</p>
 </div>
 </section>
 <section id="סיכום" class="slide level2 summary-slide">
