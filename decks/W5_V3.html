@@ -565,6 +565,8 @@
     const cum = []; pMu.reduce((a, p, i) => (cum[i] = a + p), 0);
     const qMu = q => MU[cum.findIndex(v => v >= q)];
     const pd = ref => pMu.reduce((a, p, i) => a + (MU[i] > ref ? p : MU[i] === ref ? p / 2 : 0), 0);
+    // jitter קבוע לנקודות באיורי הדיווח (כדי שהאיור לא יקפוץ בין צעדים)
+    window.JIT = [-.55, .35, -.1, .8, -.85, .5, .05, -.4, .9, -.25];
     window.W5V3 = { YS, n, MEAN, S, SE, SDK, dnorm, tpdf, tcdf, tq, MU, pMu, qMu, pd };
     // צעדים בתוך שקף: מצייר מחדש בכל fragment
     window.W5V3.steps = function (id, draw) {
@@ -836,7 +838,8 @@ Frequentist
     const bx0 = 745, bx1 = 955, Yb = v => yb - (v - 40) / 120 * (yb - yt);
     const F = `font-family="Arial, Helvetica, sans-serif"`;
     function fig(k) {
-      const act = { 2: 'data', 3: 'prior', 4: 'med', 5: 'ci', 6: 'pd' }[k], o = g => act && act !== g ? .25 : 1;
+      // האיור לא משתנה בין המשפטים המודגשים: תמיד במצב ההתחלתי
+      const act = null, o = g => act && act !== g ? .25 : 1;
       let s = `<g ${F}>`;
       // (A)
       s += `<g opacity="${o('ci')}"><path d="${area(a, b)}" fill="var(--hidden)" opacity="${act === 'ci' ? .45 : .2}"/></g>`;
@@ -858,12 +861,12 @@ Frequentist
       s += `<g opacity="${o('ci')}"><rect x="${bx0}" y="${Yb(b)}" width="${bx1 - bx0}" height="${Yb(a) - Yb(b)}" fill="var(--hidden)" opacity="${act === 'ci' ? .35 : .15}"/></g>
         <line x1="${bx0}" y1="${Yb(med)}" x2="${bx1}" y2="${Yb(med)}" stroke="${act === 'med' ? 'var(--hidden)' : 'var(--ink)'}" stroke-width="${act === 'med' ? 4 : 1.8}" opacity="${o('med')}"/>`;
       if (act === 'pd') s += `<line x1="${bx0}" y1="${Yb(100)}" x2="${bx1}" y2="${Yb(100)}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 4"/>`;
-      V.YS.forEach((y, i) => { s += `<circle cx="${bx0 + 16 + i * (bx1 - bx0 - 32) / 9}" cy="${Yb(y)}" r="${act === 'data' ? 7 : 5}" fill="var(--seen)" opacity="${o('data')}"/>`; });
+      // סקאטר עם jitter קבוע סביב מרכז הפאנל: ציר ה-x הוא לא מספר נבדק
+      V.YS.forEach((y, i) => { s += `<circle cx="${(bx0 + bx1) / 2 + JIT[i] * (bx1 - bx0) * .22}" cy="${Yb(y)}" r="${act === 'data' ? 7 : 5}" fill="var(--seen)" opacity="${o('data')}"/>`; });
       s += `<line x1="${bx0 - 10}" y1="${yt - 10}" x2="${bx0 - 10}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>`;
       [40, 80, 120, 160].forEach(v => { s += `<line x1="${bx0 - 15}" y1="${Yb(v)}" x2="${bx0 - 10}" y2="${Yb(v)}" stroke="var(--ink)" stroke-width="1.3"/>
         <text x="${bx0 - 19}" y="${Yb(v) + 5}" text-anchor="end" direction="ltr" font-size="14" fill="var(--ink)">${v}</text>`; });
       s += `<text x="${bx0 - 55}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="15" fill="var(--ink)" transform="rotate(-90 ${bx0 - 55} ${(yt + yb) / 2})">Time estimate (s)</text>
-        <text x="${(bx0 + bx1) / 2}" y="${yb + 42}" text-anchor="middle" font-size="15" fill="var(--ink)">Participants</text>
         <text x="${bx0 - 85}" y="${yt - 10}" font-size="18" font-weight="700" fill="var(--ink)">B</text></g>`;
       $('rb-fig').innerHTML = s;
     }
@@ -924,7 +927,7 @@ Frequentist
     const $ = id => document.getElementById(id), all = c => document.querySelectorAll('#fq-panel ~ .rep-step .' + c);
     const set = (c, t) => all(c).forEach(e => e.textContent = t);
     // ציר אנכי אחד לכול: התצפיות משמאל, התפלגות הדגימה של הממוצע שוכבת על הצד, ורווח בר-הסמך מימין
-    const DF = V.n - 1, TC = V.tq(.975, DF), lo = 50, hi = 150, yt = 14, yb = 290, Y = v => yb - (v - lo) / (hi - lo) * (yb - yt);
+    const DF = V.n - 1, TC = V.tq(.975, DF), lo = -50, hi = 150, yt = 14, yb = 290, Y = v => yb - (v - lo) / (hi - lo) * (yb - yt);
     const axX = 110, dX0 = 140, dX1 = 330, floorX = 470, bW = 260, ciX = 880, f0 = V.tpdf(0, DF);
     let K = 0;
     function draw() {
@@ -936,7 +939,7 @@ Frequentist
       set('fq-dec', p < .05 ? 'קטן מ-.05: הממוצע שלנו באזור הדחייה, ולכן דוחים את ההשערה ברת-ההפרכה.' : 'לא קטן מ-.05: הממוצע שלנו באזור הקבלה, ולכן לא דוחים את ההשערה ברת-ההפרכה.');
       set('fq-clo', (M - TC * SE).toFixed(1)); set('fq-chi', (M + TC * SE).toFixed(1));
       let s = '';
-      for (let v = 50; v <= 150; v += 25) s += `<line x1="${axX}" y1="${Y(v)}" x2="${ciX + 40}" y2="${Y(v)}" stroke="var(--rule)"/>
+      for (let v = -50; v <= 150; v += 50) s += `<line x1="${axX}" y1="${Y(v)}" x2="${ciX + 40}" y2="${Y(v)}" stroke="var(--rule)"/>
         <text x="${axX - 12}" y="${Y(v) + 5}" text-anchor="end" direction="ltr" font-size="15" fill="var(--ink-soft)">${v}</text>`;
       s += `<line x1="${axX}" y1="${yt}" x2="${axX}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
             <text x="40" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)" transform="rotate(-90 40 ${(yt + yb) / 2})">הערכת הזמן (שניות)</text>`;
@@ -1003,18 +1006,20 @@ Frequentist
     const notes = ['', 'האיור: רק הנתונים והאומדנים. אין כאן posterior.', 'הנתונים: כמה נבדקים, מה הם עשו, ובאיזה טווח היו ההערכות.',
       'point estimation: הממוצע (ה-MLE), וסטיית התקן של המדגם.', 'מבחן מול ההשערה ברת-ההפרכה: t, דרגות החופש וערך p.',
       'גודל האפקט: המרחק של הממוצע מ-100, ביחידות של סטיית תקן.', 'רווח בר-סמך: טווח שבנוי כך שב-95% מהמחקרים הוא מכיל את μ.'];
-    const yt = 22, yb = 196, Y = v => yb - (v - 40) / 120 * (yb - yt), px0 = 360, px1 = 640, ciX = 700, sdX = 740;
+    const yt = 22, yb = 196, Y = v => yb - (v - 40) / 120 * (yb - yt), px0 = 360, px1 = 640, ciX = 620, sdX = 640;
     const F = `font-family="Arial, Helvetica, sans-serif"`;
     function fig(k) {
-      const act = { 2: 'data', 3: 'mean', 4: 'test', 5: 'd', 6: 'ci' }[k], o = g => act && act !== g ? .25 : 1, hot = g => act === g;
+      // האיור לא משתנה בין המשפטים המודגשים: תמיד במצב ההתחלתי
+      const act = null, o = g => act && act !== g ? .25 : 1, hot = g => act === g;
       let s = `<g ${F}>`;
       // הערך בר-ההפרכה
       s += `<line x1="${px0 - 10}" y1="${Y(NULL)}" x2="${sdX + 30}" y2="${Y(NULL)}" stroke="var(--ink)" stroke-width="${hot('test') ? 3 : 1.5}" stroke-dasharray="6 4" opacity="${act === 'test' || act === 'd' || !act ? 1 : .25}"/>`;
       // הנתונים
-      V.YS.forEach((y, i) => { s += `<circle cx="${px0 + 16 + i * (px1 - px0 - 32) / 9}" cy="${Y(y)}" r="${hot('data') ? 7 : 5}" fill="var(--seen)" opacity="${o('data')}"/>`; });
+      // סקאטר עם jitter קבוע סביב מרכז הפאנל: ציר ה-x הוא לא מספר נבדק
+      V.YS.forEach((y, i) => { s += `<circle cx="${(px0 + px1) / 2 + JIT[i] * (px1 - px0) * .22}" cy="${Y(y)}" r="${hot('data') ? 7 : 5}" fill="var(--seen)" opacity="${o('data')}"/>`; });
       // הממוצע
       const mo = act === 'mean' || act === 'test' || act === 'd' || !act ? 1 : .25;
-      s += `<line x1="${px0}" y1="${Y(M)}" x2="${px1}" y2="${Y(M)}" stroke="${hot('mean') ? 'var(--seen)' : 'var(--ink)'}" stroke-width="${hot('mean') ? 4 : 2}" opacity="${mo}"/>`;
+      s += `<line x1="${(px0 + px1) / 2 - 85}" y1="${Y(M)}" x2="${(px0 + px1) / 2 + 85}" y2="${Y(M)}" stroke="${hot('mean') ? 'var(--seen)' : 'var(--ink)'}" stroke-width="${hot('mean') ? 4 : 2}" opacity="${mo}"/>`;
       // סטיית התקן (לגודל האפקט)
       if (hot('d')) s += `<line x1="${sdX}" y1="${Y(M - V.S)}" x2="${sdX}" y2="${Y(M + V.S)}" stroke="var(--seen)" stroke-width="3"/>
         <line x1="${sdX - 7}" y1="${Y(M - V.S)}" x2="${sdX + 7}" y2="${Y(M - V.S)}" stroke="var(--seen)" stroke-width="3"/>
@@ -1028,8 +1033,7 @@ Frequentist
         <line x1="${px0 - 10}" y1="${yb}" x2="${sdX + 30}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>`;
       [40, 80, 120, 160].forEach(v => { s += `<line x1="${px0 - 15}" y1="${Y(v)}" x2="${px0 - 10}" y2="${Y(v)}" stroke="var(--ink)" stroke-width="1.3"/>
         <text x="${px0 - 19}" y="${Y(v) + 5}" text-anchor="end" direction="ltr" font-size="14" fill="var(--ink)">${v}</text>`; });
-      s += `<text x="${px0 - 58}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="15" fill="var(--ink)" transform="rotate(-90 ${px0 - 58} ${(yt + yb) / 2})">Time estimate (s)</text>
-        <text x="${(px0 + px1) / 2}" y="${yb + 24}" text-anchor="middle" font-size="15" fill="var(--ink)">Participants</text></g>`;
+      s += `<text x="${px0 - 58}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="15" fill="var(--ink)" transform="rotate(-90 ${px0 - 58} ${(yt + yb) / 2})">Time estimate (s)</text></g>`;
       $('rf-fig').innerHTML = s;
     }
     function sync() {
