@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מכונות הכדורים</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* יחידה א׳ (כחול) כצבע הדגשה יחיד */
+:root { --bg: #fcfcfa; --ink: #1b2028; --ink-soft: #5a6472; --ink-faint: #c9ced5;
+  --unit: #185fa5; --unit-line: #9fbbd9; --unit-bg: #eaf1f9; --btn-text: #ffffff; --ball: #dbe7f4; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #15181d; --ink: #e9ecf0; --ink-soft: #9aa3ae; --ink-faint: #3a414b;
+    --unit: #7fb0e3; --unit-line: #3d5f82; --unit-bg: #1d2a38; --btn-text: #0f1722; --ball: #24384f; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #15181d; --ink: #e9ecf0; --ink-soft: #9aa3ae; --ink-faint: #3a414b;
+  --unit: #7fb0e3; --unit-line: #3d5f82; --unit-bg: #1d2a38; --btn-text: #0f1722; --ball: #24384f; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Assistant", "Arial Hebrew", Arial, sans-serif;
+  padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+main { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 20px; padding-block: 28px; text-align: center; max-width: 560px; margin: 0 auto; }
+h1 { margin: 0; font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 700; }
+.sub { margin: -10px 0 0; color: var(--ink-soft); font-size: 1.2rem; }
+.title-rule { width: 90px; height: 4px; border-radius: 2px; background: var(--unit); margin: -8px 0 0; }
+.box { width: 150px; height: auto; }
+.box rect { fill: var(--ink); }
+.box text { fill: var(--bg); font-size: 46px; font-weight: 700; }
+button { font: inherit; font-size: 1.6rem; font-weight: 700; background: var(--unit); color: var(--btn-text); border: 0;
+  border-radius: 16px; padding: 14px 40px; min-width: min(300px, 100%); cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--unit-line); outline-offset: 3px; }
+[hidden] { display: none !important; }
+.floor { position: relative; width: 100%; height: 340px; border-bottom: 3px solid var(--ink-faint); }
+.ball { position: absolute; border-radius: 50%; display: grid; place-items: center; font-weight: 700; direction: ltr;
+  background: radial-gradient(circle at 35% 30%, var(--bg) 0, var(--ball) 55%, var(--unit-bg) 100%);
+  border: 3px solid var(--unit); color: var(--ink); animation: drop .6s ease-out both; }
+.ball small { display: block; font-size: .6em; font-weight: 600; color: var(--ink-soft); margin-top: -.2em; }
+@keyframes drop { 0% { transform: translateY(-60px) scale(.5); opacity: 0; } 70% { transform: translateY(6px); opacity: 1; } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ball { animation: none; } }
+.list { margin: 0; font-size: 1.5rem; font-weight: 700; direction: ltr; letter-spacing: .02em; }
+.note { margin: 0; color: var(--ink-soft); font-size: 1.1rem; line-height: 1.5; }
+</style>
+</head>
+<body>
+<main>
+  <h1>מכונות הכדורים</h1>
+  <p class="sub">משלוח מהמכונה החבויה</p>
+  <div class="title-rule" aria-hidden="true"></div>
+  <svg class="box" viewBox="0 0 200 150" aria-label="המכונה החבויה: קופסה שחורה">
+    <rect x="20" y="15" width="160" height="120" rx="14"/>
+    <text x="100" y="92" text-anchor="middle" direction="ltr">μ = ?</text>
+  </svg>
+  <p class="note" id="intro">המכונה מייצרת כדורים בגודל לא ידוע, עם רעש. כל משלוח: ארבעה כדורים.</p>
+  <button id="go" type="button">קבלת משלוח</button>
+  <div class="floor" id="floor" hidden aria-live="polite"></div>
+  <p class="list" id="list" hidden></p>
+  <p class="note" id="after" hidden>רשמו בדף העבודה את הקוטר של כל אחד מארבעת הכדורים, בס״מ. את המכונה האמיתית יחשפו בסוף התרגול.</p>
+</main>
+<script>
+// כל זוג מקבל משלוח משלו. כל המשלוחים יוצאים מאותה מכונה (μ = 60, σ = 10), והקוטר מעוגל ל-5 ס״מ.
+const MU = 60, SD = 10;
+const $ = id => document.getElementById(id);
+const randn = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+const draw = () => Math.min(100, Math.max(20, 5 * Math.round((MU + SD * randn()) / 5)));
+$('go').onclick = () => {
+  const balls = Array.from({ length: 4 }, draw);
+  const floor = $('floor'); floor.hidden = false; floor.innerHTML = '';
+  const W = floor.clientWidth, H = floor.clientHeight, k = Math.min(1.45, W / 260);
+  const placed = [];
+  balls.forEach((cm, i) => {
+    const d = cm * k;                       // הקוטר על המסך יחסי לקוטר האמיתי
+    let x, y, tries = 0;
+    do {                                    // פיזור בלי חפיפה
+      x = Math.random() * (W - d); y = Math.random() * (H - d); tries++;
+    } while (tries < 400 && placed.some(p => Math.hypot(p.x + p.d / 2 - x - d / 2, p.y + p.d / 2 - y - d / 2) < (p.d + d) / 2 + 6));
+    placed.push({ x, y, d });
+    const b = document.createElement('div');
+    b.className = 'ball';
+    Object.assign(b.style, { width: d + 'px', height: d + 'px', left: x + 'px', top: y + 'px', fontSize: Math.max(15, d / 4.2) + 'px', animationDelay: (i * .35) + 's' });
+    b.innerHTML = `<span>${cm}<small>ס״מ</small></span>`;
+    floor.appendChild(b);
+  });
+  $('list').textContent = balls.join(',  ');
+  $('list').hidden = false; $('after').hidden = false; $('go').hidden = true; $('intro').hidden = true;
+};
+</script>
+</body>
+</html>
