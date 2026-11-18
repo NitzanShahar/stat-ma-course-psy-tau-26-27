@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="עידו בן ארצי · גל עטון · רם אשל">
-  <title>מכונות הכדורים: איזה ממוצע?</title>
+  <title>פונקציית נראות בהתפלגות גאוסיינית</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -326,9 +326,9 @@
 <section id="title-slide" class="quarto-title-block center" dir="rtl" data-unit="a" data-practice="1">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
   <p class="practice-label">תרגול</p>
-  <h1 class="title">מכונות הכדורים: איזה ממוצע?</h1>
+  <h1 class="title">פונקציית נראות בהתפלגות גאוסיינית</h1>
   <div class="title-rule"></div>
-  <p class="subtitle">גובה הפעמון, מכפלה, והימור על המכונה</p>
+  <p class="subtitle">מכונות הכדורים: גובה הפעמון, מכפלה, והערכת המכונה</p>
   <p class="author">עידו בן ארצי · גל עטון · רם אשל</p>
 </section>
 <section id="המשחק" class="slide level2">
@@ -355,7 +355,7 @@
 <ul>
 <li class="fragment"><strong>שלוש מכונות</strong> מייצרות כדורים בגדלים שונים: מכונת ה-40 ס״מ, מכונת ה-50 ס״מ ומכונת ה-60 ס״מ.</li>
 <li class="fragment"><strong>בכל מכונה יש רעש:</strong> הכדורים יוצאים קצת גדולים או קטנים מהגודל של המכונה, <span class="math inline">\(\mu\)</span>, ומתפזרים סביבו כפעמון. הרעש זהה בשלושתן, <span class="math inline">\(\sigma = 10\)</span> ס״מ. הקוטר נמדד בעיגול ל-5 ס״מ.</li>
-<li class="fragment"><strong>ארבעה כדורים, אחד אחרי השני:</strong> על איזו מכונה אתם מהמרים?</li>
+<li class="fragment"><strong>ארבעה כדורים, אחד אחרי השני:</strong> איזו מכונה ייצרה אותם?</li>
 </ul>
 </div>
 </div>
@@ -547,14 +547,17 @@
   .ws-side p { margin: .3em 0; }
 </style>
 </section>
-<section id="השוואה-בין-המכונות" class="slide level2">
-<h2>השוואה בין המכונות</h2>
+<section id="פונקציית-הנראות" class="slide level2">
+<h2>פונקציית הנראות</h2>
 <div class="centered-content">
+<div class="soft-card">
+  <h3>תזכורת: נראות (<span class="ltr">likelihood</span>)</h3>
+  <p><strong>כמה התצפיות צפויות, אם הפרמטר הוא הערך הזה.</strong> <span class="ltr"><i>p</i>(<i>y</i> | <i>θ</i>)</span></p>
+</div>
 <div>
 <ul>
 <li class="fragment"><strong>המכפלות לבדן</strong> הן מספרים קטנים, וקשה לקרוא אותם: 0.17, 0.47 ו-0.02 אומרים מעט.</li>
 <li class="fragment"><strong>מה שחשוב הוא היחס</strong> בין המכונות: כמה פעמים המכונה הזו מסבירה את מה שראינו טוב יותר מהאחרות.</li>
-<li class="fragment"><strong>ההימור:</strong> המכונה עם הנראות הגבוהה ביותר. אבל זה לא אומר שהיא בהכרח המכונה שייצרה את הכדורים שלכם.</li>
 </ul>
 </div>
 </div>
@@ -562,8 +565,8 @@
 <section id="המשחק-1" class="slide level2 part-gate">
 <h2>המשחק</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="now"></span><span class="later"></span></div>
-  <div class="gate-title">המשחק: מחקר לכל זוג</div>
+  <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-title">משחק ראשון: משלוח 1</div>
 </div>
 </section>
 <section id="איך-משחקים" class="slide level2">
@@ -571,16 +574,15 @@
 <div class="centered-content">
 <div>
 <ul>
-<li class="fragment"><strong>משלוח:</strong> כל זוג פותח בטלפון את “קבלת משלוח” (קישור באתר הקורס, ליד התרגול) ומקבל ארבעה כדורים מהמכונה החבויה.</li>
+<li class="fragment"><strong>משלוח:</strong> כל זוג פותח בטלפון את “קבלת משלוח 1” (קישור באתר הקורס, ליד התרגול) ומקבל ארבעה כדורים מהמכונה החבויה.</li>
 <li class="fragment"><strong>הבוט:</strong> פונים לבוט המטלה (קישור באתר הקורס) עם המשפט מדף העבודה, פעם לכל מכונה: 40, 50 ו-60.</li>
-<li class="fragment"><strong>דף העבודה:</strong> רושמים את ארבעת הקטרים, את גובה הפעמון בכל כדור, ואת המכפלה, הנראות של כל מכונה.</li>
-<li class="fragment"><strong>הימור:</strong> על איזו מכונה אתם מהמרים? את המכונה האמיתית נחשוף יחד, אחרי שכל הזוגות הימרו.</li>
+<li class="fragment"><strong>דף העבודה, מחקר 1:</strong> רושמים את ארבעת הקטרים, ומתחת לכל ערך mu את המכפלה שהבוט החזיר, הנראות של המכונה.</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="זמן-להמר" class="slide level2">
-<h2>זמן להמר</h2>
+<section id="מה-ההערכה-שלכם" class="slide level2">
+<h2>מה ההערכה שלכם?</h2>
 <div class="centered-content">
 <div class="pair-cards" style="grid-template-columns: repeat(3, 1fr);">
   <div class="soft-card"><h3>מכונת ה-60 ס״מ</h3></div>
@@ -588,17 +590,52 @@
   <div class="soft-card"><h3>מכונת ה-40 ס״מ</h3></div>
 </div>
 <div style="text-align:center; margin-top:.8em;">
-<p>לפי הנראות שחישבתם: על איזו מכונה אתם מהמרים?</p>
+<p>לפי הנראות שחישבתם: מה ההערכה שלכם לערך ה-mu החבוי?</p>
 </div>
 <div class="fragment" style="text-align:center; margin-top:.6em;">
 <p><strong>המכונה האמיתית: מכונת ה-60 ס״מ.</strong></p>
 </div>
 </div>
 </section>
+<section id="משחק-שני" class="slide level2 part-gate">
+<h2>משחק שני</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span></div>
+  <div class="gate-title">משחק שני: משלוח 2</div>
+</div>
+</section>
+<section id="אותו-משחק-משלוח-חדש" class="slide level2">
+<h2>אותו משחק, משלוח חדש</h2>
+<div class="centered-content">
+<div>
+<ul>
+<li class="fragment"><strong>משלוח:</strong> פותחים בטלפון את “קבלת משלוח 2” (קישור באתר הקורס, ליד התרגול) ומקבלים ארבעה כדורים חדשים.</li>
+<li class="fragment"><strong>הבוט:</strong> אותו משפט, פעם לכל מכונה: 40, 50 ו-60.</li>
+<li class="fragment"><strong>דף העבודה, מחקר 2:</strong> רושמים את הקטרים ואת הנראות של כל מכונה.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="מה-ההערכה-שלכם-1" class="slide level2">
+<h2>מה ההערכה שלכם?</h2>
+<div class="centered-content">
+<div class="pair-cards" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="soft-card"><h3>מכונת ה-60 ס״מ</h3></div>
+  <div class="soft-card"><h3>מכונת ה-50 ס״מ</h3></div>
+  <div class="soft-card"><h3>מכונת ה-40 ס״מ</h3></div>
+</div>
+<div style="text-align:center; margin-top:.8em;">
+<p>לפי הנראות שחישבתם: מה ההערכה שלכם לערך ה-mu החבוי?</p>
+</div>
+<div class="fragment" style="text-align:center; margin-top:.6em;">
+<p><strong>המכונה האמיתית: מכונת ה-40 ס״מ.</strong></p>
+</div>
+</div>
+</section>
 <section id="מה-גילינו" class="slide level2 part-gate">
 <h2>מה גילינו</h2>
 <div class="gate">
-  <div class="gate-dots"><span class="done"></span><span class="now"></span></div>
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span></div>
   <div class="gate-title">מה גילינו</div>
   <div class="gate-why">התוצאות של כל הזוגות יחד</div>
 </div>
@@ -609,25 +646,20 @@
   <h3>השיא נמצא בממוצע</h3>
   <p>המכונה שהגודל שלה הכי קרוב <strong>לממוצע של ארבעת הכדורים</strong> מקבלת את המכפלה הגבוהה ביותר. זה השיא של ה-<span class="term">likelihood</span> שראינו בשיעור, רק עם שלושה מועמדים במקום עקומה שלמה.</p>
 </div>
-<div class="r-stack q-stack">
-<div class="discuss fragment fade-in-then-out">
-<p><strong>שאלה לכיתה (1 מתוך 3):</strong> כמה זוגות הימרו על המכונה הנכונה? ואצל מי המכונה הסבירה ביותר לא הייתה המכונה שייצרה את הכדורים? מה היה הממוצע של ארבעת הכדורים שלהם?</p>
+<div class="discuss fragment" style="font-size:.95em; margin-top:.9em;">
+<p><strong>שאלה לכיתה (1 מתוך 2):</strong> מה היה קורה עם 40 כדורים במקום 4? האם הפער בין הנראות של המכונה המנצחת לנראות של האחרות היה גדל או קטן, ולמה?</p>
 </div>
-<div class="discuss fragment fade-in-then-out">
-<p><strong>שאלה לכיתה (2 מתוך 3):</strong> מה היה קורה עם 40 כדורים במקום 4? האם הפער בין הנראות של המכונה המנצחת לנראות של האחרות היה גדל או קטן, ולמה?</p>
-</div>
-<div class="discuss fragment">
-<p><strong>שאלה לכיתה (3 מתוך 3):</strong> ומה אם לא היו רק שלוש מכונות, אלא מכונה לכל μ אפשרי? איך היה נראה הגרף של כל המכפלות?</p>
-</div>
+<div class="discuss fragment" style="font-size:.95em; margin-top:.6em;">
+<p><strong>שאלה לכיתה (2 מתוך 2):</strong> ומה אם לא היו רק שלוש מכונות, אלא מכונה לכל μ אפשרי? איך היה נראה הגרף של כל המכפלות?</p>
 </div>
 </section>
 <section id="סיכום" class="slide level2 summary-slide">
 <h2>סיכום</h2>
 <div>
 <ul>
-<li class="fragment"><strong>צפיפות:</strong> הגובה של הפעמון בתצפית. כמה הכדור צפוי מהמכונה הזו.</li>
-<li class="fragment"><strong>likelihood של מכונה:</strong> מכפלת הגבהים של כל התצפיות, כמו מספר הדרכים בשבוע הראשון.</li>
-<li class="fragment"><strong>המכונה המנצחת</strong> היא זו שהגודל שלה הכי קרוב לממוצע של הכדורים. עם מעט כדורים, בגלל הרעש, היא יכולה להיות לא המכונה האמיתית.</li>
+<li class="fragment"><strong>המודל המייצר</strong> מניח שהתצפיות נוצרות מהתפלגות גאוסיינית, עם ערכי <span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span> לא ידועים.</li>
+<li class="fragment"><strong>פונקציית הנראות</strong> מאפשרת לשאול מה הסבירות לתוצאות שראינו, בהינתן ערכים שונים של <span class="math inline">\(\mu\)</span> ו-<span class="math inline">\(\sigma\)</span>.</li>
+<li class="fragment"><strong>כאן התמקדנו רק ב-<span class="math inline">\(\mu\)</span></strong>, מטעמי נוחות פדגוגית. במבחנים סטטיסטיים גם <span class="math inline">\(\sigma\)</span> תמיד משוערך מהנתונים.</li>
 </ul>
 </div>
 <div class="footer footer-default">
