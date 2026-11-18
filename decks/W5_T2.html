@@ -508,13 +508,15 @@
 <div class="ws-wrap">
 <div class="ws-paper">
   <div class="ws-head"><b>המחקר שלנו</b><span>דוגמה</span></div>
-  <div class="ws-mu"><bdi dir="ltr">μ = <span class="ws-bb"></span></bdi></div>
-  <div class="ws-balls"><i class="ws-fill">45</i><i class="ws-fill">55</i><i class="ws-fill">50</i><i class="ws-fill">40</i></div>
+  <div class="ws-mu"><bdi dir="ltr"><i>Y</i> ~ Normal(μ = <span class="ws-bb"></span>, σ = 10)</bdi></div>
+  <div class="ws-arrow"><svg width="22" height="34" viewbox="0 0 22 34"><path d="M11 1 V28 M3 20 L11 29 L19 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>נדגמים</span></div>
+  <div class="ws-lab">תצפיות של ארבעה כדורים:</div>
+  <div class="ws-balls"><div class="ws-ball"><i></i><span class="ws-fill">46 ס״מ</span></div><div class="ws-ball"><i></i><span class="ws-fill">57 ס״מ</span></div><div class="ws-ball"><i></i><span class="ws-fill">52 ס״מ</span></div><div class="ws-ball"><i></i><span class="ws-fill">43 ס״מ</span></div></div>
   <div class="ws-lab" style="margin-top:.4em">המשפט לבוט המטלה</div>
   <div class="ws-say">„בהינתן שערך ה-mu החבוי הוא [הערך שאתם רוצים להעריך], כתוב לנו מה הסבירות לקבל את התצפיות [ארבעת הקטרים]”</div>
   <table class="ws-tab">
     <tbody><tr><th class="ws-th">ערך mu</th><th>60</th><th>50</th><th>40</th></tr>
-    <tr><td class="ws-th">נראות</td><td class="ws-cell"><bdi dir="ltr" class="ws-fill">0.013 × 0.0352 ×<br>0.0242 × 0.0054<br>= 6.0 × 10<sup>−8</sup></bdi></td><td class="ws-cell"><bdi dir="ltr" class="ws-fill">0.0352 × 0.0352 ×<br>0.0399 × 0.0242<br>= 1.2 × 10<sup>−6</sup></bdi></td><td class="ws-cell"><bdi dir="ltr" class="ws-fill">0.0352 × 0.013 ×<br>0.0242 × 0.0399<br>= 4.4 × 10<sup>−7</sup></bdi></td></tr>
+    <tr><td class="ws-th">נראות</td><td class="ws-cell"><bdi dir="ltr" class="ws-fill">0.0150 × 0.0381 ×<br>0.0290 × 0.0094<br>= 1.6 × 10<sup>−7</sup></bdi></td><td class="ws-cell"><bdi dir="ltr" class="ws-fill">0.0368 × 0.0312 ×<br>0.0391 × 0.0312<br>= 1.4 × 10<sup>−6</sup></bdi></td><td class="ws-cell"><bdi dir="ltr" class="ws-fill">0.0333 × 0.0094 ×<br>0.0194 × 0.0381<br>= 2.3 × 10<sup>−7</sup></bdi></td></tr>
   </tbody></table>
 </div>
 <div class="ws-side">
@@ -530,9 +532,12 @@
   .ws-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid var(--unit-line); padding-bottom: .25em; margin-bottom: .3em; }
   .ws-head span { color: var(--ink-soft); }
   .ws-mu { text-align: center; font-size: 1.35em; font-weight: 700; }
+  .ws-mu i { font-style: italic; }
+  .ws-arrow { display: flex; justify-content: center; align-items: center; gap: .6em; color: var(--ink-soft); font-weight: 600; margin: .1em 0 .15em; }
   .ws-bb { display: inline-block; width: 2.6em; height: 1em; background: #000; border-radius: 4px; vertical-align: -.12em; }
   .ws-balls { display: flex; justify-content: center; gap: .8em; margin: .35em 0 .2em; }
-  .ws-balls i { width: 2.4em; height: 2.4em; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-style: normal; }
+  .ws-ball { display: flex; flex-direction: column; align-items: center; gap: .15em; }
+  .ws-ball i { width: 2.4em; height: 2.4em; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--unit-bg); }
   .ws-lab { color: var(--ink-soft); font-weight: 600; }
   .ws-say { background: var(--panel, #f6f6f3); border-radius: 6px; padding: .3em .7em; margin: .15em 0 .4em; }
   .ws-fill { color: var(--unit); font-weight: 700; }
