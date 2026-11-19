@@ -103,7 +103,7 @@ PILL_SOLUTION = '<svg width="15" height="15" viewBox="0 0 20 20" fill="none" str
 PILL_DEMO = '<svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5l9.5 6-4.3 1 2.6 4.8-1.8 1-2.6-4.8-3.4 3z"/></svg>'  # a silent demo: where to click
 PILL_DATA = '<svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3.5" width="14" height="13" rx="1.5"/><path d="M3 8h14M3 12.3h14M8 3.5v13"/></svg>'  # a data file (csv)
 PILL_BOX = '<svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5L10 3l7 3.5v7L10 17l-7-3.5z"/><path d="M3 6.5l7 3.5 7-3.5M10 10v7"/></svg>'  # a delivery
-LABEL_ICONS = {'קבלת משלוח 1': PILL_BOX, 'קבלת משלוח 2': PILL_BOX, 'בוט המטלה': PILL_AI, 'סקר': PILL_SURVEY, 'משחק': PILL_GAME, 'Gemini': PILL_AI, 'בוט Bayesian': PILL_AI, 'בוט Frequentist': PILL_AI, 'הטלת מטבע': PILL_GAME, 'פתרון': PILL_SOLUTION}  # extra links shown as a round button by their label
+LABEL_ICONS = {'קבלת משלוח 1': PILL_GAME, 'קבלת משלוח 2': PILL_GAME, 'בוט המטלה': PILL_AI, 'סקר': PILL_SURVEY, 'משחק': PILL_GAME, 'Gemini': PILL_AI, 'בוט Bayesian': PILL_AI, 'בוט Frequentist': PILL_AI, 'הטלת מטבע': PILL_GAME, 'פתרון': PILL_SOLUTION}  # extra links shown as a round button by their label
 
 
 def pill_icon(h, lbl=''):
