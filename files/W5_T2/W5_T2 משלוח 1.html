@@ -57,11 +57,11 @@ button:focus-visible { outline: 3px solid var(--unit-line); outline-offset: 3px;
   <p class="note" id="after" hidden>רשמו בדף העבודה את הקוטר של כל אחד מארבעת הכדורים, בס״מ. את המכונה האמיתית יחשפו בסוף התרגול.</p>
 </main>
 <script>
-// כל זוג מקבל משלוח משלו. כל המשלוחים יוצאים מאותה מכונה (μ = 60, σ = 10), והקוטר מעוגל ל-5 ס״מ.
+// כל זוג מקבל משלוח משלו. כל המשלוחים יוצאים מאותה מכונה (μ = 60, σ = 10), והקוטר מעוגל לספרה אחת אחרי הנקודה.
 const MU = 60, SD = 10;
 const $ = id => document.getElementById(id);
 const randn = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
-const draw = () => Math.min(100, Math.max(20, 5 * Math.round((MU + SD * randn()) / 5)));
+const draw = () => Math.min(100, Math.max(20, Math.round((MU + SD * randn()) * 10) / 10));
 $('go').onclick = () => {
   const balls = Array.from({ length: 4 }, draw);
   const floor = $('floor'); floor.hidden = false; floor.innerHTML = '';
