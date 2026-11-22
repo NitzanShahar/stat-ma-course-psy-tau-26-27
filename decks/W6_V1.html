@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="פרופ’ ניצן שחר">
-  <title>W6.V1 — מודל מייצר גאוסיאני עם קבוצות</title>
+  <title>הבדל בין שתי קבוצות בלתי תלויות</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -323,178 +323,771 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center" dir="rtl">
+<section id="title-slide" class="quarto-title-block center" dir="rtl" data-unit="b">
   <img class="tau-title-logo" src="עיצוב/tau-logo.png" alt="אוניברסיטת תל אביב">
-  <h1 class="title">W6.V1 — מודל מייצר גאוסיאני עם קבוצות</h1>
-  <p class="subtitle">השוואת קבוצות, Dummy Coding והתמוטטות ההפרדה המלאכותית</p>
+  <p class="week-label">שבוע 6</p>
+  <h1 class="title">הבדל בין שתי קבוצות בלתי תלויות</h1>
+  <div class="title-rule"></div>
+  <p class="subtitle">המודל המייצר, נראות של שני פרמטרים, והערכה Bayesian של ההבדל</p>
   <p class="author">פרופ’ ניצן שחר</p>
 </section>
-<section id="מטרות-המצגת" class="slide level2">
-<h2>מטרות המצגת</h2>
-<ul>
-<li>להבין מדוע <strong>השוואת קבוצות</strong> היא כלי מרכזי במדע אמפירי.</li>
-<li>לבנות מודל מייצר גאוסיאני שבו התוחלת תלויה בקבוצה.</li>
-<li>להכיר את טכניקת <strong>Dummy Coding</strong> (<span class="math inline">\(0/1\)</span>).</li>
-<li>לראות כיצד השוואת קבוצות הופכת באופן מלא ל<strong>רגרסיה ליניארית</strong>.</li>
-<li>להבין את <strong>המודל הריק</strong> (Empty Model) ואת תפקיד <strong>השאריות</strong> (Residuals).</li>
-<li>לראות את <strong>מטריצת התכנון</strong> (Design Matrix).</li>
-</ul>
-</section>
-<section id="למה-השוואת-קבוצות-היא-כלי-מרכזי" class="slide level2">
-<h2>למה השוואת קבוצות היא כלי מרכזי?</h2>
-<div>
-<ul>
-<li class="fragment"><strong>השאלה המדעית:</strong> האם התערבות, טיפול או שיוך קבוצתי משנים את המשתנה הנמדד?</li>
-<li class="fragment"><strong>ניסוי קלאסי:</strong> קבוצת ניסוי (Treatment) מול קבוצת ביקורת (Control).</li>
-<li class="fragment"><strong>תצפית:</strong> אנו רואים ערכים שונים בשתי הקבוצות, אך הנתונים כוללים רעש.</li>
-<li class="fragment"><strong>האתגר:</strong> האם ההבדל הנצפה נובע משינוי במנגנון המייצר החבוי בטבע, או מרעש דגימה מקרי?</li>
-</ul>
+<section id="ניסוי-בזיכרון-של-עדי-ראייה" class="slide level2 part-gate">
+<h2>ניסוי בזיכרון של עדי ראייה</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="now"></span><span class="later"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-title">ניסוי בזיכרון של עדי ראייה</div>
 </div>
 </section>
-<section id="המודל-המייצר-גאוסיאן-המותנה-בקבוצה" class="slide level2">
-<h2>המודל המייצר: גאוסיאן המותנה בקבוצה</h2>
-<p>ביחידה א’ העדכנו פרמטר יחיד למעבדת נתונים אחת: <span class="math inline">\(y_i \sim \text{Normal}(\mu, \sigma)\)</span>.</p>
-<p>כעת, המודל המייצר בטבע מניח <strong>תוחלת שונה לכל קבוצה</strong>:</p>
-<p><span class="math display">\[y_i \sim \text{Normal}(\mu_j, \sigma)\]</span></p>
-<div>
-<ul>
-<li class="fragment"><span class="math inline">\(\mu_1\)</span>: התוחלת החבויה בטבע עבור קבוצה 1 (למשל, ביקורת).</li>
-<li class="fragment"><span class="math inline">\(\mu_2\)</span>: התוחלת החבויה בטבע עבור קבוצה 2 (למשל, ניסוי).</li>
-<li class="fragment"><span class="math inline">\(\sigma\)</span>: סטיית התקן של הרעש (מניחים בשלב זה שונויות שוות).</li>
-</ul>
+<section id="זיכרון-של-עדי-ראייה" class="slide level2">
+<h2>זיכרון של עדי ראייה</h2>
+<div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+  <iframe data-src="https://www.youtube.com/embed/PB2OegI6wvI" style="width:880px; aspect-ratio:16/9; border:0;" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen="" title="Elizabeth Loftus, הרצאת TED"></iframe>
+  <a href="https://www.youtube.com/watch?v=PB2OegI6wvI" target="_blank" style="font-size:.45em;">לפתוח ב-YouTube</a>
 </div>
 </section>
-<section id="הפיכת-מילים-למספרים-dummy-coding" class="slide level2">
-<h2>הפיכת מילים למספרים: Dummy Coding</h2>
-<p>מחשב ומשוואות מתמטיות אינם יודעים לעבוד עם המילים “ניסוי” ו”ביקורת”.</p>
-<p>אנו מציבים משתנה מספרי בינארי <span class="math inline">\(X_i\)</span>:</p>
-<p><span class="math display">\[X_i = \begin{cases} 0 &amp; \text{קבוצת ביקורת (Control)} \ 1 &amp; \text{קבוצת ניסוי (Treatment)} \end{cases}\]</span></p>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>שיוך קבוצת יחוס (Baseline)</strong></p>
-</div>
-<div class="callout-content">
-<p>הקבוצה שראתה <span class="math inline">\(X=0\)</span> נקראת <strong>קבוצת הייחוס</strong> (Reference Group). החותך במודל הליניארי יייצג את התוחלת שלה.</p>
-</div>
-</div>
+<section id="הסרט-מהניסוי" class="slide level2">
+<h2>הסרט מהניסוי</h2>
+<div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+  <iframe data-src="https://www.youtube.com/embed/Rg5bBJQOL74" style="width:820px; aspect-ratio:16/9; border:0;" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen="" title="הסרט שהנבדקים ראו בניסוי"></iframe>
+  <a href="https://www.youtube.com/watch?v=Rg5bBJQOL74" target="_blank" style="font-size:.45em;">לפתוח ב-YouTube</a>
 </div>
 </section>
-<section id="הניסוח-כרגרסיה-ליניארית" class="slide level2">
-<h2>הניסוח כרגרסיה ליניארית</h2>
-<p>ברגע שהשתמשנו ב-Dummy Coding, המודל המייצר נכתב כמשוואת רגרסיה:</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \quad \epsilon_i \sim \text{Normal}(0, \sigma)\]</span></p>
-<div>
+<section id="שאלה-אחת-שתי-מילים" class="slide level2">
+<h2>שאלה אחת, שתי מילים</h2>
+<div class="centered-content">
+<div class="pair-cards">
+  <div class="soft-card"><h3>hit</h3><p class="ltr" style="text-align:left;">About how fast were the cars going when they <b>hit</b> each other?</p></div>
+  <div class="soft-card"><h3>smashed</h3><p class="ltr" style="text-align:left;">About how fast were the cars going when they <b>smashed into</b> each other?</p></div>
+</div>
+<div style="margin-top:.6em;">
 <ul>
-<li class="fragment"><strong>החותך (<span class="math inline">\(\beta_0\)</span>):</strong> התוחלת של קבוצת הייחוס (<span class="math inline">\(X=0\)</span>), כלומר <span class="math inline">\(\beta_0 = \mu_{\text{control}}\)</span>.</li>
-<li class="fragment"><strong>השיפוע (<span class="math inline">\(\beta_1\)</span>):</strong> ההפרש בין התוחלות (<span class="math inline">\(\mu_{\text{treatment}} - \mu_{\text{control}}\)</span>), כלומר <span class="math inline">\(\beta_1 = \Delta\mu\)</span>.</li>
-<li class="fragment"><strong>השארית (<span class="math inline">\(\epsilon_i\)</span>):</strong> הסטייה האינדיבידואלית של תצפית <span class="math inline">\(i\)</span> מממוצע הקבוצה שלה.</li>
+<li class="fragment"><strong>שתי קבוצות בלתי תלויות:</strong> כל נבדק ראה את אותו סרט, וקיבל רק אחת משתי השאלות.</li>
+<li class="fragment"><strong>המשתנה הנמדד:</strong> הערכת המהירות. האם המילה בשאלה משנה את מה שהנבדקים זוכרים?</li>
+<li class="fragment"><strong>בניסוי המקורי:</strong> 50 נבדקים בכל קבוצה, וההערכה הממוצעת הייתה גבוהה יותר עם smashed (10.5 מייל לשעה) מאשר עם hit (8.0). בהמשך: נתונים מדומים באותו מבנה, בקמ”ש.</li>
 </ul>
 </div>
-</section>
-<section id="המודל-הריק-empty-model-והשאריות" class="slide level2">
-<h2>המודל הריק (Empty Model) והשאריות</h2>
-<p>מה קורה אם אנו מניחים שאין כלל הבדל בין הקבוצות (<span class="math inline">\(\beta_1 = 0\)</span>)?</p>
-<p>אנו מקבלים את <strong>המודל הריק</strong>:</p>
-<p><span class="math display">\[y_i = \beta_0 + \epsilon_i\]</span></p>
-<div>
-<ul>
-<li class="fragment">במודל הריק, החיזוי לכל התצפיות הוא הממוצע הכללי <span class="math inline">\(\bar{y}\)</span>.</li>
-<li class="fragment"><strong>השארית (<span class="math inline">\(e_i = y_i - \hat{y}_i\)</span>):</strong> המרחק בין התצפית בפועל לבין חיזוי המודל.</li>
-<li class="fragment">המודל הליניארי המלא עם המנבא <span class="math inline">\(X\)</span> שואף <strong>להקטין את גודל השאריות</strong> לעומת המודל הריק.</li>
-</ul>
+</div>
+<div class="fig-caption ltr" style="font-size:.45em; color:var(--ink-soft); text-align:center; margin-top:.4em;">
+<p>Loftus, E. F., &amp; Palmer, J. C. (1974). Reconstruction of automobile destruction: An example of the interaction between language and memory. <em>Journal of Verbal Learning and Verbal Behavior, 13</em>(5), 585–589. <a href="https://doi.org/10.1016/S0022-5371(74)80011-3" target="_blank">doi.org/10.1016/S0022-5371(74)80011-3</a></p>
 </div>
 </section>
-<section id="מטריצת-התכנון-design-matrix" class="slide level2">
-<h2>מטריצת התכנון (Design Matrix)</h2>
-<p>מאחורי הקלעים, כל מודל ליניארי מיוצג במטריצה <span class="math inline">\(X\)</span>:</p>
-<p><span class="math display">\[\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}\]</span></p>
-<p><span class="math display">\[\begin{bmatrix} y_1 \ y_2 \ y_3 \ y_4 \end{bmatrix} = \begin{bmatrix} 1 &amp; 0 \ 1 &amp; 0 \ 1 &amp; 1 \ 1 &amp; 1 \end{bmatrix} \begin{bmatrix} \beta_0 \ \beta_1 \end{bmatrix} + \begin{bmatrix} \epsilon_1 \ \epsilon_2 \ \epsilon_3 \ \epsilon_4 \end{bmatrix}\]</span></p>
-<p>הטור הראשון הוא עמודת ה-1-ים עבור החותך (<span class="math inline">\(\beta_0\)</span>), והטור השני הוא המשתנה הבינארי <span class="math inline">\(X_i\)</span>.</p>
+<section id="המודל-המייצר" class="slide level2 part-gate">
+<h2>המודל המייצר</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="now"></span><span class="later"></span><span class="later"></span></div>
+  <div class="gate-title">המודל המייצר</div>
+  <div class="gate-why">ממוצע לכל קבוצה, במשוואה אחת</div>
+</div>
 </section>
-<section id="התמוטטות-ההפרדה-המלאכותית" class="slide level2">
-<h2>התמוטטות ההפרדה המלאכותית!</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="הראייה-הישנה">הראייה הישנה</h3>
+<section id="dummy-coding" class="slide level2">
+<h2>Dummy coding</h2>
+<div class="centered-content">
+
+<div style="display:flex; justify-content:center;">
+<table style="font-size:.8em; min-width:420px;">
+  <thead><tr><th>הקבוצה</th><th class="ltr">x<sub>0</sub></th><th class="ltr">x<sub>1</sub></th></tr></thead>
+  <tbody>
+    <tr><td>hit</td><td class="ltr">1</td><td class="ltr">0</td></tr>
+    <tr><td>smashed</td><td class="ltr">1</td><td class="ltr">1</td></tr>
+  </tbody>
+</table>
+</div>
+<div style="margin-top:.8em;">
 <ul>
-<li>מבחן t למדגמים בלתי תלויים הוא כלי נפרד.</li>
-<li>רגרסיה ליניארית היא כלי נפרד לגמרי.</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="הראייה-המודרנית">הראייה המודרנית</h3>
-<ul>
-<li><strong>t-test אינו אלא רגרסיה ליניארית</strong> עם מנבא קטגוריאלי בינארי!</li>
-<li>קו הרגרסיה מחבר בדיוק בין ממוצע קבוצה 0 לממוצע קבוצה 1.</li>
+<li class="fragment"><strong>מספר במקום שם:</strong> קבוצת הייחוס, hit, מקבלת <span class="math inline">\(x_1 = 0\)</span>, והקבוצה השנייה, smashed, מקבלת <span class="math inline">\(x_1 = 1\)</span>.</li>
+<li class="fragment"><span class="math inline">\(x_0 = 1\)</span> לכל הנבדקים.</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="הדגמה-אינטראקטיבית-רגרסיה-עם-מנבא-קטגוריאלי" class="slide level2">
-<h2>הדגמה אינטראקטיבית: רגרסיה עם מנבא קטגוריאלי</h2>
-<div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #ddd; margin-top:10px;">
-  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:center; margin-bottom:12px; font-size:0.85em;">
-    <label>β0 (ביקורת): <b id="b0val_cr">10.0</b>
-      <input type="range" id="b0_cr" min="4" max="20" step="0.5" value="10" style="vertical-align:middle;"></label>
-    <label>β1 (הפרש): <b id="b1val_cr">5.0</b>
-      <input type="range" id="b1_cr" min="-10" max="12" step="0.5" value="5" style="vertical-align:middle;"></label>
-    <button id="resample_cr" style="padding:6px 12px; background:#2c3e50; color:#fff; border:none; border-radius:4px; cursor:pointer;">מדגם חדש</button>
-  </div>
-  <div id="demo-cat-reg" style="width:100%; height:380px;"></div>
+<section id="המודל-המייצר-1" class="slide level2">
+<h2>המודל המייצר</h2>
+<div class="centered-content">
+<div style="display:flex; gap:1.4em; align-items:center;">
+
+<table style="font-size:.66em; flex:0 0 auto; margin:0;">
+  <thead><tr><th>נבדק</th><th>קבוצה</th><th class="ltr">x<sub>0</sub></th><th class="ltr">x<sub>1</sub></th><th class="ltr" style="min-width:3.5em;"><i>y</i></th></tr></thead>
+  <tbody>
+    <tr><td class="ltr">1</td><td>hit</td><td class="ltr">1</td><td class="ltr">0</td><td></td></tr>
+    <tr><td class="ltr">2</td><td>hit</td><td class="ltr">1</td><td class="ltr">0</td><td></td></tr>
+    <tr><td class="ltr">3</td><td>hit</td><td class="ltr">1</td><td class="ltr">0</td><td></td></tr>
+    <tr><td class="ltr">4</td><td>smashed</td><td class="ltr">1</td><td class="ltr">1</td><td></td></tr>
+    <tr><td class="ltr">5</td><td>smashed</td><td class="ltr">1</td><td class="ltr">1</td><td></td></tr>
+    <tr><td class="ltr">6</td><td>smashed</td><td class="ltr">1</td><td class="ltr">1</td><td></td></tr>
+    <tr style="font-family:'Cambria Math', 'Times New Roman', serif; font-size:1.3em; line-height:1;"><td class="ltr">⋮</td><td class="ltr">⋮</td><td class="ltr">⋮</td><td class="ltr">⋮</td><td class="ltr">⋮</td></tr>
+  </tbody>
+</table>
+<div class="flow-diagram" style="flex:1; max-width:none; margin:0;">
+<div class="flow-node hidden-node">
+<p><strong><span class="math inline">\(\beta_0 = \blacksquare\)</span> · <span class="math inline">\(\beta_1 = \blacksquare\)</span> · <span class="math inline">\(\sigma = \blacksquare\)</span></strong> · חבויים בטבע</p>
 </div>
-<script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+<div class="flow-arrow">
+<p>▼</p>
+</div>
+<div class="flow-node ltr">
+<p><span class="math display">\[\begin{aligned} y_i &amp;\sim \text{Normal}(\mu_i,\ \sigma) \\ \mu_i &amp;= \beta_0 \cdot x_0 + \beta_1 \cdot x_{1,i} \end{aligned}\]</span></p>
+</div>
+<div class="flow-arrow">
+<p>▼</p>
+</div>
+<div class="flow-node seen-node">
+<p><strong><span class="math inline">\(y_1, y_2, \dots, y_{100}\)</span></strong> · הערכות המהירות, בקמ”ש</p>
+</div>
+</div>
+</div>
+<div style="margin-top:.5em;">
+<ul>
+<li class="fragment"><strong>hit</strong> (<span class="math inline">\(x_1 = 0\)</span>): <span class="math inline">\(\mu = \beta_0\)</span>. הממוצע של קבוצת הייחוס.</li>
+<li class="fragment"><strong>smashed</strong> (<span class="math inline">\(x_1 = 1\)</span>): <span class="math inline">\(\mu = \beta_0 + \beta_1\)</span>. לכן <span class="math inline">\(\beta_1\)</span> הוא <strong>ההבדל</strong> בין הקבוצות.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="המודל-המייצר-2" class="slide level2 example-slide">
+<h2>המודל המייצר</h2>
 <script>
-(function() {
-  let n_cr = 15, noise0_cr, noise1_cr, jx0_cr, jx1_cr;
-  function resample_cr() {
-    noise0_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*4);
-    noise1_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*4);
-    jx0_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*0.12);
-    jx1_cr = Array.from({length: n_cr}, () => (Math.random()-0.5)*0.12);
-  }
-  function drawCatReg() {
-    let b0 = parseFloat(document.getElementById('b0_cr').value);
-    let b1 = parseFloat(document.getElementById('b1_cr').value);
-    document.getElementById('b0val_cr').textContent = b0.toFixed(1);
-    document.getElementById('b1val_cr').textContent = b1.toFixed(1);
-
-    let y0 = noise0_cr.map(e => b0 + e);
-    let y1 = noise1_cr.map(e => b0 + b1 + e);
-    let x0 = jx0_cr.map(j => 0 + j);
-    let x1 = jx1_cr.map(j => 1 + j);
-
-    let trace0 = { x: x0, y: y0, mode: 'markers', name: 'ביקורת (X=0)', marker: {color: '#2980b9', size: 9} };
-    let trace1 = { x: x1, y: y1, mode: 'markers', name: 'ניסוי (X=1)', marker: {color: '#e67e22', size: 9} };
-    let traceLine = { x: [0, 1], y: [b0, b0+b1], mode: 'lines+markers', name: `קו הרגרסיה (β0 + β1·X)`, line: {color: '#c0392b', width: 3} };
-
-    let layout = {
-      title: `y = β0 + β1·X  →  β0 = ${b0.toFixed(1)}, β1 = ${b1.toFixed(1)}`,
-      xaxis: { title: 'משתנה קטגוריאלי (X)', tickvals: [0, 1], ticktext: ['ביקורת (0)', 'ניסוי (1)'], range: [-0.4, 1.4] },
-      yaxis: { title: 'משתנה תלוי (Y)' },
-      margin: { t: 40, b: 40, l: 45, r: 20 },
-      legend: { orientation: 'h', y: -0.2 }
+  // ── הנתונים והחישובים המשותפים לכל המצגת ──
+  (function () {
+    // נתונים מדומים במבנה של Loftus & Palmer (1974), ניסוי 2: הערכת מהירות בקמ"ש, 50 נבדקים בכל קבוצה.
+    // אפשר להחליף בנתונים של הכיתה. G0 = hit (x₁ = 0), G1 = smashed (x₁ = 1)
+    const G0 = [16, 16, 10, 22, 15, 16, 12, 5, 3, 13, 7, 42, 14, 7, 2, 8, 6, 3, 8, 9, 22, 14, 6, 7, 19, 4, 15, 8, 17, 24, 2, 26, 6, 16, 15, 3, 8, 22, 16, 13, 13, 13, 3, 30, 13, 14, 32, 6, 10, 23];
+    const G1 = [26, 19, 10, 7, 6, 9, 26, 18, 33, 18, 15, 22, 34, 22, 22, 25, 5, 33, 5, 14, 16, 20, 23, 4, 20, 8, 14, 20, 19, 10, 8, 4, 9, 5, 19, 18, 13, 20, 9, 2, 21, 4, 18, 42, 26, 17, 26, 6, 38, 24];
+    const n0 = G0.length, n1 = G1.length, n = n0 + n1, avg = a => a.reduce((s, v) => s + v, 0) / a.length;
+    const M0 = avg(G0), M1 = avg(G1);
+    const SW = G0.reduce((s, y) => s + (y - M0) ** 2, 0) + G1.reduce((s, y) => s + (y - M1) ** 2, 0);
+    // σ ידוע לשם ההדגמה בשקפי ה-likelihood וה-posterior (קרוב לסטיית התקן בתוך הקבוצות)
+    const SDK = 9;
+    // ה-posterior של המודל המלא (σ לא ידוע), על רשת, עם prior אחיד על β₀, β₁ ו-σ.
+    // האינטגרל על σ נותן p(β₀, β₁ | D) ∝ SS(β₀, β₁)^(−(n−1)/2), כש-SS הוא סכום ריבועי הסטיות מהמודל
+    const D = .05, B0 = [], B1 = [];
+    for (let k = 0; k <= 360; k++) B0.push(+(4 + k * D).toFixed(2));
+    for (let k = 0; k <= 480; k++) B1.push(+(-8 + k * D).toFixed(2));
+    const lp = (b0, b1) => -(n - 1) / 2 * Math.log(SW + n0 * (M0 - b0) ** 2 + n1 * (M1 - b0 - b1) ** 2);
+    let top = -Infinity; B0.forEach(a => B1.forEach(c => { top = Math.max(top, lp(a, c)); }));
+    const p0 = B0.map(() => 0), p1 = B1.map(() => 0), pS = new Array(B0.length + B1.length - 1).fill(0);
+    B0.forEach((a, i) => B1.forEach((c, j) => { const p = Math.exp(lp(a, c) - top); p0[i] += p; p1[j] += p; pS[i + j] += p; }));
+    const marg = (xs, ps) => {
+      const t = ps.reduce((a, b) => a + b, 0), pr = ps.map(p => p / t), cum = [];
+      pr.reduce((a, p, i) => (cum[i] = a + p), 0);
+      return { xs, ps: pr, q: q => xs[cum.findIndex(v => v >= q)] };
     };
-    Plotly.newPlot('demo-cat-reg', [trace0, trace1, traceLine], layout, {displayModeBar:false});
-  }
-  document.getElementById('b0_cr').addEventListener('input', drawCatReg);
-  document.getElementById('b1_cr').addEventListener('input', drawCatReg);
-  document.getElementById('resample_cr').addEventListener('click', () => { resample_cr(); drawCatReg(); });
-  resample_cr();
-  setTimeout(drawCatReg, 400);
-})();
+    const post0 = marg(B0, p0), post1 = marg(B1, p1), postS = marg(pS.map((_, k) => +(4 - 8 + k * D).toFixed(2)), pS);
+    const pd = post1.ps.reduce((a, p, j) => a + (B1[j] > 0 ? p : B1[j] === 0 ? p / 2 : 0), 0);
+    // jitter קבוע לנקודות באיור הדיווח (כדי שהאיור לא יקפוץ בין צעדים)
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const JIT0 = G0.map(() => rnd() * 2 - 1), JIT1 = G1.map(() => rnd() * 2 - 1);
+    window.W6V1 = { G0, G1, n0, n1, n, M0, M1, SDK, post0, post1, postS, pd, JIT0, JIT1 };
+  })();
 </script>
+<div class="demo-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <button class="demo-btn" data-g="1">נבדק לכל קבוצה</button>
+    <button class="demo-btn" data-g="10">10 לכל קבוצה</button>
+    <button id="gm-model" class="demo-btn ghost" aria-pressed="true">הסתרת המודל</button>
+    <button id="gm-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <svg id="gm-svg" viewbox="0 0 1000 360" style="width:100%; height:auto; display:block;" aria-label="המודל המייצר: שתי קבוצות, פעמון לכל קבוצה סביב β₀ ו-β₀ + β₁, והערכות מהירות שנוצרות מהם">
+    <g id="gm-static"></g><g id="gm-fly"></g>
+  </svg>
+  <div class="demo-readout" id="gm-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('gm-svg');
+    if (!svg) return;
+    const $ = id => document.getElementById(id), fly = $('gm-fly');
+    // המודל המייצר: β₀, β₁ ו-σ קבועים וחבויים. הציר האנכי הוא הערכת המהירות, ולכל קבוצה פעמון שוכב על הצד
+    const B0 = 13, B1 = 4, SD = 9;
+    const lo = 0, hi = 50, yt = 14, yb = 296, Y = v => yb - (v - lo) / (hi - lo) * (yb - yt);
+    const axX = 110, bW = 120;
+    // לכל קבוצה: עמודת הנבדקים, והרצפה של הפעמון מימין לה
+    const G = [{ x0: 150, x1: 330, floor: 350, name: 'hit', x: 0 }, { x0: 590, x1: 770, floor: 790, name: 'smashed', x: 1 }];
+    const MU = g => B0 + B1 * G[g].x;
+    const randn = () => { let u = 0, v = 0; while (!u) u = Math.random(); while (!v) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+    // ys: כל הנבדקים {g, y, j}, landed: אילו כבר נחתו, fresh: מאיזה אינדקס מתחילה הקבוצה האחרונה
+    let ys = [], landed = new Set(), fresh = 0, gen0 = 0, show = true;
+    const px = d => G[d.g].x0 + d.j * (G[d.g].x1 - G[d.g].x0);
+    function bell(g) {
+      const m = MU(g), f = G[g].floor, pts = [];
+      for (let i = 0; i <= 160; i++) { const v = m - 3.5 * SD + i / 160 * 7 * SD; if (v < lo || v > hi) continue; pts.push([f + Math.exp(-.5 * ((v - m) / SD) ** 2) * bW, Y(v)]); }
+      const curve = pts.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1)).join('');
+      return `<path d="M${f},${pts[0][1].toFixed(1)}${curve.replace('M', 'L')}L${f},${pts[pts.length - 1][1].toFixed(1)}Z" fill="var(--hidden-bg)" stroke="none"/>
+              <path d="${curve}" fill="none" stroke="var(--hidden)" stroke-width="2.5"/>
+              <line x1="${f}" y1="${Y(Math.min(hi, m + 3.5 * SD))}" x2="${f}" y2="${Y(Math.max(lo, m - 3.5 * SD))}" stroke="var(--ink)" stroke-width="3"/>`;
+    }
+    function draw() {
+      let s = '';
+      for (let v = 0; v <= 50; v += 10) s += `<line x1="${axX}" y1="${Y(v)}" x2="${G[1].floor + bW}" y2="${Y(v)}" stroke="var(--rule)"/>
+        <text x="${axX - 12}" y="${Y(v) + 5}" text-anchor="end" direction="ltr" font-size="15" fill="var(--ink-soft)">${v}</text>`;
+      s += `<line x1="${axX}" y1="${yt}" x2="${axX}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="${axX - 56}" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="16" fill="var(--ink-soft)" transform="rotate(-90 ${axX - 56} ${(yt + yb) / 2})">הערכת המהירות (קמ"ש)</text>`;
+      // שם הקבוצה וה-x₁ שלה, מתחת לעמודה
+      G.forEach(g => { const c = (g.x0 + g.floor + bW) / 2;
+        s += `<text x="${c}" y="${yb + 30}" text-anchor="middle" direction="ltr" font-size="18" font-weight="700" fill="var(--ink)">${g.name}</text>
+              <text x="${c}" y="${yb + 54}" text-anchor="middle" direction="ltr" font-size="15" fill="var(--ink-soft)">x₁ = ${g.x}</text>`; });
+      if (show) {
+        s += bell(0) + bell(1);
+        // β₀: קו מקווקו בגובה הממוצע של hit, לאורך שתי הקבוצות. β₁: המרחק ממנו עד הממוצע של smashed
+        const bx = G[1].x0 - 22;
+        s += `<line x1="${axX}" y1="${Y(B0)}" x2="${G[1].floor}" y2="${Y(B0)}" stroke="var(--hidden)" stroke-width="2" stroke-dasharray="6 5"/>
+              <line x1="${bx}" y1="${Y(B0 + B1)}" x2="${G[1].floor}" y2="${Y(B0 + B1)}" stroke="var(--hidden)" stroke-width="2" stroke-dasharray="6 5"/>
+              <line x1="${bx}" y1="${Y(B0)}" x2="${bx}" y2="${Y(B0 + B1)}" stroke="var(--hidden)" stroke-width="3"/>
+              <line x1="${bx - 6}" y1="${Y(B0 + B1)}" x2="${bx + 6}" y2="${Y(B0 + B1)}" stroke="var(--hidden)" stroke-width="3"/>
+              <text x="${bx - 10}" y="${Y(B0 + B1 / 2) + 6}" text-anchor="end" direction="ltr" font-size="17" font-weight="700" fill="var(--hidden)">β₁ = ${B1}</text>
+              <text x="${axX + 8}" y="${Y(B0) - 8}" text-anchor="start" direction="ltr" font-size="17" font-weight="700" fill="var(--hidden)">β₀ = ${B0}</text>
+              <text x="${G[1].floor + bW + 8}" y="${yt + 10}" text-anchor="end" direction="ltr" font-size="16" font-weight="700" fill="var(--hidden)">σ = ${SD}</text>`;
+      } else {
+        s += `<text x="${G[1].floor + bW + 8}" y="${yt + 10}" text-anchor="end" direction="ltr" font-size="17" font-weight="700" fill="var(--hidden)">β₀ = ■ · β₁ = ■ · σ = ■</text>`;
+      }
+      // הנבדקים שכבר נחתו: הקבוצה האחרונה גדולה ובצבע העקומה, עם קו מקווקו מהגובה שלה בפעמון
+      const last = ys.length - fresh <= 20;
+      ys.forEach((d, i) => {
+        if (!landed.has(i)) return;
+        const isNew = last && i >= fresh, x = px(d);
+        if (isNew && show) s += `<line x1="${x}" y1="${Y(d.y)}" x2="${G[d.g].floor + Math.exp(-.5 * ((d.y - MU(d.g)) / SD) ** 2) * bW}" y2="${Y(d.y)}" stroke="var(--curve)" stroke-width="1.5" stroke-dasharray="3 4" opacity=".7"/>`;
+        s += `<circle cx="${x}" cy="${Y(d.y)}" r="${isNew ? 7 : 4.5}" fill="${isNew && show ? 'var(--curve)' : 'var(--seen)'}" opacity="${isNew ? 1 : .55}"/>`;
+      });
+      $('gm-static').innerHTML = s;
+      const L = [0, 1].map(g => ys.filter((d, i) => d.g === g && landed.has(i)).map(d => d.y));
+      if (!L[0].length && !L[1].length) { $('gm-out').innerHTML = 'עוד אין נבדקים'; return; }
+      const avg = a => a.reduce((x, y) => x + y, 0) / a.length;
+      let out = G.map((g, k) => `${g.name}: <span class="ltr">n = ${L[k].length}</span>` + (L[k].length ? `, ממוצע <span class="ltr">${avg(L[k]).toFixed(1)}</span>` : '')).join(' · ');
+      if (L[0].length && L[1].length) out += ` · ההבדל בין הממוצעים: <span class="ltr">${(avg(L[1]) - avg(L[0])).toFixed(1)}</span>`;
+      $('gm-out').innerHTML = out;
+    }
+    // נפילה: הכדור מופיע בראש הפעמון של הקבוצה שלו, ויורד שמאלה בזיגזג עד המקום שלו
+    function drop(i, delay, gen) {
+      const d = ys[i], x1 = px(d), y1 = Y(d.y), x0 = show ? G[d.g].floor + bW - 6 : x1, y0 = show ? Y(MU(d.g)) : y1;
+      const K = 7, pts = [[x0, y0]];
+      for (let k = 1; k < K; k++) { const t = k / K, wob = (Math.random() < .5 ? -1 : 1) * 10 * Math.sin(Math.PI * t); pts.push([x0 + (x1 - x0) * t, y0 + (y1 - y0) * t + wob]); }
+      pts.push([x1, y1]);
+      const ball = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      ball.setAttribute('r', 7); ball.setAttribute('fill', show ? 'var(--curve)' : 'var(--seen)'); ball.setAttribute('opacity', 0);
+      ball.setAttribute('cx', x0); ball.setAttribute('cy', y0);
+      fly.appendChild(ball);
+      const FADE = 250, SEG = 110, t0 = performance.now() + delay;
+      (function frame(now) {
+        if (gen !== gen0) { ball.remove(); return; }
+        const e = now - t0;
+        if (e < 0) { requestAnimationFrame(frame); return; }
+        if (e < FADE) { ball.setAttribute('opacity', e / FADE); requestAnimationFrame(frame); return; }
+        ball.setAttribute('opacity', 1);
+        const u = show ? (e - FADE) / SEG : K, k = Math.min(Math.floor(u), K - 1), f = Math.min(u - k, 1);
+        const g = 1 - (1 - f) * (1 - f), a = pts[k], b = pts[k + 1];
+        ball.setAttribute('cx', a[0] + (b[0] - a[0]) * g); ball.setAttribute('cy', a[1] + (b[1] - a[1]) * g);
+        if (u < K) requestAnimationFrame(frame);
+        else { ball.remove(); landed.add(i); draw(); }
+      })(performance.now());
+    }
+    function gen(k) {
+      // קבוצה חדשה: מה שעוד באוויר נוחת מיד. הנבדקים מתחלפים בין הקבוצות
+      fly.innerHTML = ''; gen0++; ys.forEach((_, i) => landed.add(i)); fresh = ys.length;
+      for (let i = 0; i < 2 * k; i++) {
+        const g = i % 2;
+        ys.push({ g, y: Math.max(1, Math.min(49, Math.round(MU(g) + SD * randn()))), j: Math.random() });
+        drop(ys.length - 1, i * 120, gen0);
+      }
+      draw();
+    }
+    function reset() { gen0++; fly.innerHTML = ''; ys = []; landed = new Set(); fresh = 0; draw(); }
+    svg.closest('.demo-panel').querySelectorAll('[data-g]').forEach(b => b.onclick = () => gen(+b.dataset.g));
+    $('gm-reset').onclick = reset;
+    $('gm-model').onclick = function () {
+      show = !show;
+      this.textContent = show ? 'הסתרת המודל' : 'הצגת המודל';
+      this.setAttribute('aria-pressed', show);
+      draw();
+    };
+    reset();
+  })();
+</script>
+<div class="demo-note">
+<p>המחשב יודע את <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> ו-<span class="math inline">\(\sigma\)</span>, וכל לחיצה מייצרת נבדק בכל קבוצה. הפעמון של hit יושב על <span class="math inline">\(\beta_0\)</span>, והפעמון של smashed על <span class="math inline">\(\beta_0 + \beta_1\)</span>. לשניהם אותו <span class="math inline">\(\sigma\)</span>. במחקר אמיתי יש לנו רק את ההערכות.</p>
+</div>
 </section>
-<section id="סיכום-w6.v1" class="slide level2">
-<h2>סיכום W6.V1</h2>
+<section id="נראות-של-שני-פרמטרים" class="slide level2 part-gate">
+<h2>נראות של שני פרמטרים</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="now"></span><span class="later"></span></div>
+  <div class="gate-title">נראות של שני פרמטרים</div>
+  <div class="gate-why">β₀ ו-β₁ יחד, בהנחה שאנחנו יודעים את σ, הנחה שנעשה לשם ההדגמה</div>
+</div>
+</section>
+<section id="נראות-של-שני-פרמטרים-1" class="slide level2">
+<h2>נראות של שני פרמטרים</h2>
+<div class="centered-content">
+<div>
 <ul>
-<li>מנבא קטגוריאלי מומר למספר בעזרת <strong>Dummy Coding</strong> (<span class="math inline">\(0/1\)</span>).</li>
-<li><strong><span class="math inline">\(\beta_0\)</span></strong> מייצג את ממוצע קבוצת הייחוס.</li>
-<li><strong><span class="math inline">\(\beta_1\)</span></strong> מייצג את <strong>ההבדל בין הממוצעים</strong> (<span class="math inline">\(\Delta\mu\)</span>).</li>
-<li>השוואת קבוצות ו-t-test הם מקרים פרטיים של המודל הליניארי.</li>
+<li class="fragment"><p>מועמד הוא <strong>זוג</strong>, <span class="math inline">\((\beta_0, \beta_1)\)</span>. כל זוג קובע שני פעמונים: אחד ל-hit ואחד ל-smashed.</p></li>
+<li class="fragment"><p>לכל תצפית: הצפיפות שלה בפעמון של <strong>הקבוצה שלה</strong>. וכמו בשבוע שעבר, כופלים:</p>
+<div class="ltr">
+<p><span class="math display">\[\mathcal{L}(\beta_0, \beta_1) = \prod_{i=1}^{n} p(y_i \mid \beta_0 + \beta_1 x_{1,i},\ \sigma)\]</span></p>
+</div></li>
+<li class="fragment"><p>התוצאה היא <strong>מפה</strong>: ציר אחד ל-<span class="math inline">\(\beta_0\)</span>, ציר אחד ל-<span class="math inline">\(\beta_1\)</span>, והצבע הוא ה-<span class="term">likelihood</span>.</p></li>
 </ul>
+</div>
+</div>
+</section>
+<section id="נראות-של-שני-פרמטרים-2" class="slide level2 example-slide">
+<h2>נראות של שני פרמטרים</h2>
+<div class="demo-panel">
+  <!-- הכפתורים יושבים על האיור: הנתונים למעלה משמאל, β₀ מעל המפה, β₁ מימין למפה (מיקום באחוזים של ה-viewBox, 1000 × 410) -->
+  <div style="position:relative;">
+    <svg id="l2-svg" viewbox="0 0 1000 410" style="width:100%; height:auto; display:block; cursor:crosshair;" aria-label="ההערכות בשתי הקבוצות עם הפעמונים של הזוג שנבחר, ומימין מפת ה-likelihood של β₀ ו-β₁"></svg>
+    <div class="demo-controls" style="position:absolute; left:0; top:0; width:50%; margin:0; justify-content:flex-end;">
+      <button id="l2-five" class="demo-btn">+5 לכל קבוצה</button>
+      <button id="l2-all" class="demo-btn">כל הנתונים</button>
+      <label><input type="checkbox" id="l2-means"> ממוצעי הקבוצות</label>
+      <label><input type="checkbox" id="l2-map"> נראות רציפה</label>
+      <label><input type="checkbox" id="l2-peak"> השיא</label>
+      <button id="l2-reset" class="demo-btn ghost">איפוס</button>
+    </div>
+    <!-- β₀: הכפתורים זה ליד זה באמצע, והפס לכל רוחב המפה, ממש מעליה -->
+    <div class="demo-controls" style="position:absolute; left:57%; width:31%; top:4%; margin:0; justify-content:center; flex-wrap:nowrap; gap:6px;">
+      <button id="l2-b0-up" class="demo-btn" style="white-space:nowrap; direction:ltr; background:var(--ink-soft);">β₀ ▶</button>
+      <button id="l2-b0-down" class="demo-btn" style="white-space:nowrap; direction:ltr; background:var(--ink-soft);">◀ β₀</button>
+    </div>
+    <input type="range" id="l2-b0" min="5" max="21" step="0.1" aria-label="β₀" style="position:absolute; left:57%; width:31%; top:13.5%; height:24px; margin:0; direction:ltr; accent-color:var(--ink-soft);">
+    <!-- β₁: הפס לכל גובה המפה, והכפתורים זה מעל זה מימין לאמצע שלו -->
+    <input type="range" id="l2-b1" min="-6" max="14" step="0.1" aria-label="β₁" style="position:absolute; left:90.5%; top:19.5%; height:67.1%; width:24px; margin:0; transform:translateX(-50%); writing-mode:vertical-lr; direction:rtl; accent-color:var(--ink-soft);">
+    <div style="position:absolute; left:96.5%; top:53%; transform:translate(-50%, -50%); display:flex; flex-direction:column; gap:6px; font-size:.5em;">
+      <button id="l2-b1-up" class="demo-btn" style="white-space:nowrap; background:var(--ink-soft);">β₁ ▲</button>
+      <button id="l2-b1-down" class="demo-btn" style="white-space:nowrap; background:var(--ink-soft);">β₁ ▼</button>
+    </div>
+  </div>
+  <div class="demo-readout" id="l2-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:1.4em;"></div>
+</div>
+<script>
+  (function () {
+    const svg = document.getElementById('l2-svg'), V = window.W6V1;
+    if (!svg || !V) return;
+    const $ = id => document.getElementById(id);
+    // אותו מנגנון כמו במפה של μ ו-σ (W5.V2), עם β₀ ו-β₁. σ ידוע לשם ההדגמה
+    const SD = V.SDK, yb = 355, yt = 80, Yd = v => yb - v / 50 * (yb - yt), axX = 64, bW = 92;
+    const G = [{ x0: 80, x1: 160, floor: 172, name: 'hit', d: V.G0 }, { x0: 290, x1: 370, floor: 382, name: 'smashed', d: V.G1 }];
+    const mX0 = 570, mX1 = 880, a0 = 5, a1 = 21, c0 = -6, c1 = 14;
+    const MX = v => mX0 + (v - a0) / (a1 - a0) * (mX1 - mX0), SY = v => yb - (v - c0) / (c1 - c0) * (yb - yt);
+    const GW = 220, GH = 200, cv = document.createElement('canvas'); cv.width = GW; cv.height = GH;
+    const g = cv.getContext('2d');
+    // כמה תצפיות מכל קבוצה מוצגות, ו-jitter קבוע לכל תצפית
+    let k = 0, URL = '', TOP = 0, seen = new Map(), pb0 = 18, pb1 = -4;
+    const JIT = [V.JIT0, V.JIT1];
+    // הסכומים של כל קבוצה, כדי שהמפה תתעדכן מהר
+    const sums = () => G.map(q => { const y = q.d.slice(0, k); return [y.length, y.reduce((a, v) => a + v, 0), y.reduce((a, v) => a + v * v, 0)]; });
+    let SM = sums();
+    const ll = (b0, b1) => -[b0, b0 + b1].reduce((a, m, i) => a + SM[i][2] - 2 * m * SM[i][1] + SM[i][0] * m * m, 0) / (2 * SD * SD);
+    const mean = i => SM[i][0] ? SM[i][1] / SM[i][0] : 0;
+    function rebuild() {
+      SM = sums(); TOP = -Infinity;
+      const grid = [];
+      for (let j = 0; j < GH; j++) for (let i = 0; i < GW; i++) { const v = ll(a0 + (i + .5) / GW * (a1 - a0), c1 - (j + .5) / GH * (c1 - c0)); grid.push(v); if (v > TOP) TOP = v; }
+      // מהרקע (#fcfcfa) אל צבע העקומה (#c2405f), יחסית לשיא
+      const img = g.createImageData(GW, GH);
+      grid.forEach((v, q) => { const r = Math.exp(v - TOP), p = 4 * q; img.data[p] = 252 + (194 - 252) * r; img.data[p + 1] = 252 + (64 - 252) * r; img.data[p + 2] = 250 + (95 - 250) * r; img.data[p + 3] = 255; });
+      g.putImageData(img, 0, 0);
+      URL = cv.toDataURL();
+    }
+    const rel = (b0, b1) => Math.exp(ll(b0, b1) - TOP);
+    function draw() {
+      seen.set(pb0.toFixed(1) + ',' + pb1.toFixed(1), [pb0, pb1]);
+      const mu = [pb0, pb0 + pb1];
+      let s = '';
+      // המפה: מלאה (נראות רציפה), או נקודה לכל זוג שבדקנו
+      if ($('l2-map').checked) s += `<image href="${URL}" x="${mX0}" y="${yt}" width="${mX1 - mX0}" height="${yb - yt}" preserveAspectRatio="none"/>`;
+      else seen.forEach(([a, c]) => { s += `<circle cx="${MX(a)}" cy="${SY(c)}" r="4" fill="var(--curve)" opacity="${.12 + .88 * rel(a, c)}"/>`; });
+      s += `<rect x="${mX0}" y="${yt}" width="${mX1 - mX0}" height="${yb - yt}" fill="none" stroke="var(--ink-faint)"/>`;
+      [5, 10, 15, 20].forEach(v => { s += `<text x="${MX(v)}" y="${yb + 24}" text-anchor="middle" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
+      [-5, 0, 5, 10].forEach(v => { s += `<text x="${mX0 - 10}" y="${SY(v) + 5}" text-anchor="end" direction="ltr" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<line x1="${mX0}" y1="${SY(0)}" x2="${mX1}" y2="${SY(0)}" stroke="var(--ink-faint)" stroke-dasharray="2 4"/>
+            <text x="${mX1 + 16}" y="${yb + 24}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">β₀</text>
+            <text x="${mX0 - 50}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="18" font-weight="700" fill="var(--hidden)">β₁</text>`;
+      if ($('l2-peak').checked && k) { const pa = mean(0), pc = mean(1) - mean(0);
+        s += `<line x1="${MX(pa)}" y1="${yt}" x2="${MX(pa)}" y2="${yb}" stroke="var(--ink)" stroke-dasharray="5 5"/>
+              <line x1="${mX0}" y1="${SY(pc)}" x2="${mX1}" y2="${SY(pc)}" stroke="var(--ink)" stroke-dasharray="5 5"/>
+              <circle cx="${MX(pa)}" cy="${SY(pc)}" r="7" fill="var(--ink)"/>`; }
+      // הזוג שנבחר, וקווים מקווקווים אל הערכים שלו על שני הצירים
+      s += `<line x1="${MX(pb0)}" y1="${SY(pb1)}" x2="${MX(pb0)}" y2="${yb}" stroke="var(--hidden)" stroke-width="2" stroke-dasharray="5 4"/>
+            <line x1="${MX(pb0)}" y1="${SY(pb1)}" x2="${mX0}" y2="${SY(pb1)}" stroke="var(--hidden)" stroke-width="2" stroke-dasharray="5 4"/>
+            <rect x="${MX(pb0) - 22}" y="${yb + 6}" width="44" height="22" rx="4" fill="var(--hidden)"/>
+            <text x="${MX(pb0)}" y="${yb + 22}" text-anchor="middle" direction="ltr" font-size="14" font-weight="700" fill="#fff">${pb0.toFixed(1)}</text>
+            <rect x="${mX0 - 50}" y="${SY(pb1) - 11}" width="44" height="22" rx="4" fill="var(--hidden)"/>
+            <text x="${mX0 - 28}" y="${SY(pb1) + 5}" text-anchor="middle" direction="ltr" font-size="14" font-weight="700" fill="#fff">${pb1.toFixed(1)}</text>
+            <circle cx="${MX(pb0)}" cy="${SY(pb1)}" r="9" fill="none" stroke="var(--hidden)" stroke-width="4"/>`;
+      // ציר המהירות
+      [0, 10, 20, 30, 40, 50].forEach(v => { s += `<line x1="${axX}" y1="${Yd(v)}" x2="${G[1].floor + bW}" y2="${Yd(v)}" stroke="var(--rule)"/>
+        <text x="${axX - 8}" y="${Yd(v) + 5}" text-anchor="end" direction="ltr" font-size="15" fill="var(--ink-soft)">${v}</text>`; });
+      s += `<line x1="${axX}" y1="${yt}" x2="${axX}" y2="${yb}" stroke="var(--ink)" stroke-width="2"/>
+            <text x="16" y="${(yt + yb) / 2}" text-anchor="middle" direction="rtl" font-size="15" fill="var(--ink-soft)" transform="rotate(-90 16 ${(yt + yb) / 2})">הערכת המהירות (קמ"ש)</text>`;
+      // לכל קבוצה: הפעמון שלה, שמונח על β₀ או על β₀ + β₁
+      const many = k > 15;
+      G.forEach((q, gi) => {
+        const m = mu[gi], f = q.floor;
+        let b = '', y0 = null, y1 = null;
+        for (let i = 0; i <= 120; i++) { const v = m - 3.2 * SD + i / 120 * 6.4 * SD; if (v < 0 || v > 50) continue; if (y0 === null) y0 = Yd(v); y1 = Yd(v); b += (b ? 'L' : 'M') + (f + Math.exp(-.5 * ((v - m) / SD) ** 2) * bW).toFixed(1) + ',' + Yd(v).toFixed(1); }
+        if (b) s += `<path d="M${f},${y0.toFixed(1)}${b.replace('M', 'L')}L${f},${y1.toFixed(1)}Z" fill="var(--hidden-bg)" stroke="none"/>
+              <path d="${b}" fill="none" stroke="var(--hidden)" stroke-width="2.5"/>
+              <line x1="${f}" y1="${y0}" x2="${f}" y2="${y1}" stroke="var(--ink)" stroke-width="3"/>`;
+        if (m >= 0 && m <= 50) s += `<line x1="${q.x0 - 8}" y1="${Yd(m)}" x2="${f + bW}" y2="${Yd(m)}" stroke="var(--hidden)" stroke-width="2" stroke-dasharray="6 5"/>`;
+        if ($('l2-means').checked && k) s += `<line x1="${q.x0 - 8}" y1="${Yd(mean(gi))}" x2="${f + bW}" y2="${Yd(mean(gi))}" stroke="var(--seen)" stroke-width="2.5"/>`;
+        s += `<text x="${(q.x0 + f + bW) / 2}" y="${yb + 26}" text-anchor="middle" direction="ltr" font-size="16" font-weight="700" fill="var(--ink)">${q.name}</text>
+              <text x="${(q.x0 + f + bW) / 2}" y="${yb + 46}" text-anchor="middle" direction="ltr" font-size="14" fill="var(--hidden)">${gi ? 'μ = β₀ + β₁' : 'μ = β₀'}</text>`;
+        // התצפיות: קו אל בסיס הפעמון, והצפיפות שלה (הקו האדום) עד הפעמון. תצפית שהפעמון לא מכסה מחווירה
+        const ys = q.d.slice(0, k);
+        ys.forEach((y, i) => { const x = q.x0 + (JIT[gi][i] + 1) / 2 * (q.x1 - q.x0), d = Math.exp(-.5 * ((y - m) / SD) ** 2);
+          s += `<line x1="${x}" y1="${Yd(y)}" x2="${f}" y2="${Yd(y)}" stroke="var(--seen)" stroke-width="${many ? 1 : 1.5}" stroke-dasharray="3 4" opacity="${many ? .25 : .55}"/>
+                <line x1="${f}" y1="${Yd(y)}" x2="${f + d * bW}" y2="${Yd(y)}" stroke="var(--curve)" stroke-width="${many ? 2 : 3.5}" stroke-linecap="round" opacity="${many ? .45 : .9}"/>`; });
+        ys.forEach((y, i) => { s += `<circle cx="${q.x0 + (JIT[gi][i] + 1) / 2 * (q.x1 - q.x0)}" cy="${Yd(y)}" r="${many ? 3.5 : 5.5}" fill="var(--seen)" opacity="${.2 + .8 * Math.exp(-.5 * ((y - m) / SD) ** 2)}"/>`; });
+      });
+      svg.innerHTML = s;
+      const r = rel(pb0, pb1);
+      let out = k
+        ? `תצפיות: <span class="ltr">${k}</span> בכל קבוצה · <span class="ltr">β₀ = ${pb0.toFixed(1)}, β₁ = ${pb1.toFixed(1)}</span> · likelihood ביחס לשיא: <span class="ltr">${r < .001 ? '&lt;0.1' : (100 * r).toFixed(1)}%</span>`
+        : `<span class="ltr">β₀ = ${pb0.toFixed(1)}, β₁ = ${pb1.toFixed(1)}</span> · עוד אין תצפיות. בלי תצפיות, כל הזוגות סבירים באותה מידה`;
+      if ($('l2-peak').checked && k) out += ` · השיא: <span class="ltr">β₀ = ${mean(0).toFixed(1)}, β₁ = ${(mean(1) - mean(0)).toFixed(1)}</span>`;
+      $('l2-out').innerHTML = out;
+      $('l2-b0').value = pb0; $('l2-b1').value = pb1;
+      $('l2-b0-up').disabled = pb0 >= a1 - 1e-9; $('l2-b0-down').disabled = pb0 <= a0 + 1e-9;
+      $('l2-b1-up').disabled = pb1 >= c1 - 1e-9; $('l2-b1-down').disabled = pb1 <= c0 + 1e-9;
+      $('l2-five').disabled = $('l2-all').disabled = k >= V.n0;
+    }
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v)), snap = v => Math.round(v * 2) / 2;
+    $('l2-b0-up').onclick = () => { pb0 = clamp(snap(pb0 + .5), a0, a1); draw(); };
+    $('l2-b0-down').onclick = () => { pb0 = clamp(snap(pb0 - .5), a0, a1); draw(); };
+    $('l2-b1-up').onclick = () => { pb1 = clamp(snap(pb1 + .5), c0, c1); draw(); };
+    $('l2-b1-down').onclick = () => { pb1 = clamp(snap(pb1 - .5), c0, c1); draw(); };
+    $('l2-b0').oninput = () => { pb0 = +$('l2-b0').value; draw(); };
+    $('l2-b1').oninput = () => { pb1 = +$('l2-b1').value; draw(); };
+    svg.addEventListener('click', e => {
+      const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+      const q = p.matrixTransform(svg.getScreenCTM().inverse());
+      if (q.x < mX0 || q.x > mX1 || q.y < yt || q.y > yb) return;
+      pb0 = a0 + (q.x - mX0) / (mX1 - mX0) * (a1 - a0); pb1 = c0 + (yb - q.y) / (yb - yt) * (c1 - c0); draw();
+    });
+    $('l2-five').onclick = () => { k = Math.min(V.n0, k + 5); rebuild(); draw(); };
+    $('l2-all').onclick = () => { k = V.n0; rebuild(); draw(); };
+    ['l2-peak', 'l2-means', 'l2-map'].forEach(id => $(id).onchange = draw);
+    $('l2-reset').onclick = () => { k = 0; pb0 = 18; pb1 = -4; seen = new Map(); ['l2-peak', 'l2-means', 'l2-map'].forEach(id => $(id).checked = false); rebuild(); draw(); };
+    rebuild(); draw();
+  })();
+</script>
+<div class="demo-note">
+<p>כל נקודה במפה היא זוג מועמד, וכל זוג מניח פעמון על כל קבוצה. הקווים האדומים הם הצפיפות של כל תצפית בפעמון של הקבוצה שלה, ותצפית שהפעמון לא מכסה מחווירה. נסו להעלות את <span class="math inline">\(\beta_0\)</span>: כדי שהפעמון של smashed יישאר במקום, צריך להוריד את <span class="math inline">\(\beta_1\)</span>. לכן המפה נוטה.</p>
+</div>
+</section>
+<section id="הערכה-bayesian" class="slide level2 part-gate">
+<h2>הערכה Bayesian</h2>
+<div class="gate">
+  <div class="gate-dots"><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span></div>
+  <div class="gate-title">הערכה Bayesian</div>
+  <div class="gate-why">מה הסיכוי לכל ערך של ההבדל, β₁, בהינתן ההערכות?</div>
+</div>
+</section>
+<section id="הערכה-bayesian-של-ההבדל" class="slide level2 example-slide">
+<h2>הערכה Bayesian של ההבדל</h2>
+<div class="demo-panel" id="p3-panel">
+  <div class="demo-controls" style="justify-content:center;">
+    <span>prior:</span>
+    <button id="p3-flat" class="demo-btn" aria-pressed="true">אחיד</button>
+    <button id="p3-skep" class="demo-btn ghost" aria-pressed="false">ספקני</button>
+    <span style="width:.8em;"></span>
+    <button id="p3-s1" class="demo-btn">prior</button>
+    <button id="p3-s2" class="demo-btn">prior × likelihood</button>
+    <button id="p3-s3" class="demo-btn">÷ P(D)</button>
+    <button id="p3-s4" class="demo-btn">מבט מהצד</button>
+    <button id="p3-s5" class="demo-btn">posterior שולי</button>
+    <button id="p3-reset" class="demo-btn ghost">איפוס</button>
+  </div>
+  <canvas id="p3-cv" style="width:100%; height:auto; display:block; cursor:grab; touch-action:none;" aria-label="משטח תלת-ממדי של ה-likelihood וה-posterior של β₀ ו-β₁, ומבט מהצד שמראה את ה-posterior השולי של β₁"></canvas>
+  <div class="demo-readout" id="p3-out" style="text-align:center; font-size:.5em; margin-top:4px; min-height:2.8em; font-weight:400;"></div>
+</div>
+<script>
+  (function () {
+    const cv = document.getElementById('p3-cv'), V = window.W6V1;
+    if (!cv || !V) return;
+    const $ = id => document.getElementById(id), ctx = cv.getContext('2d');
+    const W = 1000, H = 420, DPR = 2;
+    cv.width = W * DPR; cv.height = H * DPR;
+    // הרשת: β₀ ו-β₁ סביב השיא, וכל התצפיות. σ ידוע לשם ההדגמה, כמו במפה
+    const N = 40, A0 = 8.5, A1 = 17.5, C0 = -3.5, C1 = 11.5, SD = V.SDK;
+    const b0 = i => A0 + i / N * (A1 - A0), b1 = j => C0 + j / N * (C1 - C0);
+    const ll = (a, c) => { let s = 0; V.G0.forEach(y => s += (y - a) ** 2); V.G1.forEach(y => s += (y - a - c) ** 2); return -s / (2 * SD * SD) - V.n * Math.log(SD * Math.sqrt(2 * Math.PI)); };
+    const LL = [], L = [];
+    let llTop = -Infinity;
+    for (let i = 0; i <= N; i++) { LL.push([]); for (let j = 0; j <= N; j++) { const v = ll(b0(i), b1(j)); LL[i].push(v); llTop = Math.max(llTop, v); } }
+    for (let i = 0; i <= N; i++) L.push(LL[i].map(v => Math.exp(v - llTop)));
+    // שני priors: אחיד, או ספקני: מראש, הבדל קרוב ל-0 סביר יותר (Normal(0, 2) על β₁, ובלי העדפה ל-β₀)
+    const PRIORS = { flat: () => 1, skep: c => Math.exp(-.5 * (c / 2) ** 2) };
+    let prior = 'flat', PR, PROD, PMAX, MARG, MMAX, logPD;
+    function setPrior() {
+      PR = []; PROD = []; PMAX = 0;
+      for (let j = 0; j <= N; j++) PR.push(PRIORS[prior](b1(j)));
+      for (let i = 0; i <= N; i++) { PROD.push(L[i].map((v, j) => v * PR[j])); PMAX = Math.max(PMAX, ...PROD[i]); }
+      MARG = PR.map((_, j) => PROD.reduce((a, r) => a + r[j], 0)); MMAX = Math.max(...MARG);
+      // P(D) = Σ P(β₀, β₁) · P(D | β₀, β₁), כשה-prior מנורמל על תאי הרשת
+      const sPR = PR.reduce((a, v) => a + v, 0) * (N + 1), sP = PROD.reduce((a, r) => a + r.reduce((x, y) => x + y, 0), 0);
+      logPD = llTop + Math.log(sP / sPR);
+    }
+    setPrior();
+    const CAM0 = { a: -.62, e: .5 }, SIDE_A = -Math.PI / 2;
+    let stage = 0, wash = 0, norm = 0, coll = 0, cam = { ...CAM0 }, anim = null;
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    function animate(ms, step) {
+      const t0 = performance.now(), id = {};
+      anim = id; buttons();
+      (function f(now) {
+        if (anim !== id) return;
+        const t = Math.min(1, (now - t0) / ms), e = t < .5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+        step(e);
+        if (t >= 1) anim = null;
+        draw();
+        if (t < 1) requestAnimationFrame(f); else buttons();
+      })(t0);
+    }
+    // הטלה: סיבוב סביב הציר האנכי (a), והטיה כלפי מטה (e). עומק גדול = רחוק
+    function proj(X, Yw, Z) {
+      const ca = Math.cos(cam.a), sa = Math.sin(cam.a), ce = Math.cos(cam.e), se = Math.sin(cam.e);
+      const r = X * sa + Yw * ca;
+      return [X * ca - Yw * sa, Z * ce + r * se, r * ce - Z * se];
+    }
+    const ZS = .9;
+    const sci = l => { const e = Math.floor(l / Math.LN10), q = Math.exp(l - e * Math.LN10); return `${q.toFixed(1)}·10<sup>${e}</sup>`; };
+    function draw() {
+      const css = getComputedStyle(cv), hx = n => { const h = css.getPropertyValue(n).trim().replace('#', ''); return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16)); };
+      const CUR = hx('--curve'), HID = hx('--hidden'), INK = hx('--ink'), SOFT = hx('--ink-soft'), BG = [252, 252, 250];
+      const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t), rgb = (c, al = 1) => `rgba(${c.map(Math.round).join(',')},${al})`;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      // הגודל והמרכז: התיבה של הגרף ממלאת את השטח, בכל זווית
+      let lo = Infinity, hi = -Infinity, wl = Infinity, wh = -Infinity;
+      [-1, 1].forEach(x => [-1, 1].forEach(y => [0, ZS * 1.08].forEach(z => { const q = proj(x, y, z); lo = Math.min(lo, q[1]); hi = Math.max(hi, q[1]); wl = Math.min(wl, q[0]); wh = Math.max(wh, q[0]); })));
+      const SC = Math.min((H - 100) / (hi - lo), (W - 200) / (wh - wl), 380);
+      const cx = W / 2 - (wl + wh) / 2 * SC, cy = (44 + H - 56) / 2 + (lo + hi) / 2 * SC;
+      const P = (X, Yw, Z) => { const q = proj(X, Yw, Z); return [cx + q[0] * SC, cy - q[1] * SC, q[2]]; };
+      const XI = i => -1 + 2 * i / N, YJ = j => -1 + 2 * j / N;
+      // החזית של ה-prior שעוברת על המשטח, והנרמול
+      const front = -1.25 + wash * 2.7, sOf = j => stage < 2 ? 0 : clamp((front - YJ(j)) / .4, 0, 1);
+      const scaleN = 1 + (1 / PMAX - 1) * norm;
+      const h = (i, j) => { const s = sOf(j); return L[i][j] * (1 - s) + PROD[i][j] * s * scaleN; };
+      // במבט מהצד, הפרוסות הקרובות (β₀ גבוה) נאספות ראשונות
+      const kAbs = coll * (N + 1), gone = i => N - i < kAbs;
+      const VX = [];
+      for (let i = 0; i <= N; i++) { VX.push([]); for (let j = 0; j <= N; j++) VX[i].push(P(XI(i), YJ(j), h(i, j) * ZS)); }
+      // רצפת הגרף
+      const cs = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([x, y]) => P(x, y, 0));
+      ctx.beginPath(); cs.forEach((p, q) => q ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath();
+      ctx.fillStyle = rgb(mix(BG, INK, .03)); ctx.fill(); ctx.strokeStyle = rgb(SOFT, .5); ctx.lineWidth = 1; ctx.stroke();
+      // ציר הגובה, בפינה הרחוקה
+      const far = [[-1, -1], [1, -1], [1, 1], [-1, 1]].reduce((b, c) => proj(c[0], c[1], 0)[2] > proj(b[0], b[1], 0)[2] ? c : b);
+      const z0 = P(far[0], far[1], 0), z1 = P(far[0], far[1], ZS * 1.08);
+      ctx.strokeStyle = rgb(SOFT, .7); ctx.beginPath(); ctx.moveTo(z0[0], z0[1]); ctx.lineTo(z1[0], z1[1]); ctx.stroke();
+      const zl = coll > 0 ? 'P(β₁ | D)' : stage >= 3 && norm > .5 ? 'posterior' : stage >= 2 && wash > .5 ? 'prior × likelihood' : 'likelihood';
+      const zc = coll > 0 || (stage >= 3 && norm > .5) ? HID : stage >= 2 && wash > .5 ? mix(CUR, HID, .5) : CUR;
+      ctx.font = '700 17px Arial, sans-serif'; ctx.direction = 'ltr'; ctx.textAlign = 'center'; ctx.fillStyle = rgb(zc);
+      ctx.fillText(zl, z1[0], z1[1] - 10);
+      // המשטח: ציור מהרחוק אל הקרוב
+      const quads = [];
+      for (let i = 0; i < N; i++) {
+        if (gone(i) || gone(i + 1)) continue;
+        for (let j = 0; j < N; j++) {
+          const p = [VX[i][j], VX[i + 1][j], VX[i + 1][j + 1], VX[i][j + 1]];
+          quads.push({ p, d: (p[0][2] + p[1][2] + p[2][2] + p[3][2]) / 4, i, j });
+        }
+      }
+      quads.sort((u, v) => v.d - u.d);
+      const lx = -.45, ly = -.35, lz = .82;
+      quads.forEach(({ p, i, j }) => {
+        const hh = (h(i, j) + h(i + 1, j) + h(i + 1, j + 1) + h(i, j + 1)) / 4;
+        const dx = (h(i + 1, j) - h(i, j) + h(i + 1, j + 1) - h(i, j + 1)) / 2 * ZS * N / 2, dy = (h(i, j + 1) - h(i, j) + h(i + 1, j + 1) - h(i + 1, j)) / 2 * ZS * N / 2;
+        const nl = Math.hypot(dx, dy, 1), shade = .72 + .28 * Math.max(0, (-dx * lx - dy * ly + lz) / nl);
+        const s = (sOf(j) + sOf(j + 1)) / 2, base = mix(CUR, HID, s);
+        ctx.beginPath(); p.forEach((q, k) => k ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.closePath();
+        ctx.fillStyle = rgb(mix(BG, base, .1 + .85 * Math.min(1, hh)).map(v => v * shade)); ctx.fill();
+        ctx.strokeStyle = rgb(INK, .1); ctx.lineWidth = .6; ctx.stroke();
+      });
+      // ה-prior: רשת שקופה מעל המשטח, ובזמן הכפל רק לפני החזית
+      if (stage === 1 || (stage === 2 && wash < 1)) {
+        ctx.strokeStyle = rgb(HID, .55); ctx.lineWidth = 1.4;
+        const ok = j => stage === 1 || sOf(j) < 1;
+        for (let i = 0; i <= N; i += 4) { ctx.beginPath(); let on = false; for (let j = 0; j <= N; j++) { if (!ok(j)) { on = false; continue; } const q = P(XI(i), YJ(j), PR[j] * ZS); on ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); on = true; } ctx.stroke(); }
+        for (let j = 0; j <= N; j += 4) { if (!ok(j)) continue; ctx.beginPath(); for (let i = 0; i <= N; i++) { const q = P(XI(i), YJ(j), PR[j] * ZS); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); } ctx.stroke(); }
+      }
+      // ה-posterior השולי: סכום הפרוסות שכבר נאספו, על אותו ציר של β₁
+      if (coll > 0) {
+        const part = PR.map((_, j) => PROD.reduce((a, r, i) => a + (gone(i) ? r[j] : 0), 0) / MMAX);
+        const pts = part.map((v, j) => P(-1, YJ(j), v * ZS));
+        const b0p = P(-1, -1, 0), b1p = P(-1, 1, 0);
+        ctx.beginPath(); ctx.moveTo(b0p[0], b0p[1]); pts.forEach(q => ctx.lineTo(q[0], q[1])); ctx.lineTo(b1p[0], b1p[1]); ctx.closePath();
+        ctx.fillStyle = rgb(HID, .3); ctx.fill();
+        ctx.beginPath(); pts.forEach((q, k) => k ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.strokeStyle = rgb(HID); ctx.lineWidth = 3.5; ctx.stroke();
+      }
+      // הצירים: הסימונים על הקצה הקרוב, ושקיפות לפי האורך שלהם על המסך
+      // horizontal: הציר של β₀ (X משתנה, Yw קבוע). אחרת: הציר של β₁ (Yw משתנה, X קבוע)
+      function axis(vals, toW, name, horizontal) {
+        const at = o => horizontal ? proj(0, o, 0)[2] : proj(o, 0, 0)[2], near = at(-1) < at(1) ? -1 : 1;
+        const A = horizontal ? P(-1, near, 0) : P(near, -1, 0), B = horizontal ? P(1, near, 0) : P(near, 1, 0);
+        const al = clamp((Math.hypot(B[0] - A[0], B[1] - A[1]) / SC - .35) / .5, 0, 1);
+        if (al <= 0) return;
+        const c = P(0, 0, 0), m = horizontal ? P(0, near, 0) : P(near, 0, 0);
+        let ox = m[0] - c[0], oy = m[1] - c[1]; const ol = Math.hypot(ox, oy) || 1; ox /= ol; oy /= ol;
+        if (cam.e < .05) { ox = 0; oy = 1; }
+        ctx.font = '14px Arial, sans-serif'; ctx.fillStyle = rgb(SOFT, al); ctx.strokeStyle = rgb(SOFT, al); ctx.textAlign = 'center';
+        vals.forEach(v => { const w = toW(v), q = horizontal ? P(w, near, 0) : P(near, w, 0);
+          ctx.beginPath(); ctx.moveTo(q[0], q[1]); ctx.lineTo(q[0] + ox * 6, q[1] + oy * 6); ctx.stroke();
+          ctx.fillText(String(v), q[0] + ox * 20, q[1] + oy * 20 + 5); });
+        ctx.font = '700 18px Arial, sans-serif'; ctx.fillStyle = rgb(HID, al);
+        ctx.fillText(name, m[0] + ox * 46, m[1] + oy * 46 + 6);
+      }
+      axis([9, 11, 13, 15, 17], v => -1 + 2 * (v - A0) / (A1 - A0), 'β₀', true);
+      axis([-2, 0, 2, 4, 6, 8, 10], v => -1 + 2 * (v - C0) / (C1 - C0), 'β₁', false);
+      text();
+    }
+    function text() {
+      const flat = prior === 'flat';
+      const T = [
+        'ה-<span class="term">likelihood</span> של כל זוג <span class="ltr">(β₀, β₁)</span>, מכל 100 ההערכות. אפשר לגרור את הגרף כדי לסובב אותו.',
+        flat ? 'ה-<span class="term">prior</span> האחיד: מראש, כל זוג סביר באותה מידה.' : 'ה-<span class="term">prior</span> הספקני: מראש, הבדל קרוב ל-0 סביר יותר. ל-β₀ אין העדפה.',
+        'כל נקודה: <span class="term">prior</span> × <span class="term">likelihood</span>. ' + (flat ? 'עם <span class="term">prior</span> אחיד, הצורה לא משתנה.' : 'הזוגות שבהם β₁ רחוק מ-0 יורדים.'),
+        `÷ P(D): הצורה לא משתנה, והנפח כולו הוא 1. זה ה-<span class="term">posterior</span> המשותף של β₀ ו-β₁. <span class="ltr">P(D) = ${sci(logPD)}</span>`,
+        'מהצד: β₁ לרוחב, ו-β₀ לעומק. כל פרוסה היא ערך אחד של β₀, וכל אחת נמצאת במקום קצת אחר.',
+        'סוכמים את כל הפרוסות: ה-<span class="term">posterior</span> השולי של β₁, <span class="ltr">P(β₁ | D)</span>. מה שהנתונים אומרים על ההבדל, על פני כל הערכים של β₀.'
+      ];
+      $('p3-out').innerHTML = T[stage];
+    }
+    function buttons() {
+      [1, 2, 3, 4, 5].forEach(k => { $('p3-s' + k).disabled = !!anim || stage !== k - 1; });
+      $('p3-flat').className = 'demo-btn' + (prior === 'flat' ? '' : ' ghost'); $('p3-flat').setAttribute('aria-pressed', prior === 'flat');
+      $('p3-skep').className = 'demo-btn' + (prior === 'skep' ? '' : ' ghost'); $('p3-skep').setAttribute('aria-pressed', prior === 'skep');
+    }
+    $('p3-s1').onclick = () => { stage = 1; buttons(); draw(); };
+    $('p3-s2').onclick = () => { stage = 2; animate(1800, t => { wash = t; }); };
+    $('p3-s3').onclick = () => { stage = 3; animate(900, t => { norm = t; }); };
+    $('p3-s4').onclick = () => {
+      stage = 4;
+      let a0 = cam.a; while (a0 - SIDE_A > Math.PI) a0 -= 2 * Math.PI; while (SIDE_A - a0 > Math.PI) a0 += 2 * Math.PI;
+      const e0 = cam.e;
+      animate(1400, t => { cam.a = a0 + (SIDE_A - a0) * t; cam.e = e0 * (1 - t); });
+    };
+    $('p3-s5').onclick = () => { stage = 5; animate(2400, t => { coll = t; }); };
+    function reset(keepPrior) { anim = null; stage = keepPrior ? 1 : 0; wash = norm = coll = 0; cam = { ...CAM0 }; buttons(); draw(); }
+    $('p3-reset').onclick = () => reset(false);
+    ['flat', 'skep'].forEach(k => { $('p3-' + k).onclick = () => { if (prior === k) return; prior = k; setPrior(); reset(true); }; });
+    // גרירה: מסובבת את הגרף, עד המבט מהצד
+    let drag = null;
+    cv.addEventListener('pointerdown', e => { if (anim || stage >= 4) return; drag = { x: e.clientX, y: e.clientY, a: cam.a, e: cam.e }; cv.setPointerCapture(e.pointerId); cv.style.cursor = 'grabbing'; e.stopPropagation(); });
+    cv.addEventListener('pointermove', e => {
+      if (!drag) return;
+      const sc = cv.getBoundingClientRect().width / W;
+      cam.a = drag.a - (e.clientX - drag.x) / sc * .008; cam.e = clamp(drag.e + (e.clientY - drag.y) / sc * .008, 0, 1); draw();
+    });
+    const up = () => { drag = null; cv.style.cursor = 'grab'; };
+    cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+    buttons(); draw();
+    // הצבעים של היחידה נקבעים אחרי הטעינה: מציירים שוב
+    const hook = () => ['ready', 'slidechanged'].forEach(e => Reveal.on(e, draw));
+    if (window.Reveal && Reveal.on) hook(); else window.addEventListener('load', () => { if (window.Reveal) hook(); draw(); });
+  })();
+</script>
+<div class="demo-note">
+<p>כמו בשבוע שעבר, <span class="term">posterior</span> = <span class="term">prior</span> × <span class="term">likelihood</span> ÷ P(D), רק שעכשיו לכל זוג <span class="math inline">\((\beta_0, \beta_1)\)</span>. השאלה שלנו היא רק על ההבדל, <span class="math inline">\(\beta_1\)</span>, ולכן בסוף סוכמים על <span class="math inline">\(\beta_0\)</span>. לשם ההדגמה <span class="math inline">\(\sigma = 9\)</span> קמ”ש ידוע.</p>
+</div>
+</section>
+<section id="דיווח-bayesian" class="slide level2 example-slide">
+<h2>דיווח Bayesian</h2>
+<h3 class="paper-kicker">כך זה נראה במאמר</h3>
+<div class="paper" id="rb">
+  <div class="paper-head"><span>LEADING QUESTIONS AND EYEWITNESS MEMORY</span><span>6</span></div>
+  <svg id="rb-fig" viewbox="0 0 1000 236" style="width:100%; height:200px; display:block;" aria-label="Figure 1: the posterior distribution of the difference between the conditions, and the individual estimates in each condition"></svg>
+  <p class="paper-cap"><b>Figure 1.</b> (A) Posterior distribution of β<sub>1</sub>, the difference between the <i>smashed</i> and <i>hit</i> conditions (flat priors). Shaded area: 90% CI; solid line: posterior median; dashed line: no difference. (B) Speed estimates by condition (N = 100); lines and bands: posterior medians and 90% CIs of the condition means.</p>
+  <p class="paper-h">Results</p>
+  <div class="paper-text">
+    <p><span class="rp-s" data-k="2">Participants (N = 100) watched a film of a car accident and estimated how fast the cars were going when they <i>hit</i> (<i>n</i> = 50) or <i>smashed into</i> (<i>n</i> = 50) each other (Figure 1B)</span>. <span class="rp-s" data-k="3">We modeled the estimates as normal with mean β<sub>0</sub> + β<sub>1</sub><i>x</i> (<i>x</i> = 0 for <i>hit</i>, 1 for <i>smashed</i>) and flat priors on β<sub>0</sub>, β<sub>1</sub> and σ</span>. <span class="rp-s" data-k="4">The mean estimate for <i>hit</i> was <span class="nw">β<sub>0</sub> = <span id="rb-m0"></span> km/h</span> (posterior median, 90% CI <span class="nw">[<span id="rb-a0"></span>, <span id="rb-c0"></span>]</span>)</span>. <span class="rp-s" data-k="5"><i>Smashed</i> raised the estimates by <span class="nw">β<sub>1</sub> = <span id="rb-m1"></span> km/h</span>, 90% CI <span class="nw">[<span id="rb-a1"></span>, <span id="rb-c1"></span>]</span> (Figure 1A)</span>, <span class="rp-s" data-k="6">and the probability that the difference was positive was <span id="rb-pd"></span> (pd)</span>.</p>
+    <div class="rp-arrow" id="rb-arrow">▲</div>
+  </div>
+</div>
+<div class="rp-note" id="rb-note"></div>
+<script>
+  (function () {
+    const root = document.getElementById('rb'), V = window.W6V1;
+    if (!root || !V) return;
+    const $ = id => document.getElementById(id);
+    const P0 = V.post0, P1 = V.post1, PS = V.postS;
+    const m0 = P0.q(.5), a0 = P0.q(.05), c0 = P0.q(.95), m1 = P1.q(.5), a1 = P1.q(.05), c1 = P1.q(.95);
+    const mS = PS.q(.5), aS = PS.q(.05), cS = PS.q(.95);
+    $('rb-m0').textContent = m0.toFixed(1); $('rb-a0').textContent = a0.toFixed(1); $('rb-c0').textContent = c0.toFixed(1);
+    $('rb-m1').textContent = m1.toFixed(1); $('rb-a1').textContent = a1.toFixed(1); $('rb-c1').textContent = c1.toFixed(1);
+    $('rb-pd').textContent = (V.pd * 100).toFixed(1) + '%';
+    const notes = ['', 'האיור: (A) ה-posterior של ההבדל, β₁, ו-(B) הנתונים בשתי הקבוצות. בציר ה-Y של A אין מספרים: חשובה הצורה, לא הגובה.',
+      'הנתונים: כמה נבדקים, מה הם עשו, ואיך חולקו לשתי הקבוצות.', 'המודל: dummy coding, ה-prior, ומה x מסמן. גם הם חלק מהניתוח.',
+      'קבוצת הייחוס: β₀ הוא הממוצע של hit, עם רווח אמינות.', 'ההבדל: β₁, עם רווח אמינות. יש 90% סיכוי שההבדל נמצא בטווח הזה.', 'הערכת כיוון: pd, כמה מה-posterior של β₁ נמצא מעל 0.'];
+    // (A) ה-posterior של β₁ משמאל, (B) הנתונים בשתי הקבוצות מימין
+    const ax0 = 90, ax1 = 580, yt = 30, yb = 176, lo = -4, hi = 12, top = Math.max(...P1.ps);
+    const X = v => ax0 + (v - lo) / (hi - lo) * (ax1 - ax0), Y = p => yb - p / top * (yb - yt);
+    const pts = P1.xs.map((v, i) => [v, P1.ps[i]]).filter(([v]) => v >= lo && v <= hi);
+    const curve = pts.map(([v, p], i) => (i ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(p).toFixed(1)).join('');
+    const ci = pts.filter(([v]) => v >= a1 && v <= c1), area = ci.map(([v, p], i) => (i ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(p).toFixed(1)).join('') + `L${X(c1)},${yb}L${X(a1)},${yb}Z`;
+    const yMax = P1.ps[P1.xs.findIndex(v => v >= m1)];
+    const Yb = v => yb - v / 50 * (yb - yt), cols = [{ c: 760, d: V.G0, j: V.JIT0, m: m0, a: a0, b: c0, name: 'hit' }, { c: 900, d: V.G1, j: V.JIT1, m: mS, a: aS, b: cS, name: 'smashed' }];
+    const F = `font-family="Arial, Helvetica, sans-serif"`;
+    let s = `<g ${F}>`;
+    // (A)
+    s += `<path d="${area}" fill="var(--hidden)" opacity=".2"/>
+      <path d="${curve}" fill="none" stroke="var(--hidden)" stroke-width="3"/>
+      <line x1="${X(m1)}" y1="${yb}" x2="${X(m1)}" y2="${Y(yMax)}" stroke="var(--ink)" stroke-width="1.8"/>
+      <line x1="${X(0)}" y1="${yt - 8}" x2="${X(0)}" y2="${yb}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <line x1="${ax0}" y1="${yb}" x2="${ax1}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>
+      <line x1="${ax0}" y1="${yt - 10}" x2="${ax0}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>
+      <text x="${ax0 - 16}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="15" fill="var(--ink)" transform="rotate(-90 ${ax0 - 16} ${(yt + yb) / 2})">Density</text>
+      <text x="${(ax0 + ax1) / 2}" y="${yb + 42}" text-anchor="middle" font-size="15" fill="var(--ink)">β₁ (smashed − hit, km/h)</text>
+      <text x="${ax0 - 50}" y="${yt - 10}" font-size="18" font-weight="700" fill="var(--ink)">A</text>`;
+    [-4, 0, 4, 8, 12].forEach(t => { s += `<line x1="${X(t)}" y1="${yb}" x2="${X(t)}" y2="${yb + 5}" stroke="var(--ink)" stroke-width="1.3"/>
+      <text x="${X(t)}" y="${yb + 21}" text-anchor="middle" font-size="14" fill="var(--ink)">${t}</text>`; });
+    // (B) עמודה לכל קבוצה, עם jitter קבוע: ציר ה-x הוא הקבוצה, לא מספר נבדק
+    const bx0 = 690;
+    cols.forEach(q => {
+      s += `<rect x="${q.c - 52}" y="${Yb(q.b)}" width="104" height="${Yb(q.a) - Yb(q.b)}" fill="var(--hidden)" opacity=".18"/>`;
+      q.d.forEach((y, i) => { s += `<circle cx="${q.c + q.j[i] * 34}" cy="${Yb(y)}" r="3.6" fill="var(--seen)" opacity=".75"/>`; });
+      s += `<line x1="${q.c - 52}" y1="${Yb(q.m)}" x2="${q.c + 52}" y2="${Yb(q.m)}" stroke="var(--ink)" stroke-width="2.2"/>
+        <text x="${q.c}" y="${yb + 21}" text-anchor="middle" font-size="14" font-style="italic" fill="var(--ink)">${q.name}</text>`;
+    });
+    s += `<line x1="${bx0}" y1="${yt - 10}" x2="${bx0}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>
+      <line x1="${bx0}" y1="${yb}" x2="${965}" y2="${yb}" stroke="var(--ink)" stroke-width="1.3"/>`;
+    [0, 10, 20, 30, 40, 50].forEach(v => { s += `<line x1="${bx0 - 5}" y1="${Yb(v)}" x2="${bx0}" y2="${Yb(v)}" stroke="var(--ink)" stroke-width="1.3"/>
+      <text x="${bx0 - 9}" y="${Yb(v) + 5}" text-anchor="end" direction="ltr" font-size="14" fill="var(--ink)">${v}</text>`; });
+    s += `<text x="${bx0 - 42}" y="${(yt + yb) / 2}" text-anchor="middle" font-size="15" fill="var(--ink)" transform="rotate(-90 ${bx0 - 42} ${(yt + yb) / 2})">Speed estimate (km/h)</text>
+      <text x="${(bx0 + 965) / 2}" y="${yb + 42}" text-anchor="middle" font-size="15" fill="var(--ink)">Condition</text>
+      <text x="${bx0 - 75}" y="${yt - 10}" font-size="18" font-weight="700" fill="var(--ink)">B</text></g>`;
+    $('rb-fig').innerHTML = s;
+    function sync() {
+      const sec = root.closest('section'), k = sec ? sec.querySelectorAll('.fragment.visible').length : 0;
+      let on = null;
+      root.querySelectorAll('.rp-s').forEach(sp => { const hit = +sp.dataset.k === k; sp.classList.toggle('on', hit); if (hit) on = sp; });
+      const ar = $('rb-arrow');
+      if (on) {
+        const r = on.getClientRects(), last = r[r.length - 1], box = on.parentNode.parentNode.getBoundingClientRect(), sc = box.width / on.parentNode.parentNode.offsetWidth;
+        ar.style.left = ((last.left + last.right) / 2 - box.left) / sc + 'px';
+        ar.style.top = (last.bottom - box.top) / sc - 1 + 'px';
+        ar.style.display = 'block';
+      } else ar.style.display = 'none';
+      $('rb-note').textContent = notes[k] || '';
+    }
+    const hook = () => { ['fragmentshown', 'fragmenthidden', 'slidechanged', 'ready', 'resize'].forEach(e => Reveal.on(e, sync)); sync(); };
+    if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook(); else window.addEventListener('load', () => { hook(); setTimeout(sync, 500); });
+  })();
+</script>
+<p><span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span> <span class="fragment"></span></p>
+</section>
+<section id="סיכום" class="slide level2 summary-slide">
+<h2>סיכום</h2>
+<div>
+<ul>
+<li class="fragment"><strong>Loftus ו-Palmer:</strong> מילה אחת בשאלה, hit או smashed, שינתה את המהירות שהנבדקים זכרו.</li>
+<li class="fragment"><strong>Dummy coding:</strong> <span class="math inline">\(x_1 = 0\)</span> לקבוצת הייחוס ו-<span class="math inline">\(x_1 = 1\)</span> לקבוצה השנייה. <span class="math inline">\(x_0 = 1\)</span> לכולם.</li>
+<li class="fragment"><strong>המודל המייצר:</strong> <span class="math inline">\(y_i \sim \text{Normal}(\beta_0 + \beta_1 x_{1,i},\ \sigma)\)</span>. <span class="math inline">\(\beta_0\)</span> הוא הממוצע של hit, ו-<span class="math inline">\(\beta_1\)</span> הוא ההבדל.</li>
+<li class="fragment"><strong>likelihood:</strong> מפה של זוגות <span class="math inline">\((\beta_0, \beta_1)\)</span>. השיא בממוצעי הקבוצות, והמפה נוטה כי <span class="math inline">\(\beta_0\)</span> משותף לשתי הקבוצות.</li>
+<li class="fragment"><strong>Bayesian:</strong> <span class="term">posterior</span> ∝ <span class="term">prior</span> × <span class="term">likelihood</span> לכל זוג, ואז סוכמים על <span class="math inline">\(\beta_0\)</span> כדי לקבל את ה-<span class="term">posterior</span> של ההבדל.</li>
+<li class="fragment"><strong>דיווח:</strong> <span class="math inline">\(\beta_1\)</span> עם חציון, רווח אמינות 90% ו-pd, ואיור של הנתונים בשתי הקבוצות.</li>
+</ul>
+</div>
 <div class="footer footer-default">
 
 </div>
